@@ -8,6 +8,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["EmailMarketing.Web/EmailMarketing.Web.csproj", "EmailMarketing.Web/"]
 COPY ["EmailMarketing.Framework/EmailMarketing.Framework.csproj", "EmailMarketing.Framework/"]
+COPY ["EmailMarketing.Data/EmailMarketing.Data.csproj", "EmailMarketing.Data/"]
 RUN dotnet restore "EmailMarketing.Web/EmailMarketing.Web.csproj"
 COPY . .
 WORKDIR "/src/EmailMarketing.Web"
