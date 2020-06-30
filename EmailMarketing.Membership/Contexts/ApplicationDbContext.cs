@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace EmailMarketing.Web.Data
+namespace EmailMarketing.Membership
 {
     public class ApplicationDbContext : IdentityDbContext
     {

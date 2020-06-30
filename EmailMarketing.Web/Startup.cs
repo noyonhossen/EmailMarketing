@@ -16,6 +16,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using EmailMarketing.Framework.Context;
 using EmailMarketing.Framework;
+using EmailMarketing.Membership;
 
 namespace EmailMarketing.Web
 {
