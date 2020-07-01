@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using EmailMarketing.Membership.Enum;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace EmailMarketing.Membership.Entities
         public string LastPassword { get; set; }
         public DateTime? LastPassChangeDate { get; set; }
         public int PasswordChangedCount { get; set; }
-        //public EnumApplicationUserStatus Status { get; set; }
+        public EnumApplicationUserStatus Status { get; set; }
 
         public Guid? CreatedBy { get; set; }
         public DateTime Created { get; set; }
@@ -25,13 +26,14 @@ namespace EmailMarketing.Membership.Entities
         public DateTime? LastModified { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
-        //public IList<ApplicationUserRole> UserRoles { get; set; }
+        public IList<UserRole> UserRoles { get; set; }
 
         public ApplicationUser()
                     : base()
         {
             this.IsActive = true;
             this.IsDeleted = false;
+            this.UserRoles = new List<UserRole>();
         }
 
         internal ApplicationUser(string userName)
