@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.Framework.Exceptions
+namespace EmailMarketing.Data.Exceptions
 {
     public class NotFoundException : Exception
     {

@@ -8,10 +8,10 @@ using Microsoft.Extensions.Options;
 
 namespace Membership.Services
 {
-    public class SignInManager
+    public class ApplicationSignInManager
         : SignInManager<ApplicationUser>
     {
-        public SignInManager(UserManager<ApplicationUser> userManager, 
+        public ApplicationSignInManager(UserManager<ApplicationUser> userManager, 
             IHttpContextAccessor contextAccessor, 
             IUserClaimsPrincipalFactory<ApplicationUser> claimsFactory, 
             IOptions<IdentityOptions> optionsAccessor, 

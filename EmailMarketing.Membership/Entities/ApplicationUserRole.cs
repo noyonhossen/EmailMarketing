@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EmailMarketing.Membership.Entities
 {
-    public class UserRole
+    public class ApplicationUserRole
         : IdentityUserRole<Guid>
     {
         public ApplicationUser User { get; set; }
-        public Role Role { get; set; }
+        public ApplicationRole Role { get; set; }
     }
 }

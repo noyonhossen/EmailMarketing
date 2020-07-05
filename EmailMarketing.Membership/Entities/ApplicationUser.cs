@@ -1,4 +1,4 @@
-﻿using EmailMarketing.Membership.Enum;
+﻿using EmailMarketing.Membership.Enums;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -26,38 +26,35 @@ namespace EmailMarketing.Membership.Entities
         public DateTime? LastModified { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
-        public IList<UserRole> UserRoles { get; set; }
+        public IList<ApplicationUserRole> UserRoles { get; set; }
 
         public ApplicationUser()
                     : base()
         {
             this.IsActive = true;
             this.IsDeleted = false;
-            this.UserRoles = new List<UserRole>();
+            this.UserRoles = new List<ApplicationUserRole>();
         }
 
-        internal ApplicationUser(string userName)
+        public ApplicationUser(string userName)
             : base(userName)
         {
-
+            this.IsActive = true;
+            this.IsDeleted = false;
+            this.UserRoles = new List<ApplicationUserRole>();
         }
 
-        public ApplicationUser(string userName, string mobileNumber, string email)
-            : base(userName)
+        public ApplicationUser(string userName, string phoneNumber, string email)
+            : this(userName)
         {
-            Email = email;
+            this.Email = email;
+            this.PhoneNumber = phoneNumber;
         }
 
-        public ApplicationUser(string userName, string fullName, string mobileNumber, string email)
-            : this(userName, mobileNumber, email)
+        public ApplicationUser(string userName, string fullName, string phoneNumber, string email)
+            : this(userName, phoneNumber, email)
         {
-            FullName = fullName;
-        }
-
-        public ApplicationUser(string userName, string fullName, string mobileNumber, string phone, string email)
-            : this(userName, fullName, mobileNumber, email)
-        {
-            PhoneNumber = phone;
+            this.FullName = fullName;
         }
 
         public override bool Equals(object obj)

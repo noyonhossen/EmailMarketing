@@ -1,11 +1,11 @@
-﻿using EmailMarketing.Membership.Enum;
+﻿using EmailMarketing.Membership.Enums;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 
 namespace EmailMarketing.Membership.Entities
 {
-    public class Role : IdentityRole<Guid>
+    public class ApplicationRole : IdentityRole<Guid>
     {
         public EnumApplicationRoleStatus Status { get; set; }
 
@@ -15,22 +15,22 @@ namespace EmailMarketing.Membership.Entities
         public DateTime? LastModified { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
-        public IList<UserRole> UserRoles { get; set; }
+        public IList<ApplicationUserRole> UserRoles { get; set; }
 
-        public Role()
+        public ApplicationRole()
             : base()
         {
             this.IsActive = true;
             this.IsDeleted = false;
-            this.UserRoles = new List<UserRole>();
+            this.UserRoles = new List<ApplicationUserRole>();
         }
 
-        public Role(string roleName)
+        public ApplicationRole(string roleName)
             : base(roleName)
         {
             this.IsActive = true;
             this.IsDeleted = false;
-            this.UserRoles = new List<UserRole>();
+            this.UserRoles = new List<ApplicationUserRole>();
         }
     }
 }

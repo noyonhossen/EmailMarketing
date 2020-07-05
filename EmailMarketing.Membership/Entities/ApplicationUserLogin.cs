@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EmailMarketing.Membership.Entities
 {
-    public class UserLogin
+    public class ApplicationUserLogin
         : IdentityUserLogin<Guid>
     {
-        public UserLogin()
+        public ApplicationUserLogin()
             : base()
         {
 

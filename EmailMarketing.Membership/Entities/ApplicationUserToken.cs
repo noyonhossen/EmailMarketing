@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EmailMarketing.Membership.Entities
 {
-    public class UserToken
+    public class ApplicationUserToken
         : IdentityUserToken<Guid>
     {
-        public UserToken()
+        public ApplicationUserToken()
             : base()
         {
 

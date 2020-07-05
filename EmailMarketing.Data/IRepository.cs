@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace EmailMarketing.Data
 {
     public interface IRepository<TEntity, TKey, TContext>
-        where TEntity : class, IEntity<TKey>
+        where TEntity : IEntity<TKey>
         where TContext : DbContext
     {
         #region LINQ Async

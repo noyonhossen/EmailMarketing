@@ -13,7 +13,7 @@ namespace EmailMarketing.Data
 {
     public abstract class Repository<TEntity, TKey, TContext>
         : IRepository<TEntity, TKey, TContext>
-        where TEntity : class, IEntity<TKey>
+        where TEntity : IEntity<TKey>
         where TContext : DbContext
     {
         #region CONFIG

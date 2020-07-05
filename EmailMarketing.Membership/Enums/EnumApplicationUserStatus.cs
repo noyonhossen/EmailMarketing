@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EmailMarketing.Membership.Enum
+namespace EmailMarketing.Membership.Enums
 {
     public enum EnumApplicationUserStatus
     {

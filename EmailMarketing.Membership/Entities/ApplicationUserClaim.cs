@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EmailMarketing.Membership.Entities
 {
-    public class RoleClaim
-        : IdentityRoleClaim<Guid>
+    public class ApplicationUserClaim
+        : IdentityUserClaim<Guid>
     {
-        public RoleClaim()
+        public ApplicationUserClaim()
             : base()
         {
 
