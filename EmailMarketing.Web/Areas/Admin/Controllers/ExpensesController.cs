@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
-using EmailMarketing.Framework.Exceptions;
+using EmailMarketing.Data.Exceptions;
 using EmailMarketing.Web.Areas.Admin.Enums;
 using EmailMarketing.Web.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -117,7 +117,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                     model.Response = new ResponseModel("Expense delete failured.", ResponseType.Failure);
                 }
             }
-            return RedirectToAction("index");
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> GetExpenses()

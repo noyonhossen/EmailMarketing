@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmailMarketing.Membership
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Role, Guid,
-        UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid,
+        ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin, ApplicationRoleClaim, ApplicationUserToken>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -18,7 +18,7 @@ namespace EmailMarketing.Membership
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<UserRole>(userRole =>
+            modelBuilder.Entity<ApplicationUserRole>(userRole =>
             {
                 userRole.HasKey(ur => new { ur.UserId, ur.RoleId });
 
