@@ -17,29 +17,17 @@
     <link href="~/theme/assets/css/colors.min.css" rel="stylesheet" type="text/css">
     <!-- /global stylesheets -->
 
-    <link rel="stylesheet" href="~/css/site.css" />
-    @RenderSection("Styles", required: false)
 </head>
 
 <body>
 
-    <!-- Main navbar -->
-    <partial name="_NavBarPartial" />
-    <!-- /main navbar -->
     <!-- Page content -->
     <div class="page-content">
 
-        <!-- Main sidebar -->
-        @*<partial name="_SideBarPartial" />*@
-        <!-- /main sidebar -->
         <!-- Main content -->
         <div class="content-wrapper">
 
             @RenderBody()
-
-            <!-- Footer -->
-            <partial name="_FooterPartial" />
-            <!-- /footer -->
 
         </div>
         <!-- /main content -->
@@ -52,13 +40,12 @@
     <script src="~/theme/global_assets/js/plugins/loaders/blockui.min.js"></script>
     <!-- /core JS files -->
     <!-- Theme JS files -->
-    <script src="~/theme/global_assets/js/plugins/notifications/noty.min.js"></script>
+    <script src="~/theme/global_assets/js/plugins/forms/styling/uniform.min.js"></script>
+
     <script src="~/theme/assets/js/app.js"></script>
+    <script src="~/theme/global_assets/js/demo_pages/login.js"></script>
     <!-- /theme JS files -->
 
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
-
 </body>
 </html>
-

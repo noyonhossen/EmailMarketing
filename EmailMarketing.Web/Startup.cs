@@ -17,7 +17,7 @@ using EmailMarketing.Framework.Context;
 using EmailMarketing.Framework;
 using EmailMarketing.Membership;
 using EmailMarketing.Membership.Entities;
-using Membership.Services;
+using EmailMarketing.Membership.Services;
 
 namespace EmailMarketing.Web
 {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
-namespace Membership.Services
+namespace EmailMarketing.Membership.Services
 {
     public class ApplicationRoleManager
         : RoleManager<ApplicationRole>

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.Web.Areas.User.Models
+namespace EmailMarketing.Web.Models
 {
     public class ForgotPasswordModel
     {
