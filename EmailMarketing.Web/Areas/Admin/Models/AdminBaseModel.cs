@@ -60,9 +60,9 @@ namespace EmailMarketing.Web.Areas.Admin.Models
                             Title = "Admin",
                             Children = new List<MenuChildItem>
                             {
-                                new MenuChildItem () { Controller = "Users", Action = "Index", Area="Admin", Title = "View Admin List",
+                                new MenuChildItem () { Controller = "AdminUsers", Action = "Index", Area="Admin", Title = "View Admin List",
                                     Icon = "icon-home4", IsActive = false },
-                                new MenuChildItem () { Controller = "Users", Action = "Add", Area="Admin", Title = "Add New Admin",
+                                new MenuChildItem () { Controller = "AdminUsers", Action = "Add", Area="Admin", Title = "Add New Admin",
                                     Icon = "icon-home4", IsActive = false },
                             }
                         }

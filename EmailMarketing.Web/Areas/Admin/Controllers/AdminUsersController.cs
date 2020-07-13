@@ -3,31 +3,69 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
+using EmailMarketing.Membership.Entities;
+using EmailMarketing.Membership.Services;
 using EmailMarketing.Web.Areas.Admin.Models;
+using EmailMarketing.Web.Controllers;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace EmailMarketing.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class UsersController : Controller
+    public class AdminUsersController : Controller
     {
-        private readonly ILogger<UsersController> _logger;
+        private readonly ApplicationSignInManager _signInManager;
+        private readonly ApplicationUserManager _userManager;
+        private readonly ILogger _logger;
+        private readonly IEmailSender _emailSender;
 
-        public UsersController(ILogger<UsersController> logger)
+        public AdminUsersController(
+            ApplicationUserManager userManager,
+            ApplicationSignInManager signInManager,
+            ILoggerFactory logger,
+            IEmailSender emailSender
+          )
         {
-            _logger = logger;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _logger = logger.CreateLogger<AdminUsersController>();
+            _emailSender = emailSender;
+           
         }
 
         public IActionResult Index()
         {
-            //var model = Startup.AutofacContainer.Resolve<UsersModel>();
+            var model = Startup.AutofacContainer.Resolve<AdminUsersModel>();
             return View();
         }
 
         public IActionResult Add()
         {
-            var model = new CreateUsersModel();
+            var model = new CreateAdminUsersModel();
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add(CreateAdminUsersModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = model.UserName,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    ImageUrl = model.ImageUrl
+
+                };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(AccountController.Login), "Account");
+                }
+            }
             return View(model);
         }
 

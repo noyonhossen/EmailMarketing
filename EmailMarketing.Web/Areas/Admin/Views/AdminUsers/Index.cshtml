@@ -1,4 +1,4 @@
-﻿@model UsersModel
+﻿@model AdminUsersModel
 
 @{
     ViewData["Title"] = "Index";
@@ -8,12 +8,12 @@
 <div class="page-header">
     <div class="page-header-content header-elements-md-inline">
         <div class="page-title d-flex">
-            <h4><a asp-controller="Admin" asp-action="Index" asp-area="Admin" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Admin</span></a></h4>
+            <h4><a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Admin</span></a></h4>
             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
         </div>
 
         <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="Admin" asp-action="Add" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-plus-circle2 mr-2"></i> <span class="font-weight-semibold">New Expense</span></a>
+            <a asp-controller="AdminUsers" asp-action="Add" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-plus-circle2 mr-2"></i> <span class="font-weight-semibold">New Expense</span></a>
         </div>
     </div>
 </div>
@@ -38,7 +38,7 @@
             <partial name="_ActionMessage" model="@Model.Response" />
         </div>
 
-        <table class="table" id="expense-table">
+        <table class="table" id="adminusers-table">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -83,7 +83,7 @@
 @section Scripts {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
     <partial name="~/Views/Bundle/_DatatableScriptsPartial.cshtml" />
-    <script src="~/js/project/expense.js"></script>
+    <script src="~/js/project/adminusers.js"></script>
     <script src="~/js/ajax-call.js"></script>
 
     <script>
@@ -92,7 +92,7 @@
             var editUrl = '@Url.Action("Edit", "Admin", new { Area = "Admin" })';
             loadDatatable(url, editUrl);
 
-            $('#expense-table').on('click', '.show-bs-modal', function (event) {
+            $('#adminusers-table').on('click', '.show-bs-modal', function (event) {
                 var id = $(this).data("id");
                 var modal = $("#modal-delete");
                 modal.find('.modal-body p').text('Are you sure want to delete this record?')

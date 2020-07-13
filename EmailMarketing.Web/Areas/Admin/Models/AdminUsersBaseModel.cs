@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Web.Areas.Admin.Models
 {
-    public class UsersModel : AdminBaseModel
+    public class AdminUsersBaseModel : AdminBaseModel
     {
-       
     }
 }

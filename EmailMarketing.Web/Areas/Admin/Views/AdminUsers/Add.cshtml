@@ -1,4 +1,4 @@
-﻿@model CreateUsersModel
+﻿@model CreateAdminUsersModel
 
 @{
     ViewData["Title"] = "Add";
@@ -8,12 +8,12 @@
 <div class="page-header">
     <div class="page-header-content header-elements-md-inline">
         <div class="page-title d-flex">
-            <h4><a asp-controller="Users" asp-action="Index" asp-area="Admin" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
+            <h4><a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
         </div>
 
         <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="Users" asp-action="Index" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Admin List</span></a>
+            <a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Admin List</span></a>
         </div>
     </div>
 </div>
@@ -36,7 +36,7 @@
         <div class="card-body">
             <partial name="_ActionMessage" model="@Model.Response" />
             <div class="">
-                <form asp-area="Admin" asp-controller="Users" asp-action="Add" method="post" class="form-horizontal">
+                <form asp-area="Admin" asp-controller="AdminUsers" asp-action="Add" method="post" class="form-horizontal">
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Name" class="col-md-2 control-label"></label>
@@ -66,7 +66,21 @@
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
                     </div>
-                
+                    <div class="form-group">
+                        <label asp-for="Password" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ImageUrl" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="ImageUrl" class="form-control" />
+                            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <div class="col-md-10">
                             <input type="submit" class="btn btn-default" value="Submit" />
