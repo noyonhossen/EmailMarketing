@@ -26,7 +26,7 @@ namespace EmailMarketing.Membership.Entities
         public DateTime? LastModified { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
-        //public bool IsBlocked { get; set; }
+        public bool IsBlocked { get; set; }
         public IList<ApplicationUserRole> UserRoles { get; set; }
 
         public ApplicationUser()

@@ -18,6 +18,8 @@ using EmailMarketing.Framework;
 using EmailMarketing.Membership;
 using EmailMarketing.Membership.Entities;
 using EmailMarketing.Membership.Services;
+using EmailMarketing.Web.Core;
+using EmailMarketing.Web.Areas.Admin.Models;
 
 namespace EmailMarketing.Web
 {
@@ -46,6 +48,7 @@ namespace EmailMarketing.Web
 
             builder.RegisterModule(new FrameworkModule(connectionString, migrationAssemblyName));
             builder.RegisterModule(new WebModule(connectionString, migrationAssemblyName));
+            builder.RegisterType<UserModel>();
         }
         #endregion
 
@@ -90,6 +93,8 @@ namespace EmailMarketing.Web
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = false;
             });
+
+            services.Configure<EmailMarketing.Web.Core.UserDefaultPassword>(Configuration.GetSection("UserDefaultPassword"));
 
             services.ConfigureApplicationCookie(options =>
             {
