@@ -54,6 +54,18 @@ function loadDatatable(url, editUrl) {
             },
             {
                 "targets": [4],
+                'sortable': true,
+                'searchable': true,
+                "orderData": [4]
+            },
+            {
+                "targets": [5],
+                'sortable': true,
+                'searchable': true,
+                "orderData": [5]
+            },
+            {
+                "targets": [6],
                 'sortable': false,
                 'searchable': false,
                 "width": "15%",

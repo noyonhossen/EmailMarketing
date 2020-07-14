@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Web.Areas.Admin.Models
 {
-    public class CreateAdminUsersModel : AdminBaseModel
+    public class EditAdminUsersModel : AdminBaseModel
     {
+         
+        public string Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
@@ -19,10 +21,10 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         public string Email { get; set; }
         [Required]
         [Display(Name = "Phone Number")]
-        public string PhoneNumber {get;set;}
+        public string PhoneNumber { get; set; }
         [Required]
         [Display(Name = "Image Url")]
         public string ImageUrl { get; set; }
-       
+
     }
 }

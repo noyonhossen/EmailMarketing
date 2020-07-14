@@ -8,7 +8,7 @@
 <div class="page-header">
     <div class="page-header-content header-elements-md-inline">
         <div class="page-title d-flex">
-            <h4><a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Admin</span></a></h4>
+            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Admin" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Admin</span></a></h4>
             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
         </div>
 
@@ -53,8 +53,6 @@
     </div>
     <!-- /basic datatable -->
 </div>
-
-<!-- Danger modal -->
 <div id="modal-delete" class="modal fade" tabindex="-1">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -65,7 +63,7 @@
 
             <div class="modal-body">
                 <p>Are you sure want to delete?</p>
-                <form id="deleteForm" action="@Url.Action("Delete", "Admin", new { Area = "Admin" })" method="post">
+                <form id="deleteForm" action="@Url.Action("Delete", "Expenses", new { Area = "Admin" })" method="post">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="deleteId" value="" name="id" />
                 </form>
@@ -78,21 +76,19 @@
         </div>
     </div>
 </div>
-<!-- /default modal -->
 
 @section Scripts {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
     <partial name="~/Views/Bundle/_DatatableScriptsPartial.cshtml" />
     <script src="~/js/project/adminusers.js"></script>
     <script src="~/js/ajax-call.js"></script>
-
     <script>
         $(function () {
-            var url = '@Url.Action("GetAdmin", "Admin", new { Area = "Admin" })';
-            var editUrl = '@Url.Action("Edit", "Admin", new { Area = "Admin" })';
+            var url = '@Url.Action("GetAdminUsers", "AdminUsers", new { Area = "Admin" })';
+            var editUrl = '@Url.Action("Edit", "AdminUsers", new { Area = "Admin" })';
             loadDatatable(url, editUrl);
 
-            $('#adminusers-table').on('click', '.show-bs-modal', function (event) {
+            $('#expense-table').on('click', '.show-bs-modal', function (event) {
                 var id = $(this).data("id");
                 var modal = $("#modal-delete");
                 modal.find('.modal-body p').text('Are you sure want to delete this record?')
@@ -106,4 +102,6 @@
             });
         });
     </script>
+
+
 }

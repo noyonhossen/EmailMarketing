@@ -1,5 +1,4 @@
-﻿
-function loadDatatable(url, editUrl) {
+﻿function loadDatatable(url, editUrl) {
 
     if (!$().DataTable) {
         console.warn('Warning - datatables.min.js is not loaded.');

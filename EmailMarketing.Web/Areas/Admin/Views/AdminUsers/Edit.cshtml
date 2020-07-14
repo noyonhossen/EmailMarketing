@@ -1,0 +1,112 @@
+﻿@model EditAdminUsersModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<!-- Page header -->
+<div class="page-header">
+    <div class="page-header-content header-elements-md-inline">
+        <div class="page-title d-flex">
+            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Admin" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+
+        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
+            <a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Expense List</span></a>
+        </div>
+    </div>
+</div>
+<!-- /page header -->
+<!-- Content area -->
+<div class="content pt-0">
+
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">Edit Admin Panel</h5>
+            <div class="header-elements">
+                <div class="list-icons">
+                    <a class="list-icons-item" data-action="collapse"></a>
+                    <a class="list-icons-item" data-action="reload"></a>
+                    <a class="list-icons-item" data-action="remove"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <partial name="_ActionMessage" model="@Model.Response" />
+            <div class="">
+                <form asp-action="Edit">
+                    <div class="">
+                        <fieldset class="mb-3">
+
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" asp-for="Id">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-lg-4 required" asp-for="Name"></label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" asp-for="Name">
+                                            <span asp-validation-for="Name" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-lg-4 required" asp-for="Password"></label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" asp-for="Password">
+                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-lg-4 required" asp-for="UserName"></label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" asp-for="UserName">
+                                            <span asp-validation-for="UserName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-lg-4 required" asp-for="Email"></label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" asp-for="Email">
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-lg-4 required" asp-for="ImageUrl"></label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" asp-for="ImageUrl">
+                                            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                    </div>
+                    <div class="">
+                        <div class="d-flex justify-content-end">
+                            <a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
+                            <button type="submit" class="btn bg-teal ml-2"><i class="icon-file-check2"></i> Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!-- /Content area -->
+
+
+@section Scripts {
+    <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+    <partial name="~/Views/Bundle/_FormInputScriptsPartial.cshtml" />
+    <partial name="~/Views/Bundle/_DateTimePickerScriptsPartial.cshtml" />
+}
+

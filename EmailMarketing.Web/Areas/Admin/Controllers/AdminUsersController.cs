@@ -38,7 +38,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var model = Startup.AutofacContainer.Resolve<AdminUsersModel>();
-            return View();
+            return View(model);
         }
 
         public IActionResult Add()
@@ -68,100 +68,42 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             }
             return View(model);
         }
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var model = new EditAdminUsersModel();
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            return View(model);
+        }
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(EditAdminUsersModel model)
+        {
+            if (ModelState.IsValid)
+            {
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Add(
-        //    [Bind(nameof(CreateExpenseModel.Title),
-        //    nameof(CreateExpenseModel.Description),
-        //    nameof(CreateExpenseModel.Amount),
-        //    nameof(CreateExpenseModel.ExpenseType),
-        //    nameof(CreateExpenseModel.ExpenseDate))] CreateExpenseModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            await model.AddAsync();
-        //            model.Response = new ResponseModel("Expense creation successful.", ResponseType.Success);
-        //            return RedirectToAction("Index");
-        //        }
-        //        catch (DuplicationException ex)
-        //        {
-        //            model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            model.Response = new ResponseModel("Expense creation failured.", ResponseType.Failure);
-        //        }
-        //    }
-        //    return View(model);
-        //}
+                var user = new ApplicationUser
+                {
+                    UserName = model.UserName,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    ImageUrl = model.ImageUrl
 
-        //public async Task<IActionResult> Edit(int id)
-        //{
-        //    var model = new EditExpenseModel();
-        //    await model.LoadByIdAsync(id);
-        //    return View(model);
-        //}
+                };
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(
-        //    [Bind(nameof(EditExpenseModel.Id),
-        //    nameof(CreateExpenseModel.Title),
-        //    nameof(CreateExpenseModel.Description),
-        //    nameof(CreateExpenseModel.Amount),
-        //    nameof(CreateExpenseModel.ExpenseType),
-        //    nameof(CreateExpenseModel.ExpenseDate))] EditExpenseModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            await model.UpdateAsync();
-        //            model.Response = new ResponseModel("Expense edit successful.", ResponseType.Success);
-        //            return RedirectToAction("Index");
-        //        }
-        //        catch (DuplicationException ex)
-        //        {
-        //            model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            model.Response = new ResponseModel("Expense edit failured.", ResponseType.Failure);
-        //        }
-        //    }
-        //    return View(model);
-        //}
+                var result = await _userManager.UpdateAsync(user);
+                if(result.Succeeded)
+                    return RedirectToAction("Edit");
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var model = new ExpenseModel();
-        //        try
-        //        {
-        //            var title = await model.DeleteAsync(id);
-        //            model.Response = new ResponseModel($"Expense {title} successfully deleted.", ResponseType.Success);
-        //            return RedirectToAction("Index");
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            model.Response = new ResponseModel("Expense delete failured.", ResponseType.Failure);
-        //        }
-        //    }
-        //    return RedirectToAction("Index");
-        //}
+            }
+            return View(model);
 
-        //public async Task<IActionResult> GetUsers()
-        //{
-        //    var tableModel = new DataTablesAjaxRequestModel(Request);
-        //    var model = Startup.AutofacContainer.Resolve<UsersModel>();
-        //    //var data = await model.GetUsers(tableModel);
-        //    return Json(data);
-        //}
+          
+        }
+        public async Task<IActionResult> GetAdminUsers()
+        {
+            var tableModel = new DataTablesAjaxRequestModel(Request);
+            var model = Startup.AutofacContainer.Resolve<AdminUsersModel>();
+            var data = await model.GetAllAsync(tableModel);
+            return Json(data);
+        }
     }
 }
