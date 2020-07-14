@@ -143,6 +143,9 @@ namespace EmailMarketing.Web
             {
                 endpoints.MapControllerRoute(
                     name: "areas",
+                    pattern: "{area:exists}/{controller=Users}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "areas",
                     pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
