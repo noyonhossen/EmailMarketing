@@ -48,9 +48,19 @@ function loadDatatable(url, editUrl) {
             },
             {
                 "targets": [3],
-                'sortable': true,
+                'sortable': false,
                 'searchable': false,
-                "orderData": [3]
+                "width": "15%",
+                "className": "text-center",
+                "render": function (data, type, row, meta) {
+                    var editButton = '<a class="text-primary" href="' + editUrl + '/' + data + '" title="Edit">' +
+                        '<i class="icon-pencil7"></i></a>';
+
+                    var deleteButton = '<a class="text-danger show-bs-modal" data-id="' + data + '" href="#" title="Delete">' +
+                        '<i class="icon-trash"></i></a>';
+
+                    return editButton + ' ' + deleteButton;
+                }
             }
         ]
     });

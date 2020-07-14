@@ -29,7 +29,7 @@
                     <th>UserName</th>
                     <th>Email</th>
                     <th>EmailConfirmed</th>
-                    <th>PhoneNumber</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -38,6 +38,32 @@
     </div>
     <!-- /basic datatable -->
 </div>
+
+<!-- Danger modal -->
+<div id="modal-delete" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Delete</h6>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure want to delete?</p>
+                <form id="deleteForm" action="@Url.Action("Delete", "Users", new { Area = "Admin" })" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="deleteId" value="" name="id" />
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                <button type="button" id="deleteButton" class="btn bg-danger">Yes, Delete!</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /default modal -->
 
 @section Scripts {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
@@ -50,9 +76,22 @@
     <script>
         $(function () {
             var url = '@Url.Action("GetUsers", "Users", new { Area = "Admin" })';
-            loadDatatable(url, url);
+            var editUrl = '@Url.Action("Edit", "Users", new { Area = "Admin" })';
+            loadDatatable(url, editUrl);
 
-            
+            $('#user-table').on('click', '.show-bs-modal', function (event) {
+                var id = $(this).data("id");
+                var modal = $("#modal-delete");
+                modal.find('.modal-body p').text('Are you sure want to delete this record?')
+                //$("#deleteForm").attr("action", "/admin/category/delete/" + id );
+                $("#deleteId").val(id);
+                modal.modal('show');
+            });
+
+            $("#deleteButton").click(function () {
+                $("#deleteForm").submit();
+            });
+
         });
     </script>
 }

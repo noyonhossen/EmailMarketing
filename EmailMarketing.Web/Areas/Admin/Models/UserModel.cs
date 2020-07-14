@@ -13,7 +13,10 @@ namespace EmailMarketing.Web.Areas.Admin.Models
     public class UserModel :AdminBaseModel
     {
         private readonly ApplicationUserManager _userManager;
+        public UserModel()
+        {
 
+        }
         public UserModel(ApplicationUserManager userManager)
         {
             _userManager = userManager;
@@ -21,9 +24,9 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         public async Task<object> GetAllAsync(DataTablesAjaxRequestModel tableModel)
         {
             var query = _userManager.Users.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).AsQueryable();
-            var result = query.Where(x => !x.IsDeleted &&
-                x.Status != EnumApplicationUserStatus.SuperAdmin &&
-                x.UserRoles.Any(ur => ur.Role.Name == ConstantsValue.UserRoleName.Member)).ToList();
+            //var result = query.Where(x => !x.IsDeleted &&
+            //    x.Status != EnumApplicationUserStatus.SuperAdmin &&
+            //    x.UserRoles.Any(ur => ur.Role.Name == ConstantsValue.UserRoleName.Member)).ToList();
 
 
             //var result = await _userService.GetAllAsync(
@@ -56,13 +59,18 @@ namespace EmailMarketing.Web.Areas.Admin.Models
                                     item.UserName,
                                     item.Email,
                                     item.EmailConfirmed.ToString(),
-                                    item.PhoneNumber
+                                    item.Id.ToString()
                         }
                         ).ToArray()
 
             };
         }
+        public async Task<string> DeleteAsync(Guid id)
+        {
+            var result = await _userManager.FindByIdAsync(id.ToString());
+            var user = await _userManager.DeleteAsync(result);
+            return result.UserName;
+        }
 
-        
     }
 }
