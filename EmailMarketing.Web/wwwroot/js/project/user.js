@@ -1,5 +1,5 @@
 ﻿
-function loadDatatable(url, editUrl) {
+function loadDatatable(url, editUrl, userInformationUrl) {
 
     if (!$().DataTable) {
         console.warn('Warning - datatables.min.js is not loaded.');
@@ -59,7 +59,15 @@ function loadDatatable(url, editUrl) {
                     var deleteButton = '<a class="text-danger show-bs-modal" data-id="' + data + '" href="#" title="Delete">' +
                         '<i class="icon-trash"></i></a>';
 
-                    return editButton + ' ' + deleteButton;
+                    var blockButton = '<a class="text-primary show-bs-modal" data-id="' + data + '" href="#" title="Block/Unblock">' +
+                        '<i class="icon-user-block"></i></a>';
+
+                    var resetPasswordButton = '<a class="text-danger show-bs-modal" data-id="' + data + '" href="#" title="Reset password">' +
+                        '<i class="icon-key"></i></a>';
+                    var userInfoButton = '<a class="text-info" href="' + userInformationUrl + '/' + data + '" title="User Information">' +
+                        '<i class="icon-info22"></i></a>';
+
+                    return editButton + ' ' + deleteButton + ' ' + blockButton + ' ' + resetPasswordButton + ' ' + userInfoButton;
                 }
             }
         ]

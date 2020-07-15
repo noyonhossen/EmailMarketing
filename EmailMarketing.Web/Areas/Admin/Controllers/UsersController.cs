@@ -43,14 +43,20 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             await model.LoadByIdAsync(id);
             return View(model);
         }
+        public async Task<IActionResult> UserInformation(Guid id)
+        {
+            var model = new UserInformationModel();
+            await model.LoadByIdAsync(id);
+            return View(model);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
             [Bind(nameof(EditUserModel.Id),
             nameof(EditUserModel.UserName),
-            nameof(EditUserModel.Email),
-            nameof(EditUserModel.EmailConfirmed))] EditUserModel model)
+            nameof(EditUserModel.Email)
+            )] EditUserModel model)
         {
             if (ModelState.IsValid)
             {
@@ -81,12 +87,12 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                 try
                 {
                     var title = await model.DeleteAsync(id);
-                    model.Response = new ResponseModel($"Expense {title} successfully deleted.", ResponseType.Success);
+                    model.Response = new ResponseModel($"User {title} successfully deleted.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel("Expense delete failured.", ResponseType.Failure);
+                    model.Response = new ResponseModel("User delete failured.", ResponseType.Failure);
                 }
             }
             return RedirectToAction("Index");

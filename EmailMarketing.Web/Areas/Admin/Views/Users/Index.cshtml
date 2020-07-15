@@ -77,7 +77,8 @@
         $(function () {
             var url = '@Url.Action("GetUsers", "Users", new { Area = "Admin" })';
             var editUrl = '@Url.Action("Edit", "Users", new { Area = "Admin" })';
-            loadDatatable(url, editUrl);
+            var userInformationUrl = '@Url.Action("UserInformation", "Users", new { Area = "Admin" })';
+            loadDatatable(url, editUrl, userInformationUrl);
 
             $('#user-table').on('click', '.show-bs-modal', function (event) {
                 var id = $(this).data("id");

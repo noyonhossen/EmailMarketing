@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Web.Core
 {
-    public class UserDefaultPassword
+    public class AppSettings
     {
         public string DefaultPassword { get; set; }
     }

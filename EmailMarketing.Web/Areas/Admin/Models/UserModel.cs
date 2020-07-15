@@ -15,22 +15,22 @@ namespace EmailMarketing.Web.Areas.Admin.Models
     public class UserModel :AdminBaseModel
     {
         private readonly ApplicationUserManager _userManager;
-        private readonly UserDefaultPassword _smtpSettings;
+        private readonly AppSettings _userDefaultPassword;
 
         public UserModel()
         {
 
         }
    
-        public UserModel(ApplicationUserManager userManager, IOptions<UserDefaultPassword> smtpSettings)
+        public UserModel(ApplicationUserManager userManager, IOptions<AppSettings> userDefaultPassword)
         {
             _userManager = userManager;
-            _smtpSettings = smtpSettings.Value;
+            _userDefaultPassword = userDefaultPassword.Value;
         }
         public async Task<object> GetAllAsync(DataTablesAjaxRequestModel tableModel)
         {
             var query =  _userManager.Users.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).AsQueryable();
-            var result = query.Where(x => !x.IsDeleted &&
+            var users = query.Where(x => !x.IsDeleted &&
                 x.Status != EnumApplicationUserStatus.SuperAdmin &&
                 x.UserRoles.Any(ur => ur.Role.Name == ConstantsValue.UserRoleName.Member)).ToList();
 
@@ -57,15 +57,15 @@ namespace EmailMarketing.Web.Areas.Admin.Models
             //};
             return new
             {
-                recordsTotal = 5,
-                recordsFiltered = 10,
-                data = (from item in result.ToList()
+                recordsTotal = query.Count(),
+                recordsFiltered = users.Count(),
+                data = (from item in users.ToList()
                         select new string[]
                         {
                                     item.UserName,
                                     item.Email,
-                                    //item.EmailConfirmed.ToString(),
-                                    _smtpSettings.DefaultPassword,
+                                    item.EmailConfirmed.ToString(),
+                                    //_smtpSettings.DefaultPassword,
                                     item.Id.ToString()
                         }
                         ).ToArray()
@@ -74,9 +74,9 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         }
         public async Task<string> DeleteAsync(Guid id)
         {
-            var result = await _userManager.FindByIdAsync(id.ToString());
-            var user = await _userManager.DeleteAsync(result);
-            return result.UserName;
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            var result = await _userManager.DeleteAsync(user);
+            return user.UserName;
         }
 
     }

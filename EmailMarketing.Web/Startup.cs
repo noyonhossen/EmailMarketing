@@ -94,7 +94,7 @@ namespace EmailMarketing.Web
                 options.User.RequireUniqueEmail = false;
             });
 
-            services.Configure<EmailMarketing.Web.Core.UserDefaultPassword>(Configuration.GetSection("UserDefaultPassword"));
+            services.Configure<EmailMarketing.Web.Core.AppSettings>(Configuration.GetSection("AppSettings"));
 
             services.ConfigureApplicationCookie(options =>
             {
