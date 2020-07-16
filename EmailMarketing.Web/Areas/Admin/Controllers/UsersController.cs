@@ -97,5 +97,47 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BlockUser(Guid id)
+        {
+            if (ModelState.IsValid)
+            {
+                var model = new EditUserModel();
+                try
+                {
+                    var title = await model.BlockUser(id);
+                    model.Response = new ResponseModel($"User {title} successfully blocked.", ResponseType.Success);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    model.Response = new ResponseModel("User delete failured.", ResponseType.Failure);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(Guid id)
+        {
+            if (ModelState.IsValid)
+            {
+                var model = new EditUserModel();
+                try
+                {
+                    var title = await model.UpdatePasswordHash(id);
+                    model.Response = new ResponseModel($"User {title} Password Reset Successfully.", ResponseType.Success);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    model.Response = new ResponseModel("Password Reset failured.", ResponseType.Failure);
+                }
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

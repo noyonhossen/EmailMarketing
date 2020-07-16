@@ -4,6 +4,8 @@ using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Enums;
 using EmailMarketing.Membership.Entities;
 using EmailMarketing.Membership.Services;
+using EmailMarketing.Web.Core;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,55 +20,48 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         public string Email { get; set; }
 
         private readonly ApplicationUserManager _userManager;
+        private readonly AppSettings _userDefaultPassword;
 
         public EditUserModel()
         {
             _userManager = Startup.AutofacContainer.Resolve<ApplicationUserManager>();
         }
-        public EditUserModel(ApplicationUserManager userManager)
+        public EditUserModel(ApplicationUserManager userManager, IOptions<AppSettings> userDefaultPassword)
         {
             _userManager = userManager;
+            _userDefaultPassword = userDefaultPassword.Value;
         }
-
-        //public IList<ExpenseTypeSelect> ExpenseTypeSelectList => Enum.GetValues(typeof(ExpenseType))
-        //                                                            .Cast<ExpenseType>()
-        //                                                            .Select(p => new ExpenseTypeSelect { Value = (int)p, Text = p.ToString() })
-        //                                                            .ToList();
 
         public async Task LoadByIdAsync(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
-            //var result = await _expenseService.GetByIdAsync(id);
             this.Id = user.Id;
             this.UserName = user.UserName;
             this.Email = user.Email;
-            //this.EmailConfirmed = user.EmailConfirmed.ToString();
-            //this.PhoneNumber = result.PhoneNumber;
+
         }
 
         public async Task UpdateAsync()
         {
-            //var user = new ApplicationUser
-            //{
-            //    Id = this.Id,
-            //    UserName = this.UserName,
-            //    Email = this.Email,
-            //    //EmailConfirmed = bool.Parse(this.EmailConfirmed)
-
-            //};
             var user = await _userManager.FindByIdAsync(this.Id.ToString());
             user.UserName = this.UserName;
             user.Email = this.Email;
             await _userManager.UpdateAsync(user);
-            //var entity = new Expense
-            //{
-            //    Id = this.Id,
-            //    UserName = this.UserName,
-            //    Email = this.Email,
-            //    EmailConfirmed = this.EmailConfirmed,
-            //    PhoneNumber = this.PhoneNumber
-            //};
-            //await _expenseService.UpdateAsync(entity);
+        }
+        public async Task<string> UpdatePasswordHash(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            var newPassword = _userManager.PasswordHasher.HashPassword(user, _userDefaultPassword.DefaultPassword);
+            user.PasswordHash = newPassword;
+            await _userManager.UpdateAsync(user);
+            return user.UserName;
+        }
+        public async Task<string> BlockUser(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            user.IsBlocked = true;
+            await _userManager.UpdateAsync(user);
+            return user.UserName;
         }
     }
 }

@@ -1,8 +1,11 @@
-﻿using EmailMarketing.Framework.Services;
+﻿using Autofac;
+using EmailMarketing.Framework.Services;
 using EmailMarketing.Membership.Constants;
+using EmailMarketing.Membership.Entities;
 using EmailMarketing.Membership.Enums;
 using EmailMarketing.Membership.Services;
 using EmailMarketing.Web.Core;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
@@ -15,17 +18,16 @@ namespace EmailMarketing.Web.Areas.Admin.Models
     public class UserModel :AdminBaseModel
     {
         private readonly ApplicationUserManager _userManager;
-        private readonly AppSettings _userDefaultPassword;
 
         public UserModel()
         {
-
+            _userManager = Startup.AutofacContainer.Resolve<ApplicationUserManager>();
         }
    
-        public UserModel(ApplicationUserManager userManager, IOptions<AppSettings> userDefaultPassword)
+        public UserModel(ApplicationUserManager userManager)
         {
             _userManager = userManager;
-            _userDefaultPassword = userDefaultPassword.Value;
+            
         }
         public async Task<object> GetAllAsync(DataTablesAjaxRequestModel tableModel)
         {
@@ -34,27 +36,6 @@ namespace EmailMarketing.Web.Areas.Admin.Models
                 x.Status != EnumApplicationUserStatus.SuperAdmin &&
                 x.UserRoles.Any(ur => ur.Role.Name == ConstantsValue.UserRoleName.Member)).ToList();
 
-
-            //var result = await _userService.GetAllAsync(
-            //    tableModel.SearchText,
-            //    tableModel.GetSortText(new string[] { "UserName", "Email", "EmailConfirmed", "PhoneNumber" }),
-            //    tableModel.PageIndex, tableModel.PageSize);
-
-            //return new
-            //{
-            //    recordsTotal = result.Total,
-            //    recordsFiltered = result.TotalFilter,
-            //    data = (from item in result.Items
-            //            select new string[]
-            //            {
-            //                        item.UserName,
-            //                        item.Email,
-            //                        item.EmailConfirmed.ToString(),
-            //                        item.PhoneNumber
-            //            }
-            //            ).ToArray()
-
-            //};
             return new
             {
                 recordsTotal = query.Count(),
@@ -65,7 +46,6 @@ namespace EmailMarketing.Web.Areas.Admin.Models
                                     item.UserName,
                                     item.Email,
                                     item.EmailConfirmed.ToString(),
-                                    //_smtpSettings.DefaultPassword,
                                     item.Id.ToString()
                         }
                         ).ToArray()
@@ -78,6 +58,7 @@ namespace EmailMarketing.Web.Areas.Admin.Models
             var result = await _userManager.DeleteAsync(user);
             return user.UserName;
         }
+        
 
     }
 }

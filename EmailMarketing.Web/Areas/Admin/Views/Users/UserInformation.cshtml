@@ -3,6 +3,48 @@
     ViewData["Title"] = "UserInformation";
 }
 
-    <h1>@Model.UserName</h1>
-    <h1>@Model.Email</h1>
+<!-- Page header -->
+<div class="page-header">
+    <div class="page-header-content header-elements-md-inline">
+        <div class="page-title d-flex">
+            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Admin" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
 
+        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
+            <a asp-controller="Users" asp-action="Index" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">User List</span></a>
+        </div>
+    </div>
+</div>
+<!-- /page header -->
+<!-- Content area -->
+<div class="content pt-0">
+
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">User Information</h5>
+        </div>
+
+        <div class="card-body">
+            <table class="table w-50">
+                <tr>
+                    <td>User Name : </td>
+                    <td>@Model.UserName</td>
+                </tr>
+                <tr>
+                    <td>Email : </td>
+                    <td>@Model.Email</td>
+                </tr>
+                <tr>
+                    <td class="pl-3">
+                        <a asp-controller="Users" asp-action="Index" asp-area="Admin" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+            
+        </div>
+    </div>
+
+</div>
+<!-- /Content area -->
