@@ -47,17 +47,10 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group row">
-                                        <label class="col-form-label col-lg-4 required" asp-for="Name"></label>
+                                        <label class="col-form-label col-lg-4 required" asp-for="FullName"></label>
                                         <div class="col-lg-8">
-                                            <input type="text" class="form-control" asp-for="Name">
-                                            <span asp-validation-for="Name" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-form-label col-lg-4 required" asp-for="Password"></label>
-                                        <div class="col-lg-8">
-                                            <input type="text" class="form-control" asp-for="Password">
-                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                            <input type="text" class="form-control" asp-for="FullName">
+                                            <span asp-validation-for="FullName" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -67,6 +60,7 @@
                                             <span asp-validation-for="UserName" class="text-danger"></span>
                                         </div>
                                     </div>
+                                   
                                     <div class="form-group row">
                                         <label class="col-form-label col-lg-4 required" asp-for="Email"></label>
                                         <div class="col-lg-8">
@@ -75,12 +69,13 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-form-label col-lg-4 required" asp-for="ImageUrl"></label>
+                                        <label class="col-form-label col-lg-4 required" asp-for="PhoneNumber"></label>
                                         <div class="col-lg-8">
-                                            <input type="text" class="form-control" asp-for="ImageUrl">
-                                            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                                            <input type="text" class="form-control" asp-for="PhoneNumber">
+                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                         </div>
                                     </div>
+                                    
 
                                 </div>
                             </div>

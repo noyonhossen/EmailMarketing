@@ -12,9 +12,9 @@
             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
         </div>
 
-        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="AdminUsers" asp-action="Add" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-plus-circle2 mr-2"></i> <span class="font-weight-semibold">New Expense</span></a>
-        </div>
+        @*<div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
+                <a asp-controller="AdminUsers" asp-action="Add" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-plus-circle2 mr-2"></i> <span class="font-weight-semibold">New Expense</span></a>
+            </div>*@
     </div>
 </div>
 <!-- /page header -->
@@ -41,7 +41,7 @@
         <table class="table" id="adminusers-table">
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>FullName</th>
                     <th>User Name</th>
                     <th>Email</th>
                     <th>Phone Number</th>
@@ -63,7 +63,7 @@
 
             <div class="modal-body">
                 <p>Are you sure want to delete?</p>
-                <form id="deleteForm" action="@Url.Action("Delete", "Expenses", new { Area = "Admin" })" method="post">
+                <form id="deleteForm" action="@Url.Action("Delete", "AdminUsers", new { Area = "Admin" })" method="post">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="deleteId" value="" name="id" />
                 </form>
@@ -80,15 +80,19 @@
 @section Scripts {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
     <partial name="~/Views/Bundle/_DatatableScriptsPartial.cshtml" />
-    <script src="~/js/project/adminusers.js"></script>
     <script src="~/js/ajax-call.js"></script>
+    <script src="~/theme/global_assets/js/main/jquery.min.js"></script>
+    <script src="~/theme/global_assets/js/main/bootstrap.bundle.min.js"></script>
+    <script src="~/theme/global_assets/js/plugins/tables/datatables/datatables.min.js"></script>
+    <script src="~/js/project/adminusers.js"></script>
+
     <script>
         $(function () {
             var url = '@Url.Action("GetAdminUsers", "AdminUsers", new { Area = "Admin" })';
             var editUrl = '@Url.Action("Edit", "AdminUsers", new { Area = "Admin" })';
             loadDatatable(url, editUrl);
 
-            $('#expense-table').on('click', '.show-bs-modal', function (event) {
+            $('#AspNetUsers-table').on('click', '.show-bs-modal', function (event) {
                 var id = $(this).data("id");
                 var modal = $("#modal-delete");
                 modal.find('.modal-body p').text('Are you sure want to delete this record?')

@@ -1,4 +1,5 @@
-﻿using EmailMarketing.Membership.Constants;
+﻿using Autofac;
+using EmailMarketing.Membership.Constants;
 using EmailMarketing.Membership.Enums;
 using EmailMarketing.Membership.Services;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,11 @@ namespace EmailMarketing.Web.Areas.Admin.Models
     public class AdminUsersModel : AdminBaseModel
     {
             private readonly ApplicationUserManager _userManager;
-
+           public AdminUsersModel()
+           {
+            _userManager = Startup.AutofacContainer.Resolve<ApplicationUserManager>();
+           }
+        
             public AdminUsersModel(ApplicationUserManager userManager)
             {
                 _userManager = userManager;
@@ -31,16 +36,21 @@ namespace EmailMarketing.Web.Areas.Admin.Models
                     data = (from item in query.ToList()
                             select new string[]
                             {
+                                    item.FullName,
                                     item.UserName,
                                     item.Email,
-                                    item.EmailConfirmed.ToString(),
-                                    item.PhoneNumber
+                                    item.PhoneNumber,
+                                    item.Id.ToString()
                             }
                             ).ToArray()
 
                 };
             }
 
-
+        internal void DeleteAdmin(Guid id)
+        {
+            var deladmin = _userManager.FindByIdAsync(id.ToString());
+            _userManager.DeleteAsync(deladmin);
         }
+    }
     }

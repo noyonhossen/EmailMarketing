@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Autofac;
+using EmailMarketing.Membership.Entities;
+using EmailMarketing.Membership.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,13 +11,9 @@ namespace EmailMarketing.Web.Areas.Admin.Models
 {
     public class EditAdminUsersModel : AdminBaseModel
     {
-         
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         [Required]
-        public string Name { get; set; }
-        [Required]
-        public string Password { get; set; }
-        [Required]
+        public string FullName { get; set; }
         [Display(Name = "User Name")]
         public string UserName { get; set; }
         [Required]
@@ -22,9 +21,42 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         [Required]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
-        [Required]
-        [Display(Name = "Image Url")]
-        public string ImageUrl { get; set; }
+     
 
+        private readonly ApplicationUserManager _userManager;
+        public EditAdminUsersModel()
+        {
+            _userManager = Startup.AutofacContainer.Resolve<ApplicationUserManager>();
+        }
+        public EditAdminUsersModel(ApplicationUserManager userManager)
+        {
+            _userManager = userManager;
+        }
+
+        public async Task LoadByIdAsync(Guid Id)
+        {
+            var result = await _userManager.FindByIdAsync(Id.ToString());
+
+            this.Id = result.Id;
+            this.FullName = result.FullName;
+            this.UserName = result.UserName;
+            this.Email = result.Email;
+            this.PhoneNumber = result.PhoneNumber;
+
+        }
+        public async Task UpdateAdmin()
+        {
+            var adminuser = new ApplicationUser
+            { 
+                Id =this.Id,
+                FullName = this.FullName,
+                UserName = this.UserName,
+                Email = this.Email,
+                PhoneNumber = this.PhoneNumber
+
+            };
+            await _userManager.UpdateAsync(adminuser);
+
+        }
     }
 }
