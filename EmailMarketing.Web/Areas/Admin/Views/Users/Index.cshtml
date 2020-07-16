@@ -77,13 +77,13 @@
                 <p>Are you sure want to Block User?</p>
                 <form id="blockUserdForm" action="@Url.Action("BlockUser", "Users", new { Area = "Admin" })" method="post">
                     @Html.AntiForgeryToken()
-                    <input type="hidden" id="blockId" value="" name="id2" />
+                    <input type="hidden" id="blockId" value="" name="id" />
                 </form>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                <button type="button" id="blockButton" class="btn bg-danger">Yes, Delete!</button>
+                <button type="button" id="blockButton" class="btn bg-danger">Yes, Block!</button>
             </div>
         </div>
     </div>
@@ -114,7 +114,7 @@
                 var modal = $("#modal-delete");
                 modal.find('.modal-body p').text('Are you sure want to delete this record?')
                 //$("#deleteForm").attr("action", "/admin/category/delete/" + id );
-                $("#resetId").val(id);
+                $("#deleteId").val(id);
                 modal.modal('show');
             });
 
@@ -124,7 +124,7 @@
 
             //Reset Password
             $('#user-table').on('click', '.show-bs-modal', function (event) {
-                var id = $(this).data("id2");
+                var id = $(this).data("id");
                 var modal = $("#modal-blockUser");
                 modal.find('.modal-body p').text('Are you sure want to Block this User?')
                 //$("#deleteForm").attr("action", "/admin/category/delete/" + id );

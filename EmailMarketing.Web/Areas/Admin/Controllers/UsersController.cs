@@ -113,7 +113,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel("User delete failured.", ResponseType.Failure);
+                    model.Response = new ResponseModel("User block failured.", ResponseType.Failure);
                 }
             }
             return RedirectToAction("Index");
