@@ -25,11 +25,17 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         public EditUserModel()
         {
             _userManager = Startup.AutofacContainer.Resolve<ApplicationUserManager>();
+            _userDefaultPassword = Startup.AutofacContainer.Resolve<IOptions<AppSettings>>().Value;
         }
-        public EditUserModel(ApplicationUserManager userManager, IOptions<AppSettings> userDefaultPassword)
+        //public EditUserModel(IOptions<AppSettings> userDefaultPassword)
+        //{
+        //    _userManager = Startup.AutofacContainer.Resolve<ApplicationUserManager>();
+        //    _userDefaultPassword = userDefaultPassword.Value;
+        //}
+        public EditUserModel(ApplicationUserManager userManager)
         {
             _userManager = userManager;
-            _userDefaultPassword = userDefaultPassword.Value;
+            
         }
 
         public async Task LoadByIdAsync(Guid id)

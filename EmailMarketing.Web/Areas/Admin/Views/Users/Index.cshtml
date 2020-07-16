@@ -64,7 +64,7 @@
     </div>
 </div>
 <!-- /default modal -->
-<!-- Reset Password modal -->
+<!-- Block User modal -->
 <div id="modal-blockUser" class="modal fade" tabindex="-1">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -84,6 +84,31 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
                 <button type="button" id="blockButton" class="btn bg-danger">Yes, Block!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reset Password modal -->
+<div id="modal-resetUserPassword" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Reset User Password</h6>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure want to Reset User Password?</p>
+                <form id="resetUserdPasswordForm" action="@Url.Action("ResetPassword", "Users", new { Area = "Admin" })" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="resetId" value="" name="id" />
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                <button type="button" id="resetButton" class="btn bg-danger">Yes, Reset!</button>
             </div>
         </div>
     </div>
@@ -122,7 +147,7 @@
                 $("#deleteForm").submit();
             });
 
-            //Reset Password
+            //Block User
             $('#user-table').on('click', '.show-bs-modal', function (event) {
                 var id = $(this).data("id");
                 var modal = $("#modal-blockUser");
@@ -134,6 +159,20 @@
 
             $("#blockButton").click(function () {
                 $("#blockUserdForm").submit();
+            });
+
+            //Reset Password
+            $('#user-table').on('click', '.show-bs-modal', function (event) {
+                var id = $(this).data("id");
+                var modal = $("#modal-resetUserPassword");
+                modal.find('.modal-body p').text('Are you sure want to Reset this User Password?')
+                //$("#deleteForm").attr("action", "/admin/category/delete/" + id );
+                $("#resetId").val(id);
+                modal.modal('show');
+            });
+
+            $("#resetButton").click(function () {
+                $("#resetUserdPasswordForm").submit();
             });
 
         });
