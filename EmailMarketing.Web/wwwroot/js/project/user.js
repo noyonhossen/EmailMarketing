@@ -11,7 +11,7 @@ function loadDatatable(url, editUrl, userInformationUrl) {
         columnDefs: [{
             orderable: false,
             width: 100,
-            targets: [4]
+            targets: [7]
         }],
         dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
         language: {
@@ -48,6 +48,27 @@ function loadDatatable(url, editUrl, userInformationUrl) {
             },
             {
                 "targets": [3],
+                'sortable': true,
+                'searchable': false,
+                "orderData": [3]
+            }
+            ,
+            {
+                "targets": [4],
+                'sortable': true,
+                'searchable': false,
+                "orderData": [4]
+            }
+            ,
+            {
+                "targets": [5],
+                'sortable': true,
+                'searchable': false,
+                "orderData": [5]
+            }
+            ,
+            {
+                "targets": [6],
                 'sortable': false,
                 'searchable': false,
                 "width": "15%",

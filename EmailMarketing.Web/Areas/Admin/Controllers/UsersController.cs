@@ -104,7 +104,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var model = new EditUserModel();
+                var model = new UserModel();
                 try
                 {
                     var title = await model.BlockUser(id);
@@ -125,7 +125,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var model = new EditUserModel();
+                var model = new UserModel();
                 try
                 {
                     var title = await model.UpdatePasswordHash(id);

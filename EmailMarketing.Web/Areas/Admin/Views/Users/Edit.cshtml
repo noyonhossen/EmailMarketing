@@ -45,12 +45,19 @@
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6 border-right p-2">
                                     <div class="form-group row">
                                         <label class="col-form-label col-lg-4 required" asp-for="UserName"></label>
                                         <div class="col-lg-8">
                                             <input type="text" class="form-control" asp-for="UserName">
                                             <span asp-validation-for="UserName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-lg-4 required" asp-for="FullName"></label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" asp-for="FullName">
+                                            <span asp-validation-for="FullName" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -60,11 +67,84 @@
                                             <span asp-validation-for="Email" class="text-danger"></span>
                                         </div>
                                     </div>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-lg-4 required" asp-for="EmailConfirmed"></label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" asp-for="EmailConfirmed">
+                                            <span asp-validation-for="EmailConfirmed" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-lg-4 required" asp-for="PhoneNumber"></label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" asp-for="PhoneNumber">
+                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-lg-4 required" asp-for="PhoneNumberConfirmed"></label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" asp-for="PhoneNumberConfirmed">
+                                            <span asp-validation-for="PhoneNumberConfirmed" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-lg-4 required" asp-for="Address"></label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" asp-for="Address">
+                                            <span asp-validation-for="Address" class="text-danger"></span>
+                                        </div>
+                                    </div>
                                 </div>
+                                <div class="col-md-6 border-left p-2">
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-lg-4 required" asp-for="Gender"></label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" asp-for="Gender">
+                                            <span asp-validation-for="Gender" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-lg-4 required" asp-for="ImageUrl"></label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" asp-for="ImageUrl">
+                                            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-lg-4 required" asp-for="Status"></label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" asp-for="Status">
+                                            <span asp-validation-for="Status" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-lg-4 required" asp-for="IsActive"></label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" asp-for="IsActive">
+                                            <span asp-validation-for="IsActive" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-lg-4 required" asp-for="IsDeleted"></label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" asp-for="IsDeleted">
+                                            <span asp-validation-for="IsDeleted" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-lg-4 required" asp-for="IsBlocked"></label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" asp-for="IsBlocked">
+                                            <span asp-validation-for="IsBlocked" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                    
                             </div>
 
                         </fieldset>
-
                     </div>
                     <div class="">
                         <div class="d-flex justify-content-end">

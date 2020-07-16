@@ -28,7 +28,10 @@
                 <tr>
                     <th>UserName</th>
                     <th>Email</th>
-                    <th>EmailConfirmed</th>
+                    <th>Email Confirmed</th>
+                    <th>Phone Number</th>
+                    <th>Phone Number Confirmed</th>
+                    <th>IsBlocked</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -138,7 +141,6 @@
                 var id = $(this).data("id");
                 var modal = $("#modal-delete");
                 modal.find('.modal-body p').text('Are you sure want to delete this record?')
-                //$("#deleteForm").attr("action", "/admin/category/delete/" + id );
                 $("#deleteId").val(id);
                 modal.modal('show');
             });
@@ -152,7 +154,6 @@
                 var id = $(this).data("id");
                 var modal = $("#modal-blockUser");
                 modal.find('.modal-body p').text('Are you sure want to Block this User?')
-                //$("#deleteForm").attr("action", "/admin/category/delete/" + id );
                 $("#blockId").val(id);
                 modal.modal('show');
             });
@@ -166,7 +167,6 @@
                 var id = $(this).data("id");
                 var modal = $("#modal-resetUserPassword");
                 modal.find('.modal-body p').text('Are you sure want to Reset this User Password?')
-                //$("#deleteForm").attr("action", "/admin/category/delete/" + id );
                 $("#resetId").val(id);
                 modal.modal('show');
             });
