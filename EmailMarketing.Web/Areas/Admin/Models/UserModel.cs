@@ -48,10 +48,10 @@ namespace EmailMarketing.Web.Areas.Admin.Models
                         select new string[]
                         {
                                     item.UserName,
+                                    item.FullName,
                                     item.Email,
                                     item.EmailConfirmed.ToString(),
                                     item.PhoneNumber,
-                                    item.PhoneNumberConfirmed.ToString(),
                                     item.IsBlocked.ToString(),
                                     item.Id.ToString()
                         }
