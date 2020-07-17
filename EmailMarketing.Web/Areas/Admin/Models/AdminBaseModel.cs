@@ -75,9 +75,7 @@ namespace EmailMarketing.Web.Areas.Admin.Models
                             Children = new List<MenuChildItem>
                             {
                                 new MenuChildItem () { Controller = "Users", Action = "Index", Area="Admin", Title = "View Users",
-                                    Icon = "icon-home4", IsActive = false },
-                                new MenuChildItem () { Controller = "Users", Action = "Add", Area="Admin", Title = "Add User",
-                                    Icon = "icon-home4", IsActive = false },
+                                    Icon = "icon-home4", IsActive = false }
                             }
                         }
 
