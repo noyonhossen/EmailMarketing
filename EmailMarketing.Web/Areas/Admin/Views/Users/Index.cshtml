@@ -42,7 +42,7 @@
     <!-- /basic datatable -->
 </div>
 
-<!-- Danger modal -->
+<!-- Delete modal -->
 <div id="modal-delete" class="modal fade" tabindex="-1">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -92,6 +92,8 @@
     </div>
 </div>
 
+
+
 <!-- Reset Password modal -->
 <div id="modal-resetUserPassword" class="modal fade" tabindex="-1">
     <div class="modal-dialog modal-sm">
@@ -135,45 +137,95 @@
             var userInformationUrl = '@Url.Action("UserInformation", "Users", new { Area = "Admin" })';
             loadDatatable(url, editUrl, userInformationUrl);
 
-
-            //Delete User
-            $('#user-table').on('click', '.show-bs-modal', function (event) {
+            //Delete
+            $('#modal-delete').on('show.bs.modal', function () {
                 var id = $(this).data("id");
                 var modal = $("#modal-delete");
                 modal.find('.modal-body p').text('Are you sure want to delete this record?')
                 $("#deleteId").val(id);
                 modal.modal('show');
-            });
-
+            })
             $("#deleteButton").click(function () {
                 $("#deleteForm").submit();
             });
 
-            //Block User
-            $('#user-table').on('click', '.show-bs-modal', function (event) {
+
+            //Block
+            $('#modal-blockUser').on('show.bs.modal', function () {
                 var id = $(this).data("id");
                 var modal = $("#modal-blockUser");
                 modal.find('.modal-body p').text('Are you sure want to Block this User?')
                 $("#blockId").val(id);
                 modal.modal('show');
-            });
-
+            })
             $("#blockButton").click(function () {
                 $("#blockUserdForm").submit();
             });
+  
 
-            //Reset Password
-            $('#user-table').on('click', '.show-bs-modal', function (event) {
+            //Reset
+            $('#modal-resetUserPassword').on('show.bs.modal', function () {
                 var id = $(this).data("id");
                 var modal = $("#modal-resetUserPassword");
                 modal.find('.modal-body p').text('Are you sure want to Reset this User Password?')
                 $("#resetId").val(id);
                 modal.modal('show');
-            });
+            })
 
             $("#resetButton").click(function () {
                 $("#resetUserdPasswordForm").submit();
             });
+
+
+            //$('.show-bs-modal-delete').on('click', function () {
+
+            //    var id = $(this).data("id");
+            //    var modal = $("#modal-delete");
+            //    modal.find('.modal-body p').text('Are you sure want to delete this record?')
+            //    $("#deleteId").val(id);
+            //    modal.modal('show');
+            //});
+
+            //////Delete User
+            ////$('#user-table').on('click', '.show-bs-modal-delete', function (event) {
+
+            ////    var id = $(this).data("id");
+            ////    var modal = $("#modal-delete");
+            ////    modal.find('.modal-body p').text('Are you sure want to delete this record?')
+            ////    $("#deleteId").val(id);
+            ////    modal.modal('show');
+            ////});
+
+            //$("#deleteButton").click(function () {
+            //    $("#deleteForm").submit();
+            //});
+
+            ////Block User
+            //$('#user-table').on('click', '.show-bs-modal-block', function (event) {
+
+            //    var id = $(this).data("id");
+            //    var modal = $("#modal-blockUser");
+            //    modal.find('.modal-body p').text('Are you sure want to Block this User?')
+            //    $("#blockId").val(id);
+            //    modal.modal('show');
+            //});
+
+            //$("#blockButton").click(function () {
+            //    $("#blockUserdForm").submit();
+            //});
+
+            ////Reset Password
+            //$('#user-table').on('click', '.show-bs-modal-reset', function (event) {
+            //    var id = $(this).data("id");
+            //    var modal = $("#modal-resetUserPassword");
+            //    modal.find('.modal-body p').text('Are you sure want to Reset this User Password?')
+            //    $("#resetId").val(id);
+            //    modal.modal('show');
+            //});
+
+            //$("#resetButton").click(function () {
+            //    $("#resetUserdPasswordForm").submit();
+            //});
 
         });
     </script>

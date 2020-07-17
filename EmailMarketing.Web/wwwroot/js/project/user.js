@@ -77,13 +77,13 @@ function loadDatatable(url, editUrl, userInformationUrl) {
                     var editButton = '<a class="text-primary" href="' + editUrl + '/' + data + '" title="Edit">' +
                         '<i class="icon-pencil7"></i></a>';
 
-                    var deleteButton = '<a class="text-danger show-bs-modal" data-id="' + data + '" href="#" title="Delete">' +
+                    var deleteButton = '<a class="text-danger" data-toggle="modal" data-target="#modal-delete" data-id="' + data + '" href="#" title="Delete">' +
                         '<i class="icon-trash"></i></a>';
 
-                    var blockButton = '<a class="text-primary show-bs-modal" data-id="' + data + '" href="#" title="Block/Unblock">' +
+                    var blockButton = '<a class="text-primary" data-toggle="modal" data-target="#modal-blockUser" data-id="' + data + '" href="#" title="Block/Unblock">' +
                         '<i class="icon-user-block"></i></a>';
 
-                    var resetPasswordButton = '<a class="text-danger show-bs-modal" data-id="' + data + '" href="#" title="Reset password">' +
+                    var resetPasswordButton = '<a class="text-danger" data-toggle="modal" data-target="#modal-resetUserPassword" data-id="' + data + '" href="#" title="Reset password">' +
                         '<i class="icon-key"></i></a>';
                     var userInfoButton = '<a class="text-info" href="' + userInformationUrl + '/' + data + '" title="User Information">' +
                         '<i class="icon-info22"></i></a>';
