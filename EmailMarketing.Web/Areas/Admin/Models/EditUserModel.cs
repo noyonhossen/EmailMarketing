@@ -83,7 +83,6 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         {
             var user = await _userManager.FindByIdAsync(this.Id.ToString());
             user.UserName = this.UserName;
-            user.UserName = this.UserName;
             user.Email = this.Email;
             user.EmailConfirmed = this.EmailConfirmed;
             user.PhoneNumber = this.PhoneNumber;

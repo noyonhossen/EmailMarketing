@@ -9,6 +9,7 @@ namespace EmailMarketing.Web.Areas.Admin.Models
 {
     public class UserInformationModel : AdminBaseModel
     {
+        public Guid Id { get; set; }
         public string UserName { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
@@ -48,6 +49,7 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         public async Task LoadByIdAsync(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
+            this.Id = user.Id;
             this.UserName = user.UserName;
             this.Email = user.Email;
             this.EmailConfirmed = user.EmailConfirmed;

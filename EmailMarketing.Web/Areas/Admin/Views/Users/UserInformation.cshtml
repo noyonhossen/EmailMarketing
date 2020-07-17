@@ -22,7 +22,7 @@
 
     <div class="card">
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">User Information</h5>
+            <h5 class="card-title text-primary">User Information</h5>
         </div>
 
         <div class="card-body">
@@ -30,115 +30,115 @@
                 <div class="col-6">
                     <table class="table">
                         <tr>
-                            <td class="col-4 float-left"><h3>User Name: </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.UserName</h3></td>
+                            <td class="col-4 float-left"><h5>User Name: </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.UserName</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>Full Name : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.FullName</h3></td>
+                            <td class="col-4 float-left"><h5>Full Name : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.FullName</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>Email : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.Email</h3></td>
+                            <td class="col-4 float-left"><h5>Email : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.Email</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>Email Confirmed: </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.EmailConfirmed</h3></td>
+                            <td class="col-4 float-left"><h5>Email Confirmed: </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.EmailConfirmed</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>User : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.UserName</h3></td>
+                            <td class="col-4 float-left"><h5>User : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.UserName</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>Phone Number : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.PhoneNumber</h3></td>
+                            <td class="col-4 float-left"><h5>Phone Number : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.PhoneNumber</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>Phone Number Confirmed: </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.PhoneNumberConfirmed</h3></td>
+                            <td class="col-4 float-left"><h5>Phone Number Confirmed: </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.PhoneNumberConfirmed</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>Two Factor Enabled : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.TwoFactorenabled</h3></td>
+                            <td class="col-4 float-left"><h5>Two Factor Enabled : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.TwoFactorenabled</h5></td>
+                        </tr>
+            
+                        <tr>
+                            <td class="col-4 float-left"><h5>Lockout Enabled : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.LockoutEnabled</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>Lockout End : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.LockoutEnd</h3></td>
+                            <td class="col-4 float-left"><h5>Access Failed Count : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.AccessFailedCount</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>Lockout Enabled : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.LockoutEnabled</h3></td>
+                            <td class="col-4 float-left"><h5>Status : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.Status</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>Access Failed Count : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.AccessFailedCount</h3></td>
-                        </tr>
-                        <tr>
-                            <td class="col-4 float-left"><h3>Status : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.Status</h3></td>
-                        </tr>
-                        <tr>
-                            <td class="col-4 float-left"><h3>Image Url : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.ImageUrl</h3></td>
+                            <td class="col-4 float-left"><h5>Image Url : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.ImageUrl</h5></td>
                         </tr>
 
-                        <tr>
-                            <td class="pl-3">
-                                <a asp-controller="Users" asp-action="Index" asp-area="Admin" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
-                            </td>
-                            <td></td>
-                        </tr>
+                        
                     </table>
                 </div>
                 <div class="col-6">
                     <table class="table">
                         <tr>
-                            <td class="col-4 float-left"><h3>Address : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.Address</h3></td>
+                            <td class="col-4 float-left"><h5>Address : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.Address</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>Gender : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.Gender</h3></td>
+                            <td class="col-4 float-left"><h5>Gender : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.Gender</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>Date of Birth : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.DateOfBirth</h3></td>
+                            <td class="col-4 float-left"><h5>Date of Birth : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.DateOfBirth</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>Last Password Change Date : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.LastPassChangeDate</h3></td>
+                            <td class="col-4 float-left"><h5>Last Password Change Date : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.LastPassChangeDate</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>Password Changed Count : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.PasswordChangedCount</h3></td>
+                            <td class="col-4 float-left"><h5>Password Changed Count : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.PasswordChangedCount</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>Created By : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.CreatedBy</h3></td>
+                            <td class="col-4 float-left"><h5>Created By : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.CreatedBy</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>Created : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.Created</h3></td>
+                            <td class="col-4 float-left"><h5>Created : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.Created</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>Last Modified By : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.LastModifiedBy</h3></td>
+                            <td class="col-4 float-left"><h5>Last Modified By : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.LastModifiedBy</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>Last Modified : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.LastModified</h3></td>
+                            <td class="col-4 float-left"><h5>Last Modified : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.LastModified</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>IsActive : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.IsActive</h3></td>
+                            <td class="col-4 float-left"><h5>IsActive : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.IsActive</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>IsDeleted : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.IsDeleted</h3></td>
+                            <td class="col-4 float-left"><h5>IsDeleted : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.IsDeleted</h5></td>
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h3>IsBlocked : </h3></td>
-                            <td class="col-8 float-left"><h3>@Model.IsBlocked</h3></td>
+                            <td class="col-4 float-left"><h5>IsBlocked : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.IsBlocked</h5></td>
+                        </tr>
+                        <tr>
+                            <td class="d-flex justify-content-end">
+                                <a asp-controller="Users" asp-action="Index" asp-area="Admin" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
+                                <a asp-route-id="@Model.Id" asp-controller="Users" asp-action="Edit" asp-area="Admin" class="btn btn-primary"><i class="icon-pencil7"></i> Edit</a>
+                            </td>
+                            <td>
+                            </td>
                         </tr>
                     </table>
                 </div>

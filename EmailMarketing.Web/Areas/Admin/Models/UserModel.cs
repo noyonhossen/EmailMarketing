@@ -70,6 +70,7 @@ namespace EmailMarketing.Web.Areas.Admin.Models
             var user = await _userManager.FindByIdAsync(id.ToString());
             var newPassword = _userManager.PasswordHasher.HashPassword(user, _userDefaultPassword.DefaultPassword);
             user.PasswordHash = newPassword;
+            user.PasswordChangedCount = 0;
             await _userManager.UpdateAsync(user);
             return user.UserName;
         }
