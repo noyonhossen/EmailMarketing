@@ -55,7 +55,12 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(
             [Bind(nameof(EditUserModel.Id),
             nameof(EditUserModel.UserName),
-            nameof(EditUserModel.Email)
+            nameof(EditUserModel.Email),
+            nameof(EditUserModel.Gender),
+            nameof(EditUserModel.Address),
+            nameof(EditUserModel.FullName),
+            nameof(EditUserModel.PhoneNumber),
+            nameof(EditUserModel.ImageUrl)
             )] EditUserModel model)
         {
             if (ModelState.IsValid)

@@ -57,26 +57,10 @@ namespace EmailMarketing.Web.Areas.Admin.Models
             this.Id = user.Id;
             this.UserName = user.UserName;
             this.Email = user.Email;
-            this.EmailConfirmed = user.EmailConfirmed;
             this.PhoneNumber = user.PhoneNumber;
-            this.PhoneNumberConfirmed = user.PhoneNumberConfirmed;
-            this.TwoFactorEnabled = user.TwoFactorEnabled;
-            this.LockoutEnabled = user.LockoutEnabled;
-            this.AccessFailedCount = user.AccessFailedCount;
             this.FullName = user.FullName;
             this.Address = user.Address;
             this.Gender = user.Gender;
-            this.ImageUrl = user.ImageUrl;
-            this.PasswordChangedCount = user.PasswordChangedCount;
-            this.Status = (int)user.Status;
-            this.CreatedBy = user.CreatedBy.ToString();
-            this.Created = user.Created.ToString();
-            this.LastModifiedBy = user.LastModifiedBy.ToString();
-            this.LastModified = user.LastModified.ToString();
-            this.IsActive = user.IsActive;
-            this.IsDeleted = user.IsDeleted;
-            this.IsBlocked = user.IsBlocked;
-
         }
 
         public async Task UpdateAsync()
@@ -84,20 +68,10 @@ namespace EmailMarketing.Web.Areas.Admin.Models
             var user = await _userManager.FindByIdAsync(this.Id.ToString());
             user.UserName = this.UserName;
             user.Email = this.Email;
-            user.EmailConfirmed = this.EmailConfirmed;
             user.PhoneNumber = this.PhoneNumber;
-            user.PhoneNumberConfirmed = this.PhoneNumberConfirmed;
-            user.TwoFactorEnabled = this.TwoFactorEnabled;
-            user.LockoutEnabled = this.LockoutEnabled;
-            user.AccessFailedCount = this.AccessFailedCount;
             user.FullName = this.FullName;
             user.Address = this.Address;
             user.Gender = this.Gender;
-            user.ImageUrl = this.ImageUrl;
-            user.PasswordChangedCount = this.PasswordChangedCount;
-            user.IsActive = this.IsActive;
-            user.IsDeleted = this.IsDeleted;
-            user.IsBlocked = this.IsBlocked;
             await _userManager.UpdateAsync(user);
         }
         

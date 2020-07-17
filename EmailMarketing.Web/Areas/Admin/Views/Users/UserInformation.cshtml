@@ -132,18 +132,16 @@
                             <td class="col-4 float-left"><h5>IsBlocked : </h5></td>
                             <td class="col-8 float-left"><h5>@Model.IsBlocked</h5></td>
                         </tr>
-                        <tr>
-                            <td class="d-flex justify-content-end">
-                                <a asp-controller="Users" asp-action="Index" asp-area="Admin" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
-                                <a asp-route-id="@Model.Id" asp-controller="Users" asp-action="Edit" asp-area="Admin" class="btn btn-primary"><i class="icon-pencil7"></i> Edit</a>
-                            </td>
-                            <td>
-                            </td>
-                        </tr>
+   
                     </table>
                 </div>
             </div>
-            
+            <div class="">
+                <div class="d-flex justify-content-center">
+                    <a asp-controller="Users" asp-action="Index" asp-area="Admin" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
+                    <a asp-route-id="@Model.Id" asp-controller="Users" asp-action="Edit" asp-area="Admin" class="btn btn-primary ml-2"><i class="icon-pencil7"></i> Edit</a>
+                </div>
+            </div>
         </div>
     </div>
 
