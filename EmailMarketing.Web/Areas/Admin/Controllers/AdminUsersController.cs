@@ -60,7 +60,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             {
                 try
                 {
-                    await model.CreateAdmin();
+                    await model.CreateAsync();
                     model.Response = new ResponseModel("Record Added successful.", ResponseType.Success);
 
                     return RedirectToAction("Index");
@@ -97,7 +97,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             {
                 try
                 {
-                    await model.UpdateAdmin();
+                    await model.UpdateAsync();
                     model.Response = new ResponseModel("Record Updated successful.", ResponseType.Success);
 
                     return RedirectToAction("Index");
@@ -107,7 +107,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                     model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
                     // error logger code
                 }
-                catch (Exception ex)
+                 catch (Exception ex)
                 {
                     model.Response = new ResponseModel("Record Update failed.", ResponseType.Failure);
                     // error logger code
@@ -124,7 +124,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                 var model = new AdminUsersModel();
                 try
                 {
-                    model.DeleteAdmin(id);
+                   await model.DeleteAsync(id);
                     model.Response = new ResponseModel($"Admin successfully deleted.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }

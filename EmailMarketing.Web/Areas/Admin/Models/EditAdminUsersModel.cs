@@ -44,19 +44,15 @@ namespace EmailMarketing.Web.Areas.Admin.Models
             this.PhoneNumber = result.PhoneNumber;
 
         }
-        public async Task UpdateAdmin()
+        public async Task UpdateAsync()
         {
-            var adminuser = new ApplicationUser
-            { 
-                Id =this.Id,
-                FullName = this.FullName,
-                UserName = this.UserName,
-                Email = this.Email,
-                PhoneNumber = this.PhoneNumber
-
-            };
+           var adminuser = await _userManager.FindByIdAsync(this.Id.ToString());
+            adminuser.FullName = this.FullName;
+            adminuser.UserName = this.UserName;
+            adminuser.Email = this.Email;
+            adminuser.PhoneNumber = this.PhoneNumber;
+               //await _userManager.UpdateAsync(user);
             await _userManager.UpdateAsync(adminuser);
-
         }
     }
 }

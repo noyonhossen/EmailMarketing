@@ -27,7 +27,7 @@ namespace EmailMarketing.Web.Areas.Admin.Models
                 var query = _userManager.Users.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).AsQueryable();
                 var result = query.Where(x => !x.IsDeleted &&
                     x.Status != EnumApplicationUserStatus.SuperAdmin &&
-                    x.UserRoles.Any(ur => ur.Role.Name == ConstantsValue.UserRoleName.Member)).ToList();
+                    x.UserRoles.Any(ur => ur.Role.Name == ConstantsValue.UserRoleName.Admin)).ToList();
 
                 return new
                 {
@@ -47,10 +47,11 @@ namespace EmailMarketing.Web.Areas.Admin.Models
                 };
             }
 
-        internal void DeleteAdmin(Guid id)
+        public async Task<string> DeleteAsync(Guid id)
         {
-            var deladmin = _userManager.FindByIdAsync(id.ToString());
-            _userManager.DeleteAsync(deladmin);
+            var deladmin =await  _userManager.FindByIdAsync(id.ToString());
+            await _userManager.DeleteAsync(deladmin);
+            return deladmin.UserName;
         }
     }
     }

@@ -11,7 +11,8 @@ namespace EmailMarketing.Web.Areas.Admin.Models
 {
     public class CreateAdminUsersModel : AdminBaseModel
     {
-        [Required]       
+        [Required]
+        [Display(Name = "Full Name")]
         public string FullName { get; set; }       
         [Required]
         [Display(Name = "User Name")]
@@ -35,7 +36,7 @@ namespace EmailMarketing.Web.Areas.Admin.Models
             _userManager = userManager;
         }
 
-        internal async Task CreateAdmin()
+        internal async Task CreateAsync()
         {
             var user = new ApplicationUser
             {

@@ -92,7 +92,7 @@
             var editUrl = '@Url.Action("Edit", "AdminUsers", new { Area = "Admin" })';
             loadDatatable(url, editUrl);
 
-            $('#AspNetUsers-table').on('click', '.show-bs-modal', function (event) {
+            $('#adminusers-table').on('click', '.show-bs-modal', function (event) {
                 var id = $(this).data("id");
                 var modal = $("#modal-delete");
                 modal.find('.modal-body p').text('Are you sure want to delete this record?')
