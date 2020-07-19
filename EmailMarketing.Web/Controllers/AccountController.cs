@@ -125,6 +125,7 @@ namespace EmailMarketing.Web.Controllers
                     _logger.LogInformation("User created a new account with password.");
 
                     //await _userManager.AddToRoleAsync(user, "Admin");
+
                     //await _userManager.AddToRoleAsync(user, "Manager");
 
                     //Email Verification Section
@@ -298,7 +299,9 @@ namespace EmailMarketing.Web.Controllers
             {
                 return RedirectToAction("Login", new { returnUrl });
             }
-        }
+
+        }   
+
 
         public async Task<IActionResult> VerifyEmail(string userId, string code)
         {
@@ -323,6 +326,7 @@ namespace EmailMarketing.Web.Controllers
 
             return BadRequest();
         }
+
 
 
     }
