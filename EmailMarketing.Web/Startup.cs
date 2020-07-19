@@ -18,6 +18,7 @@ using EmailMarketing.Framework;
 using EmailMarketing.Membership;
 using EmailMarketing.Membership.Entities;
 using EmailMarketing.Membership.Services;
+using EmailMarketing.Web.Services;
 
 namespace EmailMarketing.Web
 {
@@ -96,6 +97,10 @@ namespace EmailMarketing.Web
                 options.AccessDeniedPath = "/Account/AccessDenied";
                 options.LoginPath = "/Account/Login";
             });
+
+            //Get Section from appsettings for smtp email service
+            services.Configure<EmailMarketing.Web.Core.SmtpSettings>(Configuration.GetSection("SmtpSettings"));
+            services.AddSingleton<IMailerService, MailerService>();
 
             services.AddHttpContextAccessor();
 
