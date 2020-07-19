@@ -37,18 +37,20 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             return Json(data);
         }
 
-        public async Task<IActionResult> Edit(Guid id)
-        {
-            var model = new EditUserModel();
-            await model.LoadByIdAsync(id);
-            return View(model);
-        }
         public async Task<IActionResult> UserInformation(Guid id)
         {
             var model = new UserInformationModel();
             await model.LoadByIdAsync(id);
             return View(model);
         }
+
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var model = new EditUserModel();
+            await model.LoadByIdAsync(id);
+            return View(model);
+        }
+       
 
         [HttpPost]
         [ValidateAntiForgeryToken]
