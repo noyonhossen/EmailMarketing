@@ -136,6 +136,11 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             }
             return RedirectToAction("index");
         }
+        public async Task<IActionResult> ShowProfile()
+        {
+            var model = new AdminUsersShowProfileModel();
+            return View(model);
+        }
         public async Task<IActionResult> GetAdminUsers()
         {
             var tableModel = new DataTablesAjaxRequestModel(Request);
