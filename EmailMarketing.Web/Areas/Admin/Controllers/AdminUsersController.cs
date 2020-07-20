@@ -137,10 +137,45 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             return RedirectToAction("index");
         }
         [HttpGet]
-        public async Task<IActionResult> ShowProfile(AdminUsersShowProfileModel model)
+        public async Task<IActionResult> ShowProfile(
+            [Bind(nameof(AdminUsersShowProfileModel.FullName),
+            nameof(AdminUsersShowProfileModel.UserName),
+            nameof(AdminUsersShowProfileModel.Email),
+            nameof(AdminUsersShowProfileModel.PhoneNumber))]AdminUsersShowProfileModel model)
         {
-             await model.ShowProfileAsync();
-            //return View(model);
+            await model.ShowProfileAsync();
+            return View(model);
+        }
+        [HttpGet]
+        public IActionResult UpdateInformation()
+        {
+            return View();
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateInformation([Bind(nameof(AdminUsersShowProfileModel.FullName),
+            nameof(AdminUsersShowProfileModel.UserName),
+            nameof(AdminUsersShowProfileModel.Email),
+            nameof(AdminUsersShowProfileModel.PhoneNumber))]AdminUsersShowProfileModel model)
+        {
+            if (ModelState.IsValid)
+            {
+               
+                try
+                {
+                    await _userManager.GetUserAsync(User);
+                    model.Response = new ResponseModel($"Admin successfully updated.", ResponseType.Success);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    model.Response = new ResponseModel("Admin update failed.", ResponseType.Failure);
+                    // error logger code
+                }
+            }
+            return View(model);
+
         }
         public async Task<IActionResult> GetAdminUsers()
         {

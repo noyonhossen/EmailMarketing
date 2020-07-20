@@ -1,21 +1,39 @@
-﻿using System;
+﻿using Autofac;
+using EmailMarketing.Membership.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace EmailMarketing.Web.Areas.Admin.Models
 {
-    public class AdminUsersShowProfileModel
+    public class AdminUsersShowProfileModel : AdminBaseModel
     {
-        public async Task ShowProfileAsync()
-        {
         public string FullName { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Address { get; set; }
-        public string Gender { get; set; }
-        public DateTime? DateOfBirth { get; set; }
-        public string ImageUrl { get; set; }
+        public string UserName { get; set; }
         public string Email { get; set; }
-    }
+        public string PhoneNumber { get; set; }
+
+        private readonly ApplicationUserManager _userManager;
+        public AdminUsersShowProfileModel()
+        {
+            _userManager = Startup.AutofacContainer.Resolve<ApplicationUserManager>();
+        }
+        public AdminUsersShowProfileModel(ApplicationUserManager userManager)
+        {
+            _userManager = userManager;
+        }
+        internal async Task ShowProfileAsync()
+        {
+
+            var adminUser = await _userManager.GetUserAsync(User);
+            FullName = adminUser.FullName;
+            UserName = adminUser.UserName;
+            Email = adminUser.Email;
+            PhoneNumber = adminUser.PhoneNumber;
+
+            
+        }
     }
 }
+
