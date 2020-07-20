@@ -136,10 +136,11 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             }
             return RedirectToAction("index");
         }
-        public async Task<IActionResult> ShowProfile()
+        [HttpGet]
+        public async Task<IActionResult> ShowProfile(AdminUsersShowProfileModel model)
         {
-            var model = new AdminUsersShowProfileModel();
-            return View(model);
+             await model.ShowProfileAsync();
+            //return View(model);
         }
         public async Task<IActionResult> GetAdminUsers()
         {
