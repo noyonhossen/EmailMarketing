@@ -27,12 +27,12 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         {
 
             var adminUser = await _userManager.GetUserAsync(User);
-            FullName = adminUser.FullName;
-            UserName = adminUser.UserName;
-            Email = adminUser.Email;
-            PhoneNumber = adminUser.PhoneNumber;
+            this.FullName = adminUser.FullName;
+            this.UserName = adminUser.UserName;
+            this.Email = adminUser.Email;
+            this.PhoneNumber = adminUser.PhoneNumber;
 
-
+            var result = await _userManager.UpdateAsync(adminuser);
         }
     }
 }
