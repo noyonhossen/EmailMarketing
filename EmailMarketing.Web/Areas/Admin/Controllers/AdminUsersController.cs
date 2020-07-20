@@ -154,17 +154,18 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateInformation([Bind(nameof(AdminUsersShowProfileModel.FullName),
-            nameof(AdminUsersShowProfileModel.UserName),
-            nameof(AdminUsersShowProfileModel.Email),
-            nameof(AdminUsersShowProfileModel.PhoneNumber))]AdminUsersShowProfileModel model)
+        public async Task<IActionResult> UpdateInformation([Bind(nameof(AdminUsersProfileUpdateModel.FullName),
+            nameof(AdminUsersProfileUpdateModel.UserName),
+            nameof(AdminUsersProfileUpdateModel.Email),
+            nameof(AdminUsersProfileUpdateModel.PhoneNumber))]AdminUsersProfileUpdateModel model)
         {
             if (ModelState.IsValid)
             {
                
                 try
                 {
-                    await _userManager.GetUserAsync(User);
+                    await model.UpdateProfileAsync();
+                  
                     model.Response = new ResponseModel($"Admin successfully updated.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }

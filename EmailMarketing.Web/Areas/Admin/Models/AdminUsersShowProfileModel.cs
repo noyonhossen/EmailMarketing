@@ -34,6 +34,8 @@ namespace EmailMarketing.Web.Areas.Admin.Models
 
             
         }
+
+        
     }
 }
 

@@ -1,6 +1,6 @@
 ﻿@inject UserManager<ApplicationUser> UserManager
 @using Microsoft.AspNetCore.Identity
-@model ProfileInformationModel
+@model AdminUsersProfileUpdateModel
 @{ ViewData["Title"] = "Edit Information"; }
 
 @{ var user = await UserManager.GetUserAsync(User); }
@@ -37,8 +37,8 @@
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label">User Name :</label>
                             <div class="col-lg-8">
-                                <input asp-for="Address" class="form-control" value="@user.UserName">
-                                <span asp-validation-for="Address" class="text-danger"></span>
+                                <input asp-for="UserName" class="form-control" value="@user.UserName">
+                                <span asp-validation-for="UserName" class="text-danger"></span>
                             </div>
                         </div>
 
