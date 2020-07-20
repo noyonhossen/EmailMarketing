@@ -53,7 +53,7 @@
 
             <div class="modal-body">
                 <p>Are you sure want to delete?</p>
-                <form id="deleteForm" action="@Url.Action("Delete", "Users", new { Area = "Admin" })" method="post">
+                <form id="deleteForm" action="@Url.Action("Delete", "AdminUsers", new { Area = "Admin" })" method="post">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="deleteId" value="" name="id" />
                 </form>
@@ -78,7 +78,7 @@
 
             <div class="modal-body">
                 <p>Are you sure want to Block User?</p>
-                <form id="blockUserdForm" action="@Url.Action("BlockUser", "Users", new { Area = "Admin" })" method="post">
+                <form id="blockUserdForm" action="@Url.Action("BlockUser", "AdminUsers", new { Area = "Admin" })" method="post">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="blockId" value="" name="id" />
                 </form>
@@ -105,7 +105,7 @@
 
             <div class="modal-body">
                 <p>Are you sure want to Reset User Password?</p>
-                <form id="resetUserdPasswordForm" action="@Url.Action("ResetPassword", "Users", new { Area = "Admin" })" method="post">
+                <form id="resetUserdPasswordForm" action="@Url.Action("ResetPassword", "AdminUsers", new { Area = "Admin" })" method="post">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="resetId" value="" name="id" />
                 </form>
@@ -128,13 +128,13 @@
     <script src="~/theme/global_assets/js/main/jquery.min.js"></script>
     <script src="~/theme/global_assets/js/main/bootstrap.bundle.min.js"></script>
     <script src="~/theme/global_assets/js/plugins/tables/datatables/datatables.min.js"></script>
-    <script src="~/js/project/user.js"></script>
+    <script src="~/js/project/admin-user.js"></script>
 
     <script>
         $(function () {
-            var url = '@Url.Action("GetUsers", "Users", new { Area = "Admin" })';
-            var editUrl = '@Url.Action("Edit", "Users", new { Area = "Admin" })';
-            var userInformationUrl = '@Url.Action("UserInformation", "Users", new { Area = "Admin" })';
+            var url = '@Url.Action("GetUsers", "AdminUsers", new { Area = "Admin" })';
+            var editUrl = '@Url.Action("Edit", "AdminUsers", new { Area = "Admin" })';
+            var userInformationUrl = '@Url.Action("UserInformation", "AdminUsers", new { Area = "Admin" })';
             loadDatatable(url, editUrl, userInformationUrl);
 
             //Delete User

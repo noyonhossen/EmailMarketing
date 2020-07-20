@@ -1,4 +1,4 @@
-﻿@model EditUserModel
+﻿@model AdminEditUserModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -13,7 +13,7 @@
         </div>
 
         <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="Users" asp-action="Index" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">User List</span></a>
+            <a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">User List</span></a>
         </div>
     </div>
 </div>
@@ -36,7 +36,7 @@
         <div class="card-body">
             <partial name="_ActionMessage" model="@Model.Response" />
             <div class="">
-                <form asp-action="Edit" asp-controller="Users" asp-area="Admin">
+                <form asp-action="Edit" asp-controller="AdminUsers" asp-area="Admin">
                     <div class="">
                         <fieldset class="mb-3">
 
@@ -129,7 +129,7 @@
                     </div>
                     <div class="">
                         <div class="d-flex justify-content-center">
-                            <a asp-controller="Users" asp-action="Index" asp-area="Admin" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
+                            <a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
                             <button type="submit" class="btn bg-teal ml-2"><i class="icon-file-check2"></i> Save</button>
                         </div>
                     </div>

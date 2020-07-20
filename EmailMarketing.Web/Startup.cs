@@ -48,7 +48,7 @@ namespace EmailMarketing.Web
 
             builder.RegisterModule(new FrameworkModule(connectionString, migrationAssemblyName));
             builder.RegisterModule(new WebModule(connectionString, migrationAssemblyName));
-            builder.RegisterType<UserModel>();
+            builder.RegisterType<AdminUserModel>();
         }
         #endregion
 
@@ -148,7 +148,7 @@ namespace EmailMarketing.Web
             {
                 endpoints.MapControllerRoute(
                     name: "areas",
-                    pattern: "{area:exists}/{controller=Users}/{action=Index}/{id?}");
+                    pattern: "{area:exists}/{controller=AdminUsers}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "areas",
                     pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");

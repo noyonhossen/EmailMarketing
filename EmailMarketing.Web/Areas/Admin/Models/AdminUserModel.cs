@@ -15,20 +15,20 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Web.Areas.Admin.Models
 {
-    public class UserModel :AdminBaseModel
+    public class AdminUserModel :AdminBaseModel
     {
 
         private readonly ApplicationUserManager _userManager;
         private readonly AppSettings _userDefaultPassword;
 
 
-        public UserModel()
+        public AdminUserModel()
         {
             _userManager = Startup.AutofacContainer.Resolve<ApplicationUserManager>();
             _userDefaultPassword = Startup.AutofacContainer.Resolve<IOptions<AppSettings>>().Value;
         }
    
-        public UserModel(ApplicationUserManager userManager)
+        public AdminUserModel(ApplicationUserManager userManager)
         {
             _userManager = userManager;
             
