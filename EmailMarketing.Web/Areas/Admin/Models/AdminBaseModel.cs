@@ -64,8 +64,7 @@ namespace EmailMarketing.Web.Areas.Admin.Models
                                     Icon = "icon-home4", IsActive = false },
                                 new MenuChildItem () { Controller = "AdminUsers", Action = "Add", Area="Admin", Title = "Add New Admin",
                                     Icon = "icon-home4", IsActive = false },
-                                new MenuChildItem () { Controller = "AdminUsers", Action = "ShowProfile", Area="Admin", Title = "Add New Admin",
-                                    Icon = "icon-home4", IsActive = false },
+                             
                             }
                         }
                     }

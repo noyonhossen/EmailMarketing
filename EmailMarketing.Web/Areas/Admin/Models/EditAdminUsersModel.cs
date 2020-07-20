@@ -46,13 +46,13 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         }
         public async Task UpdateAsync()
         {
-           var adminuser = await _userManager.FindByIdAsync(this.Id.ToString());
-            adminuser.FullName = this.FullName;
-            adminuser.UserName = this.UserName;
-            adminuser.Email = this.Email;
-            adminuser.PhoneNumber = this.PhoneNumber;
-               //await _userManager.UpdateAsync(user);
-            await _userManager.UpdateAsync(adminuser);
+            var usersAdmin = await _userManager.FindByIdAsync(this.Id.ToString());
+            usersAdmin.FullName = this.FullName;
+            usersAdmin.UserName = this.UserName;
+            usersAdmin.Email = this.Email;
+            usersAdmin.PhoneNumber = this.PhoneNumber;
+
+            await _userManager.UpdateAsync(usersAdmin);
         }
     }
 }
