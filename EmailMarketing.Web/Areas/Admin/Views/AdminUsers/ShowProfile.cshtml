@@ -1,6 +1,6 @@
-﻿@*@model AdminUsersShowProfileModel
+﻿@model AdminUsersShowProfileModel
 
-@{ ViewData["Title"] = "Profile"; }
+@{ ViewData["Title"] = "AdminProfile"; }
 
 
 <div class="content-wrapper">
@@ -23,21 +23,19 @@
                 <div class="card-body" style="" data-select2-id="47">
                     <form method="get" data-select2-id="46">
 
-
-                        <div class="form-group row">
-                            <label class="col-md-4 col-form-label"><b>Full Name:</b></label>
-                            <div class="col-lg-3 col-form-label">
-                                <dd>@Html.DisplayFor(model => model.FullName)</dd>
-                            </div>
-                        </div>
                         <div class="form-group row">
                             <label class="col-md-4 col-form-label"><b>User Name:</b></label>
                             <div class="col-lg-3 col-form-label">
                                 <dd>@Html.DisplayFor(model => model.UserName)</dd>
                             </div>
                         </div>
-
                         <div class="form-group row">
+                            <label class="col-md-4 col-form-label"><b>Full Name:</b></label>
+                            <div class="col-lg-3 col-form-label">
+                                <dd>@Html.DisplayFor(model => model.FullName)</dd>
+                            </div>
+                        </div>
+                       <div class="form-group row">
                             <label class="col-md-4 col-form-label"><b>Email:</b></label>
                             <div class="col-lg-3 col-form-label">
                                 <dd>@Html.DisplayFor(model => model.Email)</dd>
@@ -61,4 +59,4 @@
 
         </div>
     </div>
-</div>*@
+</div>
