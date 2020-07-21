@@ -24,16 +24,16 @@ namespace EmailMarketing.Web.Areas.Admin.Models
             }
             public async Task<object> GetAllAsync(DataTablesAjaxRequestModel tableModel)
             {
-                var query = _userManager.Users.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).AsQueryable();
-                var result = query.Where(x => !x.IsDeleted &&
+                var adminCount = _userManager.Users.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).AsQueryable();
+                var result = adminCount.Where(x => !x.IsDeleted &&
                     x.Status != EnumApplicationUserStatus.SuperAdmin &&
-                    x.UserRoles.Any(ur => ur.Role.Name == ConstantsValue.UserRoleName.Member)).ToList();
+                    x.UserRoles.Any(ur => ur.Role.Name == ConstantsValue.UserRoleName.Admin)).ToList();
 
                 return new
                 {
-                    recordsTotal = 5,
-                    recordsFiltered = 10,
-                    data = (from item in query.ToList()
+                    recordsTotal = adminCount.Count(),
+                    recordsFiltered = result.Count(),
+                    data = (from item in adminCount.ToList()
                             select new string[]
                             {
                                     item.FullName,
