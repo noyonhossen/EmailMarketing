@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -7,12 +8,15 @@ using System.Threading.Tasks;
 using EmailMarketing.Membership.Entities;
 using EmailMarketing.Membership.Services;
 using EmailMarketing.Web.Models;
+using EmailMarketing.Web.Services;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using MimeKit;
 
 namespace EmailMarketing.Web.Controllers
 {
@@ -22,16 +26,22 @@ namespace EmailMarketing.Web.Controllers
         private readonly ApplicationSignInManager _signInManager;
         private readonly ILogger<AccountController> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IMailerService _mailerService;
+        private readonly IWebHostEnvironment _env;
 
         public AccountController(ApplicationSignInManager signInManager,
             ILogger<AccountController> logger,
             ApplicationUserManager userManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IMailerService mailerService,
+            IWebHostEnvironment env)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _mailerService = mailerService;
+            _env = env;
         }
 
         public async Task<IActionResult> Login(string returnUrl = null)
@@ -65,7 +75,8 @@ namespace EmailMarketing.Web.Controllers
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (result.Succeeded && (await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
@@ -82,7 +93,6 @@ namespace EmailMarketing.Web.Controllers
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    //return Page();
                     return View();
                 }
             }
@@ -102,44 +112,57 @@ namespace EmailMarketing.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl ?? Url.Content("~/");
             ViewData["ExternalLogins"] = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
                     //await _userManager.AddToRoleAsync(user, "Admin");
+
                     //await _userManager.AddToRoleAsync(user, "Manager");
 
+                    //Email Verification Section
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(model.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //Activate Email Link
+                    var emailVerificationlink = Url.Action(nameof(VerifyEmail), "Account", new { userId = user.Id, code }, Request.Scheme, Request.Host.ToString());
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    //String Body
+                    var webroot = _env.WebRootPath;
+
+                    var pathToFile = _env.WebRootPath
+                            + Path.DirectorySeparatorChar.ToString()
+                            + "Templates"
+                            + Path.DirectorySeparatorChar.ToString()
+                            + "EmailTemplate"
+                            + Path.DirectorySeparatorChar.ToString()
+                            + "Confirm_Account_Registration.html";
+
+                    var subject = "Confirm Account Registration";
+
+                    var builder = new BodyBuilder();
+                    using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = model.Email, returnUrl = returnUrl });
+                        builder.HtmlBody = SourceReader.ReadToEnd();
                     }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        if (string.IsNullOrWhiteSpace(returnUrl))
-                            return RedirectToAction("", "");
-                        else
-                            return LocalRedirect(returnUrl);
-                    }
+
+                    string messageBody = string.Format(builder.HtmlBody,
+                            user.FullName,
+                            emailVerificationlink
+                            );
+
+                    await _mailerService.SendEmailAsync(user.Email, subject, messageBody);
+
+                    return RedirectToAction("EmailVerificationConfirmation");
                 }
                 foreach (var error in result.Errors)
                 {
@@ -150,7 +173,7 @@ namespace EmailMarketing.Web.Controllers
             // If we got this far, something failed, redisplay form
             //return Page();
 
-            return View();
+            return View(model);
         }
 
         public async Task<IActionResult> AccessDenied(string returnUrl = null)
@@ -162,12 +185,14 @@ namespace EmailMarketing.Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ForgotPassword()
+        [HttpGet]
+        public IActionResult ForgotPassword()
         {
             return View();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
         {
             if (ModelState.IsValid)
@@ -176,23 +201,40 @@ namespace EmailMarketing.Web.Controllers
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToPage("./ForgotPasswordConfirmation");
+                    return RedirectToAction("ForgotPasswordConfirmation");
                 }
 
-                // For more information on how to enable account confirmation and password reset please 
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                    "/Account/ResetPassword",
-                    pageHandler: null,
-                    values: new { area = "Identity", code },
-                    protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(
-                    model.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                var passwordResetLink = Url.Action(nameof(ResetPassword), "Account", new { email = model.Email, code }, 
+                                                    Request.Scheme, Request.Host.ToString());
+
+                //String Body
+                var webroot = _env.WebRootPath;
+
+                var pathToFile = _env.WebRootPath
+                        + Path.DirectorySeparatorChar.ToString()
+                        + "Templates"
+                        + Path.DirectorySeparatorChar.ToString()
+                        + "EmailTemplate"
+                        + Path.DirectorySeparatorChar.ToString()
+                        + "Reset_Account_Password.html";
+
+                var subject = "Recover Account Password";
+
+                var builder = new BodyBuilder();
+                using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+                {
+                    builder.HtmlBody = SourceReader.ReadToEnd();
+                }
+
+                //Inserting Value to Html body dynamically
+                string messageBody = string.Format(builder.HtmlBody,
+                        user.FullName,
+                        passwordResetLink
+                        );
+
+                await _mailerService.SendEmailAsync(user.Email, subject, messageBody);
 
                 return RedirectToAction("ForgotPasswordConfirmation");
             }
@@ -200,7 +242,48 @@ namespace EmailMarketing.Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ForgotPasswordConfirmation()
+        [HttpGet]
+        public IActionResult ResetPassword(string email, string code)
+        {
+            if (email == null || code == null)
+            {
+                ModelState.AddModelError("", "Invalid Password Reset Token");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            if(user != null)
+            {
+                var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+                if(result.Succeeded)
+                {
+                    return RedirectToAction("ResetPasswordConfirmation");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            return View(model);
+        }
+
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+        public IActionResult EmailVerificationConfirmation()
         {
             return View();
         }
@@ -218,6 +301,35 @@ namespace EmailMarketing.Web.Controllers
             {
                 return RedirectToAction("Login", new { returnUrl });
             }
+
+        }   
+
+
+        public async Task<IActionResult> VerifyEmail(string userId, string code)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null) return BadRequest();
+
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+
+            if (result.Succeeded)
+            {
+                user.EmailConfirmed = true;
+                var updatedResult = await _userManager.UpdateAsync(user);
+
+                if (updatedResult.Succeeded)
+                {
+                    return View();
+                }
+
+                return BadRequest();
+            }
+
+            return BadRequest();
         }
+
+
+
     }
 }
