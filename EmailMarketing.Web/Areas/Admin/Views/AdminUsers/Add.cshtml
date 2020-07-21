@@ -1,20 +1,16 @@
 ﻿@model CreateAdminUsersModel
 
-@{
-    ViewData["Title"] = "Add";
-}
-
 <!-- Page header -->
 <div class="page-header">
     <div class="page-header-content header-elements-md-inline">
         <div class="page-title d-flex">
-            <h4><a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
+            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Admin" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
         </div>
 
-        @*<div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Admin List</span></a>
-        </div>*@
+        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
+            <a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">User List</span></a>
+        </div>
     </div>
 </div>
 <!-- /page header -->
@@ -23,7 +19,7 @@
 
     <div class="card">
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Add New Admin</h5>
+            <h5 class="card-title text-primary">Add New Admin</h5>
             <div class="header-elements">
                 <div class="list-icons">
                     <a class="list-icons-item" data-action="collapse"></a>
@@ -36,61 +32,81 @@
         <div class="card-body">
             <partial name="_ActionMessage" model="@Model.Response" />
             <div class="">
-                <form asp-area="Admin" asp-controller="AdminUsers" asp-action="Add" method="post" class="form-horizontal">
-                    <div asp-validation-summary="All" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="FullName" class="col-md-2 control-label"></label>
-                        <div class="col-md-10">
-                            <input asp-for="FullName" class="form-control" />
-                            <span asp-validation-for="FullName" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="UserName" class="col-md-2 control-label"></label>
-                        <div class="col-md-10">
-                            <input asp-for="UserName" class="form-control" />
-                            <span asp-validation-for="UserName" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Password" class="col-md-2 control-label"></label>
-                        <div class="col-md-10">
-                            <input asp-for="Password" class="form-control" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Email" class="col-md-2 control-label"></label>
-                        <div class="col-md-10">
-                            <input asp-for="Email" class="form-control" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="PhoneNumber" class="col-md-2 control-label"></label>
-                        <div class="col-md-10">
-                            <input asp-for="PhoneNumber" class="form-control" />
-                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                        </div>
-                    </div>
+                <form asp-action="Add" asp-controller="AdminUsers" asp-area="Admin">
+                    <div class="">
+                        <fieldset class="mb-3">
 
-                    <div class="form-group">
-                        <div class="col-md-10">
-                            <input type="submit" class="btn btn-default" value="Submit" />
-                        </div>
-                    </div>
-                </form>
+@Html.AntiForgeryToken()
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<div class="row">
+    <div class="col-md-6 border-right p-2">
+        <div class="form-group row">
+            <label class="col-form-label col-lg-4 required" asp-for="FullName"></label>
+            <div class="col-lg-8">
+                <input type="text" class="form-control" asp-for="FullName">
+                <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-lg-4 required" asp-for="UserName"></label>
+            <div class="col-lg-8">
+                <input type="text" class="form-control" asp-for="UserName">
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <label class="col-form-label col-lg-4 required" asp-for="Password"></label>
+            <div class="col-lg-8">
+                <input type="text" class="form-control" asp-for="Password">
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+        </div>
 
+
+    </div>
+    <div class="col-md-6 border-left p-2">
+
+        <div class="form-group row">
+            <label class="col-form-label col-lg-4 required" asp-for="Email"></label>
+            <div class="col-lg-8">
+                <input type="text" class="form-control" asp-for="Email">
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-lg-4 required" asp-for="PhoneNumber"></label>
+            <div class="col-lg-8">
+                <input type="text" class="form-control" asp-for="PhoneNumber">
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+        </div>
         </div>
     </div>
 
+</fieldset>
+</div>
+<div class="">
+    <div class="d-flex justify-content-center">
+        <a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
+        <button type="submit" class="btn bg-teal ml-2"><i class="icon-file-check2"></i> Save</button>
+    </div>
+</div>
+</form>
+</div>
+
+</div>
+</div>
+
 </div>
 <!-- /Content area -->
+
 
 
 @section Scripts {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
     <partial name="~/Views/Bundle/_FormInputScriptsPartial.cshtml" />
     <partial name="~/Views/Bundle/_DateTimePickerScriptsPartial.cshtml" />
+
 }

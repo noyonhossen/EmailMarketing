@@ -42,7 +42,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             var model = Startup.AutofacContainer.Resolve<AdminUsersModel>();
             return View(model);
         }
-        public async Task<IActionResult> Add()
+        public IActionResult Add()
         {
             var model = new CreateAdminUsersModel();
             return View(model);
