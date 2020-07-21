@@ -1,0 +1,236 @@
+﻿@model AdminUserInformationModel
+@{
+    ViewData["Title"] = "UserInformation";
+}
+
+<!-- Page header -->
+<div class="page-header">
+    <div class="page-header-content header-elements-md-inline">
+        <div class="page-title d-flex">
+            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Admin" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+
+        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
+            <a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">User List</span></a>
+        </div>
+    </div>
+</div>
+<!-- /page header -->
+<!-- Content area -->
+<div class="content pt-0">
+
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title text-primary">User Information</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    <table class="table">
+                        <tr>
+                            <td class="col-4 float-left"><h5>User Name: </h5></td>
+                            @if (@Model.UserName == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.UserName</h5></td>
+                            }
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Full Name : </h5></td>
+                            @if (@Model.FullName == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.FullName</h5></td>
+                            }
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Email : </h5></td>
+                            @if (@Model.Email == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.Email</h5></td>
+                            }
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Email Confirmed: </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.EmailConfirmed</h5></td>
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Phone Number : </h5></td>
+                            @if (@Model.PhoneNumber == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.PhoneNumber</h5></td>
+                            }
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Phone Number Confirmed: </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.PhoneNumberConfirmed</h5></td>
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Two Factor Enabled : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.TwoFactorenabled</h5></td>
+                        </tr>
+            
+                        <tr>
+                            <td class="col-4 float-left"><h5>Lockout Enabled : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.LockoutEnabled</h5></td>
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Access Failed Count : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.AccessFailedCount</h5></td>
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Status : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.Status</h5></td>
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Image Url : </h5></td>
+                            @if (@Model.ImageUrl == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.ImageUrl</h5></td>
+                            }
+                        </tr>
+
+                        
+                    </table>
+                </div>
+                <div class="col-6">
+                    <table class="table">
+                        <tr>
+                            <td class="col-4 float-left"><h5>Address : </h5></td>
+                            @if (@Model.Address == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.Address</h5></td>
+                            }
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Gender : </h5></td>
+                            @if (@Model.Gender == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.Gender</h5></td>
+                            }
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Date of Birth : </h5></td>
+                            @if (@Model.DateOfBirth == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.DateOfBirth</h5></td>
+                            }
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Last Password Change Date : </h5></td>
+                            @if (@Model.LastPassChangeDate == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.LastPassChangeDate</h5></td>
+                            }
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Password Changed Count : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.PasswordChangedCount</h5></td>
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Created By : </h5></td>
+                            @if (@Model.CreatedBy == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.CreatedBy</h5></td>
+                            }
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Created : </h5></td>
+                            @if (@Model.Created == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.Created</h5></td>
+                            }
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Last Modified By : </h5></td>
+                            @if (@Model.LastModifiedBy == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.LastModifiedBy</h5></td>
+                            }
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Last Modified : </h5></td>
+                            @if (@Model.LastModified == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.LastModified</h5></td>
+                            }
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>IsActive : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.IsActive</h5></td>
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>IsDeleted : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.IsDeleted</h5></td>
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>IsBlocked : </h5></td>
+                            <td class="col-8 float-left"><h5>@Model.IsBlocked</h5></td>
+                        </tr>
+   
+                    </table>
+                </div>
+            </div>
+            <div class="">
+                <div class="d-flex justify-content-center">
+                    <a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
+                    <a asp-route-id="@Model.Id" asp-controller="AdminUsers" asp-action="Edit" asp-area="Admin" class="btn btn-primary ml-2"><i class="icon-pencil7"></i> Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /Content area -->

@@ -1,0 +1,180 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<!-- Content area -->
+<div class="content pt-0">
+
+    <!-- Basic datatable -->
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title text-primary">Users</h5>
+            <div class="header-elements">
+                <div class="list-icons">
+                    <a class="list-icons-item" data-action="collapse"></a>
+                    <a class="list-icons-item" data-action="reload"></a>
+                    <a class="list-icons-item" data-action="remove"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <partial name="_ActionMessage" model="@Model.Response" />
+        </div>
+        <table class="table" id="user-table">
+            <thead>
+                <tr>
+                    <th>UserName</th>
+                    <td>Full Name</td>
+                    <th>Email</th>
+                    <th>Email Confirmed</th>
+                    <th>Phone Number</th>
+                    <th>IsBlocked</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+    </div>
+    <!-- /basic datatable -->
+</div>
+
+<!-- Delete modal -->
+<div id="modal-delete" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Delete</h6>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure want to delete?</p>
+                <form id="deleteForm" action="@Url.Action("Delete", "AdminUsers", new { Area = "Admin" })" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="deleteId" value="" name="id" />
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                <button type="button" id="deleteButton" class="btn bg-danger">Yes, Delete!</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /default modal -->
+<!-- Block User modal -->
+<div id="modal-blockUser" class="modal fade" tabindex="-1" >
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Block User</h6>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure want to Block User?</p>
+                <form id="blockUserdForm" action="@Url.Action("BlockUser", "AdminUsers", new { Area = "Admin" })" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="blockId" value="" name="id" />
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                <button type="button" id="blockButton" class="btn bg-danger">Yes, Block!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Reset Password modal -->
+<div id="modal-resetUserPassword" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Reset User Password</h6>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure want to Reset User Password?</p>
+                <form id="resetUserdPasswordForm" action="@Url.Action("ResetPassword", "AdminUsers", new { Area = "Admin" })" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="resetId" value="" name="id" />
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                <button type="button" id="resetButton" class="btn bg-danger">Yes, Reset!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+    <partial name="~/Views/Bundle/_DatatableScriptsPartial.cshtml" />
+    <script src="~/js/ajax-call.js"></script>
+    <script src="~/theme/global_assets/js/main/jquery.min.js"></script>
+    <script src="~/theme/global_assets/js/main/bootstrap.bundle.min.js"></script>
+    <script src="~/theme/global_assets/js/plugins/tables/datatables/datatables.min.js"></script>
+    <script src="~/js/project/admin-user.js"></script>
+
+    <script>
+        $(function () {
+            var url = '@Url.Action("GetUsers", "AdminUsers", new { Area = "Admin" })';
+            var editUrl = '@Url.Action("Edit", "AdminUsers", new { Area = "Admin" })';
+            var userInformationUrl = '@Url.Action("UserInformation", "AdminUsers", new { Area = "Admin" })';
+            loadDatatable(url, editUrl, userInformationUrl);
+
+            //Delete User
+            $('#modal-delete').on('show.bs.modal', function (e) {
+                var id = $(e.relatedTarget).attr('data-id');
+                var modal = $("#modal-delete");
+                modal.find('.modal-body p').text('Are you sure want to delete this record?')
+                $("#deleteId").val(id);
+                modal.modal('show');
+            })
+            $("#deleteButton").click(function () {
+                $("#deleteForm").submit();
+            });
+
+
+            //Block User
+            $('#modal-blockUser').on('show.bs.modal', function (e) {
+                var id = $(e.relatedTarget).attr('data-id');
+                var modal = $("#modal-blockUser");
+                modal.find('.modal-body p').text('Are you sure want to Block this User?')
+                $("#blockId").val(id);
+                modal.modal('show');
+            })
+            $("#blockButton").click(function () {
+                $("#blockUserdForm").submit();
+            });
+  
+
+            //Reset User
+            $('#modal-resetUserPassword').on('show.bs.modal', function (e) {
+                var id = $(e.relatedTarget).attr('data-id');
+                var modal = $("#modal-resetUserPassword");
+                modal.find('.modal-body p').text('Are you sure want to Reset this User Password?')
+                $("#resetId").val(id);
+                modal.modal('show');
+            })
+
+            $("#resetButton").click(function () {
+                $("#resetUserdPasswordForm").submit();
+            });
+        });
+    </script>
+}

@@ -66,6 +66,8 @@ namespace EmailMarketing.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model, string returnUrl = null)
         {
+
+
             returnUrl = returnUrl ?? Url.Content("~/");
 
             if (ModelState.IsValid)

@@ -18,7 +18,10 @@ using EmailMarketing.Framework;
 using EmailMarketing.Membership;
 using EmailMarketing.Membership.Entities;
 using EmailMarketing.Membership.Services;
+using EmailMarketing.Web.Core;
+using EmailMarketing.Web.Areas.Admin.Models;
 using EmailMarketing.Web.Services;
+
 
 namespace EmailMarketing.Web
 {
@@ -47,6 +50,7 @@ namespace EmailMarketing.Web
 
             builder.RegisterModule(new FrameworkModule(connectionString, migrationAssemblyName));
             builder.RegisterModule(new WebModule(connectionString, migrationAssemblyName));
+            builder.RegisterType<AdminUserModel>();
         }
         #endregion
 
@@ -91,6 +95,8 @@ namespace EmailMarketing.Web
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = false;
             });
+
+            services.Configure<EmailMarketing.Web.Core.AppSettings>(Configuration.GetSection("AppSettings"));
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -146,6 +152,9 @@ namespace EmailMarketing.Web
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "areas",
+                    pattern: "{area:exists}/{controller=AdminUsers}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "areas",
                     pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
