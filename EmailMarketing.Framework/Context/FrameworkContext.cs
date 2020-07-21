@@ -37,6 +37,7 @@ namespace EmailMarketing.Framework.Context
             base.OnModelCreating(builder);
         }
 
-        public DbSet<Entities.Expense> Expenses { get; set; }
+        //public DbSet<Entities.Expense> Expenses { get; set; }
+        public DbSet<Entities.Group> Groups { get; set; }
     }
 }

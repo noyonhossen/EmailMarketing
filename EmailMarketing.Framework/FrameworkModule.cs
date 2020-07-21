@@ -37,6 +37,14 @@ namespace EmailMarketing.Framework
 
             builder.RegisterType<ExpenseService>().As<IExpenseService>()
                 .InstancePerLifetimeScope();
+            builder.RegisterType<GroupUnitOfWork>().As<IGroupUnitOfWork>()
+                   .InstancePerLifetimeScope();
+
+            builder.RegisterType<GroupRepository>().As<IGroupRepository>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<GroupService>().As<IGroupService>()
+                .InstancePerLifetimeScope();
 
             base.Load(builder);
         }

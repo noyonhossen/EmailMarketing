@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using EmailMarketing.Web.Areas.Admin.Models;
+using EmailMarketing.Web.Areas.Admin.Models.GroupModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace EmailMarketing.Web
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<ExpenseModel>();
+            builder.RegisterType<GroupModel>();
             base.Load(builder);
         }
     }
