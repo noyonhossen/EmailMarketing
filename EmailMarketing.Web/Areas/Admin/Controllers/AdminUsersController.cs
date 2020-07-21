@@ -167,7 +167,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                     await model.UpdateProfileAsync();
                   
                     model.Response = new ResponseModel($"Admin successfully updated.", ResponseType.Success);
-                    return RedirectToAction("Index");
+                    return RedirectToAction("ShowProfile");
                 }
                 catch (Exception ex)
                 {

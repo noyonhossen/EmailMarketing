@@ -26,13 +26,13 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         internal async Task UpdateProfileAsync()
         {
 
-            var adminUser = await _userManager.GetUserAsync(User);
-            this.FullName = adminUser.FullName;
-            this.UserName = adminUser.UserName;
-            this.Email = adminUser.Email;
-            this.PhoneNumber = adminUser.PhoneNumber;
+            //var adminUser = await _userManager.GetUserAsync(User);
+            //adminUser.FullName = this.FullName;
+            //adminUser.UserName= this.UserName;
+            //adminUser.Email= this.Email;
+            //adminUser.PhoneNumber = this.PhoneNumber;
 
-            var result = await _userManager.UpdateAsync(adminuser);
+            //var result = await _userManager.UpdateAsync();
         }
     }
 }
