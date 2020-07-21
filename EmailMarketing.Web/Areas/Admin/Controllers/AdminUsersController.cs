@@ -137,12 +137,9 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             return RedirectToAction("index");
         }
         [HttpGet]
-        public async Task<IActionResult> ShowProfile(
-            [Bind(nameof(AdminUsersShowProfileModel.FullName),
-            nameof(AdminUsersShowProfileModel.UserName),
-            nameof(AdminUsersShowProfileModel.Email),
-            nameof(AdminUsersShowProfileModel.PhoneNumber))]AdminUsersShowProfileModel model)
+        public async Task<IActionResult> ShowProfile(AdminUsersShowProfileModel model)
         {
+           
             await model.ShowProfileAsync();
             return View(model);
         }

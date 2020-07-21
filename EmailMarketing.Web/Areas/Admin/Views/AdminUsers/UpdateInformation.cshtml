@@ -1,9 +1,9 @@
-﻿@*@inject UserManager<ApplicationUser> UserManager*@
+﻿@inject UserManager<ApplicationUser> UserManager
 @using Microsoft.AspNetCore.Identity
 @model AdminUsersProfileUpdateModel
 @{ ViewData["Title"] = "Edit Information"; }
 
- @*@@{ var adminuser = await UserManager.GetUserAsync(User); }*@
+ @{ var adminuser = await UserManager.GetUserAsync(User); }
 
 <div class="content-wrapper">
     <div class="content">
