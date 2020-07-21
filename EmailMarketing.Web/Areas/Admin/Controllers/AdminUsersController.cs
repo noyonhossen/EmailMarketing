@@ -60,7 +60,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             {
                 try
                 {
-                    await model.CreateAdmin();
+                    await model.CreateAdminAsync();
                     model.Response = new ResponseModel("Record Added successful.", ResponseType.Success);
 
                     return RedirectToAction("Index");

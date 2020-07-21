@@ -35,7 +35,7 @@ namespace EmailMarketing.Web.Areas.Admin.Models
             _userManager = userManager;
         }
 
-        internal async Task CreateAdmin()
+        internal async Task CreateAdminAsync()
         {
             var user = new ApplicationUser
             {
