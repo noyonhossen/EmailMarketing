@@ -149,7 +149,8 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult UpdateInformation()
         {
-            return View();
+            var model = new AdminUsersProfileUpdateModel();
+            return View(model);
 
         }
         [HttpPost]

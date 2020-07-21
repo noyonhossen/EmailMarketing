@@ -1,15 +1,14 @@
-﻿@*@inject UserManager<ApplicationUser> UserManager
+﻿@*@inject UserManager<ApplicationUser> UserManager*@
 @using Microsoft.AspNetCore.Identity
 @model AdminUsersProfileUpdateModel
 @{ ViewData["Title"] = "Edit Information"; }
 
-@{ var adminuser = await UserManager.GetUserAsync(User); }
+ @*@@{ var adminuser = await UserManager.GetUserAsync(User); }*@
 
 <div class="content-wrapper">
     <div class="content">
         <div class="col-md-8" data-select2-id="49">
 
-             Basic layout
             <div class="card" data-select2-id="48">
                 <div class="card-header header-elements-inline">
                     <h5 class="card-title"><b>Edit Information</b></h5>
@@ -21,7 +20,7 @@
                         </div>
                     </div>
                 </div>
-                 Edit Info Form
+               
                 <div class="card-body" style="" data-select2-id="47">
                     <form asp-action="UpdateInformation" asp-controller="AdminUsers" method="post">
 
@@ -29,7 +28,7 @@
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label">Full Name:</label>
                             <div class="col-lg-8">
-                                <input asp-for="FullName" class="form-control" value="@adminuser.FullName" />
+                                <input asp-for="FullName" class="form-control">
                                 <span asp-validation-for="FullName" class="text-danger"></span>
                             </div>
                         </div>
@@ -37,7 +36,7 @@
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label">User Name :</label>
                             <div class="col-lg-8">
-                                <input asp-for="UserName" class="form-control" value="@adminuser.UserName">
+                                <input asp-for="UserName" class="form-control">
                                 <span asp-validation-for="UserName" class="text-danger"></span>
                             </div>
                         </div>
@@ -45,14 +44,14 @@
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label">Email:</label>
                             <div class="col-lg-8">
-                                <input asp-for="Email" class="form-control" value="@adminuser.Email">
+                                <input asp-for="Email" class="form-control">
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label">Phone Number:</label>
                             <div class="col-lg-8">
-                                <input asp-for="PhoneNumber" class="form-control" value="@adminuser.PhoneNumber">
+                                <input asp-for="PhoneNumber" class="form-control">
                                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             </div>
                         </div>
@@ -61,16 +60,16 @@
 
 
                         <div class="text-md-center">
-                            <button type="submit" class="btn btn-primary">Edit Information <i class="icon-paperplane ml-2"></i></button>
+                            <button type="submit" class="btn btn-primary">save<i class="icon-paperplane ml-2"></i></button>
                         </div>
                     </form>
                 </div>
             </div>
-             /basic layout 
+
 
         </div>
     </div>
-</div>*@
+</div>
 
 
 
