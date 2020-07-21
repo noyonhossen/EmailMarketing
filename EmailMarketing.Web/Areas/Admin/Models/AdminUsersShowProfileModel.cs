@@ -26,11 +26,11 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         internal async Task ShowProfileAsync()
         {
 
-            var adminuser = await _userManager.GetUserAsync(User);
-            this.FullName = adminuser.FullName;
-            this.UserName = adminuser.UserName;
-            this.Email = adminuser.Email;
-            this.PhoneNumber = adminuser.PhoneNumber;
+            //var adminuser = await _userManager.GetUserAsync(User);
+            //this.FullName = adminuser.FullName;
+            //this.UserName = adminuser.UserName;
+            //this.Email = adminuser.Email;
+            //this.PhoneNumber = adminuser.PhoneNumber;
 
 
         }
