@@ -22,7 +22,8 @@ namespace EmailMarketing.Web
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<ExpenseModel>();
-            
+            builder.RegisterType<AdminUsersModel>();
+
             base.Load(builder);
         }
     }

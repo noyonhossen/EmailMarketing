@@ -21,7 +21,7 @@
         }
     });
 
-    $('#expense-table').DataTable({
+    $('#adminusers-table').DataTable({
         "processing": true,
         "serverSide": true,
         "ajax": url,
@@ -38,7 +38,7 @@
                 'sortable': true,
                 'searchable': false,
                 "orderData": [1]
-            },
+            },         
             {
                 "targets": [2],
                 'sortable': true,
@@ -50,7 +50,7 @@
                 'sortable': true,
                 'searchable': false,
                 "orderData": [3]
-            },
+            },           
             {
                 "targets": [4],
                 'sortable': false,
@@ -58,10 +58,10 @@
                 "width": "15%",
                 "className": "text-center",
                 "render": function (data, type, row, meta) {
-                    var editButton = '<a class="text-primary" href="' + editUrl + '/'+ data +'" title="Edit">' +
+                    var editButton = '<a class="text-primary" href="' + editUrl + '/' + data + '" title="Edit">' +
                         '<i class="icon-pencil7"></i></a>';
 
-                    var deleteButton = '<a class="text-danger show-bs-modal" data-id="'+ data +'" href="#" title="Delete">' +
+                    var deleteButton = '<a class="text-danger show-bs-modal" data-id="' + data + '" href="#" title="Delete">' +
                         '<i class="icon-trash"></i></a>';
 
                     return editButton + ' ' + deleteButton;
