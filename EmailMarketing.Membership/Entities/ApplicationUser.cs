@@ -34,6 +34,7 @@ namespace EmailMarketing.Membership.Entities
         {
             this.IsActive = true;
             this.IsDeleted = false;
+            this.IsBlocked = false;
             this.UserRoles = new List<ApplicationUserRole>();
         }
 
@@ -42,6 +43,7 @@ namespace EmailMarketing.Membership.Entities
         {
             this.IsActive = true;
             this.IsDeleted = false;
+            this.IsBlocked = false;
             this.UserRoles = new List<ApplicationUserRole>();
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using System;
 using System.Threading.Tasks;
 
 namespace EmailMarketing.Data
@@ -7,5 +8,6 @@ namespace EmailMarketing.Data
     {
         void SaveChanges();
         Task SaveChangesAsync();
+        public Task<IDbContextTransaction> BeginTransaction();
     }
 }

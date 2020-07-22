@@ -68,7 +68,7 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         public async Task<string> UpdatePasswordHash(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
-            var newPassword = _userManager.PasswordHasher.HashPassword(user, _userDefaultPassword.DefaultPassword);
+            var newPassword = _userManager.PasswordHasher.HashPassword(user, _userDefaultPassword.UserDefaultPassword);
             user.PasswordHash = newPassword;
             user.PasswordChangedCount = 0;
             await _userManager.UpdateAsync(user);

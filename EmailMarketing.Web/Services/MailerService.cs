@@ -48,7 +48,7 @@ namespace EmailMarketing.Web.Services
                         await client.ConnectAsync(_smtpSettings.Server);
                     }
 
-                    await client.AuthenticateAsync(_smtpSettings.Username, _smtpSettings.Password);
+                    await client.AuthenticateAsync(_smtpSettings.UserName, _smtpSettings.Password);
                     await client.SendAsync(messgae);
                     await client.DisconnectAsync(true);
                 }

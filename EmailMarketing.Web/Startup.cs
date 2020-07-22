@@ -18,8 +18,6 @@ using EmailMarketing.Framework;
 using EmailMarketing.Membership;
 using EmailMarketing.Membership.Entities;
 using EmailMarketing.Membership.Services;
-using EmailMarketing.GroupModule.Context;
-using EmailMarketing.GroupModule;
 using EmailMarketing.Web.Core;
 using EmailMarketing.Web.Areas.Admin.Models;
 using EmailMarketing.Web.Services;
@@ -50,9 +48,7 @@ namespace EmailMarketing.Web
             var migrationAssemblyName = typeof(Startup).Assembly.FullName;
 
             builder.RegisterModule(new FrameworkModule(connectionString, migrationAssemblyName));
-            builder.RegisterModule(new GroupsModule(connectionString, migrationAssemblyName));
             builder.RegisterModule(new WebModule(connectionString, migrationAssemblyName));
-            builder.RegisterType<MemberUserModel>();
         }
         #endregion
 
@@ -67,9 +63,6 @@ namespace EmailMarketing.Web
                 options.UseSqlServer(connectionString, b => b.MigrationsAssembly(migrationAssemblyName)));
 
             services.AddDbContext<FrameworkContext>(options =>
-                options.UseSqlServer(connectionString, b => b.MigrationsAssembly(migrationAssemblyName)));
-            
-            services.AddDbContext<GroupContext>(options =>
                 options.UseSqlServer(connectionString, b => b.MigrationsAssembly(migrationAssemblyName)));
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
@@ -101,16 +94,17 @@ namespace EmailMarketing.Web
                 options.User.RequireUniqueEmail = false;
             });
 
-            services.Configure<EmailMarketing.Web.Core.AppSettings>(Configuration.GetSection("AppSettings"));
-
             services.ConfigureApplicationCookie(options =>
             {
                 options.AccessDeniedPath = "/Account/AccessDenied";
                 options.LoginPath = "/Account/Login";
             });
 
-            //Get Section from appsettings for smtp email service
-            services.Configure<EmailMarketing.Web.Core.SmtpSettings>(Configuration.GetSection("SmtpSettings"));
+            //Get Section from appsettings
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
+            services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
+
             services.AddSingleton<IMailerService, MailerService>();
 
             services.AddHttpContextAccessor();
@@ -157,9 +151,6 @@ namespace EmailMarketing.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "areas",
-                    pattern: "{area:exists}/{controller=AdminUsers}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "areas",
                     pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");

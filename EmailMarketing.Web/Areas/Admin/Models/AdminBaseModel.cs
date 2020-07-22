@@ -30,8 +30,7 @@ namespace EmailMarketing.Web.Areas.Admin.Models
             }
             set
             {
-                _httpContextAccessor.HttpContext.Session.Set(nameof(Response),
-                    value);
+                _httpContextAccessor.HttpContext.Session.Set(nameof(Response), value);
             }
         }
 
@@ -57,26 +56,30 @@ namespace EmailMarketing.Web.Areas.Admin.Models
                     {
                         new MenuItem
                         {
-                            Title = "Admin",
+                            Title = "Admin Users",
+                            Icon = "icon-user-tie",
                             Children = new List<MenuChildItem>
                             {
                                 new MenuChildItem () { Controller = "AdminUsers", Action = "Index", Area="Admin", Title = "View Admin List",
-                                    Icon = "icon-home4", IsActive = false },
+                                    Icon = "icon-user-tie", IsActive = false },
                                 new MenuChildItem () { Controller = "AdminUsers", Action = "Add", Area="Admin", Title = "Add New Admin",
-                                    Icon = "icon-home4", IsActive = false },
+                                    Icon = "icon-user-tie", IsActive = false },
                              
                             }
                         }
 
-                    }
-                    ,{
+                    },
+                    {
                         new MenuItem
                         {
-                            Title = "Users",
+                            Title = "Member Users",
+                            Icon = "icon-user",
                             Children = new List<MenuChildItem>
                             {
-                                new MenuChildItem () { Controller = "MemberUsers", Action = "Index", Area="Admin", Title = "View Users",
-                                    Icon = "icon-home4", IsActive = false }
+                                new MenuChildItem () { Controller = "MemberUsers", Action = "Index", Area="Admin", Title = "View Member Users",
+                                    Icon = "icon-user", IsActive = false },
+                                new MenuChildItem () { Controller = "MemberUsers", Action = "Add", Area="Admin", Title = "Add Member Users",
+                                    Icon = "icon-user", IsActive = false }
                             }
                         }
 
