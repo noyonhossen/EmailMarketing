@@ -37,7 +37,7 @@ namespace EmailMarketing.Framework
 
             builder.RegisterType<ExpenseService>().As<IExpenseService>()
                 .InstancePerLifetimeScope();
-            
+
             base.Load(builder);
         }
     }

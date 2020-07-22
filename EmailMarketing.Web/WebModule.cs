@@ -24,6 +24,7 @@ namespace EmailMarketing.Web
         {
             builder.RegisterType<ExpenseModel>();
             builder.RegisterType<GroupModel>();
+            builder.RegisterType<AdminUsersModel>();
             base.Load(builder);
         }
     }
