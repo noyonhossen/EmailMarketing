@@ -2,9 +2,9 @@
 
 namespace EmailMarketing.Data
 {
-    public abstract class IEntity<TKey>
+    public abstract class IEntity<Tkey>
     {
-        public TKey Id { get; set; }
+        public Tkey Id { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsActive { get; set; }
 

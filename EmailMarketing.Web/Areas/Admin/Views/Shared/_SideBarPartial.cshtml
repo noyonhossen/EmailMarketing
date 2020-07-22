@@ -53,8 +53,27 @@
                 @{
                     foreach (var menu in Model.MenuItems)
                     {
-                        var isActiveMenu = menu.Children.Any(sm => sm.IsActive) || menu.Children.Any(sm => 
+                        var isActiveMenu = menu.Children.Any(sm => sm.IsActive) || menu.Children.Any(sm =>
                                                 controllerName == sm.Controller && actionName == sm.Action && areaName == sm.Area);
+
+                        <li class="nav-item nav-item-submenu @(isActiveMenu ? "nav-item-open" : "")">
+                            <a href="#" class="nav-link"><i class="icon-home4"></i> <span>@menu.Title</span></a>
+
+                            <ul class="nav nav-group-sub" data-submenu-title="@menu.Title" style="display: @(isActiveMenu ? "block" : "none")">
+                                @foreach (var submenu in menu.Children)
+                                {
+                                    var isActiveSubMenu = submenu.IsActive || (controllerName == submenu.Controller &&
+                                                                actionName == submenu.Action && areaName == submenu.Area);
+                                    <li class="nav-item">
+                                        <a asp-area="@submenu.Area" asp-controller="@submenu.Controller" asp-action="@submenu.Action"
+                                           class="nav-link @(isActiveSubMenu ? "active" : "")">
+                                            <i class="@submenu.Icon"></i>
+                                            <span>@submenu.Title</span>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
 
                         <li class="nav-item nav-item-submenu @(isActiveMenu ? "nav-item-open" : "")">
                             <a href="#" class="nav-link"><i class="icon-home4"></i> <span>@menu.Title</span></a>
@@ -76,34 +95,41 @@
                         </li>
                     }
                 }
+                <li class="nav-item nav-item-submenu">
+                    <a href="#" class="nav-link"><i class="icon-copy"></i> <span>Groups</span></a>
 
-                @*<li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i></li>
-                    <li class="nav-item">
-                        <a asp-controller="Dashboard" asp-action="Index" asp-area="Admin" class="nav-link active">
-                            <i class="icon-home4"></i>
-                            <span>
-                                Dashboard
-                                <span class="d-block font-weight-normal opacity-50">No active orders</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="nav-item nav-item-submenu">
-                        <a href="#" class="nav-link"><i class="icon-copy"></i> <span>Layouts</span></a>
+                    <ul class="nav nav-group-sub" data-submenu-title="Groups">
+                        <li class="nav-item"><a asp-action="Add" class="nav-link">Add</a></li>
+                        <li class="nav-item"><a asp-action="Edit" class="nav-link active">Edit</a></li>
+                    </ul>
+                </li>
+                @* <li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i></li>
+                <li class="nav-item">
+                    <a asp-controller="Groups" asp-action="Index" asp-area="Admin" class="nav-link active">
+                        <i class="icon-home4"></i>
+                        <span>
+                            Dashboard
+                            <span class="d-block font-weight-normal opacity-50">No active orders</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item nav-item-submenu">
+                    <a href="#" class="nav-link"><i class="icon-copy"></i> <span>Layouts</span></a>
 
-                        <ul class="nav nav-group-sub" data-submenu-title="Layouts">
-                            <li class="nav-item"><a href="#" class="nav-link">Default layout</a></li>
-                            <li class="nav-item"><a href="#" class="nav-link active">Layout 2</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item"><a href="#" class="nav-link"><i class="icon-width"></i> <span>RTL version</span></a></li>*@
-                <!-- /main -->
+                    <ul class="nav nav-group-sub" data-submenu-title="Layouts">
+                        <li class="nav-item"><a href="#" class="nav-link">Default layout</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link active">Layout 2</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="icon-width"></i> <span>RTL version</span></a></li>
+                        <!-- /main -->
 
-            </ul>
+                    </ul>*@
+                </div>
+                <!-- /main navigation -->
+
+            </div>
+            <!-- /sidebar content -->
+
         </div>
-        <!-- /main navigation -->
-
-    </div>
-    <!-- /sidebar content -->
-
-</div>
-<!-- /main sidebar -->
+        <!-- /main sidebar -->

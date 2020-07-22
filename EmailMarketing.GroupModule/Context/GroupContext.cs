@@ -1,20 +1,16 @@
-﻿using EmailMarketing.Framework.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace EmailMarketing.Framework.Context
+namespace EmailMarketing.GroupModule.Context
 {
-    public class FrameworkContext : DbContext
+    public class GroupContext:DbContext
     {
-
         private string _connectionString;
         private string _migrationAssemblyName;
 
-        public FrameworkContext(string connectionString, string migrationAssemblyName)
+        public GroupContext(string connectionString, string migrationAssemblyName)
         {
             _connectionString = connectionString;
             _migrationAssemblyName = migrationAssemblyName;
@@ -37,7 +33,6 @@ namespace EmailMarketing.Framework.Context
             base.OnModelCreating(builder);
         }
 
-        public DbSet<Entities.Expense> Expenses { get; set; }
-        
+        public DbSet<Entities.Group> Groups { get; set; }
     }
 }

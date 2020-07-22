@@ -1,22 +1,18 @@
 ﻿using Autofac;
-using EmailMarketing.Framework.Context;
-using EmailMarketing.Framework.Repositories;
-using EmailMarketing.Framework.Services;
-using EmailMarketing.Framework.UnitOfWork;
+using EmailMarketing.GroupModule.Context;
+using EmailMarketing.GroupModule.Repositories;
+using EmailMarketing.GroupModule.Services;
+using EmailMarketing.GroupModule.UnitOfWork;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EmailMarketing.Framework
+namespace EmailMarketing.GroupModule
 {
-    public class FrameworkModule : Module
+    public class GroupsModule : Module
     {
         private readonly string _connectionString;
         private readonly string _migrationAssemblyName;
 
-        public FrameworkModule(string connectionString, string migrationAssemblyName)
+        public GroupsModule(string connectionString, string migrationAssemblyName)
         {
             _connectionString = connectionString;
             _migrationAssemblyName = migrationAssemblyName;
@@ -24,22 +20,22 @@ namespace EmailMarketing.Framework
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<FrameworkContext>()
+            builder.RegisterType<GroupContext>()
                    .WithParameter("connectionString", _connectionString)
                    .WithParameter("migrationAssemblyName", _migrationAssemblyName)
                    .InstancePerLifetimeScope();
 
-            builder.RegisterType<ExpenseUnitOfWork>().As<IExpenseUnitOfWork>()
+            
+            builder.RegisterType<GroupUnitOfWork>().As<IGroupUnitOfWork>()
                    .InstancePerLifetimeScope();
 
-            builder.RegisterType<ExpenseRepository>().As<IExpenseRepository>()
+            builder.RegisterType<GroupRepository>().As<IGroupRepository>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<ExpenseService>().As<IExpenseService>()
+            builder.RegisterType<GroupService>().As<IGroupService>()
                 .InstancePerLifetimeScope();
 
             base.Load(builder);
         }
     }
 }
-

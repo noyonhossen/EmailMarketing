@@ -6,48 +6,47 @@ using Autofac;
 using EmailMarketing.Data.Exceptions;
 using EmailMarketing.Web.Areas.Admin.Enums;
 using EmailMarketing.Web.Areas.Admin.Models;
+using EmailMarketing.Web.Areas.Admin.Models.GroupModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace EmailMarketing.Web.Areas.Admin.Controllers
-{ 
+{
     [Area("Admin")]
-    public class ExpensesController : Controller
+    public class GroupsController : Controller
     {
-        private readonly ILogger<ExpensesController> _logger;
+        
+        private readonly ILogger<GroupsController> _logger;
 
-        public ExpensesController(ILogger<ExpensesController> logger)
+        public GroupsController(ILogger<GroupsController> logger)
         {
             _logger = logger;
         }
 
         public IActionResult Index()
         {
-            var model = Startup.AutofacContainer.Resolve<ExpenseModel>();
+            var model = Startup.AutofacContainer.Resolve<GroupModel>();
             return View(model);
         }
 
         public IActionResult Add()
         {
-            var model = new CreateExpenseModel();
+            var model = new CreateGroupModel();
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
-            [Bind(nameof(CreateExpenseModel.Title),
-            nameof(CreateExpenseModel.Description),
-            nameof(CreateExpenseModel.Amount),
-            nameof(CreateExpenseModel.ExpenseType),
-            nameof(CreateExpenseModel.ExpenseDate))] CreateExpenseModel model)
+            [Bind(nameof(CreateGroupModel.Name))] CreateGroupModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     await model.AddAsync();
-                    model.Response = new ResponseModel("Expense creation successful.", ResponseType.Success);
+                    model.Response = new ResponseModel("Group creation successful.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }
                 catch (DuplicationException ex)
@@ -56,7 +55,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel("Expense creation failured.", ResponseType.Failure);
+                    model.Response = new ResponseModel("Group creation failured.", ResponseType.Failure);
                 }
             }
             return View(model);
@@ -64,7 +63,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var model = new EditExpenseModel();
+            var model = new EditGroupModel();
             await model.LoadByIdAsync(id);
             return View(model);
         }
@@ -72,19 +71,15 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
-            [Bind(nameof(EditExpenseModel.Id),
-            nameof(CreateExpenseModel.Title),
-            nameof(CreateExpenseModel.Description),
-            nameof(CreateExpenseModel.Amount),
-            nameof(CreateExpenseModel.ExpenseType),
-            nameof(CreateExpenseModel.ExpenseDate))] EditExpenseModel model)
+            [Bind(nameof(EditGroupModel.Id),
+            nameof(CreateGroupModel.Name))] EditGroupModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     await model.UpdateAsync();
-                    model.Response = new ResponseModel("Expense edit successful.", ResponseType.Success);
+                    model.Response = new ResponseModel("Groups edit successful.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }
                 catch (DuplicationException ex)
@@ -93,7 +88,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel("Expense edit failured.", ResponseType.Failure);
+                    model.Response = new ResponseModel("Groups edit failured.", ResponseType.Failure);
                 }
             }
             return View(model);
@@ -105,25 +100,25 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var model = new ExpenseModel();
+                var model = new GroupModel();
                 try
                 {
                     var title = await model.DeleteAsync(id);
-                    model.Response = new ResponseModel($"Expense {title} successfully deleted.", ResponseType.Success);
+                    model.Response = new ResponseModel($"Group {title} successfully deleted.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel("Expense delete failured.", ResponseType.Failure);
+                    model.Response = new ResponseModel("Group delete failured.", ResponseType.Failure);
                 }
             }
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> GetExpenses()
+        public async Task<IActionResult> GetGroups()
         {
             var tableModel = new DataTablesAjaxRequestModel(Request);
-            var model = Startup.AutofacContainer.Resolve<ExpenseModel>();
+            var model = Startup.AutofacContainer.Resolve<GroupModel>();
             var data = await model.GetAllAsync(tableModel);
             return Json(data);
         }
