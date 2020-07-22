@@ -1,7 +1,7 @@
 ﻿
-@model ForgotPasswordConfirmationModel
+@model EmailVerificationConfirmationModel
 @{
-    ViewData["Title"] = "Forgot Password Confirmation";
+    ViewData["Title"] = "Email Verification";
     Layout = "_AccountLayout";
 }
 
@@ -25,8 +25,8 @@
                 <div class="card-body">
                     <div class="text-center mb-3">
                         <i class="icon-checkmark4 icon-2x text-success border-success border-3 rounded-round p-3 mb-3 mt-1"></i>
-                        <h5 class="mb-0">Email has been Sent !!</h5>
-                        <span class="d-block text-muted">Please check your email to reset your password.</span>
+                        <h5 class="mb-0">@ViewData["Title"]</h5>
+                        <span class="d-block text-muted">Please check your email to verify your account.</span>
                     </div>
                 </div>
             </div>

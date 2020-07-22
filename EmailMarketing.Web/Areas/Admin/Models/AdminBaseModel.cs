@@ -67,6 +67,19 @@ namespace EmailMarketing.Web.Areas.Admin.Models
                              
                             }
                         }
+
+                    }
+                    ,{
+                        new MenuItem
+                        {
+                            Title = "Users",
+                            Children = new List<MenuChildItem>
+                            {
+                                new MenuChildItem () { Controller = "MemberUsers", Action = "Index", Area="Admin", Title = "View Users",
+                                    Icon = "icon-home4", IsActive = false }
+                            }
+                        }
+
                     }
                 }
             };
