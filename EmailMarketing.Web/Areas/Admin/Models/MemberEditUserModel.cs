@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Web.Areas.Admin.Models
 {
-    public class AdminEditUserModel : AdminBaseModel
+    public class MemberEditUserModel : AdminBaseModel
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }
@@ -41,11 +41,11 @@ namespace EmailMarketing.Web.Areas.Admin.Models
 
         private readonly ApplicationUserManager _userManager;
  
-        public AdminEditUserModel()
+        public MemberEditUserModel()
         {
             _userManager = Startup.AutofacContainer.Resolve<ApplicationUserManager>();
         }
-        public AdminEditUserModel(ApplicationUserManager userManager)
+        public MemberEditUserModel(ApplicationUserManager userManager)
         {
             _userManager = userManager;
             

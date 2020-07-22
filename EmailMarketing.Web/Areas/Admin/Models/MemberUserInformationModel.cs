@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Web.Areas.Admin.Models
 {
-    public class AdminUserInformationModel : AdminBaseModel
+    public class MemberUserInformationModel : AdminBaseModel
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }
@@ -38,11 +38,11 @@ namespace EmailMarketing.Web.Areas.Admin.Models
 
         private readonly ApplicationUserManager _userManager;
 
-        public AdminUserInformationModel()
+        public MemberUserInformationModel()
         {
             _userManager = Startup.AutofacContainer.Resolve<ApplicationUserManager>();
         }
-        public AdminUserInformationModel(ApplicationUserManager userManager)
+        public MemberUserInformationModel(ApplicationUserManager userManager)
         {
             _userManager = userManager;
         }

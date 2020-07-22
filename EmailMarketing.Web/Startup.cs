@@ -50,7 +50,7 @@ namespace EmailMarketing.Web
 
             builder.RegisterModule(new FrameworkModule(connectionString, migrationAssemblyName));
             builder.RegisterModule(new WebModule(connectionString, migrationAssemblyName));
-            builder.RegisterType<AdminUserModel>();
+            builder.RegisterType<MemberUserModel>();
         }
         #endregion
 

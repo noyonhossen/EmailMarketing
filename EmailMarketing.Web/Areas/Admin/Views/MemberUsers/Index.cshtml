@@ -53,7 +53,7 @@
 
             <div class="modal-body">
                 <p>Are you sure want to delete?</p>
-                <form id="deleteForm" action="@Url.Action("Delete", "AdminUsers", new { Area = "Admin" })" method="post">
+                <form id="deleteForm" action="@Url.Action("Delete", "MemberUsers", new { Area = "Admin" })" method="post">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="deleteId" value="" name="id" />
                 </form>
@@ -78,7 +78,7 @@
 
             <div class="modal-body">
                 <p>Are you sure want to Block User?</p>
-                <form id="blockUserdForm" action="@Url.Action("BlockUser", "AdminUsers", new { Area = "Admin" })" method="post">
+                <form id="blockUserdForm" action="@Url.Action("BlockUser", "MemberUsers", new { Area = "Admin" })" method="post">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="blockId" value="" name="id" />
                 </form>
@@ -105,7 +105,7 @@
 
             <div class="modal-body">
                 <p>Are you sure want to Reset User Password?</p>
-                <form id="resetUserdPasswordForm" action="@Url.Action("ResetPassword", "AdminUsers", new { Area = "Admin" })" method="post">
+                <form id="resetUserdPasswordForm" action="@Url.Action("ResetPassword", "MemberUsers", new { Area = "Admin" })" method="post">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="resetId" value="" name="id" />
                 </form>
@@ -132,9 +132,9 @@
 
     <script>
         $(function () {
-            var url = '@Url.Action("GetUsers", "AdminUsers", new { Area = "Admin" })';
-            var editUrl = '@Url.Action("Edit", "AdminUsers", new { Area = "Admin" })';
-            var userInformationUrl = '@Url.Action("UserInformation", "AdminUsers", new { Area = "Admin" })';
+            var url = '@Url.Action("GetUsers", "MemberUsers", new { Area = "Admin" })';
+            var editUrl = '@Url.Action("Edit", "MemberUsers", new { Area = "Admin" })';
+            var userInformationUrl = '@Url.Action("UserInformation", "MemberUsers", new { Area = "Admin" })';
             loadDatatable(url, editUrl, userInformationUrl);
 
             //Delete User
