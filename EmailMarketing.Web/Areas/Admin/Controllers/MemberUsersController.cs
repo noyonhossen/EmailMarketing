@@ -18,13 +18,13 @@ using Microsoft.Extensions.Configuration;
 namespace EmailMarketing.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class AdminUsersController : Controller
+    public class MemberUsersController : Controller
     {
         
 
         public IActionResult Index()
         {
-            var model = Startup.AutofacContainer.Resolve<AdminUserModel>();
+            var model = Startup.AutofacContainer.Resolve<MemberUserModel>();
             return View(model);
         }
 
@@ -32,21 +32,21 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         {
             
             var tableModel = new DataTablesAjaxRequestModel(Request);
-            var model = Startup.AutofacContainer.Resolve<AdminUserModel>();
+            var model = Startup.AutofacContainer.Resolve<MemberUserModel>();
             var data = await model.GetAllAsync(tableModel);
             return Json(data);
         }
 
         public async Task<IActionResult> UserInformation(Guid id)
         {
-            var model = new AdminUserInformationModel();
+            var model = new MemberUserInformationModel();
             await model.LoadByIdAsync(id);
             return View(model);
         }
 
         public async Task<IActionResult> Edit(Guid id)
         {
-            var model = new AdminEditUserModel();
+            var model = new MemberEditUserModel();
             await model.LoadByIdAsync(id);
             return View(model);
         }
@@ -55,15 +55,15 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
-            [Bind(nameof(AdminEditUserModel.Id),
-            nameof(AdminEditUserModel.UserName),
-            nameof(AdminEditUserModel.Email),
-            nameof(AdminEditUserModel.Gender),
-            nameof(AdminEditUserModel.Address),
-            nameof(AdminEditUserModel.FullName),
-            nameof(AdminEditUserModel.PhoneNumber),
-            nameof(AdminEditUserModel.ImageUrl)
-            )] AdminEditUserModel model)
+            [Bind(nameof(MemberEditUserModel.Id),
+            nameof(MemberEditUserModel.UserName),
+            nameof(MemberEditUserModel.Email),
+            nameof(MemberEditUserModel.Gender),
+            nameof(MemberEditUserModel.Address),
+            nameof(MemberEditUserModel.FullName),
+            nameof(MemberEditUserModel.PhoneNumber),
+            nameof(MemberEditUserModel.ImageUrl)
+            )] MemberEditUserModel model)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +90,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var model = new AdminUserModel();
+                var model = new MemberUserModel();
                 try
                 {
                     var title = await model.DeleteAsync(id);
@@ -111,7 +111,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var model = new AdminUserModel();
+                var model = new MemberUserModel();
                 try
                 {
                     var title = await model.BlockUser(id);
@@ -132,7 +132,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var model = new AdminUserModel();
+                var model = new MemberUserModel();
                 try
                 {
                     var title = await model.UpdatePasswordHash(id);
