@@ -1,4 +1,4 @@
-﻿using EmailMarketing.Framework.Services;
+﻿using EmailMarketing.GroupModule.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -18,6 +18,8 @@ using EmailMarketing.Framework;
 using EmailMarketing.Membership;
 using EmailMarketing.Membership.Entities;
 using EmailMarketing.Membership.Services;
+using EmailMarketing.GroupModule.Context;
+using EmailMarketing.GroupModule;
 
 namespace EmailMarketing.Web
 {
@@ -45,6 +47,7 @@ namespace EmailMarketing.Web
             var migrationAssemblyName = typeof(Startup).Assembly.FullName;
 
             builder.RegisterModule(new FrameworkModule(connectionString, migrationAssemblyName));
+            builder.RegisterModule(new GroupsModule(connectionString, migrationAssemblyName));
             builder.RegisterModule(new WebModule(connectionString, migrationAssemblyName));
         }
         #endregion
@@ -60,6 +63,9 @@ namespace EmailMarketing.Web
                 options.UseSqlServer(connectionString, b => b.MigrationsAssembly(migrationAssemblyName)));
 
             services.AddDbContext<FrameworkContext>(options =>
+                options.UseSqlServer(connectionString, b => b.MigrationsAssembly(migrationAssemblyName)));
+            
+            services.AddDbContext<GroupContext>(options =>
                 options.UseSqlServer(connectionString, b => b.MigrationsAssembly(migrationAssemblyName)));
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()

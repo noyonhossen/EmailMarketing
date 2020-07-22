@@ -16,16 +16,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
     [Area("Admin")]
     public class GroupsController : Controller
     {
-        //private readonly IConfiguration _configuration;
-        //public GroupsController(IConfiguration configuration)
-        //{
-        //    _configuration = configuration;
-        //}
-        //public IActionResult Index()
-        //{
-        //    var model = Startup.AutofacContainer.Resolve<GroupModel>();
-        //    return View(model);
-        //}
+        
         private readonly ILogger<GroupsController> _logger;
 
         public GroupsController(ILogger<GroupsController> logger)
@@ -55,7 +46,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                 try
                 {
                     await model.AddAsync();
-                    model.Response = new ResponseModel("Expense creation successful.", ResponseType.Success);
+                    model.Response = new ResponseModel("Group creation successful.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }
                 catch (DuplicationException ex)
@@ -64,7 +55,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel("Expense creation failured.", ResponseType.Failure);
+                    model.Response = new ResponseModel("Group creation failured.", ResponseType.Failure);
                 }
             }
             return View(model);
@@ -113,12 +104,12 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                 try
                 {
                     var title = await model.DeleteAsync(id);
-                    model.Response = new ResponseModel($"Expense {title} successfully deleted.", ResponseType.Success);
+                    model.Response = new ResponseModel($"Group {title} successfully deleted.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel("Expense delete failured.", ResponseType.Failure);
+                    model.Response = new ResponseModel("Group delete failured.", ResponseType.Failure);
                 }
             }
             return RedirectToAction("Index");

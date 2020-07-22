@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EmailMarketing.Framework.Entities
+namespace EmailMarketing.GroupModule.Entities
 {
     public class Group:IEntity<int>
     {

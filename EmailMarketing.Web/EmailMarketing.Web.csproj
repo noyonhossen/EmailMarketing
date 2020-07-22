@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EmailMarketing.Data\EmailMarketing.Data.csproj" />
     <ProjectReference Include="..\EmailMarketing.Framework\EmailMarketing.Framework.csproj" />
+    <ProjectReference Include="..\EmailMarketing.GroupModule\EmailMarketing.GroupModule.csproj" />
     <ProjectReference Include="..\EmailMarketing.Membership\EmailMarketing.Membership.csproj" />
   </ItemGroup>
 

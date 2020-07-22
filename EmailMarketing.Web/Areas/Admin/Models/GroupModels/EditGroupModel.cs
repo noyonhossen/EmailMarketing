@@ -1,5 +1,5 @@
-﻿using EmailMarketing.Framework.Entities;
-using EmailMarketing.Framework.Services;
+﻿using EmailMarketing.GroupModule.Entities;
+using EmailMarketing.GroupModule.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

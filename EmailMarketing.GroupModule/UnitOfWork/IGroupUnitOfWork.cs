@@ -1,10 +1,10 @@
 ﻿using EmailMarketing.Data;
-using EmailMarketing.Framework.Repositories;
+using EmailMarketing.GroupModule.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EmailMarketing.Framework.UnitOfWork
+namespace EmailMarketing.GroupModule.UnitOfWork
 {
     public interface IGroupUnitOfWork:IUnitOfWork
     {

@@ -1,10 +1,10 @@
-﻿using EmailMarketing.Framework.Entities;
+﻿using EmailMarketing.GroupModule.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.Framework.Services
+namespace EmailMarketing.GroupModule.Services
 {
     public interface IGroupService:IDisposable
     {
@@ -12,13 +12,7 @@ namespace EmailMarketing.Framework.Services
                                                                     int pageSize,
                                                                     string searchText,
                                                                     string orderBy);
-        //void CreateGroup(Group group);
-        //void EditGroup(Group group);
-        //Group GetGroup(int id);
-        //Group DeleteGroup(int id);
-
         
-
         Task<Entities.Group> GetByIdAsync(int id);
         Task AddAsync(Entities.Group entity);
         Task UpdateAsync(Entities.Group entity);

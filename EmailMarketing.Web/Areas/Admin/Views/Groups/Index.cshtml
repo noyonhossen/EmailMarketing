@@ -148,8 +148,7 @@
             $('#group-table').on('click', '.show-bs-modal', function (event) {
                 var id = $(this).data("id");
                 var modal = $("#modal-delete");
-                modal.find('.modal-body p').text('Are you sure want to delete this record?')
-                //$("#deleteForm").attr("action", "/admin/category/delete/" + id );
+                modal.find('.modal-body p').text('Are you sure want to delete this record?')                
                 $("#deleteId").val(id);
                 modal.modal('show');
             });

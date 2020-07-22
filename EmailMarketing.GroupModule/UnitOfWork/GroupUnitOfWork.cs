@@ -1,16 +1,16 @@
 ﻿using EmailMarketing.Data;
-using EmailMarketing.Framework.Context;
-using EmailMarketing.Framework.Repositories;
+using EmailMarketing.GroupModule.Context;
+using EmailMarketing.GroupModule.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EmailMarketing.Framework.UnitOfWork
+namespace EmailMarketing.GroupModule.UnitOfWork
 {
     public class GroupUnitOfWork: EmailMarketing.Data.UnitOfWork, IGroupUnitOfWork
     {
         public IGroupRepository GroupRepository { get; set; }
-        public GroupUnitOfWork(FrameworkContext context, IGroupRepository groupRepositroy)
+        public GroupUnitOfWork(GroupContext context, IGroupRepository groupRepositroy)
             : base(context)
         {
             GroupRepository = groupRepositroy;
