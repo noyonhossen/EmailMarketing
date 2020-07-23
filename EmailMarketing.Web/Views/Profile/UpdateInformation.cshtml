@@ -1,13 +1,14 @@
 ﻿@using EmailMarketing.Membership.Entities
 @inject UserManager<ApplicationUser> UserManager
 @using Microsoft.AspNetCore.Identity
-@model ProfileInformationModel
+
+@model UpdateInformationModel
 @{
     ViewData["Title"] = "Edit Information";
 }
 
 @{
-var user = await UserManager.GetUserAsync(User);
+    var user = UserManager.GetUserAsync(User);
 }
 
 <div class="content-wrapper">
@@ -28,13 +29,15 @@ var user = await UserManager.GetUserAsync(User);
                 </div>
                 <!-- Edit Info Form-->
                 <div class="card-body" style="" data-select2-id="47">
-                    <form asp-action="UpdateInformation" asp-controller="Profile"  method="post">
+                    <form asp-action="UpdateInformation" asp-controller="Profile" method="post">
+
+                        @*<input type="hidden" asp-for="Id" />*@
 
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label">Full Name:</label>
                             <div class="col-lg-8">
-                                <input asp-for="FullName" class="form-control" value="@user.FullName"/>
+                                <input asp-for="FullName" class="form-control" />
                                 <span asp-validation-for="FullName" class="text-danger"></span>
                             </div>
                         </div>
@@ -42,7 +45,7 @@ var user = await UserManager.GetUserAsync(User);
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label">Address:</label>
                             <div class="col-lg-8">
-                                <input asp-for="Address" class="form-control" value="@user.Address">
+                                <input asp-for="Address" class="form-control">
                                 <span asp-validation-for="Address" class="text-danger"></span>
                             </div>
                         </div>
@@ -70,38 +73,3 @@ var user = await UserManager.GetUserAsync(User);
 </div>
 
 
-
-@*<h1>ChangePassword</h1>
-    <form>
-        <div class="row">
-            <div class="col-md-4">
-                <section>
-                    <form id="account" method="post">
-                        <hr />
-                        <div asp-validation-summary="All" class="text-danger"></div>
-                        <div class="form-group">
-                            <label asp-for="CurrentPassword"></label>
-                            <input asp-for="CurrentPassword" class="form-control" />
-                            <span asp-validation-for="CurrentPassword" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="NewPassword"></label>
-                            <input asp-for="NewPassword" class="form-control" />
-                            <span asp-validation-for="NewPassword" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <div class="checkbox">
-                                <label asp-for="ConfirmNewPassword">
-                                    <input asp-for="ConfirmNewPassword" />
-                                    <span asp-validation-for="ConfirmNewPassword" class="text-danger"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                </section>
-            </div>
-        </div>
-    </form>*@
