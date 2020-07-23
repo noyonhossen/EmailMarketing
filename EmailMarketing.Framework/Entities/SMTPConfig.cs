@@ -1,11 +1,13 @@
-﻿using System;
+﻿using EmailMarketing.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.Web.Core
+namespace EmailMarketing.Framework.Entities
 {
-    public class SmtpSettings
+    public class SMTPConfig : IAuditableEntity<Guid>
     {
         public string Server { get; set; }
         public int Port { get; set; }

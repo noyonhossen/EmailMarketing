@@ -29,6 +29,13 @@ namespace EmailMarketing.Framework
                    .WithParameter("migrationAssemblyName", _migrationAssemblyName)
                    .InstancePerLifetimeScope();
 
+            builder.RegisterType<CampaignUnitOfWork>().As<ICampaignUnitOfWork>()
+                   .InstancePerLifetimeScope();
+            builder.RegisterType<GroupUnitOfWork>().As<IGroupUnitOfWork>()
+                   .InstancePerLifetimeScope();
+            builder.RegisterType<SMTPUnitOfWork>().As<ISMTPUnitOfWork>()
+                   .InstancePerLifetimeScope();
+
             builder.RegisterType<ExpenseUnitOfWork>().As<IExpenseUnitOfWork>()
                    .InstancePerLifetimeScope();
 

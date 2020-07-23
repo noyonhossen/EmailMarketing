@@ -352,13 +352,14 @@ namespace EmailMarketing.Data
             return _dbContext.Database.ExecuteSqlCommand(sql, parameters);
         }
 
-        public IList<dynamic> GetFromSql(string sql, Dictionary<string, object> parameters)
+        public IList<dynamic> GetFromSql(string sql, Dictionary<string, object> parameters, bool isStoredProcedure = false)
         {
             var items = new List<dynamic>();
 
             using (var command = _dbContext.Database.GetDbConnection().CreateCommand())
             {
                 command.CommandText = sql;
+                if (isStoredProcedure) { command.CommandType = CommandType.StoredProcedure; }
                 if (command.Connection.State != ConnectionState.Open) { command.Connection.Open(); }
 
                 foreach (var param in parameters)
@@ -386,7 +387,7 @@ namespace EmailMarketing.Data
             return items;
         }
 
-        public (IList<TEntity> Items, int Total, int TotalFilter) GetFromSql(string sql, IList<(string Key, object Value, bool IsOut)> parameters)
+        public (IList<TEntity> Items, int Total, int TotalFilter) GetFromSql(string sql, IList<(string Key, object Value, bool IsOut)> parameters, bool isStoredProcedure = true)
         {
             var items = new List<TEntity>();
             int? totalCount = 0;
@@ -395,6 +396,7 @@ namespace EmailMarketing.Data
             using (var command = _dbContext.Database.GetDbConnection().CreateCommand())
             {
                 command.CommandText = sql;
+                if (isStoredProcedure) { command.CommandType = CommandType.StoredProcedure; }
                 if (command.Connection.State != ConnectionState.Open) { command.Connection.Open(); }
 
                 foreach (var param in parameters)
@@ -424,7 +426,8 @@ namespace EmailMarketing.Data
 
                         foreach (var property in properties)
                         {
-                            property.SetValue(instance, reader[property.Name]);
+                            if (!reader.IsDBNull(property.Name))
+                                property.SetValue(instance, reader[property.Name]);
                         }
 
                         items.Add((TEntity)instance);

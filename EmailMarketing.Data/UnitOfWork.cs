@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Threading.Tasks;
 
@@ -13,6 +14,11 @@ namespace EmailMarketing.Data
 
         public void SaveChanges() => _dbContext?.SaveChanges();
         public Task SaveChangesAsync() => _dbContext?.SaveChangesAsync();
+
+        public async Task<IDbContextTransaction> BeginTransaction()
+        {
+            return await _dbContext.Database.BeginTransactionAsync();
+        }
 
         #region Dispose
         //public void Dispose() => _dbContext?.Dispose();

@@ -38,6 +38,12 @@ namespace EmailMarketing.Framework.Context
         }
 
         public DbSet<Entities.Expense> Expenses { get; set; }
-        
+        public DbSet<Entities.Campaign> Campaigns { get; set; }
+        public DbSet<Entities.CampaignGroup> CampaignGroups { get; set; }
+        public DbSet<Entities.CampaignReport> CampaignReports { get; set; }
+        public DbSet<Entities.Contact> Contacts { get; set; }
+        public DbSet<Entities.Group> Groups { get; set; }
+        public DbSet<Entities.SingleValueEntry> SingleValueEntries { get; set; }
+        public DbSet<Entities.SMTPConfig> SMTPConfigs { get; set; }
     }
 }
