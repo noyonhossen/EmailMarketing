@@ -106,6 +106,8 @@ namespace EmailMarketing.Web
             services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
 
             services.AddSingleton<IMailerService, MailerService>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddTransient<IDateTime, DateTimeService>();
 
             services.AddHttpContextAccessor();
 
