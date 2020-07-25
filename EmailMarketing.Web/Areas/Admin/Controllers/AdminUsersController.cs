@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
-using EmailMarketing.Data.Exceptions;
+using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Membership.Entities;
 using EmailMarketing.Membership.Services;
 using EmailMarketing.Web.Areas.Admin.Enums;

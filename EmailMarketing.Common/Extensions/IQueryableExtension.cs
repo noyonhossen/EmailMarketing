@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace EmailMarketing.Data.Extensions
+namespace EmailMarketing.Common.Extensions
 {
     public static class IQueryableExtension
     {
@@ -22,7 +22,7 @@ namespace EmailMarketing.Data.Extensions
             else if(columnsMap.ContainsKey(prop))
                 orderedQuery = orderedQuery.OrderByDescending(columnsMap[prop]);
             else
-                orderedQuery = orderedQuery.OrderBy(x=> x);
+                orderedQuery = orderedQuery.OrderBy(x => x);
 
             for (int i = 1; i < orderByList.Length; i++)
             {

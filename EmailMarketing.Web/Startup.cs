@@ -21,6 +21,7 @@ using EmailMarketing.Membership.Services;
 using EmailMarketing.Web.Core;
 using EmailMarketing.Web.Areas.Admin.Models;
 using EmailMarketing.Web.Services;
+using EmailMarketing.Common.Services;
 
 namespace EmailMarketing.Web
 {
@@ -108,6 +109,7 @@ namespace EmailMarketing.Web
             services.AddSingleton<IMailerService, MailerService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddTransient<IDateTime, DateTimeService>();
+            services.AddScoped<IApplicationUserService, ApplicationUserService>();
 
             services.AddHttpContextAccessor();
 

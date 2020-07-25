@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EmailMarketing.Web.Services
+namespace EmailMarketing.Common.Services
 {
     public interface IDateTime
     {
