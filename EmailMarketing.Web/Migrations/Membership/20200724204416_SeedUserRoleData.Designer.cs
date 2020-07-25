@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace EmailMarketing.Web.Migrations
+namespace EmailMarketing.Web.Migrations.Membership
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200705212517_IdentityInitMig")]
-    partial class IdentityInitMig
+    [Migration("20200724204416_SeedUserRoleData")]
+    partial class SeedUserRoleData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -135,6 +135,9 @@ namespace EmailMarketing.Web.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsBlocked")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")

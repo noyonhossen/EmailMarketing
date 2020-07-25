@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace EmailMarketing.Web.Migrations
+namespace EmailMarketing.Web.Migrations.Membership
 {
-    public partial class IdentityInitMig : Migration
+    public partial class InitMig : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -61,7 +61,8 @@ namespace EmailMarketing.Web.Migrations
                     LastModifiedBy = table.Column<Guid>(nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsActive = table.Column<bool>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false)
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    IsBlocked = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

@@ -12,11 +12,11 @@ namespace EmailMarketing.Framework.Entities
         public string Name { get; set; }
         public Guid UserId { get; set; }
 
-        public IList<Contact> Contacts { get; set; }
+        //public IList<Contact> Contacts { get; set; }
 
         public Group()
         {
-            this.Contacts = new List<Contact>();
+            //this.Contacts = new List<Contact>();
         }
     }
 }

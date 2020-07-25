@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using System;
+using EmailMarketing.Common.Services;
 
 namespace EmailMarketing.Web.Services
 {

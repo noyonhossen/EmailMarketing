@@ -1,4 +1,5 @@
 ﻿using System;
+using EmailMarketing.Common.Services;
 
 namespace EmailMarketing.Web.Services
 {

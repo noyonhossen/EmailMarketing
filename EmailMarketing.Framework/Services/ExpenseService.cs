@@ -7,8 +7,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using EmailMarketing.Data.Extensions;
-using EmailMarketing.Data.Exceptions;
+using EmailMarketing.Common.Extensions;
+using EmailMarketing.Common.Exceptions;
 
 namespace EmailMarketing.Framework.Services
 {

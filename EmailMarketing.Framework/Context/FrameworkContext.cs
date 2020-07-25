@@ -32,12 +32,16 @@ namespace EmailMarketing.Framework.Context
             base.OnConfiguring(dbContextOptionsBuilder);
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<CampaignGroup>(userRole =>
+            {
+                userRole.HasKey(ur => new { ur.CampaignId, ur.GroupId });
+            });
         }
 
-        public DbSet<Entities.Expense> Expenses { get; set; }
+        //public DbSet<Entities.Expense> Expenses { get; set; }
         public DbSet<Entities.Campaign> Campaigns { get; set; }
         public DbSet<Entities.CampaignGroup> CampaignGroups { get; set; }
         public DbSet<Entities.CampaignReport> CampaignReports { get; set; }

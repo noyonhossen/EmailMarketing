@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Member\Data\" />
   </ItemGroup>
 
   <ItemGroup>

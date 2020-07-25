@@ -13,6 +13,6 @@ namespace EmailMarketing.Web.Core
         public string SenderEmail { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
-        public bool IsSSL { get; set; }
+        public bool EnableSSL { get; set; }
     }
 }

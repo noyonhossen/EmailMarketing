@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace EmailMarketing.Web.Migrations
+namespace EmailMarketing.Web.Migrations.Membership
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200714091734_CreateRoleTable")]
-    partial class CreateRoleTable
+    [Migration("20200724201320_InitMig")]
+    partial class InitMig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

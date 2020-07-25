@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.Data.Exceptions
+namespace EmailMarketing.Common.Exceptions
 {
     public class DuplicationException : Exception
     {

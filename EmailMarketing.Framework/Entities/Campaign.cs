@@ -11,9 +11,9 @@ namespace EmailMarketing.Framework.Entities
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string EmailSubject { get; set; }
-        public string EmailBody { get; set; }
-        public DateTime SendDate { get; set; }
+        //public string EmailSubject { get; set; }
+        //public string EmailBody { get; set; }
+        //public DateTime SendDate { get; set; }
         public Guid UserId { get; set; }
 
         public IList<Group> Groups { get; set; }

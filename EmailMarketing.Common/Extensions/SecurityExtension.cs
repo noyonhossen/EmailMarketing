@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Common.Extensions
 {
-    public static class CustomSecurityExtension
+    public static class SecurityExtension
     {
         public static string ToEncryptString(this string plainText, string key)
         {

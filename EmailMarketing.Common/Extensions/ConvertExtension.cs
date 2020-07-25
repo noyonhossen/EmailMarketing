@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Common.Extensions
 {
-    public static class CustomConvertExtension
+    public static class ConvertExtension
     {
         public static string ParseObjectToString(this Object value, string defaultValue = "")
         {
