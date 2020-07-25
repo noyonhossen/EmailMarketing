@@ -25,11 +25,11 @@ namespace EmailMarketing.Web.Migrations.Membership
             // Seed User
             migrationBuilder.Sql("INSERT INTO AspNetUsers (Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,PhoneNumberConfirmed,TwoFactorEnabled," +
                 "LockoutEnabled,AccessFailedCount,FullName,PasswordChangedCount,Status,IsActive,IsBlocked,IsDeleted,Created,SecurityStamp)" +
-                " VALUES ('" + Guid.NewGuid() + "','admin','ADMIN','admin@gmail.com','ADMIN@GMAIL.COM','false','" + hashPassword + "','false','false','false','0','Administrator','1','" +
+                " VALUES ('" + Guid.NewGuid() + "','admin@gmail.com','ADMIN@GMAIL.COM','admin@gmail.com','ADMIN@GMAIL.COM','false','" + hashPassword + "','false','false','false','0','Administrator','1','" +
                 (int)EnumApplicationUserStatus.SuperAdmin + "','true','false','false','" + DateTime.Now + "','" + Guid.NewGuid() + "')");
             migrationBuilder.Sql("INSERT INTO AspNetUsers (Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,PhoneNumberConfirmed,TwoFactorEnabled," +
                 "LockoutEnabled,AccessFailedCount,FullName,PasswordChangedCount,Status,IsActive,IsBlocked,IsDeleted,Created,SecurityStamp)" +
-                " VALUES ('" + Guid.NewGuid() + "','dev','DEV','dev@gmail.com','DEV@GMAIL.COM','false','" + hashPassword + "','false','false','false','0','Development','1','" +
+                " VALUES ('" + Guid.NewGuid() + "','dev@gmail.com','DEV@GMAIL.COM','dev@gmail.com','DEV@GMAIL.COM','false','" + hashPassword + "','false','false','false','0','Development','1','" +
                 (int)EnumApplicationUserStatus.SuperAdmin + "','true','false','false','" + DateTime.Now + "','" + Guid.NewGuid() + "')");
 
             // Seed UserRole
@@ -41,7 +41,7 @@ namespace EmailMarketing.Web.Migrations.Membership
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("DELETE FROM AspNetUsers WHERE UserName IN ('admin','dev')");
+            migrationBuilder.Sql("DELETE FROM AspNetUsers WHERE UserName IN ('admin@gmail.com','dev@gmail.com')");
             migrationBuilder.Sql("DELETE FROM AspNetRoles WHERE Name IN ('" +
                 ConstantsValue.UserRoleName.SuperAdmin + "','" +
                 ConstantsValue.UserRoleName.Admin + "','" +
