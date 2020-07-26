@@ -22,38 +22,28 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         public bool EmailConfirmed { get; set; }
         public string PhoneNumber { get; set; }
         public bool PhoneNumberConfirmed { get; set; }
-        public bool TwoFactorEnabled { get; set; }
-        public bool LockoutEnabled { get; set; }
-        public int AccessFailedCount { get; set; }
         public string Address { get; set; }
         public string Gender { get; set; }
-        public string ImageUrl { get; set; }
         public string LastPassword { get; set; }
-        public int PasswordChangedCount { get; set; }
-        public int Status { get; set; }
-        public string CreatedBy { get; set; }
-        public string Created { get; set; }
-        public string LastModifiedBy { get; set; }
-        public string LastModified { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsBlocked { get; set; }
 
-        private readonly ApplicationUserManager _userManager;
- 
+        private readonly ApplicationUserService _applicationUserService;
+
         public MemberEditUserModel()
         {
-            _userManager = Startup.AutofacContainer.Resolve<ApplicationUserManager>();
+            _applicationUserService = Startup.AutofacContainer.Resolve<ApplicationUserService>();
         }
-        public MemberEditUserModel(ApplicationUserManager userManager)
+        public MemberEditUserModel(ApplicationUserService applicationUserService)
         {
-            _userManager = userManager;
+            _applicationUserService = applicationUserService;
             
         }
 
         public async Task LoadByIdAsync(Guid id)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
+            var user = await _applicationUserService.GetByIdAsync(id);
             this.Id = user.Id;
             this.UserName = user.UserName;
             this.Email = user.Email;
@@ -65,14 +55,14 @@ namespace EmailMarketing.Web.Areas.Admin.Models
 
         public async Task UpdateAsync()
         {
-            var user = await _userManager.FindByIdAsync(this.Id.ToString());
+            var user = await _applicationUserService.GetByIdAsync(this.Id);
             user.UserName = this.UserName;
             user.Email = this.Email;
             user.PhoneNumber = this.PhoneNumber;
             user.FullName = this.FullName;
             user.Address = this.Address;
             user.Gender = this.Gender;
-            await _userManager.UpdateAsync(user);
+            await _applicationUserService.UpdateAsync(user);
         }
         
     }

@@ -28,6 +28,42 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             return View(model);
         }
 
+        public IActionResult Add()
+        {
+            var model = new CreateMemberUserModel();
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add(
+            [Bind(
+            nameof(CreateMemberUserModel.FullName),
+            nameof(CreateMemberUserModel.Password),
+            nameof(CreateMemberUserModel.Email),
+            nameof(CreateMemberUserModel.Gender),
+            nameof(CreateMemberUserModel.Address),
+            nameof(CreateMemberUserModel.PhoneNumber))]CreateMemberUserModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await model.CreateUserAsync();
+                    model.Response = new ResponseModel("Record Added successful.", ResponseType.Success);
+
+                    return RedirectToAction("Index");
+                }
+                catch (DuplicationException ex)
+                {
+                    model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
+                }
+                catch (Exception ex)
+                {
+                    model.Response = new ResponseModel("Record added failed.", ResponseType.Failure);
+                }
+            }
+            return View(model);
+        }
         public async Task<IActionResult> GetUsers()
         {
             
@@ -61,8 +97,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             nameof(MemberEditUserModel.Gender),
             nameof(MemberEditUserModel.Address),
             nameof(MemberEditUserModel.FullName),
-            nameof(MemberEditUserModel.PhoneNumber),
-            nameof(MemberEditUserModel.ImageUrl)
+            nameof(MemberEditUserModel.PhoneNumber)
             )] MemberEditUserModel model)
         {
             if (ModelState.IsValid)

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using EmailMarketing.Membership.Constants;
 using EmailMarketing.Membership.Entities;
 using EmailMarketing.Membership.Services;
 using EmailMarketing.Web.Models;
@@ -126,7 +127,7 @@ namespace EmailMarketing.Web.Controllers
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    //await _userManager.AddToRoleAsync(user, "Admin");
+                    await _userManager.AddToRoleAsync(user,ConstantsValue.UserRoleName.Member);
 
                     //await _userManager.AddToRoleAsync(user, "Manager");
 
