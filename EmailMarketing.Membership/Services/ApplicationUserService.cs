@@ -11,6 +11,7 @@ using EmailMarketing.Membership.Enums;
 using EmailMarketing.Common.Extensions;
 using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Membership.Exceptions;
+using EmailMarketing.Membership.Constants;
 
 namespace EmailMarketing.Membership.Services
 {
@@ -56,7 +57,40 @@ namespace EmailMarketing.Membership.Services
 
             query = query.Where(x => !x.IsDeleted &&
                 x.Status != EnumApplicationUserStatus.SuperAdmin &&
-                (string.IsNullOrWhiteSpace(searchText) || x.FullName.Contains(searchText) || 
+                (string.IsNullOrWhiteSpace(searchText) || x.FullName.Contains(searchText) ||
+                x.UserName.Contains(searchText) || x.Email.Contains(searchText)));
+
+            resultTotalFilter = await query.CountAsync();
+            query = query.ApplyOrdering(columnsMap, orderBy);
+            query = query.ApplyPaging(pageIndex, pageSize);
+            resultItems = (await query.AsNoTracking().ToListAsync());
+
+            return (resultItems, resultTotal, resultTotalFilter);
+        }
+
+        public async Task<(IList<ApplicationUser> Items, int Total, int TotalFilter)> GetAllAdminAsync(
+            string searchText,
+            string orderBy,
+            int pageIndex,
+            int pageSize)
+        {
+            var resultItems = new List<ApplicationUser>();
+            var resultTotal = 0;
+            var resultTotalFilter = 0;
+
+            var columnsMap = new Dictionary<string, Expression<Func<ApplicationUser, object>>>()
+            {
+                ["fullName"] = v => v.FullName,
+                ["userName"] = v => v.UserName,
+                ["email"] = v => v.Email
+            };
+
+            var query = _userManager.Users.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).AsQueryable();
+            resultTotal = await query.CountAsync();
+
+            query = query.Where(x => !x.IsDeleted && x.UserRoles.Any(ur => ur.Role.Name == ConstantsValue.UserRoleName.Admin) &&
+                x.Status != EnumApplicationUserStatus.SuperAdmin &&
+                (string.IsNullOrWhiteSpace(searchText) || x.FullName.Contains(searchText) ||
                 x.UserName.Contains(searchText) || x.Email.Contains(searchText)));
 
             resultTotalFilter = await query.CountAsync();
@@ -117,12 +151,12 @@ namespace EmailMarketing.Membership.Services
             // Add New User Role
             var user = await _userManager.FindByNameAsync(entity.UserName);
             var role = await _roleManager.FindByIdAsync(userRoleId.ToString());
-            
+
             if (role == null)
             {
                 throw new NotFoundException(nameof(ApplicationRole), userRoleId);
             }
-            
+
             var roleSaveResult = await _userManager.AddToRoleAsync(user, role.Name);
 
             if (!roleSaveResult.Succeeded)
@@ -132,7 +166,7 @@ namespace EmailMarketing.Membership.Services
 
             return user.Id;
         }
-        
+
         public async Task<Guid> AddAsync(ApplicationUser entity, string userRoleName, string newPassword)
         {
             var isExists = await this.IsExistsUserNameAsync(entity.UserName, entity.Id);
@@ -155,12 +189,12 @@ namespace EmailMarketing.Membership.Services
             // Add New User Role
             var user = await _userManager.FindByNameAsync(entity.UserName);
             var role = await _roleManager.FindByNameAsync(userRoleName);
-            
+
             if (role == null)
             {
                 throw new NotFoundException(nameof(ApplicationRole), userRoleName);
             }
-            
+
             var roleSaveResult = await _userManager.AddToRoleAsync(user, role.Name);
 
             if (!roleSaveResult.Succeeded)
@@ -330,6 +364,14 @@ namespace EmailMarketing.Membership.Services
             };
 
             return user.FullName;
+        }
+
+        public async Task<string> ResetPassword(ApplicationUser entity, string newPassword)
+        {
+            entity.PasswordHash = newPassword;
+            entity.PasswordChangedCount = 0;
+            await UpdateAsync(entity);
+            return entity.FullName;
         }
 
         public async Task<IList<(Guid Value, string Text)>> GetAllForSelectAsync()
