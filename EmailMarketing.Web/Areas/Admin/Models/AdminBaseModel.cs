@@ -72,14 +72,14 @@ namespace EmailMarketing.Web.Areas.Admin.Models
                     {
                         new MenuItem
                         {
-                            Title = "Member Users",
-                            Icon = "icon-user",
+                            Title = "Members",
+                            Icon = "icon-users4",
                             Children = new List<MenuChildItem>
                             {
-                                new MenuChildItem () { Controller = "MemberUsers", Action = "Index", Area="Admin", Title = "View Member Users",
-                                    Icon = "icon-user", IsActive = false },
-                                new MenuChildItem () { Controller = "MemberUsers", Action = "Add", Area="Admin", Title = "Add Member Users",
-                                    Icon = "icon-user", IsActive = false }
+                                new MenuChildItem () { Controller = "MemberUsers", Action = "Index", Area="Admin", Title = "View Members",
+                                    Icon = "icon-users4", IsActive = false },
+                                new MenuChildItem () { Controller = "MemberUsers", Action = "Add", Area="Admin", Title = "Add Member",
+                                    Icon = "icon-user-plus", IsActive = false }
                             }
                         }
 

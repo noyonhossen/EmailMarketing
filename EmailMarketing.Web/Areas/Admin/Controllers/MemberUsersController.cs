@@ -149,13 +149,13 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                 var model = new MemberUserModel();
                 try
                 {
-                    var title = await model.BlockUser(id);
-                    model.Response = new ResponseModel($"User {title} successfully blocked.", ResponseType.Success);
+                    var user = await model.BlockUser(id);
+                    model.Response = new ResponseModel($"User {user.FullName} successfully { (user.IsBlocked == true ? "Block" : "Unblock")}.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel("User block failured.", ResponseType.Failure);
+                    model.Response = new ResponseModel("Block/Unblock Operation failured.", ResponseType.Failure);
                 }
             }
             return RedirectToAction("Index");

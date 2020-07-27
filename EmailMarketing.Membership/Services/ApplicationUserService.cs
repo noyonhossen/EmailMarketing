@@ -346,7 +346,7 @@ namespace EmailMarketing.Membership.Services
             return user.FullName;
         }
 
-        public async Task<string> BlockUnblockAsync(Guid id)
+        public async Task<ApplicationUser> BlockUnblockAsync(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
 
@@ -363,7 +363,7 @@ namespace EmailMarketing.Membership.Services
                 throw new IdentityValidationException(result.Errors);
             };
 
-            return user.FullName;
+            return user;
         }
 
         public async Task<string> ResetPassword(ApplicationUser entity,string newPassword)

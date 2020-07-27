@@ -71,10 +71,11 @@ namespace EmailMarketing.Web.Areas.Admin.Models
             var name = await _applicationUserService.ResetPassword(user, newPassword);
             return name;
         }
-        public async Task<string> BlockUser(Guid id)
+        public async Task<ApplicationUser> BlockUser(Guid id)
         {
-            var name = await _applicationUserService.BlockUnblockAsync(id);
-            return name;
+
+            var user = await _applicationUserService.BlockUnblockAsync(id);
+            return user;
         }
     }
 }
