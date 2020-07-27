@@ -349,5 +349,30 @@ namespace EmailMarketing.Membership.Services
             var result = await _userManager.Users.AnyAsync(x => x.Email.ToLower() == email.ToLower() && x.Id != id && !x.IsDeleted);
             return result;
         }
+        
+        public async Task<bool> ChangePasswordAsync(Guid id,string CurrentPassword,string NewPassword)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if(user==null)
+            {
+                throw new NotFoundException(nameof(ApplicationUser), id);
+            }
+            var oldPassword = user.PasswordHash;
+            var result = await _userManager.ChangePasswordAsync(user, CurrentPassword, NewPassword);
+
+            if (result.Succeeded)
+            {
+                user.LastPassChangeDate = _dateTime.Now;
+                user.LastPassword = oldPassword;
+                user.PasswordChangedCount++;
+                await _userManager.UpdateAsync(user);
+                return true;
+            }
+            else
+            {
+                throw new IdentityValidationException(result.Errors);
+                return false;
+            }
+        }
     }
 }
