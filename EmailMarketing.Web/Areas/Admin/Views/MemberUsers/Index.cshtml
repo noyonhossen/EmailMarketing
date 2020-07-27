@@ -1,4 +1,4 @@
-﻿
+﻿@model MemberUserModel
 @{
     ViewData["Title"] = "Index";
 }
@@ -128,7 +128,7 @@
     <script src="~/theme/global_assets/js/main/jquery.min.js"></script>
     <script src="~/theme/global_assets/js/main/bootstrap.bundle.min.js"></script>
     <script src="~/theme/global_assets/js/plugins/tables/datatables/datatables.min.js"></script>
-    <script src="~/js/project/admin-user.js"></script>
+    <script src="~/js/project/member-user.js"></script>
 
     <script>
         $(function () {
@@ -154,7 +154,6 @@
             $('#modal-blockUser').on('show.bs.modal', function (e) {
                 var id = $(e.relatedTarget).attr('data-id');
                 var modal = $("#modal-blockUser");
-                modal.find('.modal-body p').text('Are you sure want to Block this User?')
                 $("#blockId").val(id);
                 modal.modal('show');
             })
@@ -163,7 +162,7 @@
             });
   
 
-            //Reset User
+            //Reset User password
             $('#modal-resetUserPassword').on('show.bs.modal', function (e) {
                 var id = $(e.relatedTarget).attr('data-id');
                 var modal = $("#modal-resetUserPassword");

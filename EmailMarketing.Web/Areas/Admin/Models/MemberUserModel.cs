@@ -20,7 +20,6 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         private readonly AppSettings _userDefaultPassword;
         private readonly ApplicationUserService _applicationUserService;
         private readonly ApplicationUserManager _userManager;
-
         public MemberUserModel()
         {
             _applicationUserService = Startup.AutofacContainer.Resolve<ApplicationUserService>();
