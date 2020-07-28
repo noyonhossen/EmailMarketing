@@ -52,11 +52,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
             [Bind(nameof(CreateAdminUsersModel.FullName),
-            nameof(CreateAdminUsersModel.UserName),
-            nameof(CreateAdminUsersModel.DateOfBirth),
-            nameof(CreateAdminUsersModel.PhoneNumber),
-            nameof(EditAdminUsersModel.Gender),
-            nameof(EditAdminUsersModel.Address))]CreateAdminUsersModel model)
+            nameof(CreateAdminUsersModel.UserName))]CreateAdminUsersModel model)
         {
             if (ModelState.IsValid)
             {

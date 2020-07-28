@@ -42,11 +42,12 @@ namespace EmailMarketing.Web.Areas.Admin.Models.AdminModels
             {
                 FullName = this.FullName,
                 UserName = this.UserName,
+                Email = this.UserName,
                 PhoneNumber = this.PhoneNumber,
                 Gender = this.Gender,
                 DateOfBirth = this.DateOfBirth,
                 Address = this.Address,
-                EmailConfirmed = false
+                EmailConfirmed = true
 
 
             };
