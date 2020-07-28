@@ -15,14 +15,12 @@ namespace EmailMarketing.Web.Areas.Admin.Models.AdminModels
         public Guid Id { get; set; }
         public string UserName { get; set; }
         public string FullName { get; set; }
-        public bool EmailConfirmed { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string PhoneNumber { get; set; }
-        public bool PhoneNumberConfirmed { get; set; }
-        public string Address { get; set; }
         public string Gender { get; set; }
-        public string LastPassword { get; set; }
-
-
+        public string Address { get; set; }
+       
+       
 
         private readonly ApplicationUserService _applicationUserService;
         private readonly ICurrentUserService _currentUserService;
@@ -39,9 +37,10 @@ namespace EmailMarketing.Web.Areas.Admin.Models.AdminModels
         {
             var user = await _applicationUserService.GetByIdAsync(id);
             this.Id = user.Id;
-            this.UserName = user.UserName;
-            this.PhoneNumber = user.PhoneNumber;
             this.FullName = user.FullName;
+            this.UserName = user.UserName;
+            this.DateOfBirth = (DateTime)user.DateOfBirth;
+            this.PhoneNumber = user.PhoneNumber;
             this.Address = user.Address;
             this.Gender = user.Gender;
         }
@@ -49,10 +48,10 @@ namespace EmailMarketing.Web.Areas.Admin.Models.AdminModels
         public async Task UpdateAsync()
         {
             var user = await _applicationUserService.GetByIdAsync(this.Id);
-            user.UserName = this.UserName;
-  
-            user.PhoneNumber = this.PhoneNumber;
             user.FullName = this.FullName;
+            user.UserName = this.UserName;
+            user.DateOfBirth = this.DateOfBirth;
+            user.PhoneNumber = this.PhoneNumber;
             user.Address = this.Address;
             user.Gender = this.Gender;
             await _applicationUserService.UpdateAsync(user);

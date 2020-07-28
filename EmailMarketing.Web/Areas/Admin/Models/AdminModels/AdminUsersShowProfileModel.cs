@@ -17,6 +17,7 @@ namespace EmailMarketing.Web.Areas.Admin.Models.AdminModels
         public string FullName { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string PhoneNumber { get; set; }
         public string Gender { get; set; }
         public string Address { get; set; }
@@ -42,6 +43,8 @@ namespace EmailMarketing.Web.Areas.Admin.Models.AdminModels
             var adminuser =await _applicationUserService.GetByIdAsync(currentUserId);
             this.FullName = adminuser.FullName;
             this.UserName = adminuser.UserName;
+            this.DateOfBirth = DateTime.UtcNow;
+            //this.DateOfBirth = (DateTime)adminuser.DateOfBirth;
             this.PhoneNumber = adminuser.PhoneNumber;
             this.Gender = adminuser.Gender;
             this.Address = adminuser.Address;
