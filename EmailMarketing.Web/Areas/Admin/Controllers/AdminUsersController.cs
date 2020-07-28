@@ -8,6 +8,7 @@ using EmailMarketing.Membership.Entities;
 using EmailMarketing.Membership.Services;
 using EmailMarketing.Web.Areas.Admin.Enums;
 using EmailMarketing.Web.Areas.Admin.Models;
+using EmailMarketing.Web.Areas.Admin.Models.AdminModels;
 using EmailMarketing.Web.Controllers;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -51,10 +52,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
             [Bind(nameof(CreateAdminUsersModel.FullName),
-            nameof(CreateAdminUsersModel.UserName),
-            nameof(CreateAdminUsersModel.Password),
-            nameof(CreateAdminUsersModel.Email),
-            nameof(CreateAdminUsersModel.PhoneNumber))]CreateAdminUsersModel model)
+            nameof(CreateAdminUsersModel.UserName))]CreateAdminUsersModel model)
         {
             if (ModelState.IsValid)
             {
@@ -90,8 +88,10 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             [Bind(nameof(EditAdminUsersModel.Id),
             nameof(EditAdminUsersModel.FullName),
             nameof(EditAdminUsersModel.UserName),
-            nameof(EditAdminUsersModel.Email),
-            nameof(EditAdminUsersModel.PhoneNumber))]EditAdminUsersModel model)
+            nameof(EditAdminUsersModel.DateOfBirth),
+            nameof(EditAdminUsersModel.PhoneNumber),
+            nameof(EditAdminUsersModel.Gender),
+            nameof(EditAdminUsersModel.Address))]EditAdminUsersModel model)
         {
             if (ModelState.IsValid)
             {
@@ -124,7 +124,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                 var model = new AdminUsersModel();
                 try
                 {
-                    await model.DeleteAdminAsync(id);
+                    await model.DeleteAsync(id);
                     model.Response = new ResponseModel($"Admin successfully deleted.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }
@@ -152,10 +152,13 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateInformation([Bind(nameof(AdminUsersProfileUpdateModel.FullName),
+        public async Task<IActionResult> UpdateInformation(
+            [Bind(nameof(AdminUsersProfileUpdateModel.FullName),
             nameof(AdminUsersProfileUpdateModel.UserName),
-            nameof(AdminUsersProfileUpdateModel.Email),
-            nameof(AdminUsersProfileUpdateModel.PhoneNumber))]AdminUsersProfileUpdateModel model)
+            nameof(AdminUsersProfileUpdateModel.DateOfBirth),
+            nameof(AdminUsersProfileUpdateModel.PhoneNumber),
+            nameof(AdminUsersProfileUpdateModel.Gender),
+            nameof(AdminUsersProfileUpdateModel.Address))]AdminUsersProfileUpdateModel model)
         {
             if (ModelState.IsValid)
             {

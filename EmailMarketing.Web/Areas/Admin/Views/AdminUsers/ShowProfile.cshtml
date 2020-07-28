@@ -1,64 +1,122 @@
 ﻿@model AdminUsersShowProfileModel
+@{
+    ViewData["Title"] = "AdminInformation";
+}
 
-@{ ViewData["Title"] = "Profile"; }
+<!-- Page header -->
+<div class="page-header">
+    <div class="page-header-content header-elements-md-inline">
+        <div class="page-title d-flex">
+            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Admin" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
 
-
-<div class="content-wrapper">
-    <div class="content">
-        <div class="col-md-8" data-select2-id="49">
-
-             
-            <div class="card" data-select2-id="48">
-                <div class="card-header header-elements-inline">
-                    <h5 class="card-title"><b>Profile Information</b></h5>
-                    <div class="header-elements">
-                        <div class="list-icons">
-                            <a class="list-icons-item" data-action="collapse"></a>
-                            <a class="list-icons-item" data-action="reload"></a>
-                            <a class="list-icons-item" data-action="remove"></a>
-                        </div>
-                    </div>
-                </div>
-                 
-                <div class="card-body" style="" data-select2-id="47">
-                    <form method="get" data-select2-id="46">
-
-
-                        <div class="form-group row">
-                            <label class="col-md-4 col-form-label"><b>Full Name:</b></label>
-                            <div class="col-lg-3 col-form-label">
-                                <dd>@Html.DisplayFor(model => model.FullName)</dd>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-4 col-form-label"><b>User Name:</b></label>
-                            <div class="col-lg-3 col-form-label">
-                                <dd>@Html.DisplayFor(model => model.UserName)</dd>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-md-4 col-form-label"><b>Email:</b></label>
-                            <div class="col-lg-3 col-form-label">
-                                <dd>@Html.DisplayFor(model => model.Email)</dd>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-4 col-form-label"><b>Phone Number</b></label>
-                            <div class="col-lg-3 col-form-label">
-                                <dd>@Html.DisplayFor(model => model.PhoneNumber)</dd>
-                            </div>
-                        </div>
-
-
-                        <div class="text-md-center">
-                            <button type="edit" class="btn btn-primary" asp-action="UpdateInformation" asp-controller="AdminUsers">Edit Profile <i class="icon-paperplane ml-2"></i></button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            
-
+        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
+            <a asp-controller="MemberUsers" asp-action="Index" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">User List</span></a>
         </div>
     </div>
 </div>
+<!-- /page header -->
+<!-- Content area -->
+<div class="content pt-0">
+
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title text-primary">My Profile</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    <table class="table">
+                        <tr>
+                            <td class="col-4 float-left"><h5>User Name: </h5></td>
+                            @if (@Model.UserName == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.UserName</h5></td>
+                            }
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Full Name : </h5></td>
+                            @if (@Model.FullName == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.FullName</h5></td>
+                            }
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Date of Birth : </h5></td>
+                            @if (@Model.DateOfBirth == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.DateOfBirth</h5></td>
+                            }
+                        </tr>
+
+                       
+
+
+                    </table>
+                </div>
+                <div class="col-6">
+                    <table class="table">
+                        <tr>
+                            <td class="col-4 float-left"><h5>Phone Number : </h5></td>
+                            @if (@Model.PhoneNumber == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.PhoneNumber</h5></td>
+                            }
+                        </tr>
+
+                        <tr>
+                            <td class="col-4 float-left"><h5>Gender : </h5></td>
+                            @if (@Model.Gender == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.Gender</h5></td>
+                            }
+                        </tr>
+                        <tr>
+                            <td class="col-4 float-left"><h5>Address : </h5></td>
+                            @if (@Model.Address == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.Address</h5></td>
+                            }
+                        </tr>
+
+
+                    </table>
+                </div>
+            </div>
+            <div class="">
+                <div class="d-flex justify-content-between">
+                    <a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
+                    <a asp-controller="AdminUsers" asp-action="UpdateInformation" asp-area="Admin" class="btn btn-primary ml-2"><i class="icon-pencil7"></i> Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /Content area -->
