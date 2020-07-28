@@ -9,7 +9,7 @@
         </div>
 
         <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Admin Panel</span></a>
+            <a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">User List</span></a>
         </div>
     </div>
 </div>
@@ -36,6 +36,7 @@
                     <div class="">
                         <fieldset class="mb-3">
 
+
 @Html.AntiForgeryToken()
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -55,6 +56,7 @@
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
         </div>
+
         <div class="form-group row">
             <label class="col-form-label col-lg-4 required" asp-for="DateOfBirth"></label>
             <div class="col-lg-8">
@@ -68,17 +70,17 @@
     <div class="col-md-6 border-left p-2">
 
         <div class="form-group row">
-            <label class="col-form-label col-lg-4 required" asp-for="PhoneNumber"></label>
-            <div class="col-lg-8">
-                <input type="text" class="form-control" asp-for="PhoneNumber">
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group row">
             <label class="col-form-label col-lg-4 required" asp-for="Gender"></label>
             <div class="col-lg-8">
                 <input type="text" class="form-control" asp-for="Gender">
                 <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-lg-4 required" asp-for="PhoneNumber"></label>
+            <div class="col-lg-8">
+                <input type="text" class="form-control" asp-for="PhoneNumber">
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group row">
@@ -89,12 +91,12 @@
             </div>
         </div>
     </div>
-    </div>
+</div>
 
 </fieldset>
 </div>
 <div class="">
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-center">
         <a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
         <button type="submit" class="btn bg-teal ml-2"><i class="icon-file-check2"></i> Save</button>
     </div>
@@ -114,5 +116,6 @@
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
     <partial name="~/Views/Bundle/_FormInputScriptsPartial.cshtml" />
     <partial name="~/Views/Bundle/_DateTimePickerScriptsPartial.cshtml" />
+
 
 }

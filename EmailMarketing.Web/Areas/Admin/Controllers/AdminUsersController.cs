@@ -53,8 +53,10 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Add(
             [Bind(nameof(CreateAdminUsersModel.FullName),
             nameof(CreateAdminUsersModel.UserName),
-            nameof(CreateAdminUsersModel.Password),
-            nameof(CreateAdminUsersModel.PhoneNumber))]CreateAdminUsersModel model)
+            nameof(CreateAdminUsersModel.DateOfBirth),
+            nameof(CreateAdminUsersModel.PhoneNumber),
+            nameof(EditAdminUsersModel.Gender),
+            nameof(EditAdminUsersModel.Address))]CreateAdminUsersModel model)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +92,10 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             [Bind(nameof(EditAdminUsersModel.Id),
             nameof(EditAdminUsersModel.FullName),
             nameof(EditAdminUsersModel.UserName),
-            nameof(EditAdminUsersModel.PhoneNumber))]EditAdminUsersModel model)
+            nameof(EditAdminUsersModel.DateOfBirth),
+            nameof(EditAdminUsersModel.PhoneNumber),
+            nameof(EditAdminUsersModel.Gender),
+            nameof(EditAdminUsersModel.Address))]EditAdminUsersModel model)
         {
             if (ModelState.IsValid)
             {
@@ -151,9 +156,13 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateInformation([Bind(nameof(AdminUsersProfileUpdateModel.FullName),
+        public async Task<IActionResult> UpdateInformation(
+            [Bind(nameof(AdminUsersProfileUpdateModel.FullName),
             nameof(AdminUsersProfileUpdateModel.UserName),
-            nameof(AdminUsersProfileUpdateModel.PhoneNumber))]AdminUsersProfileUpdateModel model)
+            nameof(AdminUsersProfileUpdateModel.DateOfBirth),
+            nameof(AdminUsersProfileUpdateModel.PhoneNumber),
+            nameof(AdminUsersProfileUpdateModel.Gender),
+            nameof(AdminUsersProfileUpdateModel.Address))]AdminUsersProfileUpdateModel model)
         {
             if (ModelState.IsValid)
             {
