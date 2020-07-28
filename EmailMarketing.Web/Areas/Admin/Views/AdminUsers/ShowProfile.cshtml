@@ -51,7 +51,25 @@
                                 <td class="col-8 float-left"><h5>@Model.FullName</h5></td>
                             }
                         </tr>
-                    
+                        <tr>
+                            <td class="col-4 float-left"><h5>Date of Birth : </h5></td>
+                            @if (@Model.DateOfBirth == null)
+                            {
+                                <td class="col-8 float-left"><h5>Not Set</h5></td>
+                            }
+                            else
+                            {
+                                <td class="col-8 float-left"><h5>@Model.DateOfBirth</h5></td>
+                            }
+                        </tr>
+
+                       
+
+
+                    </table>
+                </div>
+                <div class="col-6">
+                    <table class="table">
                         <tr>
                             <td class="col-4 float-left"><h5>Phone Number : </h5></td>
                             @if (@Model.PhoneNumber == null)
@@ -63,23 +81,7 @@
                                 <td class="col-8 float-left"><h5>@Model.PhoneNumber</h5></td>
                             }
                         </tr>
-                       
 
-                    </table>
-                </div>
-                <div class="col-6">
-                    <table class="table">
-                        <tr>
-                            <td class="col-4 float-left"><h5>Address : </h5></td>
-                            @if (@Model.Address == null)
-                            {
-                                <td class="col-8 float-left"><h5>Not Set</h5></td>
-                            }
-                            else
-                            {
-                                <td class="col-8 float-left"><h5>@Model.Address</h5></td>
-                            }
-                        </tr>
                         <tr>
                             <td class="col-4 float-left"><h5>Gender : </h5></td>
                             @if (@Model.Gender == null)
@@ -92,17 +94,17 @@
                             }
                         </tr>
                         <tr>
-                            <td class="col-4 float-left"><h5>Date of Birth : </h5></td>
-                            @if (@Model.DateOfBirth == null)
+                            <td class="col-4 float-left"><h5>Address : </h5></td>
+                            @if (@Model.Address == null)
                             {
                                 <td class="col-8 float-left"><h5>Not Set</h5></td>
                             }
                             else
                             {
-                                <td class="col-8 float-left"><h5>@Model.DateOfBirth</h5></td>
+                                <td class="col-8 float-left"><h5>@Model.Address</h5></td>
                             }
                         </tr>
-                       
+
 
                     </table>
                 </div>
