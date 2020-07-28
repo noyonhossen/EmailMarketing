@@ -14,7 +14,10 @@
                 </div>
 
                 <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-                    <a href="#" class="btn btn-labeled btn-labeled-right bg-primary">Button <b><i class="icon-menu7"></i></b></a>
+                    @*<a href="#" class="btn btn-labeled btn-labeled-right bg-primary">Button <b><i class="icon-menu7"></i></b></a>*@
+                    <form asp-controller="Account" asp-action="Logout" method="post">
+                        <input type="submit" name="Logout" value="LogOut" />
+                    </form>
                 </div>
             </div>
         </div>

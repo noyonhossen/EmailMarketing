@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.Web.Models
+namespace EmailMarketing.Web.Models.Account
 {
     public class ForgotPasswordConfirmationModel
     {
