@@ -23,6 +23,32 @@ namespace EmailMarketing.Web.Controllers
             return View();
         }
 
+        public IActionResult Doc()
+        {
+            return View();
+        }
+
+        public IActionResult Faq()
+        {
+            return View();
+        }
+
+        public IActionResult Feature()
+        {
+            return View();
+        }
+
+        public IActionResult Pricing()
+        {
+            return View();
+        }
+
+        public IActionResult Tutorials()
+        {
+            return View();
+        }
+
+
         public IActionResult Privacy()
         {
             return View();

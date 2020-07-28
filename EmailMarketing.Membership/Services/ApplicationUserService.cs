@@ -101,6 +101,39 @@ namespace EmailMarketing.Membership.Services
             return (resultItems, resultTotal, resultTotalFilter);
         }
 
+        public async Task<(IList<ApplicationUser> Items, int Total, int TotalFilter)> GetAllMemberAsync(
+            string searchText,
+            string orderBy,
+            int pageIndex,
+            int pageSize)
+        {
+            var resultItems = new List<ApplicationUser>();
+            var resultTotal = 0;
+            var resultTotalFilter = 0;
+
+            var columnsMap = new Dictionary<string, Expression<Func<ApplicationUser, object>>>()
+            {
+                ["fullName"] = v => v.FullName,
+                ["userName"] = v => v.UserName,
+                ["email"] = v => v.Email
+            };
+
+            var query = _userManager.Users.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).AsQueryable();
+            resultTotal = await query.CountAsync();
+
+            query = query.Where(x => !x.IsDeleted && x.UserRoles.Any(ur => ur.Role.Name == ConstantsValue.UserRoleName.Member) &&
+                x.Status != EnumApplicationUserStatus.SuperAdmin &&
+                (string.IsNullOrWhiteSpace(searchText) || x.FullName.Contains(searchText) ||
+                x.UserName.Contains(searchText) || x.Email.Contains(searchText)));
+
+            resultTotalFilter = await query.CountAsync();
+            query = query.ApplyOrdering(columnsMap, orderBy);
+            query = query.ApplyPaging(pageIndex, pageSize);
+            resultItems = (await query.AsNoTracking().ToListAsync());
+
+            return (resultItems, resultTotal, resultTotalFilter);
+        }
+
         public async Task<ApplicationUser> GetByIdAsync(Guid id)
         {
             var query = _userManager.Users.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).AsQueryable();
@@ -346,7 +379,7 @@ namespace EmailMarketing.Membership.Services
             return user.FullName;
         }
 
-        public async Task<string> BlockUnblockAsync(Guid id)
+        public async Task<ApplicationUser> BlockUnblockAsync(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
 
@@ -363,7 +396,15 @@ namespace EmailMarketing.Membership.Services
                 throw new IdentityValidationException(result.Errors);
             };
 
-            return user.FullName;
+            return user;
+        }
+
+        public async Task<string> ResetPassword(ApplicationUser entity,string newPassword)
+        {
+            entity.PasswordHash = newPassword;
+            entity.PasswordChangedCount = 0;
+            await UpdateAsync(entity);
+            return entity.FullName;
         }
 
         public async Task<string> ResetPassword(ApplicationUser entity, string newPassword)
