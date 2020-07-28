@@ -1,16 +1,29 @@
-﻿
+﻿@model MemberUserModel
 @{
     ViewData["Title"] = "Index";
 }
 
+<!-- Page header -->
+<div class="page-header">
+    <div class="page-header-content header-elements-md-inline">
+        <div class="page-title d-flex">
+            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Admin" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
 
+        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
+            <a asp-controller="MemberUsers" asp-action="Add" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-user-plus mr-2"></i> <span class="font-weight-semibold">Add Member</span></a>
+        </div>
+    </div>
+</div>
+<!-- /page header -->
 <!-- Content area -->
 <div class="content pt-0">
 
     <!-- Basic datatable -->
     <div class="card">
         <div class="card-header header-elements-inline">
-            <h5 class="card-title text-primary">Users</h5>
+            <h5 class="card-title text-primary">Members</h5>
             <div class="header-elements">
                 <div class="list-icons">
                     <a class="list-icons-item" data-action="collapse"></a>
@@ -31,7 +44,7 @@
                     <th>Email</th>
                     <th>Email Confirmed</th>
                     <th>Phone Number</th>
-                    <th>IsBlocked</th>
+                    <th>Blocked</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -68,16 +81,16 @@
 </div>
 <!-- /default modal -->
 <!-- Block User modal -->
-<div id="modal-blockUser" class="modal fade" tabindex="-1" >
+<div id="modal-blockUser" class="modal fade" tabindex="-1">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title">Block User</h6>
+                <h6 class="modal-title"><span id="blockUserTitle">Block User</span></h6>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
             <div class="modal-body">
-                <p>Are you sure want to Block User?</p>
+                <p>Are you sure want to <span id="blockUserSure">Block User</span>?</p>
                 <form id="blockUserdForm" action="@Url.Action("BlockUser", "MemberUsers", new { Area = "Admin" })" method="post">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="blockId" value="" name="id" />
@@ -86,7 +99,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                <button type="button" id="blockButton" class="btn bg-danger">Yes, Block!</button>
+                <button type="button" id="blockButton" class="btn bg-danger">Yes, <span id="blockUserButton">Block</span>!</button>
             </div>
         </div>
     </div>
@@ -128,7 +141,7 @@
     <script src="~/theme/global_assets/js/main/jquery.min.js"></script>
     <script src="~/theme/global_assets/js/main/bootstrap.bundle.min.js"></script>
     <script src="~/theme/global_assets/js/plugins/tables/datatables/datatables.min.js"></script>
-    <script src="~/js/project/admin-user.js"></script>
+    <script src="~/js/project/member-user.js"></script>
 
     <script>
         $(function () {
@@ -153,17 +166,21 @@
             //Block User
             $('#modal-blockUser').on('show.bs.modal', function (e) {
                 var id = $(e.relatedTarget).attr('data-id');
+                var title = $(e.relatedTarget).attr('data-title');
                 var modal = $("#modal-blockUser");
-                modal.find('.modal-body p').text('Are you sure want to Block this User?')
                 $("#blockId").val(id);
+                $("#blockUserTitle").text(title == 'Yes' ? 'Unblock User' : 'Block User');
+                $("#blockUserSure").text(title == 'Yes' ? 'Unblock User' : 'Block User');
+                $("#blockUserButton").text(title == 'Yes' ? 'Unblock' : 'Block');
+                console.log(title);
                 modal.modal('show');
             })
             $("#blockButton").click(function () {
                 $("#blockUserdForm").submit();
             });
-  
 
-            //Reset User
+
+            //Reset User password
             $('#modal-resetUserPassword').on('show.bs.modal', function (e) {
                 var id = $(e.relatedTarget).attr('data-id');
                 var modal = $("#modal-resetUserPassword");

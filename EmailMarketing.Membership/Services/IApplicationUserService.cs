@@ -20,7 +20,7 @@ namespace EmailMarketing.Membership.Services
         Task<Guid> UpdateAsync(ApplicationUser entity);
         Task<string> DeleteAsync(Guid id);
         Task<string> ActiveInactiveAsync(Guid id);
-        Task<string> BlockUnblockAsync(Guid id);
+        Task<ApplicationUser> BlockUnblockAsync(Guid id);
         Task<IList<(Guid Value, string Text)>> GetAllForSelectAsync();
         Task<bool> IsExistsUserNameAsync(string name, Guid id);
         Task<bool> IsExistsEmailAsync(string email, Guid id);

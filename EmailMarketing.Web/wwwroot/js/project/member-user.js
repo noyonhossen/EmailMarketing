@@ -50,7 +50,11 @@ function loadDatatable(url, editUrl, userInformationUrl) {
                 "targets": [3],
                 'sortable': true,
                 'searchable': false,
-                "orderData": [3]
+                "orderData": [3],
+                "render": function (data, type, row, meta) {
+                    var lbl = data == "Yes" ? "badge-success" : "badge-danger";
+                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
+                }
             }
             ,
             {
@@ -64,7 +68,11 @@ function loadDatatable(url, editUrl, userInformationUrl) {
                 "targets": [5],
                 'sortable': true,
                 'searchable': false,
-                "orderData": [5]
+                "orderData": [5],
+                "render": function (data, type, row, meta) {
+                    var lbl = data == "Yes" ? "badge-danger" : "badge-success";
+                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
+                }
             }
             ,
             {
@@ -80,7 +88,7 @@ function loadDatatable(url, editUrl, userInformationUrl) {
                     var deleteButton = '<a class="text-danger" data-toggle="modal" data-target="#modal-delete" data-id="' + data + '" href="#" title="Delete">' +
                         '<i class="icon-trash"></i></a>';
 
-                    var blockButton = '<a class="text-primary" data-toggle="modal" data-target="#modal-blockUser" data-id="' + data + '" href="#" title="Block/Unblock">' +
+                    var blockButton = '<a class="text-primary" data-toggle="modal" data-target="#modal-blockUser" data-id="' + data + '" data-title="' + row[5] + '" href="#" title="Block/Unblock">' +
                         '<i class="icon-user-block"></i></a>';
 
                     var resetPasswordButton = '<a class="text-danger" data-toggle="modal" data-target="#modal-resetUserPassword" data-id="' + data + '" href="#" title="Reset password">' +
