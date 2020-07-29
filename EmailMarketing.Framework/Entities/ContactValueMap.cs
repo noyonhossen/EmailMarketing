@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Framework.Entities
 {
-    public class SingleValueEntry : IEntity<int>
+    public class ContactValueMap : IEntity<int>
     {
-        public string Name { get; set; }
+        //public string Name { get; set; }
         public string Value { get; set; }
         public int ContactId { get; set; }
         public Contact Contact { get; set; }
+        public int FieldMapId { get; set; }
+        public FieldMap FieldMap { get; set; }
     }
 }

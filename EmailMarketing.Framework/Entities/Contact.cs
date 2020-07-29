@@ -12,12 +12,14 @@ namespace EmailMarketing.Framework.Entities
         public string Email { get; set; }
         public int  GroupId { get; set; }
         public Group  Group { get; set; }
+        public int ContactUploadId { get; set; }
+        public ContactUpload ContactUpload { get; set; }
 
-        public IList<SingleValueEntry> SingleValueEntries { get; set; }
+        public IList<ContactValueMap> ContactValueMaps { get; set; }
 
         public Contact()
         {
-            this.SingleValueEntries = new List<SingleValueEntry>();
+            this.ContactValueMaps = new List<ContactValueMap>();
         }
     }
 }
