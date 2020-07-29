@@ -1,4 +1,6 @@
 ﻿using Autofac;
+using EmailMarketing.Framework.Extensions;
+using EmailMarketing.Framework.Menus;
 using EmailMarketing.Common.Services;
 using EmailMarketing.Framework.Extensions;
 using EmailMarketing.Framework.Menus;
@@ -44,6 +46,7 @@ namespace EmailMarketing.Web.Areas.Member.Models
             _httpContextAccessor = httpContextAccessor;
             SetupMenu();
         }
+      
         public MemberBaseModel(ICurrentUserService currentUserService, IApplicationUserService applicationuserService)
         {
             _applicationuserService = applicationuserService;

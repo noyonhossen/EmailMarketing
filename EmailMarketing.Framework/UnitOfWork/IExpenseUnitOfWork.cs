@@ -11,6 +11,6 @@ namespace EmailMarketing.Framework.UnitOfWork
 {
     public interface IExpenseUnitOfWork : IUnitOfWork
     {
-        IExpenseRepository ExpenseRepository { get; set; }
+        IExpenseRepository ExpenseRepository { get; set; } 
     }
 }

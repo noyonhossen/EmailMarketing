@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using EmailMarketing.Membership.Services;
 using EmailMarketing.Web.Areas.Admin.Models;
+using EmailMarketing.Web.Areas.Member.Models.Groups;
 using EmailMarketing.Web.Areas.Member.Models;
 using EmailMarketing.Web.Areas.Member.Models.ProfileModels;
 
@@ -30,6 +31,7 @@ namespace EmailMarketing.Web
             builder.RegisterType<ExpenseModel>();
             builder.RegisterType<AdminUsersModel>();
             builder.RegisterType<MemberUserModel>();
+            builder.RegisterType<GroupModel>();
             builder.RegisterType<ChangeDefaultPasswordViewModel>();
 
             builder.RegisterType<MemberBaseModel>();

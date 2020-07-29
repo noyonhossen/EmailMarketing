@@ -1,4 +1,5 @@
 ﻿using EmailMarketing.Framework.Context;
+using EmailMarketing.Framework.Repositories.Group;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,12 @@ namespace EmailMarketing.Framework.UnitOfWork
 {
     public class GroupUnitOfWork : EmailMarketing.Data.UnitOfWork, IGroupUnitOfWork
     {
-        public GroupUnitOfWork(FrameworkContext dbContext) : base(dbContext)
+        public IGroupRepository GroupRepository { get; set; }
+        public GroupUnitOfWork(FrameworkContext dbContext, IGroupRepository groupRepository) : base(dbContext)
         {
-
+            GroupRepository = groupRepository;
         }
+
+        
     }
 }
