@@ -1,7 +1,9 @@
 ﻿using Autofac;
 using EmailMarketing.Framework.Context;
 using EmailMarketing.Framework.Repositories;
+using EmailMarketing.Framework.Repositories.Group;
 using EmailMarketing.Framework.Services;
+using EmailMarketing.Framework.Services.Groups;
 using EmailMarketing.Framework.UnitOfWork;
 using System;
 using System.Collections.Generic;
@@ -43,6 +45,15 @@ namespace EmailMarketing.Framework
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<ExpenseService>().As<IExpenseService>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<GroupUnitOfWork>().As<IGroupUnitOfWork>()
+                   .InstancePerLifetimeScope();
+
+            builder.RegisterType<GroupRepository>().As<IGroupRepository>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<GroupService>().As<IGroupService>()
                 .InstancePerLifetimeScope();
 
             base.Load(builder);
