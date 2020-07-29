@@ -21,7 +21,10 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\MemberUsers\" />
     <Folder Include="Areas\Member\Data\" />
+    <Folder Include="wwwroot\homeTheme\css\" />
+    <Folder Include="wwwroot\homeTheme\js\" />
   </ItemGroup>
 
   <ItemGroup>

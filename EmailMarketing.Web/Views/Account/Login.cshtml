@@ -41,7 +41,7 @@
                     <div class="form-group d-flex align-items-center">
                         <div class="form-check mb-0">
                             <label class="form-check-label">
-                                <input asp-for="RememberMe" type="checkbox" class="form-input-styled" checked data-fouc>
+                                <input asp-for="RememberMe" type="checkbox" class="form-input-styled" data-fouc>
                                 @Html.DisplayNameFor(m => m.RememberMe)
                             </label>
                         </div>
@@ -73,7 +73,7 @@
                     <a asp-controller="Account" asp-action="Register" asp-route-returnUrl="@ViewData["ReturnUrl"]" class="btn btn-light btn-block">Sign up</a>
                 </div>
 
-                <span class="form-text text-center text-muted">By continuing, you're confirming that you've read our <a href="#">Terms &amp; Conditions</a> and <a href="#">Cookie Policy</a></span>
+                <span class="form-text text-center text-muted">By continuing, you're confirming that you've read our <a asp-controller="Account" asp-action="TermsAndConditions">Terms &amp; Conditions</a> and <a asp-controller="Account" asp-action="TermsAndConditions">Cookie Policy</a></span>
             </div>
         </div>
     </div>
