@@ -14,13 +14,19 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace EmailMarketing.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class MemberUsersController : Controller
     {
-        
+        private readonly ILogger<MemberUsersController> _logger;
+
+        public MemberUsersController(ILogger<MemberUsersController> logger)
+        {
+            _logger = logger;
+        }
 
         public IActionResult Index()
         {
@@ -28,19 +34,42 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> GetUsers()
+        public IActionResult Add()
         {
-            
-            var tableModel = new DataTablesAjaxRequestModel(Request);
-            var model = Startup.AutofacContainer.Resolve<MemberUserModel>();
-            var data = await model.GetAllAsync(tableModel);
-            return Json(data);
+            var model = new CreateMemberUserModel();
+            return View(model);
         }
 
-        public async Task<IActionResult> UserInformation(Guid id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add(
+            [Bind(nameof(CreateMemberUserModel.FullName),
+            nameof(CreateMemberUserModel.Email),
+            nameof(CreateMemberUserModel.DateOfBirth),
+            nameof(CreateMemberUserModel.Gender),
+            nameof(CreateMemberUserModel.Address),
+            nameof(CreateMemberUserModel.PhoneNumber))] CreateMemberUserModel model)
         {
-            var model = new MemberUserInformationModel();
-            await model.LoadByIdAsync(id);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await model.CreateUserAsync();
+                    model.Response = new ResponseModel("Member Added successful.", ResponseType.Success);
+                    return RedirectToAction("Index");
+                }
+                catch (DuplicationException ex)
+                {
+                    model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
+                    _logger.LogError(ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    model.Response = new ResponseModel("Member added failured.", ResponseType.Failure);
+                    _logger.LogError(ex.Message);
+                }
+            }
+
             return View(model);
         }
 
@@ -56,34 +85,36 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
             [Bind(nameof(MemberEditUserModel.Id),
-            nameof(MemberEditUserModel.UserName),
+            nameof(CreateMemberUserModel.DateOfBirth),
             nameof(MemberEditUserModel.Email),
             nameof(MemberEditUserModel.Gender),
             nameof(MemberEditUserModel.Address),
             nameof(MemberEditUserModel.FullName),
-            nameof(MemberEditUserModel.PhoneNumber),
-            nameof(MemberEditUserModel.ImageUrl)
-            )] MemberEditUserModel model)
+            nameof(MemberEditUserModel.PhoneNumber))] MemberEditUserModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     await model.UpdateAsync();
-                    model.Response = new ResponseModel("User edit successful.", ResponseType.Success);
+                    model.Response = new ResponseModel("Member edit successful.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }
                 catch (DuplicationException ex)
                 {
                     model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
+                    _logger.LogError(ex.Message);
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel("User edit failured.", ResponseType.Failure);
+                    model.Response = new ResponseModel("Member edit failured.", ResponseType.Failure);
+                    _logger.LogError(ex.Message);
                 }
             }
+
             return View(model);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Guid id)
@@ -94,14 +125,16 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                 try
                 {
                     var title = await model.DeleteAsync(id);
-                    model.Response = new ResponseModel($"User {title} successfully deleted.", ResponseType.Success);
+                    model.Response = new ResponseModel($"Member {title} successfully deleted.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel("User delete failured.", ResponseType.Failure);
+                    model.Response = new ResponseModel("Member delete failured.", ResponseType.Failure);
+                    _logger.LogError(ex.Message);
                 }
             }
+
             return RedirectToAction("Index");
         }
 
@@ -114,15 +147,17 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                 var model = new MemberUserModel();
                 try
                 {
-                    var title = await model.BlockUser(id);
-                    model.Response = new ResponseModel($"User {title} successfully blocked.", ResponseType.Success);
+                    var user = await model.BlockUnblockAsync(id);
+                    model.Response = new ResponseModel($"Member {user.Name} successfully { (user.IsBlocked == true ? "Blocked" : "Unblocked")}.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel("User block failured.", ResponseType.Failure);
+                    model.Response = new ResponseModel("Block/Unblock Operation failured.", ResponseType.Failure);
+                    _logger.LogError(ex.Message);
                 }
             }
+
             return RedirectToAction("Index");
         }
 
@@ -135,16 +170,34 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                 var model = new MemberUserModel();
                 try
                 {
-                    var title = await model.UpdatePasswordHash(id);
-                    model.Response = new ResponseModel($"User {title} Password Reset Successfully.", ResponseType.Success);
+                    var title = await model.ResetPasswordAsync(id);
+                    model.Response = new ResponseModel($"Member {title} Password Reset Successfully.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
                     model.Response = new ResponseModel("Password Reset failured.", ResponseType.Failure);
+                    _logger.LogError(ex.Message);
                 }
             }
+
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> GetUsers()
+        {
+
+            var tableModel = new DataTablesAjaxRequestModel(Request);
+            var model = Startup.AutofacContainer.Resolve<MemberUserModel>();
+            var data = await model.GetAllAsync(tableModel);
+            return Json(data);
+        }
+
+        public async Task<IActionResult> UserInformation(Guid id)
+        {
+            var model = new MemberUserInformationModel();
+            await model.LoadByIdAsync(id);
+            return View(model);
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.Web.Services
+namespace EmailMarketing.Common.Services
 {
     public interface IMailerService
     {

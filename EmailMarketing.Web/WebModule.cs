@@ -3,6 +3,9 @@ using EmailMarketing.Membership.Services;
 using EmailMarketing.Web.Areas.Admin.Models;
 using EmailMarketing.Web.Areas.Member.Models;
 using EmailMarketing.Web.Areas.Member.Models.ProfileModels;
+
+using EmailMarketing.Web.Areas.Admin.Models.AdminUsers;
+using EmailMarketing.Web.Models.Account;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,9 +30,10 @@ namespace EmailMarketing.Web
             builder.RegisterType<ExpenseModel>();
             builder.RegisterType<AdminUsersModel>();
             builder.RegisterType<MemberUserModel>();
+            builder.RegisterType<ChangeDefaultPasswordViewModel>();
 
             builder.RegisterType<MemberBaseModel>();
             base.Load(builder);
         }
     }
-}
+}  
