@@ -10,6 +10,7 @@ using EmailMarketing.Web.Areas.Member.Models;
 using EmailMarketing.Web.Areas.Member.Models.ProfileModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -60,8 +61,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                     if (result == true)
                     {
                         _logger.LogInformation("Successfully Changed Password.");
-                        await _signInManager.SignOutAsync();
-                        return RedirectToAction("ChangePasswordConfirmation");
+                        return RedirectToAction("Index","Dashboard");
                     }
                 }
                 catch
@@ -75,9 +75,10 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         }
          
         [HttpGet]
-        public IActionResult ChangePasswordConfirmation(ChangePasswordConfirmationModel model)
+        public async Task<IActionResult> ChangePasswordConfirmation(ChangePasswordConfirmationModel model)
         {
             return View(model);
+            await _signInManager.SignOutAsync();
         }
 
         [HttpGet]
@@ -100,6 +101,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateInformation(
             [Bind(nameof(UpdateInformationModel.FullName),
+            nameof(UpdateInformationModel.UserName),
             nameof(UpdateInformationModel.PhoneNumber),
             nameof(UpdateInformationModel.DateOfBirth),
             nameof(UpdateInformationModel.Gender),
@@ -108,14 +110,17 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
 
             if (ModelState.IsValid)
             {
-                await model.UpdateMemberAsync();
-                _logger.LogInformation("Member Information Updated Successfully");
-                return RedirectToAction("Profile");
-            }
-            else
-            {
-                _logger.LogInformation("Cannot Update Memeber Information");
-                ModelState.AddModelError(string.Empty, "Cannot update");
+                try
+                {
+                    await model.UpdateMemberAsync();
+                    _logger.LogInformation("Member Information Updated Successfully");
+                    return RedirectToAction("Profile");
+                }
+                catch
+                {
+                    _logger.LogInformation("Cannot Update Memeber Information"); 
+                    model.Response = new ResponseModel("Failed to Update", ResponseType.Failure);
+                }
             }
             return View(model);
         }

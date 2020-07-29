@@ -13,6 +13,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.ProfileModels
     public class UpdateInformationModel : MemberBaseModel
     {
         public string FullName { get; set; }
+        public string UserName { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public string Gender { get; set; }
@@ -33,13 +34,18 @@ namespace EmailMarketing.Web.Areas.Member.Models.ProfileModels
                 PhoneNumber = user.PhoneNumber;
                 Address = user.Address;
                 DateOfBirth = user.DateOfBirth;
+                Gender = user.Gender;
+                UserName = user.UserName;
             }
         }
         internal void GetModelData(ApplicationUser user)
         {
             user.FullName = FullName;
+            user.UserName = UserName;
             user.Address = Address;
             user.DateOfBirth = DateOfBirth;
+            user.Gender = Gender;
+            user.PhoneNumber = PhoneNumber; 
         }
         internal async Task UpdateMemberAsync()
         {

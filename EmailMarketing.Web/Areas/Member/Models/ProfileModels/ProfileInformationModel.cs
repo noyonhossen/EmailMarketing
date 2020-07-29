@@ -13,6 +13,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.ProfileModels
     public class ProfileInformationModel : MemberBaseModel
     {
         public string FullName { get; set; }
+        public string UserName { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public string Gender { get; set; }
@@ -30,10 +31,12 @@ namespace EmailMarketing.Web.Areas.Member.Models.ProfileModels
             if (user != null)
             {
                 FullName = user.FullName;
+                UserName = user.UserName;
                 PhoneNumber = user.PhoneNumber;
                 Address = user.Address;
                 DateOfBirth = user.DateOfBirth;
                 Email = user.Email;
+                Gender = user.Gender;
             }
         }
 

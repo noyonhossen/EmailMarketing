@@ -33,5 +33,6 @@ namespace EmailMarketing.Web.Areas.Member.Models.ProfileModels
             var result = await _applicationuserService.ChangePasswordAsync(_currentUserService.UserId, CurrentPassword, NewPassword);
             return result;
         }
+
     }
 }
