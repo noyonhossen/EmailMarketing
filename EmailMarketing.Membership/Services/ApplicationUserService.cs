@@ -12,6 +12,7 @@ using EmailMarketing.Common.Extensions;
 using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Membership.Exceptions;
 using EmailMarketing.Membership.Constants;
+using System.Transactions;
 
 namespace EmailMarketing.Membership.Services
 {
@@ -164,255 +165,355 @@ namespace EmailMarketing.Membership.Services
 
         public async Task<Guid> AddAsync(ApplicationUser entity, Guid userRoleId, string newPassword)
         {
-            var isExists = await this.IsExistsUserNameAsync(entity.UserName, entity.Id);
-            if (isExists)
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                throw new DuplicationException(nameof(entity.Email));
+                try
+                {
+                    var isExists = await this.IsExistsUserNameAsync(entity.UserName, entity.Id);
+                    if (isExists)
+                    {
+                        throw new DuplicationException(nameof(entity.Email));
+                    }
+
+                    entity.Status = EnumApplicationUserStatus.GeneralUser;
+                    entity.Created = _dateTime.Now;
+                    entity.CreatedBy = _currentUserService.UserId;
+
+                    var userSaveResult = await _userManager.CreateAsync(entity, newPassword);
+
+                    if (!userSaveResult.Succeeded)
+                    {
+                        throw new IdentityValidationException(userSaveResult.Errors);
+                    };
+
+                    // Add New User Role
+                    var user = await _userManager.FindByNameAsync(entity.UserName);
+                    var role = await _roleManager.FindByIdAsync(userRoleId.ToString());
+
+                    if (role == null)
+                    {
+                        throw new NotFoundException(nameof(ApplicationRole), userRoleId);
+                    }
+
+                    var roleSaveResult = await _userManager.AddToRoleAsync(user, role.Name);
+
+                    if (!roleSaveResult.Succeeded)
+                    {
+                        throw new IdentityValidationException(roleSaveResult.Errors);
+                    };
+
+                    scope.Complete();
+
+                    return user.Id;
+                }
+                catch (Exception ex)
+                {
+                    scope.Dispose();
+                    throw;
+                }
             }
-
-            entity.Status = EnumApplicationUserStatus.GeneralUser;
-            entity.Created = _dateTime.Now;
-            entity.CreatedBy = _currentUserService.UserId;
-
-            var userSaveResult = await _userManager.CreateAsync(entity, newPassword);
-
-            if (!userSaveResult.Succeeded)
-            {
-                throw new IdentityValidationException(userSaveResult.Errors);
-            };
-
-            // Add New User Role
-            var user = await _userManager.FindByNameAsync(entity.UserName);
-            var role = await _roleManager.FindByIdAsync(userRoleId.ToString());
-
-            if (role == null)
-            {
-                throw new NotFoundException(nameof(ApplicationRole), userRoleId);
-            }
-
-            var roleSaveResult = await _userManager.AddToRoleAsync(user, role.Name);
-
-            if (!roleSaveResult.Succeeded)
-            {
-                throw new IdentityValidationException(roleSaveResult.Errors);
-            };
-
-            return user.Id;
         }
 
         public async Task<Guid> AddAsync(ApplicationUser entity, string userRoleName, string newPassword)
         {
-            var isExists = await this.IsExistsUserNameAsync(entity.UserName, entity.Id);
-            if (isExists)
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                throw new DuplicationException(nameof(entity.Email));
+                try
+                {
+                    var isExists = await this.IsExistsUserNameAsync(entity.UserName, entity.Id);
+                    if (isExists)
+                    {
+                        throw new DuplicationException(nameof(entity.Email));
+                    }
+
+                    entity.Status = EnumApplicationUserStatus.GeneralUser;
+                    entity.Created = _dateTime.Now;
+                    entity.CreatedBy = _currentUserService.UserId;
+
+                    var userSaveResult = await _userManager.CreateAsync(entity, newPassword);
+
+                    if (!userSaveResult.Succeeded)
+                    {
+                        throw new IdentityValidationException(userSaveResult.Errors);
+                    };
+
+                    // Add New User Role
+                    var user = await _userManager.FindByNameAsync(entity.UserName);
+                    var role = await _roleManager.FindByNameAsync(userRoleName);
+
+                    if (role == null)
+                    {
+                        throw new NotFoundException(nameof(ApplicationRole), userRoleName);
+                    }
+
+                    var roleSaveResult = await _userManager.AddToRoleAsync(user, role.Name);
+
+                    if (!roleSaveResult.Succeeded)
+                    {
+                        throw new IdentityValidationException(roleSaveResult.Errors);
+                    };
+
+                    scope.Complete();
+
+                    return user.Id;
+                }
+                catch (Exception ex)
+                {
+                    scope.Dispose();
+                    throw;
+                }
             }
-
-            entity.Status = EnumApplicationUserStatus.GeneralUser;
-            entity.Created = _dateTime.Now;
-            entity.CreatedBy = _currentUserService.UserId;
-
-            var userSaveResult = await _userManager.CreateAsync(entity, newPassword);
-
-            if (!userSaveResult.Succeeded)
-            {
-                throw new IdentityValidationException(userSaveResult.Errors);
-            };
-
-            // Add New User Role
-            var user = await _userManager.FindByNameAsync(entity.UserName);
-            var role = await _roleManager.FindByNameAsync(userRoleName);
-
-            if (role == null)
-            {
-                throw new NotFoundException(nameof(ApplicationRole), userRoleName);
-            }
-
-            var roleSaveResult = await _userManager.AddToRoleAsync(user, role.Name);
-
-            if (!roleSaveResult.Succeeded)
-            {
-                throw new IdentityValidationException(roleSaveResult.Errors);
-            };
-
-            return user.Id;
         }
 
         public async Task<Guid> UpdateAsync(ApplicationUser entity, Guid userRoleId)
         {
-            var user = await this._userManager.FindByIdAsync(entity.Id.ToString());
-
-            if (user == null)
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                throw new NotFoundException(nameof(ApplicationUser), entity.Id);
-            }
-
-            var isExists = await this.IsExistsUserNameAsync(entity.UserName, entity.Id);
-            if (isExists)
-            {
-                throw new DuplicationException(nameof(entity.Email));
-            }
-
-            user.FullName = entity.FullName;
-            user.UserName = entity.UserName;
-            user.Email = entity.Email;
-            user.PhoneNumber = entity.PhoneNumber;
-            user.Address = entity.Address;
-            user.DateOfBirth = entity.DateOfBirth;
-            user.Gender = entity.Gender;
-            user.ImageUrl = entity.ImageUrl ?? user.ImageUrl;
-            user.LastModified = _dateTime.Now;
-            user.LastModifiedBy = _currentUserService.UserId;
-
-            var userSaveResult = await _userManager.UpdateAsync(user);
-
-            if (!userSaveResult.Succeeded)
-            {
-                throw new IdentityValidationException(userSaveResult.Errors);
-            };
-
-            // Remove Previous User Role
-            var previousUserRoles = await _userManager.GetRolesAsync(user);
-            if (previousUserRoles.Any())
-            {
-                var roleRemoveResult = await _userManager.RemoveFromRolesAsync(user, previousUserRoles);
-
-                if (!roleRemoveResult.Succeeded)
+                try
                 {
-                    throw new IdentityValidationException(roleRemoveResult.Errors);
-                };
+                    var user = await this._userManager.FindByIdAsync(entity.Id.ToString());
 
+                    if (user == null)
+                    {
+                        throw new NotFoundException(nameof(ApplicationUser), entity.Id);
+                    }
+
+                    var isExists = await this.IsExistsUserNameAsync(entity.UserName, entity.Id);
+                    if (isExists)
+                    {
+                        throw new DuplicationException(nameof(entity.Email));
+                    }
+
+                    user.FullName = entity.FullName;
+                    user.UserName = entity.UserName;
+                    user.Email = entity.Email;
+                    user.PhoneNumber = entity.PhoneNumber;
+                    user.Address = entity.Address;
+                    user.DateOfBirth = entity.DateOfBirth;
+                    user.Gender = entity.Gender;
+                    user.ImageUrl = entity.ImageUrl ?? user.ImageUrl;
+                    user.LastModified = _dateTime.Now;
+                    user.LastModifiedBy = _currentUserService.UserId;
+
+                    var userSaveResult = await _userManager.UpdateAsync(user);
+
+                    if (!userSaveResult.Succeeded)
+                    {
+                        throw new IdentityValidationException(userSaveResult.Errors);
+                    };
+
+                    // Remove Previous User Role
+                    var previousUserRoles = await _userManager.GetRolesAsync(user);
+                    if (previousUserRoles.Any())
+                    {
+                        var roleRemoveResult = await _userManager.RemoveFromRolesAsync(user, previousUserRoles);
+
+                        if (!roleRemoveResult.Succeeded)
+                        {
+                            throw new IdentityValidationException(roleRemoveResult.Errors);
+                        };
+
+                    }
+
+                    // Add New User Role
+                    var role = await _roleManager.FindByIdAsync(userRoleId.ToString());
+
+                    if (role == null)
+                    {
+                        throw new NotFoundException(nameof(ApplicationRole), userRoleId);
+                    }
+
+                    var roleSaveResult = await _userManager.AddToRoleAsync(user, role.Name);
+
+                    if (!roleSaveResult.Succeeded)
+                    {
+                        throw new IdentityValidationException(roleSaveResult.Errors);
+                    };
+
+                    return user.Id;
+                }
+                catch (Exception ex)
+                {
+                    scope.Dispose();
+                    throw;
+                }
             }
-
-            // Add New User Role
-            var role = await _roleManager.FindByIdAsync(userRoleId.ToString());
-
-            if (role == null)
-            {
-                throw new NotFoundException(nameof(ApplicationRole), userRoleId);
-            }
-
-            var roleSaveResult = await _userManager.AddToRoleAsync(user, role.Name);
-
-            if (!roleSaveResult.Succeeded)
-            {
-                throw new IdentityValidationException(roleSaveResult.Errors);
-            };
-
-
-            return user.Id;
         }
 
         public async Task<Guid> UpdateAsync(ApplicationUser entity)
         {
-            var user = await this._userManager.FindByIdAsync(entity.Id.ToString());
-
-            if (user == null)
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                throw new NotFoundException(nameof(ApplicationUser), entity.Id);
+                try
+                {
+                    var user = await this._userManager.FindByIdAsync(entity.Id.ToString());
+
+                    if (user == null)
+                    {
+                        throw new NotFoundException(nameof(ApplicationUser), entity.Id);
+                    }
+
+                    var isExists = await this.IsExistsUserNameAsync(entity.UserName, entity.Id);
+                    if (isExists)
+                    {
+                        throw new DuplicationException(nameof(entity.Email));
+                    }
+
+                    user.FullName = entity.FullName;
+                    user.UserName = entity.UserName;
+                    user.Email = entity.Email;
+                    user.PhoneNumber = entity.PhoneNumber;
+                    user.Address = entity.Address;
+                    user.DateOfBirth = entity.DateOfBirth;
+                    user.Gender = entity.Gender;
+                    user.ImageUrl = entity.ImageUrl ?? user.ImageUrl;
+                    user.LastModified = _dateTime.Now;
+                    user.LastModifiedBy = _currentUserService.UserId;
+
+                    var userSaveResult = await _userManager.UpdateAsync(user);
+
+                    if (!userSaveResult.Succeeded)
+                    {
+                        throw new IdentityValidationException(userSaveResult.Errors);
+                    };
+
+                    return user.Id;
+                }
+                catch (Exception ex)
+                {
+                    scope.Dispose();
+                    throw;
+                }
             }
-
-            var isExists = await this.IsExistsUserNameAsync(entity.UserName, entity.Id);
-            if (isExists)
-            {
-                throw new DuplicationException(nameof(entity.Email));
-            }
-
-            user.FullName = entity.FullName;
-            user.UserName = entity.UserName;
-            user.Email = entity.Email;
-            user.PhoneNumber = entity.PhoneNumber;
-            user.Address = entity.Address;
-            user.DateOfBirth = entity.DateOfBirth;
-            user.Gender = entity.Gender;
-            user.ImageUrl = entity.ImageUrl ?? user.ImageUrl;
-            user.LastModified = _dateTime.Now;
-            user.LastModifiedBy = _currentUserService.UserId;
-
-            var userSaveResult = await _userManager.UpdateAsync(user);
-
-            if (!userSaveResult.Succeeded)
-            {
-                throw new IdentityValidationException(userSaveResult.Errors);
-            };
-
-            return user.Id;
         }
 
         public async Task<string> DeleteAsync(Guid id)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
-
-            if (user == null)
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                throw new NotFoundException(nameof(ApplicationUser), id);
+                try
+                {
+                    var user = await _userManager.FindByIdAsync(id.ToString());
+
+                    if (user == null)
+                    {
+                        throw new NotFoundException(nameof(ApplicationUser), id);
+                    }
+
+                    //user.IsDeleted = true;
+                    //var result = await _userManager.UpdateAsync(user);
+                    var result = await _userManager.DeleteAsync(user);
+
+                    if (!result.Succeeded)
+                    {
+                        throw new IdentityValidationException(result.Errors);
+                    };
+
+                    return user.FullName;
+                }
+                catch (Exception ex)
+                {
+                    scope.Dispose();
+                    throw;
+                }
             }
-
-            user.IsDeleted = true;
-            var result = await _userManager.UpdateAsync(user);
-
-            if (!result.Succeeded)
-            {
-                throw new IdentityValidationException(result.Errors);
-            };
-
-            return user.FullName;
         }
 
-        public async Task<string> ActiveInactiveAsync(Guid id)
+        public async Task<(string Name, bool IsActive)> ActiveInactiveAsync(Guid id)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
-
-            if (user == null)
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                throw new NotFoundException(nameof(ApplicationUser), id);
+                try
+                {
+                    var user = await _userManager.FindByIdAsync(id.ToString());
+
+                    if (user == null)
+                    {
+                        throw new NotFoundException(nameof(ApplicationUser), id);
+                    }
+
+                    user.IsActive = !user.IsActive;
+                    var result = await _userManager.UpdateAsync(user);
+
+                    if (!result.Succeeded)
+                    {
+                        throw new IdentityValidationException(result.Errors);
+                    };
+
+                    return (user.FullName, user.IsActive);
+                }
+                catch (Exception ex)
+                {
+                    scope.Dispose();
+                    throw;
+                }
             }
-
-            user.IsActive = !user.IsActive;
-            var result = await _userManager.UpdateAsync(user);
-
-            if (!result.Succeeded)
-            {
-                throw new IdentityValidationException(result.Errors);
-            };
-
-            return user.FullName;
         }
 
-        public async Task<ApplicationUser> BlockUnblockAsync(Guid id)
+        public async Task<(string Name, bool IsBlocked)> BlockUnblockAsync(Guid id)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
-
-            if (user == null)
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                throw new NotFoundException(nameof(ApplicationUser), id);
+                try
+                {
+                    var user = await _userManager.FindByIdAsync(id.ToString());
+
+                    if (user == null)
+                    {
+                        throw new NotFoundException(nameof(ApplicationUser), id);
+                    }
+
+                    user.IsBlocked = !user.IsBlocked;
+                    var result = await _userManager.UpdateAsync(user);
+
+                    if (!result.Succeeded)
+                    {
+                        throw new IdentityValidationException(result.Errors);
+                    };
+
+                    return (user.FullName, user.IsBlocked);
+                }
+                catch (Exception ex)
+                {
+                    scope.Dispose();
+                    throw;
+                }
             }
+        }
 
-            user.IsBlocked = !user.IsBlocked;
-            var result = await _userManager.UpdateAsync(user);
-
-            if (!result.Succeeded)
+        public async Task<string> ResetPasswordAsync(Guid id, string newPassword)
+        {
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                throw new IdentityValidationException(result.Errors);
-            };
+                try
+                {
+                    var user = await _userManager.FindByIdAsync(id.ToString());
 
-            return user;
-        }
+                    if (user == null)
+                    {
+                        throw new NotFoundException(nameof(ApplicationUser), id);
+                    }
 
-        public async Task<string> ResetPassword(ApplicationUser entity,string newPassword)
-        {
-            entity.PasswordHash = newPassword;
-            entity.PasswordChangedCount = 0;
-            await UpdateAsync(entity);
-            return entity.FullName;
-        }
+                    var newPasswordHash = _userManager.PasswordHasher.HashPassword(user, newPassword);
+                    user.LastPassword = user.PasswordHash;
+                    user.PasswordHash = newPasswordHash;
+                    user.LastPassChangeDate = _dateTime.Now;
+                    user.PasswordChangedCount = 0;
+                    var result = await _userManager.UpdateAsync(user);
 
-        public async Task<string> ResetPassword(ApplicationUser entity, string newPassword)
-        {
-            entity.PasswordHash = newPassword;
-            entity.PasswordChangedCount = 0;
-            await UpdateAsync(entity);
-            return entity.FullName;
+                    if (!result.Succeeded)
+                    {
+                        throw new IdentityValidationException(result.Errors);
+                    };
+
+                    return user.FullName;
+                }
+                catch (Exception ex)
+                {
+                    scope.Dispose();
+                    throw;
+                }
+            }
         }
 
         public async Task<IList<(Guid Value, string Text)>> GetAllForSelectAsync()

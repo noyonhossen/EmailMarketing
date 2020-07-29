@@ -8,7 +8,7 @@ using EmailMarketing.Membership.Entities;
 using EmailMarketing.Membership.Services;
 using EmailMarketing.Web.Areas.Admin.Enums;
 using EmailMarketing.Web.Areas.Admin.Models;
-using EmailMarketing.Web.Areas.Admin.Models.AdminModels;
+using EmailMarketing.Web.Areas.Admin.Models.AdminUsers;
 using EmailMarketing.Web.Controllers;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -19,23 +19,11 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
     [Area("Admin")]
     public class AdminUsersController : Controller
     {
-        private readonly ApplicationSignInManager _signInManager;
-        private readonly ApplicationUserManager _userManager;
-        private readonly ILogger _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly ILogger<AdminUsersController> _logger;
 
-        public AdminUsersController(
-            ApplicationUserManager userManager,
-            ApplicationSignInManager signInManager,
-            ILoggerFactory logger,
-            IEmailSender emailSender
-          )
+        public AdminUsersController(ILogger<AdminUsersController> logger)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _logger = logger.CreateLogger<AdminUsersController>();
-            _emailSender = emailSender;
-           
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -43,78 +31,88 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             var model = Startup.AutofacContainer.Resolve<AdminUsersModel>();
             return View(model);
         }
+
         public IActionResult Add()
         {
             var model = new CreateAdminUsersModel();
             return View(model);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
             [Bind(nameof(CreateAdminUsersModel.FullName),
-            nameof(CreateAdminUsersModel.UserName))]CreateAdminUsersModel model)
+            nameof(CreateAdminUsersModel.Email),
+            nameof(EditAdminUsersModel.DateOfBirth),
+            nameof(EditAdminUsersModel.PhoneNumber),
+            nameof(EditAdminUsersModel.Gender),
+            nameof(EditAdminUsersModel.Address))] CreateAdminUsersModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     await model.CreateAdminAsync();
-                    model.Response = new ResponseModel("Record Added successful.", ResponseType.Success);
-
+                    model.Response = new ResponseModel("Admin Added successful.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }
                 catch (DuplicationException ex)
                 {
                     model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
-                    // error logger code
+                    _logger.LogError(ex.Message);
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel("Record added failed.", ResponseType.Failure);
-                    // error logger code
+                    model.Response = new ResponseModel("Admin added failured.", ResponseType.Failure);
+                    _logger.LogError(ex.Message);
                 }
             }
+
             return View(model);
         }
-        public async Task<IActionResult> Edit(Guid Id)
+
+        public async Task<IActionResult> Edit(Guid id)
         {
             var model = new EditAdminUsersModel();
-            await model.LoadByIdAsync(Id);
+            await model.LoadByIdAsync(id);
             return View(model);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
             [Bind(nameof(EditAdminUsersModel.Id),
             nameof(EditAdminUsersModel.FullName),
-            nameof(EditAdminUsersModel.UserName),
+            nameof(EditAdminUsersModel.Email),
             nameof(EditAdminUsersModel.DateOfBirth),
             nameof(EditAdminUsersModel.PhoneNumber),
             nameof(EditAdminUsersModel.Gender),
-            nameof(EditAdminUsersModel.Address))]EditAdminUsersModel model)
+            nameof(EditAdminUsersModel.Address))] EditAdminUsersModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     await model.UpdateAsync();
-                    model.Response = new ResponseModel("Record Updated successful.", ResponseType.Success);
+                    model.Response = new ResponseModel("Admin Updated successful.", ResponseType.Success);
 
                     return RedirectToAction("Index");
                 }
                 catch (DuplicationException ex)
                 {
                     model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
-                    // error logger code
+                    _logger.LogError(ex.Message);
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel("Record Update failed.", ResponseType.Failure);
-                    // error logger code
+                    model.Response = new ResponseModel("Admin Update failured.", ResponseType.Failure);
+                    _logger.LogError(ex.Message);
                 }
             }
+
             return View(model);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Guid id)
@@ -124,61 +122,62 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                 var model = new AdminUsersModel();
                 try
                 {
-                    await model.DeleteAsync(id);
-                    model.Response = new ResponseModel($"Admin successfully deleted.", ResponseType.Success);
+                    var title = await model.DeleteAsync(id);
+                    model.Response = new ResponseModel($"Admin {title}  successfully deleted.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel("Admin delete failued.", ResponseType.Failure);
-                    // error logger code
+                    model.Response = new ResponseModel("Admin delete failured.", ResponseType.Failure);
+                    _logger.LogError(ex.Message);
                 }
             }
+
             return RedirectToAction("index");
         }
+
         [HttpGet]
         public async Task<IActionResult> ShowProfile(AdminUsersShowProfileModel model)
         {
-           
             await model.ShowProfileAsync();
             return View(model);
         }
+
         [HttpGet]
         public IActionResult UpdateInformation()
         {
             var model = new AdminUsersProfileUpdateModel();
             return View(model);
-
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateInformation(
             [Bind(nameof(AdminUsersProfileUpdateModel.FullName),
-            nameof(AdminUsersProfileUpdateModel.UserName),
+            nameof(AdminUsersProfileUpdateModel.Email),
             nameof(AdminUsersProfileUpdateModel.DateOfBirth),
             nameof(AdminUsersProfileUpdateModel.PhoneNumber),
             nameof(AdminUsersProfileUpdateModel.Gender),
-            nameof(AdminUsersProfileUpdateModel.Address))]AdminUsersProfileUpdateModel model)
+            nameof(AdminUsersProfileUpdateModel.Address))] AdminUsersProfileUpdateModel model)
         {
             if (ModelState.IsValid)
             {
-               
                 try
                 {
                     await model.UpdateProfileAsync();
-                  
                     model.Response = new ResponseModel($"Admin successfully updated.", ResponseType.Success);
                     return RedirectToAction("ShowProfile");
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel("Admin update failed.", ResponseType.Failure);
-                    // error logger code
+                    model.Response = new ResponseModel("Admin update failured.", ResponseType.Failure);
+                    _logger.LogError(ex.Message);
                 }
             }
-            return View(model);
 
+            return View(model);
         }
+
         public async Task<IActionResult> GetAdminUsers()
         {
             var tableModel = new DataTablesAjaxRequestModel(Request);

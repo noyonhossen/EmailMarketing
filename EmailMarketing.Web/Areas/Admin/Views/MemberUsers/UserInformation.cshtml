@@ -29,10 +29,10 @@
             <div class="row">
                 <div class="col-6">
                     <table class="table">
-                        <tr>
+                        @*<tr>
                             <td class="col-4 float-left"><h5>User Name: </h5></td>
                             <td class="col-8 float-left"><h5>@Model.UserName</h5></td>
-                        </tr>
+                        </tr>*@
                         <tr>
                             <td class="col-4 float-left"><h5>Full Name : </h5></td>
                             <td class="col-8 float-left"><h5>@Model.FullName</h5></td>
@@ -57,7 +57,7 @@
                             <td class="col-4 float-left"><h5>Phone Number : </h5></td>
                             <td class="col-8 float-left"><h5>@Model.PhoneNumber</h5></td>
                         </tr>
-                        <tr>
+                        @*<tr>
                             <td class="col-4 float-left"><h5>Phone Number Confirmed: </h5></td>
                             @if (@Model.PhoneNumberConfirmed == true)
                             {
@@ -67,7 +67,7 @@
                             {
                                 <td class="col-8 float-left"><h5>No</h5></td>
                             }
-                        </tr>
+                        </tr>*@
                         
                     </table>
                 </div>
@@ -83,7 +83,7 @@
                             <td class="col-8 float-left"><h5>@Model.DateOfBirth</h5></td>
                         </tr>
                        
-                        <tr>
+                        @*<tr>
                             <td class="col-4 float-left"><h5>Active : </h5></td>
                             @if (@Model.IsActive == true)
                             {
@@ -94,8 +94,8 @@
                                 <td class="col-8 float-left"><h5>No</h5></td>
                             }
 
-                        </tr>
-                        <tr>
+                        </tr>*@
+                        @*<tr>
                             <td class="col-4 float-left"><h5>Deleted : </h5></td>
                             @if (@Model.IsDeleted == true)
                             {
@@ -105,7 +105,7 @@
                             {
                                 <td class="col-8 float-left"><h5>No</h5></td>
                             }
-                        </tr>
+                        </tr>*@
                         <tr>
                             <td class="col-4 float-left"><h5>Blocked : </h5></td>
                             @if (@Model.IsBlocked == true)

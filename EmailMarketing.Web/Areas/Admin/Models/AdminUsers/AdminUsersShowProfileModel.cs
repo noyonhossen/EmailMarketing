@@ -9,50 +9,43 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.Web.Areas.Admin.Models.AdminModels
+namespace EmailMarketing.Web.Areas.Admin.Models.AdminUsers
 {
     public class AdminUsersShowProfileModel : AdminBaseModel
     {
       
         public string FullName { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public string Email { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public string PhoneNumber { get; set; }
         public string Gender { get; set; }
         public string Address { get; set; }
 
-        private readonly ApplicationUserService _applicationUserService;
+        private readonly IApplicationUserService _applicationUserService;
         private readonly ICurrentUserService _currentUserService;
 
         public AdminUsersShowProfileModel()
         {
-            _applicationUserService = Startup.AutofacContainer.Resolve<ApplicationUserService>();
+            _applicationUserService = Startup.AutofacContainer.Resolve<IApplicationUserService>();
             _currentUserService = Startup.AutofacContainer.Resolve<ICurrentUserService>();
         }
-        public AdminUsersShowProfileModel(ApplicationUserService applicationUserService, ICurrentUserService currentUserService)
+
+        public AdminUsersShowProfileModel(IApplicationUserService applicationUserService, ICurrentUserService currentUserService)
         {
             _applicationUserService = applicationUserService;
             _currentUserService = currentUserService;
-
         }
-        internal async Task ShowProfileAsync()
-        {
 
-            var currentUserId = _currentUserService.UserId;
-            var adminuser =await _applicationUserService.GetByIdAsync(currentUserId);
+        public async Task ShowProfileAsync()
+        {
+            var adminuser =await _applicationUserService.GetByIdAsync(_currentUserService.UserId);
             this.FullName = adminuser.FullName;
-            this.UserName = adminuser.UserName;
-            this.DateOfBirth = DateTime.UtcNow;
-            //this.DateOfBirth = (DateTime)adminuser.DateOfBirth;
+            this.Email = adminuser.Email;
+            this.DateOfBirth = adminuser.DateOfBirth;
             this.PhoneNumber = adminuser.PhoneNumber;
             this.Gender = adminuser.Gender;
             this.Address = adminuser.Address;
-
-
         }
-
-        
     }
 }
 

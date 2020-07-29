@@ -8,27 +8,32 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.Web.Areas.Admin.Models.AdminModels
+namespace EmailMarketing.Web.Areas.Admin.Models.AdminUsers
 {    
     public class EditAdminUsersModel : AdminBaseModel
     {
         public Guid Id { get; set; }
-        public string UserName { get; set; }
+        [Required]
+        public string Email { get; set; }
+        [Required]
+        [Display(Name = "Full Name")]
         public string FullName { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        [Display(Name = "Date Of Birth")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMMM, yyyy}")]
+        public DateTime? DateOfBirth { get; set; }
+        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
         public string Gender { get; set; }
         public string Address { get; set; }
-       
-       
 
-        private readonly ApplicationUserService _applicationUserService;
-        private readonly ICurrentUserService _currentUserService;
+        private readonly IApplicationUserService _applicationUserService;
+
         public EditAdminUsersModel()
         { 
-            _applicationUserService = Startup.AutofacContainer.Resolve<ApplicationUserService>();
+            _applicationUserService = Startup.AutofacContainer.Resolve<IApplicationUserService>();
         }
-        public EditAdminUsersModel(ApplicationUserService applicationUserService)
+
+        public EditAdminUsersModel(IApplicationUserService applicationUserService)
         {
             _applicationUserService = applicationUserService;
         }
@@ -38,8 +43,8 @@ namespace EmailMarketing.Web.Areas.Admin.Models.AdminModels
             var user = await _applicationUserService.GetByIdAsync(id);
             this.Id = user.Id;
             this.FullName = user.FullName;
-            this.UserName = user.UserName;
-            this.DateOfBirth = (DateTime)user.DateOfBirth;
+            this.Email = user.Email;
+            this.DateOfBirth = user.DateOfBirth;
             this.PhoneNumber = user.PhoneNumber;
             this.Address = user.Address;
             this.Gender = user.Gender;
@@ -47,13 +52,18 @@ namespace EmailMarketing.Web.Areas.Admin.Models.AdminModels
 
         public async Task UpdateAsync()
         {
-            var user = await _applicationUserService.GetByIdAsync(this.Id);
-            user.FullName = this.FullName;
-            user.UserName = this.UserName;
-            user.DateOfBirth = this.DateOfBirth;
-            user.PhoneNumber = this.PhoneNumber;
-            user.Address = this.Address;
-            user.Gender = this.Gender;
+            var user = new ApplicationUser
+            {
+                Id = this.Id,
+                FullName = this.FullName,
+                UserName = this.Email,
+                Email = this.Email,
+                PhoneNumber = this.PhoneNumber,
+                Gender = this.Gender,
+                DateOfBirth = this.DateOfBirth,
+                Address = this.Address
+            };
+
             await _applicationUserService.UpdateAsync(user);
         }
     }

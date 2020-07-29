@@ -11,7 +11,7 @@ using EmailMarketing.Membership.Entities;
 using EmailMarketing.Membership.Services;
 using EmailMarketing.Web.Models;
 using EmailMarketing.Web.Models.Account;
-using EmailMarketing.Web.Services;
+using EmailMarketing.Common.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;

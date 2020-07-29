@@ -17,26 +17,26 @@ namespace EmailMarketing.Web.Areas.Admin.Models
 {
     public class MemberUserModel :AdminBaseModel
     {
-        private readonly AppSettings _userDefaultPassword;
-        private readonly ApplicationUserService _applicationUserService;
-        private readonly ApplicationUserManager _userManager;
+        private readonly AppSettings _appSettings;
+        private readonly IApplicationUserService _applicationUserService;
+
         public MemberUserModel()
         {
-            _applicationUserService = Startup.AutofacContainer.Resolve<ApplicationUserService>();
-            _userManager = Startup.AutofacContainer.Resolve<ApplicationUserManager>();
-            _userDefaultPassword = Startup.AutofacContainer.Resolve<IOptions<AppSettings>>().Value;
+            _applicationUserService = Startup.AutofacContainer.Resolve<IApplicationUserService>();
+            _appSettings = Startup.AutofacContainer.Resolve<IOptions<AppSettings>>().Value;
         }
    
-        public MemberUserModel(ApplicationUserService applicationUserService, ApplicationUserManager userManager)
+        public MemberUserModel(IApplicationUserService applicationUserService, IOptions<AppSettings> appSettings)
         {
             _applicationUserService = applicationUserService;
-            _userManager = userManager;
+            _appSettings = appSettings.Value;
         }
+
         public async Task<object> GetAllAsync(DataTablesAjaxRequestModel tableModel)
         {
             var result = await _applicationUserService.GetAllMemberAsync(
                 tableModel.SearchText,
-                tableModel.GetSortText(new string[] { "User Name","Email" }),
+                tableModel.GetSortText(new string[] { "UserName","Email" }),
                 tableModel.PageIndex, tableModel.PageSize);
 
             return new
@@ -46,34 +46,32 @@ namespace EmailMarketing.Web.Areas.Admin.Models
                 data = (from item in result.Items
                         select new string[]
                         {
-                                    item.UserName,
-                                    item.FullName,
-                                    item.Email,
-                                    item.EmailConfirmed.ToString() == "True" ? "Yes" : "No",
-                                    item.PhoneNumber,
-                                    item.IsBlocked.ToString() == "True" ? "Yes" : "No",
-                                    item.Id.ToString()
-                        }
-                        ).ToArray()
+                            item.UserName,
+                            item.FullName,
+                            item.Email,
+                            item.EmailConfirmed ? "Yes" : "No",
+                            item.PhoneNumber,
+                            item.IsBlocked ? "Yes" : "No",
+                            item.Id.ToString()
+                        }).ToArray()
 
             };
         }
+
         public async Task<string> DeleteAsync(Guid id)
         {
             var name = await _applicationUserService.DeleteAsync(id);
             return name;
         }
-        public async Task<string> UpdatePasswordHash(Guid id)
-        {
 
-            var user = await _applicationUserService.GetByIdAsync(id);
-            var newPassword = _userManager.PasswordHasher.HashPassword(user, _userDefaultPassword.UserDefaultPassword);
-            var name = await _applicationUserService.ResetPassword(user, newPassword);
+        public async Task<string> ResetPasswordAsync(Guid id)
+        {
+            var name = await _applicationUserService.ResetPasswordAsync(id, _appSettings.UserDefaultPassword);
             return name;
         }
-        public async Task<ApplicationUser> BlockUser(Guid id)
-        {
 
+        public async Task<(string Name, bool IsBlocked)> BlockUnblockAsync(Guid id)
+        {
             var user = await _applicationUserService.BlockUnblockAsync(id);
             return user;
         }
