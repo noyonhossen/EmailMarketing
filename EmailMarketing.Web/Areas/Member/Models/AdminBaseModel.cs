@@ -60,9 +60,9 @@ namespace EmailMarketing.Web.Areas.Member.Models
                             Icon = "icon-user-tie",
                             Children = new List<MenuChildItem>
                             {
-                                new MenuChildItem () { Controller = "Groups", Action = "Index", Area="Member", Title = "View Group List",
+                                new MenuChildItem () { Controller = "Groups", Action = "Index", Area="Member", Title = "View Groups",
                                     Icon = "icon-user-tie", IsActive = false },
-                                new MenuChildItem () { Controller = "Groups", Action = "Add", Area="Member", Title = "Add Group Admin",
+                                new MenuChildItem () { Controller = "Groups", Action = "Add", Area="Member", Title = "Add Group",
                                     Icon = "icon-user-tie", IsActive = false },
                              
                             }

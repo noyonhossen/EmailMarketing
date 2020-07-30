@@ -25,6 +25,8 @@
     <Folder Include="Areas\Member\Data\" />
     <Folder Include="wwwroot\homeTheme\css\" />
     <Folder Include="wwwroot\homeTheme\js\" />
+    <Folder Include="wwwroot\memberTheme\css\" />
+    <Folder Include="wwwroot\memberTheme\images\" />
   </ItemGroup>
 
   <ItemGroup>
