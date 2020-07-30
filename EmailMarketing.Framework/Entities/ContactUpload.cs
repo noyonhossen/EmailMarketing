@@ -11,9 +11,10 @@ namespace EmailMarketing.Framework.Entities
         public int GroupId { get; set; }
         public Group Group { get; set; }
         public bool IsSucceed { get; set; }
-        public bool IsExistingUpdate { get; set; }
+        public bool IsUpdateExisting { get; set; }
         public bool HasColumnHeader { get; set; }
-        public bool IsSendEmail { get; set; }
+        public bool IsSendEmailNotify { get; set; }
+        public string SendEmailAddress { get; set; }
         public int SucceedEntryCount { get; set; }
 
         public IList<ContactUploadFieldMap> ContactUploadFieldMaps { get; set; }
