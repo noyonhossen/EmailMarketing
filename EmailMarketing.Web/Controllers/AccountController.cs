@@ -97,7 +97,7 @@ namespace EmailMarketing.Web.Controllers
                         else if (roles.Any(x => x.Equals(ConstantsValue.UserRoleName.Member)))
                         {
                             _logger.LogInformation("User logged in.");
-                            return RedirectToAction(nameof(Index), "MemberUsers", new { Area = "Admin" });
+                            return RedirectToAction(nameof(Index), "Dashboard", new { Area = "Member" });
                         }
                         else if (roles.Any(x => x.Equals(ConstantsValue.UserRoleName.SuperAdmin) || x.Equals(ConstantsValue.UserRoleName.Admin)))
                         {

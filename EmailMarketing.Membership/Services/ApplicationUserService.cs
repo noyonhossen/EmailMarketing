@@ -407,13 +407,13 @@ namespace EmailMarketing.Membership.Services
             return entity.FullName;
         }
 
-        public async Task<string> ResetPassword(ApplicationUser entity, string newPassword)
-        {
-            entity.PasswordHash = newPassword;
-            entity.PasswordChangedCount = 0;
-            await UpdateAsync(entity);
-            return entity.FullName;
-        }
+        //public async Task<string> ResetPassword(ApplicationUser entity, string newPassword)
+        //{
+        //    entity.PasswordHash = newPassword;
+        //    entity.PasswordChangedCount = 0;
+        //    await UpdateAsync(entity);
+        //    return entity.FullName;
+        //}
 
         public async Task<IList<(Guid Value, string Text)>> GetAllForSelectAsync()
         {
