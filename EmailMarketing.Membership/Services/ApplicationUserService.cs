@@ -354,6 +354,7 @@ namespace EmailMarketing.Membership.Services
                     }
 
                     var isExists = await this.IsExistsUserNameAsync(entity.UserName, entity.Id);
+       
                     if (isExists)
                     {
                         throw new DuplicationException(nameof(entity.Email));
@@ -370,7 +371,7 @@ namespace EmailMarketing.Membership.Services
                     user.LastModified = _dateTime.Now;
                     user.LastModifiedBy = _currentUserService.UserId;
 
-                    var userSaveResult = await _userManager.UpdateAsync(user);
+                    var userSaveResult = await this._userManager.UpdateAsync(user);
 
                     if (!userSaveResult.Succeeded)
                     {
@@ -408,6 +409,7 @@ namespace EmailMarketing.Membership.Services
                     {
                         throw new IdentityValidationException(result.Errors);
                     };
+
 
                     return user.FullName;
                 }
