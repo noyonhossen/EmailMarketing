@@ -9,3 +9,29 @@
 .card-box-shadow {
     box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, .2);
 }
+
+.status-dropdown {
+    width: 180px;
+}
+
+#upload {
+    display: none;
+}
+
+.card-border-dotted {
+    border: 3px dotted #aca4a4;
+}
+
+.bg-col-header {
+    background-color: #dfdfdf;
+}
+
+.scrollmenu {
+    background-color: rgb(107, 100, 100);
+    overflow: auto;
+    height: 500px;
+}
+
+.bg-field-map {
+    background-color: #ffffff;
+}

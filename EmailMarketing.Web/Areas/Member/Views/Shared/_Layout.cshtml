@@ -23,7 +23,7 @@
     @RenderSection("Styles", required: false)
 </head>
 
-<body>
+<body class="navbar-top">
 
     <!-- Main navbar -->
     <partial name="_NavBarPartial" />
@@ -55,7 +55,9 @@
     <!-- /core JS files -->
     <!-- Theme JS files -->
     <script src="~/theme/global_assets/js/plugins/notifications/noty.min.js"></script>
+    <script src="../../../../global_assets/js/plugins/forms/styling/switchery.min.js"></script>
     <script src="~/theme/assets/js/app.js"></script>
+    <script src="~/memberTheme/js/member.js"></script>
     <!-- /theme JS files -->
     <script>
         $(function () {
@@ -99,6 +101,8 @@
             }).show();
         </script>
     }
+
+
 </body>
 </html>
 

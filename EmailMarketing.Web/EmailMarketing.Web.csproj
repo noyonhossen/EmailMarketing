@@ -27,6 +27,7 @@
     <Folder Include="wwwroot\homeTheme\js\" />
     <Folder Include="wwwroot\memberTheme\css\" />
     <Folder Include="wwwroot\memberTheme\images\" />
+    <Folder Include="wwwroot\memberTheme\js\" />
   </ItemGroup>
 
   <ItemGroup>
