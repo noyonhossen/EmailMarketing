@@ -16,13 +16,14 @@
     <link href="~/theme/assets/css/layout.min.css" rel="stylesheet" type="text/css">
     <link href="~/theme/assets/css/components.min.css" rel="stylesheet" type="text/css">
     <link href="~/theme/assets/css/colors.min.css" rel="stylesheet" type="text/css">
+    <link href="~/memberTheme/css/member_home.css" rel="stylesheet" type="text/css">
     <!-- /global stylesheets -->
 
     <link rel="stylesheet" href="~/css/site.css" />
     @RenderSection("Styles", required: false)
 </head>
 
-<body>
+<body class="navbar-top">
 
     <!-- Main navbar -->
     <partial name="_NavBarPartial" />
@@ -54,7 +55,9 @@
     <!-- /core JS files -->
     <!-- Theme JS files -->
     <script src="~/theme/global_assets/js/plugins/notifications/noty.min.js"></script>
+    <script src="../../../../global_assets/js/plugins/forms/styling/switchery.min.js"></script>
     <script src="~/theme/assets/js/app.js"></script>
+    <script src="~/memberTheme/js/member.js"></script>
     <!-- /theme JS files -->
     <script>
         $(function () {

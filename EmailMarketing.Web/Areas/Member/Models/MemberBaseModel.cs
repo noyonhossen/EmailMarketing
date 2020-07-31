@@ -75,11 +75,31 @@ namespace EmailMarketing.Web.Areas.Member.Models
                             Icon = "icon-user-tie",
                             Children = new List<MenuChildItem>
                             {
-                                new MenuChildItem () { Controller = "Groups", Action = "Index", Area="Member", Title = "View Group List",
+                                new MenuChildItem () { Controller = "Groups", Action = "Index", Area="Member", Title = "View Groups",
                                     Icon = "icon-user-tie", IsActive = false },
-                                new MenuChildItem () { Controller = "Groups", Action = "Add", Area="Member", Title = "Add Group Admin",
+                                new MenuChildItem () { Controller = "Groups", Action = "Add", Area="Member", Title = "Add Group",
                                     Icon = "icon-user-tie", IsActive = false },
                              
+                            }
+                        }
+
+                    },
+                    {
+                        new MenuItem
+                        {
+                            Title = "Contacts",
+                            Icon = "icon-users4",
+                            Children = new List<MenuChildItem>
+                            {
+                                new MenuChildItem () { Controller = "Contacts", Action = "Index", Area="Member", Title = "Contacts",
+                                    Icon = "icon-user-tie", IsActive = false },
+                                new MenuChildItem () { Controller = "Contacts", Action = "ManageUploads", Area="Member", Title = "Manage Uploads",
+                                    Icon = "icon-user-tie", IsActive = false },
+                                new MenuChildItem () { Controller = "Contacts", Action = "UploadContacts", Area="Member", Title = "Upload/Add Contact",
+                                    Icon = "icon-user-tie", IsActive = false },
+                                new MenuChildItem () { Controller = "Contacts", Action = "CustomFields", Area="Member", Title = "Custom Fields",
+                                    Icon = "icon-user-tie", IsActive = false },
+
                             }
                         }
 
