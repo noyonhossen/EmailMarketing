@@ -330,6 +330,8 @@ namespace EmailMarketing.Membership.Services
                         throw new IdentityValidationException(roleSaveResult.Errors);
                     };
 
+                    scope.Complete();
+
                     return user.Id;
                 }
                 catch (Exception ex)
@@ -377,6 +379,8 @@ namespace EmailMarketing.Membership.Services
                         throw new IdentityValidationException(userSaveResult.Errors);
                     };
 
+                    scope.Complete();
+
                     return user.Id;
                 }
                 catch (Exception ex)
@@ -409,6 +413,8 @@ namespace EmailMarketing.Membership.Services
                         throw new IdentityValidationException(result.Errors);
                     };
 
+                    scope.Complete();
+
                     return user.FullName;
                 }
                 catch (Exception ex)
@@ -440,6 +446,8 @@ namespace EmailMarketing.Membership.Services
                         throw new IdentityValidationException(result.Errors);
                     };
 
+                    scope.Complete();
+
                     return (user.FullName, user.IsActive);
                 }
                 catch (Exception ex)
@@ -470,6 +478,8 @@ namespace EmailMarketing.Membership.Services
                     {
                         throw new IdentityValidationException(result.Errors);
                     };
+
+                    scope.Complete();
 
                     return (user.FullName, user.IsBlocked);
                 }
@@ -506,6 +516,8 @@ namespace EmailMarketing.Membership.Services
                         throw new IdentityValidationException(result.Errors);
                     };
 
+                    scope.Complete();
+
                     return user.FullName;
                 }
                 catch (Exception ex)
@@ -534,28 +546,47 @@ namespace EmailMarketing.Membership.Services
             return result;
         }
         
-        public async Task<bool> ChangePasswordAsync(Guid id,string CurrentPassword,string NewPassword)
+        public async Task<bool> ChangePasswordAsync(Guid id, string CurrentPassword, string NewPassword)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
-            if(user==null)
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                throw new NotFoundException(nameof(ApplicationUser), id);
-            }
-            var oldPassword = user.PasswordHash;
-            var result = await _userManager.ChangePasswordAsync(user, CurrentPassword, NewPassword);
+                try
+                {
+                    var user = await _userManager.FindByIdAsync(id.ToString());
 
-            if (result.Succeeded)
-            {
-                user.LastPassChangeDate = _dateTime.Now;
-                user.LastPassword = oldPassword;
-                user.PasswordChangedCount++;
-                await _userManager.UpdateAsync(user);
-                return true;
-            }
-            else
-            {
-                throw new IdentityValidationException(result.Errors);
-                return false;
+                    if(user == null)
+                    {
+                        throw new NotFoundException(nameof(ApplicationUser), id);
+                    }
+
+                    var oldPassword = user.PasswordHash;
+                    var result = await _userManager.ChangePasswordAsync(user, CurrentPassword, NewPassword);
+
+                    if (result.Succeeded)
+                    {
+                        throw new IdentityValidationException(result.Errors);
+                    }
+
+                    user.LastPassChangeDate = _dateTime.Now;
+                    user.LastPassword = oldPassword;
+                    user.PasswordChangedCount++;
+
+                    var userSaveResult = await _userManager.UpdateAsync(user);
+
+                    if (!userSaveResult.Succeeded)
+                    {
+                        throw new IdentityValidationException(result.Errors);
+                    };
+
+                    scope.Complete();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    scope.Dispose();
+                    throw;
+                }
             }
         }
     }
