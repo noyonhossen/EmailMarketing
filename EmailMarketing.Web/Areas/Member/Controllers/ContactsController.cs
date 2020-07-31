@@ -45,5 +45,20 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var model = new ContactsModel();
             return View(model);
         }
+        public IActionResult EditCustomField()
+        {
+            var model = new ContactsModel();
+            return View(model);
+        }
+        public IActionResult AddSingleContact()
+        {
+            var model = new ContactsModel();
+            return View(model);
+        }
+        public IActionResult EditContact()
+        {
+            var model = new ContactsModel();
+            return View(model);
+        }
     }
 }

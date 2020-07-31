@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using EmailMarketing.Web.Areas.Member.Models.Resources;
+using Microsoft.AspNetCore.Mvc;
+
+namespace EmailMarketing.Web.Areas.Member.Controllers
+{
+    [Area("Member")]
+    public class ResourcesController : Controller
+    {
+        public IActionResult Index()
+        {
+            var model = new ResourcesModel();
+            return View(model);
+        }
+
+        public IActionResult ImportContact()
+        {
+            var model = new ResourcesModel();
+            return View(model);
+        }
+        public IActionResult SendMail()
+        {
+            var model = new ResourcesModel();
+            return View(model);
+        }
+
+        public IActionResult ChoseEmailTemplate()
+        {
+            var model = new ResourcesModel();
+            return View(model);
+        }
+
+    }
+}

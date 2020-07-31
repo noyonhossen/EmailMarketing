@@ -62,23 +62,6 @@
                     </a>
                 </li>
 
-                <li class="nav-item border-bottom">
-                    <a href="index.html" class="nav-link ">
-                        <i class="icon-paperplane"></i>
-                        <span>
-                            Campaigns
-                        </span>
-                    </a>
-                </li>
-
-                <li class="nav-item border-bottom">
-                    <a href="index.html" class="nav-link ">
-                        <i class="icon-envelop5"></i>
-                        <span>
-                            Email
-                        </span>
-                    </a>
-                </li>
 
                 @{
                     foreach (var menu in Model.MenuItems)
@@ -114,7 +97,7 @@
                 </li>
 
                 <li class="nav-item border-bottom">
-                    <a href="index.html" class="nav-link ">
+                    <a asp-area="Member" asp-controller="Resources" asp-action="Index" class="nav-link ">
                         <i class="icon-last"></i>
                         <span>
                             Get Start
@@ -122,18 +105,26 @@
                     </a>
                 </li>
                 <li class="nav-item border-bottom">
-                    <a href="index.html" class="nav-link ">
-                        <i class="icon-upload4"></i>
+                    <a asp-area="Member" asp-controller="Resources" asp-action="SendMail" class="nav-link ">
+                        <i class="icon-airplane3"></i>
                         <span>
-                            Import Contract
+                            How to Send Mail
                         </span>
                     </a>
                 </li>
                 <li class="nav-item border-bottom">
-                    <a href="index.html" class="nav-link ">
+                    <a asp-area="Member" asp-controller="Resources" asp-action="ImportContact" class="nav-link ">
+                        <i class="icon-upload4"></i>
+                        <span>
+                            How to Import Contract
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item border-bottom">
+                    <a asp-area="Member" asp-controller="Resources" asp-action="ChoseEmailTemplate" class="nav-link ">
                         <i class="icon-image4"></i>
                         <span>
-                            Chose Email Template
+                            How to Chose Email Template
                         </span>
                     </a>
                 </li>

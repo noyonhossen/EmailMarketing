@@ -22,7 +22,7 @@
                                     <i class="icon-book icon-2x text-primary border-primary border-3 rounded-round p-3 mb-3"></i>
                                     <h5 class="card-title">View Reports</h5>
                                     <p class="mb-3">You can see your contracts which you added previously.</p>
-                                    <a href="#" class="btn bg-success-400"><i class="icon-eye"></i> View Reports</a>
+                                    <a asp-controller="Campaigns" asp-action="ViewReport" asp-area="Member"  class="btn bg-success-400"><i class="icon-eye"></i> View Reports</a>
                                 </div>
                             </div>
 
@@ -33,23 +33,23 @@
                         <div class="col-12">
 
                             <div class="row">
-                                <div class="col-8">
+                                <div class="col-7">
                                     <div class="card text-center card-box-shadow">
                                         <div class="card-body">
                                             <i class="icon-list2 icon-2x text-primary border-primary border-3 rounded-round p-3 mb-3"></i>
                                             <h5 class="card-title">View Your Contracts</h5>
                                             <p class="mb-3">You can see your contracts which you added previously.</p>
-                                            <a href="#" class="btn bg-success-400"><i class="icon-eye"></i> View</a>
+                                            <a asp-controller="Contacts" asp-action="Index" asp-area="Member" class="btn bg-success-400"><i class="icon-eye"></i> View</a>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-5">
                                     <div class="card text-center card-box-shadow">
                                         <div class="card-body">
                                             <i class="icon-upload4 icon-2x text-primary border-primary border-3 rounded-round p-3 mb-3"></i>
                                             <h5 class="card-title">Upload Contacts</h5>
                                             <p class="mb-3">Upload your contracts from exel sheet.</p>
-                                            <a href="#" class="btn bg-success-400"><i class="icon-upload4"></i> Upload Contacts</a>
+                                            <a asp-controller="Contacts" asp-action="UploadContacts" asp-area="Member" class="btn bg-success-400"><i class="icon-upload4"></i> Upload Contacts</a>
                                         </div>
                                     </div>
                                 </div>
@@ -66,7 +66,7 @@
                                         <div class="card-body">
                                             <i class="icon-users4 icon-2x text-primary border-primary border-3 rounded-round p-3 mb-3"></i>
                                             <h5 class="card-title">View Groups</h5>
-                                            <a href="#" class="btn bg-success-400"><i class="icon-eye"></i> View</a>
+                                            <a asp-controller="Groups" asp-action="Index" asp-area="Member" class="btn bg-success-400"><i class="icon-eye"></i> View</a>
                                         </div>
                                     </div>
                                 </div>
@@ -75,7 +75,7 @@
                                         <div class="card-body">
                                             <i class="icon-users4 icon-2x text-primary border-primary border-3 rounded-round p-3 mb-3"></i>
                                             <h5 class="card-title">Create Group</h5>
-                                            <a href="#" class="btn bg-success-400"><i class="icon-plus22"></i> Create</a>
+                                            <a asp-controller="Groups" asp-action="Add" asp-area="Member" class="btn bg-success-400"><i class="icon-plus22"></i> Create</a>
                                         </div>
                                     </div>
                                 </div>
@@ -89,23 +89,23 @@
                         <div class="col-12">
 
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col-5">
                                     <div class="card text-center card-box-shadow">
                                         <div class="card-body">
                                             <i class="icon-plus22 icon-2x text-primary border-primary border-3 rounded-round p-3 mb-3"></i>
                                             <h5 class="card-title">Create Campaign</h5>
                                             <p class="mb-3">Upload your contracts from exel sheet.</p>
-                                            <a href="#" class="btn bg-success-400"><i class="icon-plus22"></i> Create</a>
+                                            <a asp-controller="Campaigns" asp-action="Index" asp-area="Member" class="btn bg-success-400"><i class="icon-plus22"></i> Create</a>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-8">
+                                <div class="col-7">
                                     <div class="card text-center card-box-shadow">
                                         <div class="card-body">
                                             <i class="icon-paperplane icon-2x text-primary border-primary border-3 rounded-round p-3 mb-3"></i>
                                             <h5 class="card-title">View Your Campaigns</h5>
                                             <p class="mb-3">You can see your campaigns which you added previously.</p>
-                                            <a href="#" class="btn bg-success-400"><i class="icon-eye"></i> View</a>
+                                            <a asp-controller="Campaigns" asp-action="Add" asp-area="Member" class="btn bg-success-400"><i class="icon-eye"></i> View</a>
                                         </div>
                                     </div>
                                 </div>
