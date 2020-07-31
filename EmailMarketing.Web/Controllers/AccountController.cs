@@ -79,7 +79,11 @@ namespace EmailMarketing.Web.Controllers
 
                 if (isValidUser)
                 {
-                    if(!(await _userManager.IsEmailConfirmedAsync(user)))
+                    if(user.IsBlocked)
+                    {
+                        ModelState.AddModelError(string.Empty, "You have been blocked !!");
+                    }
+                    else if(!(await _userManager.IsEmailConfirmedAsync(user)))
                     {
                         ModelState.AddModelError(string.Empty, "Please confirm your email account.");
                     }
