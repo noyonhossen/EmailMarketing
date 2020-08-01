@@ -2,20 +2,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Hosting;
+using EmailMarketing.Framework;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 
-namespace EmailMarketing.Web
+namespace EmailMarketing.ExcelWorkerService
 {
     public class Program
     {
+        private static string _connectionString;
+        private static string _migrationAssemblyName;
+
         public static void Main(string[] args)
         {
+            _connectionString = new ConfigurationBuilder()
+                                    .AddJsonFile("appsettings.json", false)
+                                    .Build()
+                                    .GetConnectionString("DefaultConnection");
+
+            _migrationAssemblyName = typeof(Worker).Assembly.FullName;
+
             Log.Logger = new LoggerConfiguration()
                         .MinimumLevel.Debug()
                         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
@@ -40,11 +51,16 @@ namespace EmailMarketing.Web
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseWindowsService()
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .UseSerilog()
-                .ConfigureWebHostDefaults(webBuilder =>
+                .ConfigureContainer<ContainerBuilder>(builder => {
+                    builder.RegisterModule(new FrameworkModule(_connectionString,
+                        _migrationAssemblyName));
+                })
+                .ConfigureServices((hostContext, services) =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    services.AddHostedService<Worker>();
                 });
     }
 }

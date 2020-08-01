@@ -1,0 +1,166 @@
+﻿using EmailMarketing.Common.Exceptions;
+using EmailMarketing.Common.Extensions;
+using EmailMarketing.Common.Services;
+using EmailMarketing.Framework.Entities;
+using EmailMarketing.Framework.Entities.Contacts;
+using EmailMarketing.Framework.UnitOfWork.Contacts;
+using ExcelDataReader;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace EmailMarketing.Framework.Services.Contacts
+{
+    public class ContactExcelService : IContactExcelService
+    {
+        private IContactExcelUnitOfWork _contactExcelUnitOfWork;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly IDateTime _dateTime;
+
+        public ContactExcelService(IContactExcelUnitOfWork contactExcelUnitOfWork, ICurrentUserService currentUserService, IDateTime dateTime)
+        {
+            _contactExcelUnitOfWork = contactExcelUnitOfWork;
+            _currentUserService = currentUserService;
+            _dateTime = dateTime;
+        }
+
+        public async Task<(int SucceedCount, int ExistCount, int InvalidCount)> ContactExcelImportAsync(ContactUpload contactUpload)
+        {
+            if (string.IsNullOrWhiteSpace(contactUpload.FileUrl) || !File.Exists(contactUpload.FileUrl)) throw new Exception("File not found.");
+
+            var newContacts = new List<Contact>();
+            var existingContacts = new List<Contact>();
+            var isFirstRowHeader = true;
+            var existCount = 0;
+            var invalidCount = 0;
+            var emailIndex = contactUpload.ContactUploadFieldMaps.FirstOrDefault(x => x.FieldMap.DisplayName == "Email")?.Index;
+
+            if(!emailIndex.HasValue) throw new Exception("Email column not found.");
+
+            using (var stream = File.Open(contactUpload.FileUrl, FileMode.Open, FileAccess.Read))
+            {
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+                    do
+                    {
+                        while (reader.Read())
+                        {
+                            if (isFirstRowHeader && contactUpload.HasColumnHeader)
+                            {
+                                isFirstRowHeader = false;
+                                continue;
+                            }
+
+                            var newContact = new Contact();
+                            newContact.ContactValueMaps = new List<ContactValueMap>();
+                            newContact.GroupId = contactUpload.GroupId;
+                            newContact.Email = reader.GetString(emailIndex.Value);
+                            newContact.Created = _dateTime.Now;
+                            newContact.CreatedBy = _currentUserService.UserId;
+
+                            for (int i = 0; i < contactUpload.ContactUploadFieldMaps.Count; i++)
+                            {
+                                if (i == emailIndex) continue;
+                                var contactValMap = new ContactValueMap();
+                                contactValMap.FieldMapId = contactUpload.ContactUploadFieldMaps[i].FieldMapId;
+                                contactValMap.Value = reader.GetString(i);
+                                newContact.ContactValueMaps.Add(contactValMap);
+                            }
+
+                            if (string.IsNullOrWhiteSpace(newContact.Email))
+                            {
+                                invalidCount++;
+                                continue;
+                            }
+
+                            #region Existing Contact Update
+                            if (contactUpload.IsUpdateExisting)
+                            {
+                                var existingContact = await _contactExcelUnitOfWork.ContactRepository.GetFirstOrDefaultAsync(x => x, 
+                                                                x => x.GroupId == newContact.GroupId && x.Email.ToLower() == newContact.Email, 
+                                                                x => x.Include(i => i.ContactValueMaps), true);
+                                if (existingContact != null)
+                                {
+                                    await _contactExcelUnitOfWork.ContactValueMapRepository.DeleteRangeAsync(existingContact.ContactValueMaps);
+                                    await _contactExcelUnitOfWork.SaveChangesAsync();
+
+                                    existingContact.ContactValueMaps = new List<ContactValueMap>();
+                                    var newContactValMaps = new List<ContactValueMap>();
+
+                                    for (int i = 0; i < contactUpload.ContactUploadFieldMaps.Count; i++)
+                                    {
+                                        if (i == emailIndex) continue;
+                                        var contactValMap = new ContactValueMap();
+                                        contactValMap.ContactId = existingContact.Id;
+                                        contactValMap.FieldMapId = contactUpload.ContactUploadFieldMaps[i].FieldMapId;
+                                        contactValMap.Value = reader.GetString(i);
+                                        //existingContact.ContactValueMaps.Add(contactValMap);
+                                        newContactValMaps.Add(contactValMap);
+                                    }
+
+                                    await _contactExcelUnitOfWork.ContactValueMapRepository.AddRangeAsync(newContactValMaps);
+                                    await _contactExcelUnitOfWork.SaveChangesAsync();
+
+                                    existingContact.LastModified = _dateTime.Now;
+                                    existingContact.LastModifiedBy = _currentUserService.UserId;
+
+                                    existingContacts.Add(existingContact);
+
+                                    existCount++;
+                                    continue;
+                                }
+                            }
+                            #endregion
+
+                            newContacts.Add(newContact);
+                        }
+                    } while (reader.NextResult());
+                }
+            }
+
+            await _contactExcelUnitOfWork.ContactRepository.AddRangeAsync(newContacts);
+            await _contactExcelUnitOfWork.ContactRepository.UpdateRangeAsync(existingContacts);
+            await _contactExcelUnitOfWork.SaveChangesAsync();
+
+            #region Contact Upload Update
+            var existingContactUpload = await _contactExcelUnitOfWork.ContactUploadRepository.GetFirstOrDefaultAsync(x => x, null, null, true);
+            existingContactUpload.IsSucceed = true;
+            existingContactUpload.SucceedEntryCount = newContacts.Count;
+            await _contactExcelUnitOfWork.ContactUploadRepository.UpdateAsync(existingContactUpload);
+            await _contactExcelUnitOfWork.SaveChangesAsync();
+            #endregion
+
+            #region Succeed Email Sending
+            if(contactUpload.IsSendEmailNotify)
+            {
+                var emailAddress = contactUpload.SendEmailAddress.Split(',').ToList();
+                // send email
+            }
+            #endregion
+
+            return (newContacts.Count, existCount, invalidCount);
+        }
+
+        public async Task<(int SucceedCount, int ExistCount, int InvalidCount)> ContactExcelImportAsync(int contactUploadId)
+        {
+            var contactUpload = await _contactExcelUnitOfWork.ContactUploadRepository.GetFirstOrDefaultAsync(x => x, x => x.Id == contactUploadId, 
+                                    x => x.Include(i => i.ContactUploadFieldMaps).ThenInclude(i => i.FieldMap), true);
+
+            var result = await this.ContactExcelImportAsync(contactUpload);
+
+            return (result.SucceedCount, result.ExistCount, result.InvalidCount);
+        }
+
+        public void Dispose()
+        {
+            _contactExcelUnitOfWork?.Dispose();
+        }
+    }
+}
