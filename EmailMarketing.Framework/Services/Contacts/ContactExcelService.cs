@@ -61,16 +61,18 @@ namespace EmailMarketing.Framework.Services.Contacts
                             var newContact = new Contact();
                             newContact.ContactValueMaps = new List<ContactValueMap>();
                             newContact.GroupId = contactUpload.GroupId;
+                            newContact.ContactUploadId = contactUpload.Id;
                             newContact.Email = reader.GetString(emailIndex.Value);
                             newContact.Created = _dateTime.Now;
                             newContact.CreatedBy = _currentUserService.UserId;
 
                             for (int i = 0; i < contactUpload.ContactUploadFieldMaps.Count; i++)
                             {
-                                if (i == emailIndex) continue;
+                                var fileIndex = contactUpload.ContactUploadFieldMaps[i].Index;
+                                if (fileIndex == emailIndex) continue;
                                 var contactValMap = new ContactValueMap();
                                 contactValMap.FieldMapId = contactUpload.ContactUploadFieldMaps[i].FieldMapId;
-                                contactValMap.Value = reader.GetString(i);
+                                contactValMap.Value = reader.GetValue(fileIndex).ParseObjectToString();
                                 newContact.ContactValueMaps.Add(contactValMap);
                             }
 
@@ -85,29 +87,36 @@ namespace EmailMarketing.Framework.Services.Contacts
                             {
                                 var existingContact = await _contactExcelUnitOfWork.ContactRepository.GetFirstOrDefaultAsync(x => x, 
                                                                 x => x.GroupId == newContact.GroupId && x.Email.ToLower() == newContact.Email, 
-                                                                x => x.Include(i => i.ContactValueMaps), true);
+                                                                null, true);
+
                                 if (existingContact != null)
                                 {
-                                    await _contactExcelUnitOfWork.ContactValueMapRepository.DeleteRangeAsync(existingContact.ContactValueMaps);
-                                    await _contactExcelUnitOfWork.SaveChangesAsync();
-
                                     existingContact.ContactValueMaps = new List<ContactValueMap>();
                                     var newContactValMaps = new List<ContactValueMap>();
 
                                     for (int i = 0; i < contactUpload.ContactUploadFieldMaps.Count; i++)
                                     {
-                                        if (i == emailIndex) continue;
+                                        var fileIndex = contactUpload.ContactUploadFieldMaps[i].Index;
+                                        if (fileIndex == emailIndex) continue;
                                         var contactValMap = new ContactValueMap();
                                         contactValMap.ContactId = existingContact.Id;
                                         contactValMap.FieldMapId = contactUpload.ContactUploadFieldMaps[i].FieldMapId;
-                                        contactValMap.Value = reader.GetString(i);
+                                        contactValMap.Value = reader.GetValue(fileIndex).ParseObjectToString();
                                         //existingContact.ContactValueMaps.Add(contactValMap);
                                         newContactValMaps.Add(contactValMap);
                                     }
 
-                                    await _contactExcelUnitOfWork.ContactValueMapRepository.AddRangeAsync(newContactValMaps);
+                                    #region Contact Value Maps Update
+                                    var existingContactValueMaps = await _contactExcelUnitOfWork.ContactValueMapRepository.GetAsync(x => x,
+                                                                            x => x.ContactId == existingContact.Id, null, null, true);
+                                    if(existingContactValueMaps.Any())
+                                        await _contactExcelUnitOfWork.ContactValueMapRepository.DeleteRangeAsync(existingContactValueMaps);
+                                    if (newContactValMaps.Any())
+                                        await _contactExcelUnitOfWork.ContactValueMapRepository.AddRangeAsync(newContactValMaps);
                                     await _contactExcelUnitOfWork.SaveChangesAsync();
+                                    #endregion
 
+                                    existingContact.ContactUploadId = contactUpload.Id;
                                     existingContact.LastModified = _dateTime.Now;
                                     existingContact.LastModifiedBy = _currentUserService.UserId;
 
@@ -125,8 +134,10 @@ namespace EmailMarketing.Framework.Services.Contacts
                 }
             }
 
-            await _contactExcelUnitOfWork.ContactRepository.AddRangeAsync(newContacts);
-            await _contactExcelUnitOfWork.ContactRepository.UpdateRangeAsync(existingContacts);
+            if(newContacts.Any())
+                await _contactExcelUnitOfWork.ContactRepository.AddRangeAsync(newContacts);
+            if(existingContacts.Any())
+                await _contactExcelUnitOfWork.ContactRepository.UpdateRangeAsync(existingContacts);
             await _contactExcelUnitOfWork.SaveChangesAsync();
 
             #region Contact Upload Update
