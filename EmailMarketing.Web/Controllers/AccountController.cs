@@ -400,6 +400,7 @@ namespace EmailMarketing.Web.Controllers
                         return RedirectToAction("ChangePasswordConfirmation");
                     }
                 }
+                ModelState.AddModelError(string.Empty, "Please Insert Correct Password");
             }
             return View(model);
         }
