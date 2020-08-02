@@ -30,11 +30,11 @@
                         </div>
                     </div>
                     <div class="pt-3">
-                        <div>
-                            <div class="dropdown-item form-check form-check-switchery ">
+                        <div class="form-group">
+                            <div class="form-check form-check-inline form-check-switchery">
                                 <label class="form-check-label">
-                                    Column Headers
                                     <input type="checkbox" class="form-input-switchery" checked data-fouc>
+                                    Column Headers
                                 </label>
                             </div>
                         </div>
@@ -49,7 +49,7 @@
                     <div class="card p-2">
                         <h6 class="font-weight-bold">Helpful Tips:</h6>
                         <ul>
-                            <li>Need help formatting? Download a sample file <a href="https://app.icontact.com/icp/static/examples/example.csv">here</a> and add your contacts. Once you save the file, you can upload it on the left.</li>
+                            <li>Need help formatting? Download a sample file <a href="~/memberTheme/assets/demo.xlsx" download>here</a> and add your contacts. Once you save the file, you can upload it on the left.</li>
                             <li>For importing larger files, we recommend using xlsx for best performance.</li>
                             <li>Date fields must be in MM/DD/YYYY format.</li>
                         </ul>
@@ -59,9 +59,9 @@
                     <div class="card p-2">
                         <h6 class="font-weight-bold">Helpful Tips:</h6>
                         <ul>
-                            <li>How to Upload Contacts</li>
-                            <li>Helpful Tips</li>
-                            <li>Create a CSV File</li>
+                            <li><a asp-area="Member" asp-controller="Resources" asp-action="ImportContact" target="_blank">How to Upload Contacts</a></li>
+                            <li><a asp-area="Member" asp-controller="Resources" asp-action="HelpfulTips" target="_blank">Helpful Tips</a></li>
+                            <li><a asp-area="Member" asp-controller="Resources" asp-action="CreateCSVFile" target="_blank">Create a CSV File</a></li>
                         </ul>
                     </div>
                 </div>

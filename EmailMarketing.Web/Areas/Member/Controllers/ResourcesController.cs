@@ -32,6 +32,16 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var model = new ResourcesModel();
             return View(model);
         }
+        public IActionResult HelpfulTips()
+        {
+            var model = new ResourcesModel();
+            return View(model);
+        }
+        public IActionResult CreateCSVFile()
+        {
+            var model = new ResourcesModel();
+            return View(model);
+        }
 
     }
 }
