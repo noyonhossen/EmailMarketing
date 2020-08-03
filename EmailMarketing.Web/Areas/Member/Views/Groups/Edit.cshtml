@@ -24,13 +24,6 @@
     <div class="card">
         <div class="card-header header-elements-inline">
             <h5 class="card-title">Edit Group</h5>
-            <div class="header-elements">
-                <div class="list-icons">
-                    <a class="list-icons-item" data-action="collapse"></a>
-                    <a class="list-icons-item" data-action="reload"></a>
-                    <a class="list-icons-item" data-action="remove"></a>
-                </div>
-            </div>
         </div>
 
         <div class="card-body">
@@ -45,7 +38,7 @@
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group row">
                                         <label class="col-form-label col-lg-4 required" asp-for="Name"></label>
                                         <div class="col-lg-8">
@@ -60,7 +53,7 @@
 
                     </div>
                     <div class="">
-                        <div class="d-flex justify-content-end">
+                        <div class="d-flex justify-content-between">
                             <a asp-controller="Groups" asp-action="Index" asp-area="Member" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
                             <button type="submit" class="btn bg-teal ml-2"><i class="icon-file-check2"></i> Save</button>
                         </div>
