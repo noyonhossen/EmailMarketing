@@ -11,7 +11,7 @@ function loadDatatable(url, editUrl, userInformationUrl) {
         columnDefs: [{
             orderable: false,
             width: 100,
-            targets: [7]
+            targets: [6]
         }],
         dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
         language: {
@@ -28,10 +28,16 @@ function loadDatatable(url, editUrl, userInformationUrl) {
         "ajax": url,
         "order": [[0, "asc"]],
         "columnDefs": [
+            //{
+            //    "targets": [0],
+            //    'sortable': true,
+            //    'searchable': true,
+            //    "orderData": [0]
+            //},
             {
                 "targets": [0],
                 'sortable': true,
-                'searchable': true,
+                'searchable': false,
                 "orderData": [0]
             },
             {
@@ -44,13 +50,7 @@ function loadDatatable(url, editUrl, userInformationUrl) {
                 "targets": [2],
                 'sortable': true,
                 'searchable': false,
-                "orderData": [2]
-            },
-            {
-                "targets": [3],
-                'sortable': true,
-                'searchable': false,
-                "orderData": [3],
+                "orderData": [2],
                 "render": function (data, type, row, meta) {
                     var lbl = data == "Yes" ? "badge-success" : "badge-danger";
                     return '<span class="badge  ' + lbl + '">' + data + '</span>';
@@ -58,17 +58,17 @@ function loadDatatable(url, editUrl, userInformationUrl) {
             }
             ,
             {
-                "targets": [4],
+                "targets": [3],
                 'sortable': true,
                 'searchable': false,
-                "orderData": [4]
+                "orderData": [3]
             }
             ,
             {
-                "targets": [5],
+                "targets": [4],
                 'sortable': true,
                 'searchable': false,
-                "orderData": [5],
+                "orderData": [4],
                 "render": function (data, type, row, meta) {
                     var lbl = data == "Yes" ? "badge-danger" : "badge-success";
                     return '<span class="badge  ' + lbl + '">' + data + '</span>';
@@ -76,7 +76,7 @@ function loadDatatable(url, editUrl, userInformationUrl) {
             }
             ,
             {
-                "targets": [6],
+                "targets": [5],
                 'sortable': false,
                 'searchable': false,
                 "width": "15%",
