@@ -356,6 +356,7 @@ namespace EmailMarketing.Membership.Services
                     }
 
                     var isExists = await this.IsExistsUserNameAsync(entity.UserName, entity.Id);
+       
                     if (isExists)
                     {
                         throw new DuplicationException(nameof(entity.Email));
@@ -372,7 +373,7 @@ namespace EmailMarketing.Membership.Services
                     user.LastModified = _dateTime.Now;
                     user.LastModifiedBy = _currentUserService.UserId;
 
-                    var userSaveResult = await _userManager.UpdateAsync(user);
+                    var userSaveResult = await this._userManager.UpdateAsync(user);
 
                     if (!userSaveResult.Succeeded)
                     {
@@ -545,7 +546,7 @@ namespace EmailMarketing.Membership.Services
             var result = await _userManager.Users.AnyAsync(x => x.Email.ToLower() == email.ToLower() && x.Id != id && !x.IsDeleted);
             return result;
         }
-        
+
         public async Task<bool> ChangePasswordAsync(Guid id, string CurrentPassword, string NewPassword)
         {
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -554,7 +555,7 @@ namespace EmailMarketing.Membership.Services
                 {
                     var user = await _userManager.FindByIdAsync(id.ToString());
 
-                    if(user == null)
+                    if (user == null)
                     {
                         throw new NotFoundException(nameof(ApplicationUser), id);
                     }
@@ -590,4 +591,5 @@ namespace EmailMarketing.Membership.Services
             }
         }
     }
+
 }

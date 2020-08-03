@@ -36,7 +36,7 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         {
             var result = await _applicationUserService.GetAllMemberAsync(
                 tableModel.SearchText,
-                tableModel.GetSortText(new string[] { "UserName","Email" }),
+                tableModel.GetSortText(new string[] { "FullName","Email" }),
                 tableModel.PageIndex, tableModel.PageSize);
 
             return new
@@ -46,7 +46,7 @@ namespace EmailMarketing.Web.Areas.Admin.Models
                 data = (from item in result.Items
                         select new string[]
                         {
-                            item.UserName,
+                            //item.UserName,
                             item.FullName,
                             item.Email,
                             item.EmailConfirmed ? "Yes" : "No",
