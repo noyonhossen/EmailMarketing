@@ -1,0 +1,435 @@
+﻿
+@{
+    ViewData["Title"] = "UploadContacts";
+}
+
+<!-- Content area -->
+<div class="content">
+
+    <div class="pb-3">
+        <h4 class="d-inline">Upload Contacts</h4>
+    </div>
+
+    <!-- navigation -->
+    <div class="container">
+        <div id="stepProgressBar">
+            <div class="step">
+                <div class="bullet current"><i class="icon-checkmark-circle icon-2x"></i></div>
+                <p class="step-text">Upload Contacts</p>
+            </div>
+            <div class="step">
+                <div class="bullet "><i class="icon-checkmark-circle icon-2x"></i></div>
+                <p class="step-text">Map Fields</p>
+            </div>
+            <div class="step">
+                <div class="bullet"><i class="icon-checkmark-circle icon-2x"></i></div>
+                <p class="step-text">Choose Actions</p>
+            </div>
+            <div class="step">
+                <div class="bullet"><i class="icon-checkmark-circle icon-2x"></i></div>
+                <p class="step-text">Review & Confirm</p>
+            </div>
+            <div class="step">
+                <div class="bullet"><i class="icon-checkmark-circle icon-2x"></i></div>
+                <p class="step-text">Complete Upload</p>
+            </div>
+        </div>
+        <div id="main">
+            <div id="uploadContacts">
+
+                <div class="row">
+                    <div class="col-md-8">
+ 
+                            <div class="card p-5 card-border-dotted">
+                                <div class="text-center p-5">
+                                    <h4>
+                                        Browse your computer and select a file to upload.
+                                    </h4>
+                                    <p class="text-muted">Recommended file formats: .csv, .xls, .xlsx</p>
+                                    <input id="upload" type="file" />
+                                    <a href="" type="submit" class="btn btn-primary" id="upload_link"> <i class="icon-upload4"></i> Upload</a>
+                                </div>
+                            </div>
+                            <div class="pt-3">
+                                <div class="form-group">
+                                    <div class="form-check form-check-inline form-check-switchery">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-input-switchery" checked data-fouc>
+                                            Column Headers
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="col-12">
+                            <div class="card p-2">
+                                <h6 class="font-weight-bold">Helpful Tips:</h6>
+                                <ul>
+                                    <li>Need help formatting? Download a sample file <a href="~/memberTheme/assets/demo.xlsx" download>here</a> and add your contacts. Once you save the file, you can upload it on the left.</li>
+                                    <li>For importing larger files, we recommend using xlsx for best performance.</li>
+                                    <li>Date fields must be in MM/DD/YYYY format.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="card p-2">
+                                <h6 class="font-weight-bold">Helpful Tips:</h6>
+                                <ul>
+                                    <li><a asp-area="Member" asp-controller="Resources" asp-action="ImportContact" target="_blank">How to Upload Contacts</a></li>
+                                    <li><a asp-area="Member" asp-controller="Resources" asp-action="HelpfulTips" target="_blank">Helpful Tips</a></li>
+                                    <li><a asp-area="Member" asp-controller="Resources" asp-action="CreateCSVFile" target="_blank">Create a CSV File</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div id="mapFields">
+
+                <!-- Table -->
+                <div class="scrollmenu bg-field-map ">
+                    <div class="">
+                        <table class="table">
+                            <tr class="text-center">
+                                <th>
+                                    <div class="btn-group justify-content-center border border-primary">
+                                        <a href="#" class="btn bg-light dropdown-toggle status-dropdown" data-toggle="dropdown">--- Ignore ---</a>
+
+                                        <div class="dropdown-menu text-center">
+                                            <a href="#" class="dropdown-item">Name</a>
+                                            <a href="#" class="dropdown-item">Email</a>
+                                            <a href="#" class="dropdown-item">Gender</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a href="" class=""> <i class="icon-plus22"></i> Create Custom Field</a>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="btn-group justify-content-center border border-primary">
+                                        <a href="#" class="btn bg-light dropdown-toggle status-dropdown" data-toggle="dropdown">--- Ignore ---</a>
+
+                                        <div class="dropdown-menu text-center">
+                                            <a href="#" class="dropdown-item">Name</a>
+                                            <a href="#" class="dropdown-item">Email</a>
+                                            <a href="#" class="dropdown-item">Gender</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a href="" class=""> <i class="icon-plus22"></i> Create Custom Field</a>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="btn-group justify-content-center border border-primary">
+                                        <a href="#" class="btn bg-light dropdown-toggle status-dropdown" data-toggle="dropdown">--- Ignore ---</a>
+
+                                        <div class="dropdown-menu text-center">
+                                            <a href="#" class="dropdown-item">Name</a>
+                                            <a href="#" class="dropdown-item">Email</a>
+                                            <a href="#" class="dropdown-item">Gender</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a href="" class=""> <i class="icon-plus22"></i> Create Custom Field</a>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="btn-group justify-content-center border border-primary">
+                                        <a href="#" class="btn bg-light dropdown-toggle status-dropdown" data-toggle="dropdown">--- Ignore ---</a>
+
+                                        <div class="dropdown-menu text-center">
+                                            <a href="#" class="dropdown-item">Name</a>
+                                            <a href="#" class="dropdown-item">Email</a>
+                                            <a href="#" class="dropdown-item">Gender</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a href="" class=""> <i class="icon-plus22"></i> Create Custom Field</a>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="btn-group justify-content-center border border-primary">
+                                        <a href="#" class="btn bg-light dropdown-toggle status-dropdown" data-toggle="dropdown">--- Ignore ---</a>
+
+                                        <div class="dropdown-menu text-center">
+                                            <a href="#" class="dropdown-item">Name</a>
+                                            <a href="#" class="dropdown-item">Email</a>
+                                            <a href="#" class="dropdown-item">Gender</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a href="" class=""> <i class="icon-plus22"></i> Create Custom Field</a>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="btn-group justify-content-center border border-primary">
+                                        <a href="#" class="btn bg-light dropdown-toggle status-dropdown" data-toggle="dropdown">--- Ignore ---</a>
+
+                                        <div class="dropdown-menu text-center">
+                                            <a href="#" class="dropdown-item">Name</a>
+                                            <a href="#" class="dropdown-item">Email</a>
+                                            <a href="#" class="dropdown-item">Gender</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a href="" class=""> <i class="icon-plus22"></i> Create Custom Field</a>
+                                        </div>
+                                    </div>
+                                </th>
+
+                            </tr>
+                            <tr class="text-center bg-col-header text-muted">
+                                <td class="">First Name</td>
+                                <td>Last Name</td>
+                                <td>Address</td>
+                                <td>Email</td>
+                                <td>Gender</td>
+                                <td>Role</td>
+                            </tr>
+                            <tr class="text-center">
+                                <td>Dev</td>
+                                <td>Skill</td>
+                                <td>Dhaka</td>
+                                <td>devskill@gmail.com</td>
+                                <td>Male</td>
+                                <td>Developer</td>
+                            </tr>
+                            <tr class="text-center">
+                                <td>Dev</td>
+                                <td>Skill</td>
+                                <td>Dhaka</td>
+                                <td>devskill@gmail.com</td>
+                                <td>Male</td>
+                                <td>Developer</td>
+                            </tr>
+                            <tr class="text-center">
+                                <td>Dev</td>
+                                <td>Skill</td>
+                                <td>Dhaka</td>
+                                <td>devskill@gmail.com</td>
+                                <td>Male</td>
+                                <td>Developer</td>
+                            </tr>
+                            <tr class="text-center">
+                                <td>Dev</td>
+                                <td>Skill</td>
+                                <td>Dhaka</td>
+                                <td>devskill@gmail.com</td>
+                                <td>Male</td>
+                                <td>Developer</td>
+                            </tr>
+                            <tr class="text-center">
+                                <td>Dev</td>
+                                <td>Skill</td>
+                                <td>Dhaka</td>
+                                <td>devskill@gmail.com</td>
+                                <td>Male</td>
+                                <td>Developer</td>
+                            </tr>
+                            <tr class="text-center">
+                                <td>Dev</td>
+                                <td>Skill</td>
+                                <td>Dhaka</td>
+                                <td>devskill@gmail.com</td>
+                                <td>Male</td>
+                                <td>Developer</td>
+                            </tr>
+                            <tr class="text-center">
+                                <td>Dev</td>
+                                <td>Skill</td>
+                                <td>Dhaka</td>
+                                <td>devskill@gmail.com</td>
+                                <td>Male</td>
+                                <td>Developer</td>
+                            </tr>
+                            <tr class="text-center">
+                                <td>Dev</td>
+                                <td>Skill</td>
+                                <td>Dhaka</td>
+                                <td>devskill@gmail.com</td>
+                                <td>Male</td>
+                                <td>Developer</td>
+                            </tr>
+                            <tr class="text-center">
+                                <td>Dev</td>
+                                <td>Skill</td>
+                                <td>Dhaka</td>
+                                <td>devskill@gmail.com</td>
+                                <td>Male</td>
+                                <td>Developer</td>
+                            </tr>
+                            <tr class="text-center">
+                                <td>Dev</td>
+                                <td>Skill</td>
+                                <td>Dhaka</td>
+                                <td>devskill@gmail.com</td>
+                                <td>Male</td>
+                                <td>Developer</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+
+                <h5 class="text-muted">Preview: Showing 10 rows out of 20</h5>
+
+            </div>
+            <div id="chooseActions">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Where you want to add these contracts?</h3>
+
+
+                            <!-- selected -->
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <label class="form-check-label" for="exampleCheck1">Select All Lists</label>
+                            </div>
+                            <div class="bg-white">
+                                <p class="p-2">
+                                    <i class="icon-collaboration"></i>&nbsp;&nbsp; <span>No</span> <span>List</span> Selected
+                                </p>
+                            </div>
+
+                            <div class="bg-white">
+                                <ul class="list-group">
+                                    <li class="list-group-item border-bottom">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck2">
+                                            <label class="form-check-label" for="exampleCheck2">
+                                                First Contract
+                                                <span class="border p-1">
+                                                    <span>2</span>&nbsp;&nbsp;
+                                                    <i class="fas fa-user"></i>
+                                                </span>
+                                            </label> &nbsp;&nbsp;
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-bottom">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck2">
+                                            <label class="form-check-label" for="exampleCheck2">
+                                                Teacher
+                                                <span class="border p-1">
+                                                    <span>7</span>&nbsp;&nbsp;
+                                                    <i class="fas fa-user"></i>
+                                                </span>
+                                            </label> &nbsp;&nbsp;
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-bottom">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck2">
+                                            <label class="form-check-label" for="exampleCheck2">
+                                                Friends
+                                                <span class="border p-1">
+                                                    <span>6</span>&nbsp;&nbsp;
+                                                    <i class="fas fa-user"></i>
+                                                </span>
+                                            </label> &nbsp;&nbsp;
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck2">
+                                            <label class="form-check-label" for="exampleCheck2">
+                                                Students
+                                                <span class="border p-1">
+                                                    <span>120</span>&nbsp;&nbsp;
+                                                    <i class="fas fa-user"></i>
+                                                </span>
+                                            </label> &nbsp;&nbsp;
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- /selected -->
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="pt-5 pl-5">
+                            <h3>For Create Group goto "Groups > Add Group"</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="reviewConfirm">
+                <div class="row">
+                    <div class="col-md-6 m-auto text-center">
+                        <h3 class="mb-0 pb-0">Almost done! Review your upload below.</h3>
+                        <h5 class="pt-0 mt-0">If everything looks good, click 'Confirm My Upload' below.</h5>
+                            <div class="bg-white text-left pl-3">
+                                <h3 class="pt-3">
+                                    Contact Upload Summary
+                                </h3>
+                                <div class="pb-3">
+                                    <div class="w-25 d-inline-block">
+                                        <span class="font-weight-bold">File Name</span>
+                                    </div>
+                                    <div class="w-75 d-inline">
+                                        <span>FileName.xlsx</span>
+                                    </div>
+                                </div>
+                                <div class="pb-3">
+                                    <div class="w-25 d-inline-block">
+                                        <span class="font-weight-bold">Contacts Detected</span>
+                                    </div>
+                                    <div class="w-75 d-inline">
+                                        <span>14</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white text-left p-3 mt-3">
+                                <div class="pb-3">
+                                    <div class="dropdown-item form-check form-check-switchery ">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-input-switchery" checked data-fouc>
+                                            <span class="font-weight-bold">Send email notification once upload is complete</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="form-group row">
+                                        <label for="inputEmail" class="col-md-3 col-form-label">Email Address</label>
+                                        <div class="col-md-9">
+                                            <input type="email" class="form-control" id="inputEmail" placeholder="Enter Email">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center pt-3">
+                <button class="btn btn-primary" id="previousBtn" disabled>Previous</button>
+                <button class="btn btn-primary" id="nextBtn">Next</button>
+                <button class="btn btn-primary" id="finishBtn" data-toggle="modal" data-target="#exampleModalCenter" disabled>Finish</button>
+            </div>
+        </div>
+    </div>
+    <!-- /navigation -->
+</div>
+<!-- /content area -->
+<!-- /main content -->
+<!-- Done modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold" id="exampleModalLongTitle">Completed Upload</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-text">
+                    <div class="text-center p-3 text-success"><i class="icon-rocket icon-5x"></i></div>
+                    <p>Congrats! <span>14</span> contracts are currently being processed! This could take a few minutes .In the meantime you can continue working in DevSkill Email marketting.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a asp-area="Member" asp-controller="Contacts" asp-action="ManageUploads" class="btn btn-primary"> <i class="icon-checkmark4"></i> Done</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Done modal -->

@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewData["Title"] = "EditContact";
+}
+
+<!-- Content area -->
+<div class="content">
+
+    <div class="pb-3">
+        <h4 class="d-inline">Edit Contact</h4>
+        <a href="" class="btn btn-primary float-right"> <i class="icon-file-check2"></i> Save</a>
+    </div>
+
+    <!-- navigation -->
+    <!-- /navigation -->
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="pl-5 pr-3">
+                <h4>Enter Contact Details</h4>
+                <form>
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-3 col-form-label">Email Address *</label>
+                        <div class="col-sm-9">
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="firstName" class="col-sm-3 col-form-label">First Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="firstName">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="lasttName" class="col-sm-3 col-form-label">Last Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="lasttName">
+                        </div>
+                    </div>
+
+                    <!-- Standard Fields -->
+
+
+
+                    <div class="row-fluid summary pb-4">
+                        <span>Standard Fields</span>
+                        <a class="btn border border-primary float-right" data-toggle="collapse" data-target="#intro" id="showHide">Show</a>
+                    </div>
+                    <div class="row-fluid summary">
+                        <div id="intro" class="collapse">
+                            <div class="form-group row">
+                                <label for="city" class="col-sm-3 col-form-label">City</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="city">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="address" class="col-sm-3 col-form-label">Address</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="address">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- /Standard Fields -->
+                    <!-- Custom Fields -->
+
+                    <div class="row-fluid summary pb-4">
+                        <span>Standard Fields</span>
+                        <a class="btn border border-primary float-right" data-toggle="collapse" data-target="#intro2" id="showHideCustom">Show</a>
+                    </div>
+                    <div class="row-fluid summary">
+                        <div id="intro2" class="collapse">
+                            <div class="form-group row">
+                                <label for="role" class="col-sm-3 col-form-label">Role</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="role">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="joinDate" class="col-sm-3 col-form-label">Join Date</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="joinDate">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- /Custom Fields -->
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6">
+            
+        </div>
+    </div>
+
+
+
+</div>
+<!-- /content area -->

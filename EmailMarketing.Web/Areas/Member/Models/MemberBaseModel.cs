@@ -72,14 +72,54 @@ namespace EmailMarketing.Web.Areas.Member.Models
                         new MenuItem
                         {
                             Title = "Groups",
-                            Icon = "icon-user-tie",
+                            Icon = "icon-collaboration",
                             Children = new List<MenuChildItem>
                             {
-                                new MenuChildItem () { Controller = "Groups", Action = "Index", Area="Member", Title = "View Group List",
-                                    Icon = "icon-user-tie", IsActive = false },
-                                new MenuChildItem () { Controller = "Groups", Action = "Add", Area="Member", Title = "Add Group Admin",
-                                    Icon = "icon-user-tie", IsActive = false },
+                                new MenuChildItem () { Controller = "Groups", Action = "Index", Area="Member", Title = "View Groups",
+                                    Icon = "icon-collaboration", IsActive = false },
+                                new MenuChildItem () { Controller = "Groups", Action = "Add", Area="Member", Title = "Add Group",
+                                    Icon = "icon-plus-circle2", IsActive = false },
                              
+                            }
+                        }
+
+                    },
+                    {
+                        new MenuItem
+                        {
+                            Title = "Contacts",
+                            Icon = "icon-users4",
+                            Children = new List<MenuChildItem>
+                            {
+                                new MenuChildItem () { Controller = "Contacts", Action = "Index", Area="Member", Title = "Contacts",
+                                    Icon = "icon-users4", IsActive = false },
+                                new MenuChildItem () { Controller = "Contacts", Action = "ManageUploads", Area="Member", Title = "Manage Uploads",
+                                    Icon = "icon-file-text3", IsActive = false },
+                                new MenuChildItem () { Controller = "Contacts", Action = "UploadContacts", Area="Member", Title = "Upload/Add Contacts",
+                                    Icon = "icon-file-upload2", IsActive = false },
+                                new MenuChildItem () { Controller = "Contacts", Action = "AddSingleContact", Area="Member", Title = "Add Single Contact",
+                                    Icon = "icon-plus-circle2", IsActive = false },
+                                new MenuChildItem () { Controller = "Contacts", Action = "CustomFields", Area="Member", Title = "Custom Fields",
+                                    Icon = "icon-list3", IsActive = false },
+
+                            }
+                        }
+
+                    },
+                    {
+                        new MenuItem
+                        {
+                            Title = "Campaigns",
+                            Icon = "icon-paperplane",
+                            Children = new List<MenuChildItem>
+                            {
+                                new MenuChildItem () { Controller = "Campaigns", Action = "Index", Area="Member", Title = "View Campaigns",
+                                    Icon = "icon-paperplane", IsActive = false },
+                                new MenuChildItem () { Controller = "Campaigns", Action = "Add", Area="Member", Title = "Add Campaign",
+                                    Icon = "icon-plus-circle2", IsActive = false },
+                                new MenuChildItem () { Controller = "Campaigns", Action = "ViewReport", Area="Member", Title = "View Report",
+                                    Icon = "icon-eye", IsActive = false },
+
                             }
                         }
 
