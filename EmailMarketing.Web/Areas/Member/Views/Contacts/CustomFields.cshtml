@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewData["Title"] = "CustomFields";
+}
+
+<!-- Content area -->
+<div class="content">
+
+    <div class="pb-3">
+        <h4 class="d-inline">Custom fields</h4>
+        <a href="" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal"> <i class="icon-plus-circle2"></i> Create Custom Field</a>
+    </div>
+
+    <div class="row">
+        <div class="col-12 m-auto">
+            <div class="card">
+                <table class="table">
+                    <tr>
+                        <th>SI.</th>
+                        <th>Field Name</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>City</td>
+                        <td class="text-center">
+                            <div class="list-icons">
+                                <div class="dropdown">
+                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
+                                        <i class="icon-menu9"></i>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a asp-area="Member" asp-controller="Contacts" asp-action="EditCustomField" class="dropdown-item text-primary"><i class="icon-pencil7"></i> Edit</a>
+                                        <a href="#" class="dropdown-item text-danger"><i class="icon-trash"></i>Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>City</td>
+                        <td class="text-center">
+                            <div class="list-icons">
+                                <div class="dropdown">
+                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
+                                        <i class="icon-menu9"></i>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a asp-area="Member" asp-controller="Contacts" asp-action="EditCustomField" class="dropdown-item text-primary"><i class="icon-pencil7"></i> Edit</a>
+                                        <a href="#" class="dropdown-item text-danger"><i class="icon-trash"></i>Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+</div>
+<!-- /content area -->
+<!-- Create Custom Field Modal -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Custom Field</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Enter Field Name</label>
+                        <input type="text" class="form-control" id="" placeholder="Enter Field Name" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="icon-cancel-circle2"></i> Cancel</button>
+                    <button type="submit" class="btn btn-primary"> <i class="icon-file-check2"></i> Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- /Create Custom Field Modal -->
