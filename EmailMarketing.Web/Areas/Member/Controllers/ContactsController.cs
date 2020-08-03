@@ -25,21 +25,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var model = new ContactsModel();
             return View(model);
         }
-        public IActionResult MapFields()
-        {
-            var model = new ContactsModel();
-            return View(model);
-        }
-        public IActionResult ChooseActions()
-        {
-            var model = new ContactsModel();
-            return View(model);
-        }
-        public IActionResult Review()
-        {
-            var model = new ContactsModel();
-            return View(model);
-        }
+
         public IActionResult CustomFields()
         {
             var model = new ContactsModel();
