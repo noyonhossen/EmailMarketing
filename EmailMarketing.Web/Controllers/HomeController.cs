@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using EmailMarketing.Web.Models;
+using EmailMarketing.Framework.Services.Contacts;
+using Autofac;
 
 namespace EmailMarketing.Web.Controllers
 {
@@ -20,6 +22,8 @@ namespace EmailMarketing.Web.Controllers
 
         public IActionResult Index()
         {
+            //var contactExcelService = Startup.AutofacContainer.Resolve<IContactExcelService>();
+            //contactExcelService.ContactExcelImportAsync(2);
             return View();
         }
 

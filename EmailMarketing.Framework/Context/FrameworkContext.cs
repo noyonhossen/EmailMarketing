@@ -1,4 +1,5 @@
 ﻿using EmailMarketing.Framework.Entities;
+using EmailMarketing.Framework.Entities.Contacts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -47,8 +48,8 @@ namespace EmailMarketing.Framework.Context
         public DbSet<Entities.CampaignGroup> CampaignGroups { get; set; }
         public DbSet<Entities.CampaignReport> CampaignReports { get; set; }
         public DbSet<Entities.Group> Groups { get; set; }
-        public DbSet<Entities.Contact> Contacts { get; set; }
-        public DbSet<Entities.ContactValueMap> ContactValueMaps { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<ContactValueMap> ContactValueMaps { get; set; }
         public DbSet<Entities.ContactUpload> ContactUploads { get; set; }
         public DbSet<Entities.FieldMap> FieldMaps { get; set; }
         public DbSet<Entities.ContactUploadFieldMap> ContactUploadFieldMaps { get; set; }
