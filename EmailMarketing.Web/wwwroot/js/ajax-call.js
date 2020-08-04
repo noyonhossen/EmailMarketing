@@ -10,6 +10,9 @@ function ajaxCall(url, paramData, callback, method, obj) {
         success: function (response) {
             if (callback == 'renderDeleteItem') {
                 renderDeleteItem(response);
+            }
+            if (callback == 'renderGetAllFieldMapsForUploadContacts') {
+                renderGetAllFieldMapsForUploadContacts(response);
             }    
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {

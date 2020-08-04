@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -167,6 +168,14 @@ namespace EmailMarketing.Framework.Services.Contacts
             var result = await this.ContactExcelImportAsync(contactUpload);
 
             return (result.SucceedCount, result.ExistCount, result.InvalidCount);
+        }
+
+        public async Task<IList<(int Value, string Text, bool IsStandard)>> GetAllFieldMapForSelectAsync(Guid? userId)
+        {
+            return (await _contactExcelUnitOfWork.FieldMapRepository.GetAsync(x => new { Value= x.Id, Text= x.DisplayName, IsStandard= x.IsStandard }, 
+                                                    x => !x.IsDeleted && x.IsActive &&
+                                                    x.IsStandard || (!userId.HasValue || x.UserId == userId.Value), x => x.OrderBy(o => o.DisplayName), null, true))
+                                                    .Select(x => (Value: x.Value, Text: x.Text, IsStandard: x.IsStandard)).ToList();
         }
 
         public void Dispose()

@@ -20,12 +20,6 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var model = new ContactsModel();
             return View(model);
         }
-        public IActionResult UploadContacts()
-        {
-            var model = new ContactsModel();
-            return View(model);
-        }
-
         public IActionResult CustomFields()
         {
             var model = new ContactsModel();
@@ -45,6 +39,22 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         {
             var model = new ContactsModel();
             return View(model);
+        }
+
+
+
+
+        public IActionResult UploadContacts()
+        {
+            var model = new ContactsUploadModel();
+            return View(model);
+        }
+
+        public async Task<JsonResult> GetAllFieldMaps()
+        {
+            var model = new ContactsUploadModel();
+            var data = await model.GetAllFieldMapForSelectAsync();
+            return Json(data);
         }
     }
 }

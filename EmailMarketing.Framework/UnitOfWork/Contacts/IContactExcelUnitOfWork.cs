@@ -12,6 +12,8 @@ namespace EmailMarketing.Framework.UnitOfWork.Contacts
     {
         IContactRepository ContactRepository { get; set; }
         IContactUploadRepository ContactUploadRepository { get; set; }
+        IFieldMapRepository FieldMapRepository { get; set; }
+        IContactUploadFieldMapRepository ContactUploadFieldMapRepository { get; set; }
         IContactValueMapRepository ContactValueMapRepository { get; set; }
     }
 }

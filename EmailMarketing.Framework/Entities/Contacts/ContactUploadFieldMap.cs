@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.Framework.Entities
+namespace EmailMarketing.Framework.Entities.Contacts
 {
     public class ContactUploadFieldMap : IEntity<int>
     {
