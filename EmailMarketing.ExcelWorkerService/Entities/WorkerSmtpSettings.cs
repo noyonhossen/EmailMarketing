@@ -1,14 +1,11 @@
-﻿using EmailMarketing.Data;
-using EmailMarketing.Membership.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.Framework.Entities
+namespace EmailMarketing.ExcelWorkerService.Entities
 {
-    public class SMTPConfig : IAuditableEntity<Guid>
+    public class WorkerSmtpSettings
     {
         public string Server { get; set; }
         public int Port { get; set; }
@@ -16,7 +13,6 @@ namespace EmailMarketing.Framework.Entities
         public string SenderEmail { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
-        public Guid UserId { get; set; }
         public bool EnableSSL { get; set; }
     }
 }
