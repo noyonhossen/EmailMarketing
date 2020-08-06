@@ -17,6 +17,7 @@ namespace EmailMarketing.Framework.Services.Groups
         Task<Entities.Group> GetByIdAsync(int id);
         Task AddAsync(Entities.Group entity);
         Task UpdateAsync(Entities.Group entity);
-        Task<Group> DeleteAsync(int id);
+        Task<Group> DeleteAsync(int id); 
+        Task<IList<(int Value, string Text)>> GetAllGroupForSelectAsync(Guid? userId);
     }
 }

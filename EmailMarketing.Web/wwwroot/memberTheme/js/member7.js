@@ -4,27 +4,18 @@ $(function() {
         $("#upload:hidden").trigger('click');
     });
 
-    //$("#finishBtn").on('click', function(e) {
-    //    //e.preventDefault();
-    //    $('#submit_form').submit();
-    //    $("#exampleModalCenter").modal('show');
-    //});
-
     $("#upload:hidden").change(function (e) {
         var file = e.target.files[0];
         var isFileSelected = false;
         var fileName = 'Recommended file formats: .csv, .xls, .xlsx';
-        var exfileName = 'FileName.xlsx';
 
         if (file !== null && file !== undefined) {
             fileName = 'The file "' + file.name + '" has been selected.';
-            exfileName = file.name;
             isFileSelected = file.size > 0;
             parseExcel(file);
         }
 
         $("#upload_file_name").text(fileName);
-        $("#review_file_name").text(exfileName);
         document.getElementById('nextBtn').disabled = !isFileSelected;
     });
 
@@ -128,12 +119,10 @@ function generateMapFieldTableColumnHeaderData() {
 
 function generateMapFieldTableData() {
     var rowMarkup = '';
-    $('#map-field-table > thead').empty();
-    $('#map-field-table > tbody').empty();
 
     mapFieldTableColumnHeaderData.forEach(function (value, index) {
 
-        rowMarkup += '<th><select class="form-control map-field-dropdown" id="ContactUploadFieldMaps_' + index + '" name="ContactUploadFieldMaps[' + index + ']">' +
+        rowMarkup += '<th><select class="form-control map-field-dropdown">' +
             '<option value = "-1">---Ignore---</option>' +
             '</select></th>';
     });
@@ -153,8 +142,7 @@ function generateMapFieldTableData() {
 
     generateColumnHeaderDisable(hasColumnHeader);
 
-    mapFieldTableRowData.slice(0, 10).forEach(function (rowValue, rowIndex) {
-
+    mapFieldTableRowData.forEach(function (rowValue, rowIndex) {
         rowMarkup = '<tr class="text-center">';
 
         mapFieldTableColumnHeaderData.forEach(function (colValue, colIndex) {
@@ -169,24 +157,13 @@ function generateMapFieldTableData() {
 }
 
 function generateColumnHeaderDisable(has) {
-
-    var rowCount = mapFieldTableRowData.length;
-    var showRowCount = mapFieldTableRowData.length > 10 ? 10 : mapFieldTableRowData.length;
-
     if (has) {
         hasColumnHeader = true;
-        //rowCount--;
         $('.has-column-header-row').addClass('bg-col-header text-muted');
     } else {
         hasColumnHeader = false;
-        rowCount++;
-        showRowCount++;
         $('.has-column-header-row').removeClass('bg-col-header text-muted');
     }
-
-    $("#show_row_count").text(showRowCount);
-    $("#all_row_count").text(rowCount);
-    $("#review_all_row_count").text(rowCount);
 }
 
 

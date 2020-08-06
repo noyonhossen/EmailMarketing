@@ -178,6 +178,19 @@ namespace EmailMarketing.Framework.Services.Contacts
                                                     .Select(x => (Value: x.Value, Text: x.Text, IsStandard: x.IsStandard)).ToList();
         }
 
+        public async Task AddContactUploadAsync(ContactUpload entity)
+        {
+            entity.Created = _dateTime.Now;
+            entity.CreatedBy = _currentUserService.UserId;
+            await _contactExcelUnitOfWork.ContactUploadRepository.AddAsync(entity);
+            await _contactExcelUnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsSelectedEmailFieldMap(IList<int> values)
+        {
+            return await _contactExcelUnitOfWork.FieldMapRepository.IsExistsAsync(x => values.Contains(x.Id) && x.DisplayName == "Email");
+        }
+
         public void Dispose()
         {
             _contactExcelUnitOfWork?.Dispose();
