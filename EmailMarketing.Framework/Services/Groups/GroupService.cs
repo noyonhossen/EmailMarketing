@@ -76,6 +76,14 @@ namespace EmailMarketing.Framework.Services.Groups
             return group;
         }
 
+        public async Task<IList<(int Value, string Text)>> GetAllGroupForSelectAsync(Guid? userId)
+        {
+            return (await _groupUnitOfWork.GroupRepository.GetAsync(x => new { Value = x.Id, Text = x.Name },
+                                                    x => !x.IsDeleted && x.IsActive &&
+                                                    (!userId.HasValue || x.UserId == userId.Value), x => x.OrderBy(o => o.Name), null, true))
+                                                    .Select(x => (Value: x.Value, Text: x.Text)).ToList();
+        }
+
         public void Dispose()
     {
             _groupUnitOfWork?.Dispose();

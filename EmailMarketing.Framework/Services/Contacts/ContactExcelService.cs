@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -170,16 +171,32 @@ namespace EmailMarketing.Framework.Services.Contacts
             return (result.SucceedCount, result.ExistCount, result.InvalidCount);
         }
 
+        public async Task<IList<(int Value, string Text, bool IsStandard)>> GetAllFieldMapForSelectAsync(Guid? userId)
+        {
+            return (await _contactExcelUnitOfWork.FieldMapRepository.GetAsync(x => new { Value= x.Id, Text= x.DisplayName, IsStandard= x.IsStandard }, 
+                                                    x => !x.IsDeleted && x.IsActive &&
+                                                    x.IsStandard || (!userId.HasValue || x.UserId == userId.Value), x => x.OrderBy(o => o.DisplayName), null, true))
+                                                    .Select(x => (Value: x.Value, Text: x.Text, IsStandard: x.IsStandard)).ToList();
+        }
+        
         public async Task<IList<ContactUpload>> GetUploadedContact()
         {
             var result = await _contactExcelUnitOfWork.ContactUploadRepository.GetAsync(x => x, x => x.isProcessing == true, null, null, true);
             return result;
         }
 
-        public async Task AddAsync(ContactUpload entity)
+        public async Task AddContactUploadAsync(ContactUpload entity)
         {
+            entity.Created = _dateTime.Now;
+            entity.CreatedBy = _currentUserService.UserId;
+            
             await _contactExcelUnitOfWork.ContactUploadRepository.AddAsync(entity);
             await _contactExcelUnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsSelectedEmailFieldMap(IList<int> values)
+        {
+            return await _contactExcelUnitOfWork.FieldMapRepository.IsExistsAsync(x => values.Contains(x.Id) && x.DisplayName == "Email");
         }
 
         public void Dispose()

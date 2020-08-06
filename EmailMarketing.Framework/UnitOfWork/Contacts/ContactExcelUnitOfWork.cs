@@ -12,13 +12,21 @@ namespace EmailMarketing.Framework.UnitOfWork.Contacts
     {
         public IContactRepository ContactRepository { get; set; }
         public IContactUploadRepository ContactUploadRepository { get; set; }
+        public IFieldMapRepository FieldMapRepository { get; set; }
+        public IContactUploadFieldMapRepository ContactUploadFieldMapRepository { get; set; }
         public IContactValueMapRepository ContactValueMapRepository { get; set; }
 
         public ContactExcelUnitOfWork(FrameworkContext dbContext,
-            IContactRepository contactRepository, IContactUploadRepository contactUploadRepository, IContactValueMapRepository contactValueMapRepository) : base(dbContext)
+            IContactRepository contactRepository, 
+            IContactUploadRepository contactUploadRepository,
+            IFieldMapRepository fieldMapRepository,
+            IContactUploadFieldMapRepository contactUploadFieldMapRepository, 
+            IContactValueMapRepository contactValueMapRepository) : base(dbContext)
         {
             this.ContactRepository = contactRepository;
             this.ContactUploadRepository = contactUploadRepository;
+            this.FieldMapRepository = fieldMapRepository;
+            this.ContactUploadFieldMapRepository = contactUploadFieldMapRepository;
             this.ContactValueMapRepository = contactValueMapRepository;
         }
     }

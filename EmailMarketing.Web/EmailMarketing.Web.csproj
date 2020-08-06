@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\Framework\20200804184400_FiledMapSeedData.cs" />
+    <Compile Remove="Migrations\Framework\20200804184400_FiledMapSeedData.Designer.cs" />
+    <Compile Remove="Migrations\Framework\20200804190848_FiledMapUpdate.cs" />
+    <Compile Remove="Migrations\Framework\20200804190848_FiledMapUpdate.Designer.cs" />
     <Compile Remove="Migrations\Membership\20200729204300_ContactUploadImportEntityAdded.cs" />
     <Compile Remove="Migrations\Membership\20200729204300_ContactUploadImportEntityAdded.Designer.cs" />
   </ItemGroup>

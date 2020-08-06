@@ -5,7 +5,7 @@
 
 //---Form Progress-----
 $("form").on("submit", function () {
-    if ($(this).valid()) {
+    //if ($(this).valid()) {
         $.blockUI({
             message: '<i class="icon-spinner4 spinner"></i>',
             timeout: 20000, //unblock after 20 seconds
@@ -23,7 +23,7 @@ $("form").on("submit", function () {
                 backgroundColor: 'transparent'
             }
         });
-    }
+    //}
 });
 //---Form Progress-----
 

@@ -50,8 +50,8 @@ namespace EmailMarketing.Framework.Context
         public DbSet<Entities.Group> Groups { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<ContactValueMap> ContactValueMaps { get; set; }
-        public DbSet<Entities.ContactUpload> ContactUploads { get; set; }
-        public DbSet<Entities.FieldMap> FieldMaps { get; set; }
-        public DbSet<Entities.ContactUploadFieldMap> ContactUploadFieldMaps { get; set; }
+        public DbSet<ContactUpload> ContactUploads { get; set; }
+        public DbSet<FieldMap> FieldMaps { get; set; }
+        public DbSet<ContactUploadFieldMap> ContactUploadFieldMaps { get; set; }
     }
 }

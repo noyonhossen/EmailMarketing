@@ -4,14 +4,16 @@ using EmailMarketing.Framework.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EmailMarketing.Web.Migrations.Framework
 {
     [DbContext(typeof(FrameworkContext))]
-    partial class FrameworkContextModelSnapshot : ModelSnapshot
+    [Migration("20200804191048_FieldMapSeedData")]
+    partial class FieldMapSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,9 +224,6 @@ namespace EmailMarketing.Web.Migrations.Framework
                     b.Property<int>("SucceedEntryCount")
                         .HasColumnType("int");
 
-                    b.Property<bool>("isProcessing")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
@@ -261,49 +260,6 @@ namespace EmailMarketing.Web.Migrations.Framework
                     b.HasIndex("FieldMapId");
 
                     b.ToTable("ContactUploadFieldMaps");
-                });
-
-            modelBuilder.Entity("EmailMarketing.Framework.Entities.Contacts.Contact", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ContactUploadId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContactUploadId");
-
-                    b.HasIndex("GroupId");
-
-                    b.ToTable("Contacts");
                 });
 
             modelBuilder.Entity("EmailMarketing.Framework.Entities.Contacts.ContactValueMap", b =>
@@ -459,9 +415,6 @@ namespace EmailMarketing.Web.Migrations.Framework
                     b.Property<string>("Server")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
@@ -523,15 +476,9 @@ namespace EmailMarketing.Web.Migrations.Framework
 
             modelBuilder.Entity("EmailMarketing.Framework.Entities.Contacts.ContactUpload", b =>
                 {
-                    b.HasOne("EmailMarketing.Framework.Entities.ContactUpload", "ContactUpload")
-                        .WithMany("ContactUploadFieldMaps")
-                        .HasForeignKey("ContactUploadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EmailMarketing.Framework.Entities.FieldMap", "FieldMap")
+                    b.HasOne("EmailMarketing.Framework.Entities.Group", "Group")
                         .WithMany()
-                        .HasForeignKey("FieldMapId")
+                        .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -546,7 +493,7 @@ namespace EmailMarketing.Web.Migrations.Framework
 
                     b.HasOne("EmailMarketing.Framework.Entities.Contacts.FieldMap", "FieldMap")
                         .WithMany()
-                        .HasForeignKey("GroupId")
+                        .HasForeignKey("FieldMapId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
