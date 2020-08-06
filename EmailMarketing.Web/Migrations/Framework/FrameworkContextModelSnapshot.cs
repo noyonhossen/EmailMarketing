@@ -222,7 +222,7 @@ namespace EmailMarketing.Web.Migrations.Framework
                     b.Property<int>("SucceedEntryCount")
                         .HasColumnType("int");
 
-                    b.Property<bool>("isProcessing")
+                    b.Property<bool>("IsProcessing")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");

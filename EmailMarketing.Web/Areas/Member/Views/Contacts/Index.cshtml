@@ -1,4 +1,5 @@
-﻿
+﻿@model EmailMarketing.Web.Areas.Member.Models.Contacts.ContactsModel
+
 @{
     ViewData["Title"] = "Contacts";
 }
@@ -23,6 +24,24 @@
             </div>
 
             <table class="table datatable-basic">
+                <thead>
+                    <tr>
+                    <th>Group</th>
+                    <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Contacts)
+                    {
+                        <tr>
+                            <td>@item.Group.Name</td>
+                            <td>@item.Email</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @*<table class="table datatable-basic">
                 <thead>
                     <tr>
                         <th>E-Mail Address</th>
@@ -175,7 +194,7 @@
                     </tr>
 
                 </tbody>
-            </table>
+            </table>*@
         </div>
         <!-- /basic datatable -->
 

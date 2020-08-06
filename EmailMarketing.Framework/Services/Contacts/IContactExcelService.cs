@@ -16,5 +16,6 @@ namespace EmailMarketing.Framework.Services.Contacts
         Task AddContactUploadAsync(ContactUpload entity);
         Task<bool> IsSelectedEmailFieldMap(IList<int> values);
         Task<IList<ContactUpload>> GetUploadedContact();
+        Task<IList<Contact>> GetAllContactsAsync(Guid? userId);
     }
 }

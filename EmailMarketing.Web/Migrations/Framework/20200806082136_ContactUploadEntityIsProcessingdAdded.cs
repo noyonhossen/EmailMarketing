@@ -7,7 +7,7 @@ namespace EmailMarketing.Web.Migrations.Framework
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
-                name: "isProcessing",
+                name: "IsProcessing",
                 table: "ContactUploads",
                 nullable: false,
                 defaultValue: false);
@@ -16,7 +16,7 @@ namespace EmailMarketing.Web.Migrations.Framework
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "isProcessing",
+                name: "IsProcessing",
                 table: "ContactUploads");
         }
     }

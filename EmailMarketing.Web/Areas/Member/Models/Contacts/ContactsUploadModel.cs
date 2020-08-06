@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using EmailMarketing.Common.Services;
+using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.Contacts;
 using EmailMarketing.Framework.Services.Contacts;
 using EmailMarketing.Framework.Services.Groups;
@@ -30,15 +31,18 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         public IList<ValueTextModel> GroupSelectList { get; set; }
 
         private readonly IFileStorage _fileStorage;
+        private readonly IGroupService _groupService;
 
         public ContactsUploadModel(IContactExcelService contactExcelService, IGroupService groupService, IFileStorage fileStorage,
-            ICurrentUserService currentUserService) : base(contactExcelService, groupService, currentUserService)
+            ICurrentUserService currentUserService) : base(contactExcelService, currentUserService)
         {
             this._fileStorage = fileStorage;
+            _groupService = groupService;
         }
         public ContactsUploadModel() : base()
         {
             _fileStorage = Startup.AutofacContainer.Resolve<IFileStorage>();
+            _groupService = Startup.AutofacContainer.Resolve<IGroupService>();
         }
 
         public async Task SaveContactsUploadAsync()

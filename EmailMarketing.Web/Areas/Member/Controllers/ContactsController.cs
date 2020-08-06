@@ -20,11 +20,13 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var model = new ContactsModel();
+            model.Contacts = await model.GetAllContactAsync();
             return View(model);
         }
+
         public IActionResult ManageUploads()
         {
             var model = new ContactsModel();

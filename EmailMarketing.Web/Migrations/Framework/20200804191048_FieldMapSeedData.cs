@@ -15,7 +15,9 @@ namespace EmailMarketing.Web.Migrations.Framework
                     { 1, true, false, new DateTime(2020, 8, 1), true, "Email" },
                     { 2, true, false, new DateTime(2020, 8, 1), true, "Name" },
                     { 3, true, false, new DateTime(2020, 8, 1),  true, "Address" },
-                    { 4, true, false, new DateTime(2020, 8, 1),  true, "DateOfBirth" }
+                    { 4, true, false, new DateTime(2020, 8, 1),  true, "Phone" },
+                    { 5, true, false, new DateTime(2020, 8, 1),  true, "Gender" },
+                    { 6, true, false, new DateTime(2020, 8, 1),  true, "DateOfBirth" }
                    });
         }
 
@@ -37,6 +39,14 @@ namespace EmailMarketing.Web.Migrations.Framework
                 table: "FieldMaps",
                 keyColumn: "Id",
                 keyValue: 4);
+            migrationBuilder.DeleteData(
+                table: "FieldMaps",
+                keyColumn: "Id",
+                keyValue: 5);
+            migrationBuilder.DeleteData(
+                table: "FieldMaps",
+                keyColumn: "Id",
+                keyValue: 5);
         }
     }
 }

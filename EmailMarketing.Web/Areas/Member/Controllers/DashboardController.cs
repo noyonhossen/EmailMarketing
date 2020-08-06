@@ -33,52 +33,6 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public ViewResult Create()
-        {
-            return View(new ContactModel());
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(ContactModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                string uniqueFileName = null;
-
-                // If the Photo property on the incoming model object is not null, then the user
-                // has selected an image to upload.
-                if (model.FileUrl != null)
-                {
-                    // The image must be uploaded to the images folder in wwwroot
-                    // To get the path of the wwwroot folder we are using the inject
-                    // HostingEnvironment service provided by ASP.NET Core
-                    string uploadsFolder = Path.Combine(_env.WebRootPath, "lib");
-                    // To make sure the file name is unique we are appending a new
-                    // GUID value and and an underscore to the file name
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.FileUrl.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    // Use CopyTo() method provided by IFormFile interface to
-                    // copy the file to wwwroot/images folder
-                    model.FileUrl.CopyTo(new FileStream(filePath, FileMode.Create));
-                }
-
-                ContactUpload newEmployee = new ContactUpload
-                {
-                    FileUrl = uniqueFileName,
-                    GroupId = model.GroupId,
-                    // Store the file name in PhotoPath property of the employee object
-                    // which gets saved to the Employees database table
-                    //PhotoPath = uniqueFileName
-                };
-
-                await _contactExcelService.AddAsync(newEmployee);
-                //return RedirectToAction("details", new { id = newEmployee.Id });
-            }
-
-            return View(model);
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

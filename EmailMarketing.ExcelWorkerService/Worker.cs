@@ -41,7 +41,7 @@ namespace EmailMarketing.ExcelWorkerService
 
                     foreach (var item in result)
                     {
-                        _logger.LogInformation("item values is = ", item.FileUrl);
+                        _logger.LogInformation($"item values - file url is = {item.FileUrl}");
                         var importResult = await _contactExcelService.ContactExcelImportAsync(item.Id);
 
                         if(item.IsSendEmailNotify)
@@ -61,10 +61,10 @@ namespace EmailMarketing.ExcelWorkerService
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogInformation("Error message : ", ex.Message);
+                    _logger.LogError($"Error message : {ex.Message}");
                 }
 
-                await Task.Delay(300000, stoppingToken);
+                await Task.Delay(120000, stoppingToken);
             }
         }
 

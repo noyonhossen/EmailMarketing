@@ -34,7 +34,7 @@ namespace EmailMarketing.ExcelWorkerService
                         .MinimumLevel.Debug()
                         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                         .Enrich.FromLogContext()
-                        .WriteTo.File("Logs//log.txt", rollingInterval: RollingInterval.Day)
+                        .WriteTo.File("C://EmailMarketingTeamA//WorkerLogs//log.txt", rollingInterval: RollingInterval.Day)
                         .CreateLogger();
 
             try
