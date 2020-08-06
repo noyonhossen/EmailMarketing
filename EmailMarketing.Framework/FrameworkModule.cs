@@ -3,10 +3,13 @@ using EmailMarketing.Framework.Context;
 using EmailMarketing.Framework.Repositories;
 using EmailMarketing.Framework.Repositories.Contacts;
 using EmailMarketing.Framework.Repositories.Group;
+using EmailMarketing.Framework.Repositories.Smtp;
 using EmailMarketing.Framework.Services;
 using EmailMarketing.Framework.Services.Contacts;
 using EmailMarketing.Framework.Services.Groups;
+using EmailMarketing.Framework.Services.Smtp;
 using EmailMarketing.Framework.UnitOfWork;
+using EmailMarketing.Framework.UnitOfWork.Smtp;
 using EmailMarketing.Framework.UnitOfWork.Contacts;
 using System;
 using System.Collections.Generic;
@@ -36,10 +39,13 @@ namespace EmailMarketing.Framework
 
             builder.RegisterType<CampaignUnitOfWork>().As<ICampaignUnitOfWork>()
                    .InstancePerLifetimeScope();
-            builder.RegisterType<GroupUnitOfWork>().As<IGroupUnitOfWork>()
+            builder.RegisterType<SMTPRepository>().As<ISMTPRepository>()
                    .InstancePerLifetimeScope();
             builder.RegisterType<SMTPUnitOfWork>().As<ISMTPUnitOfWork>()
                    .InstancePerLifetimeScope();
+            builder.RegisterType<SMTPService>().As<ISmtpService>()
+                   .InstancePerLifetimeScope();
+                   
             builder.RegisterType<ContactExcelUnitOfWork>().As<IContactExcelUnitOfWork>()
                    .InstancePerLifetimeScope();
 

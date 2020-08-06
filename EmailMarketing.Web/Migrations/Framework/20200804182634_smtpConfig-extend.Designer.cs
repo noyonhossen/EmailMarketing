@@ -4,14 +4,16 @@ using EmailMarketing.Framework.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EmailMarketing.Web.Migrations.Framework
 {
     [DbContext(typeof(FrameworkContext))]
-    partial class FrameworkContextModelSnapshot : ModelSnapshot
+    [Migration("20200804182634_smtpConfig-extend")]
+    partial class smtpConfigextend
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,6 +132,49 @@ namespace EmailMarketing.Web.Migrations.Framework
                     b.ToTable("CampaignReports");
                 });
 
+            modelBuilder.Entity("EmailMarketing.Framework.Entities.Contact", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ContactUploadId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContactUploadId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("Contacts");
+                });
+
             modelBuilder.Entity("EmailMarketing.Framework.Entities.ContactUpload", b =>
                 {
                     b.Property<int>("Id")
@@ -179,9 +224,6 @@ namespace EmailMarketing.Web.Migrations.Framework
                     b.Property<int>("SucceedEntryCount")
                         .HasColumnType("int");
 
-                    b.Property<bool>("isProcessing")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
@@ -220,50 +262,7 @@ namespace EmailMarketing.Web.Migrations.Framework
                     b.ToTable("ContactUploadFieldMaps");
                 });
 
-            modelBuilder.Entity("EmailMarketing.Framework.Entities.Contacts.Contact", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ContactUploadId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContactUploadId");
-
-                    b.HasIndex("GroupId");
-
-                    b.ToTable("Contacts");
-                });
-
-            modelBuilder.Entity("EmailMarketing.Framework.Entities.Contacts.ContactValueMap", b =>
+            modelBuilder.Entity("EmailMarketing.Framework.Entities.ContactValueMap", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -438,7 +437,7 @@ namespace EmailMarketing.Web.Migrations.Framework
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EmailMarketing.Framework.Entities.Contacts.Contact", "Contact")
+                    b.HasOne("EmailMarketing.Framework.Entities.Contact", "Contact")
                         .WithMany()
                         .HasForeignKey("ContactId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -447,6 +446,21 @@ namespace EmailMarketing.Web.Migrations.Framework
                     b.HasOne("EmailMarketing.Framework.Entities.SMTPConfig", "SMTPConfig")
                         .WithMany()
                         .HasForeignKey("SMTPConfigId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EmailMarketing.Framework.Entities.Contact", b =>
+                {
+                    b.HasOne("EmailMarketing.Framework.Entities.ContactUpload", "ContactUpload")
+                        .WithMany()
+                        .HasForeignKey("ContactUploadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EmailMarketing.Framework.Entities.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -475,24 +489,9 @@ namespace EmailMarketing.Web.Migrations.Framework
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EmailMarketing.Framework.Entities.Contacts.Contact", b =>
+            modelBuilder.Entity("EmailMarketing.Framework.Entities.ContactValueMap", b =>
                 {
-                    b.HasOne("EmailMarketing.Framework.Entities.ContactUpload", "ContactUpload")
-                        .WithMany()
-                        .HasForeignKey("ContactUploadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EmailMarketing.Framework.Entities.Group", "Group")
-                        .WithMany()
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("EmailMarketing.Framework.Entities.Contacts.ContactValueMap", b =>
-                {
-                    b.HasOne("EmailMarketing.Framework.Entities.Contacts.Contact", "Contact")
+                    b.HasOne("EmailMarketing.Framework.Entities.Contact", "Contact")
                         .WithMany("ContactValueMaps")
                         .HasForeignKey("ContactId")
                         .OnDelete(DeleteBehavior.Cascade)
