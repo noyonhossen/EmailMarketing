@@ -1,13 +1,16 @@
 ﻿using Autofac;
 using EmailMarketing.Framework.Context;
 using EmailMarketing.Framework.Repositories;
+using EmailMarketing.Framework.Repositories.Contacts;
 using EmailMarketing.Framework.Repositories.Group;
 using EmailMarketing.Framework.Repositories.Smtp;
 using EmailMarketing.Framework.Services;
+using EmailMarketing.Framework.Services.Contacts;
 using EmailMarketing.Framework.Services.Groups;
 using EmailMarketing.Framework.Services.Smtp;
 using EmailMarketing.Framework.UnitOfWork;
 using EmailMarketing.Framework.UnitOfWork.Smtp;
+using EmailMarketing.Framework.UnitOfWork.Contacts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +45,9 @@ namespace EmailMarketing.Framework
                    .InstancePerLifetimeScope();
             builder.RegisterType<SMTPService>().As<ISmtpService>()
                    .InstancePerLifetimeScope();
+                   
+            builder.RegisterType<ContactExcelUnitOfWork>().As<IContactExcelUnitOfWork>()
+                   .InstancePerLifetimeScope();
 
             builder.RegisterType<ExpenseUnitOfWork>().As<IExpenseUnitOfWork>()
                    .InstancePerLifetimeScope();
@@ -57,8 +63,16 @@ namespace EmailMarketing.Framework
 
             builder.RegisterType<GroupRepository>().As<IGroupRepository>()
                 .InstancePerLifetimeScope();
+            builder.RegisterType<ContactRepository>().As<IContactRepository>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<ContactUploadRepository>().As<IContactUploadRepository>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<ContactValueMapRepository>().As<IContactValueMapRepository>()
+                .InstancePerLifetimeScope();
 
             builder.RegisterType<GroupService>().As<IGroupService>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<ContactExcelService>().As<IContactExcelService>()
                 .InstancePerLifetimeScope();
 
             base.Load(builder);

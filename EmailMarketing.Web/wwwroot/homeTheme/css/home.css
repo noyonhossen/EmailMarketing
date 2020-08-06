@@ -2,6 +2,11 @@ body {
     scroll-behavior: smooth;
 }
 
+.btn-primary {
+    background-color: #FF8800 !important;
+    font-weight:bold;
+    font-size : 20px;
+}
 .pt-100 {
     padding-top: 100px;
 }
