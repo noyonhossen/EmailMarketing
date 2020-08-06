@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using EmailMarketing.Common.Services;
+using EmailMarketing.ExcelWorkerService.Entities;
+using EmailMarketing.ExcelWorkerService.Services;
 using EmailMarketing.Framework;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -61,6 +64,11 @@ namespace EmailMarketing.ExcelWorkerService
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();
+                    services.Configure<WorkerSmtpSettings>(hostContext.Configuration.GetSection("SmtpSetting"));
+                    services.AddSingleton<IMailerService, WorkerMailerService>();
+                    services.AddSingleton<ICurrentUserService, WorkerCurrentUserService>();
+                    services.AddSingleton<IDateTime, WorkerDateTimeService>();
+                    services.AddHttpContextAccessor();
                 });
     }
 }

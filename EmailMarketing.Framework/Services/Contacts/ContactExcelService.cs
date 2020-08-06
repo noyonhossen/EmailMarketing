@@ -143,6 +143,7 @@ namespace EmailMarketing.Framework.Services.Contacts
             #region Contact Upload Update
             var existingContactUpload = await _contactExcelUnitOfWork.ContactUploadRepository.GetFirstOrDefaultAsync(x => x, null, null, true);
             existingContactUpload.IsSucceed = true;
+            existingContactUpload.isProcessing = false;
             existingContactUpload.SucceedEntryCount = newContacts.Count;
             await _contactExcelUnitOfWork.ContactUploadRepository.UpdateAsync(existingContactUpload);
             await _contactExcelUnitOfWork.SaveChangesAsync();
@@ -167,6 +168,18 @@ namespace EmailMarketing.Framework.Services.Contacts
             var result = await this.ContactExcelImportAsync(contactUpload);
 
             return (result.SucceedCount, result.ExistCount, result.InvalidCount);
+        }
+
+        public async Task<IList<ContactUpload>> GetUploadedContact()
+        {
+            var result = await _contactExcelUnitOfWork.ContactUploadRepository.GetAsync(x => x, x => x.isProcessing == true, null, null, true);
+            return result;
+        }
+
+        public async Task AddAsync(ContactUpload entity)
+        {
+            await _contactExcelUnitOfWork.ContactUploadRepository.AddAsync(entity);
+            await _contactExcelUnitOfWork.SaveChangesAsync();
         }
 
         public void Dispose()
