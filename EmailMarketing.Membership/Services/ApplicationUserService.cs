@@ -283,7 +283,7 @@ namespace EmailMarketing.Membership.Services
                     {
                         throw new DuplicationException(nameof(entity.Email));
                     }
-
+                     
                     user.FullName = entity.FullName;
                     user.UserName = entity.UserName;
                     user.Email = entity.Email;
