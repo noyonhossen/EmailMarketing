@@ -60,7 +60,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 
             var entity = new ContactUpload();
             entity.FileUrl = fileUrl;
-            entity.GroupId = this.GroupId;
+            //entity.GroupId = this.GroupId;
             entity.HasColumnHeader = this.HasColumnHeader;
             entity.IsUpdateExisting = this.IsUpdateExisting;
             entity.IsSendEmailNotify = this.IsSendEmailNotify;

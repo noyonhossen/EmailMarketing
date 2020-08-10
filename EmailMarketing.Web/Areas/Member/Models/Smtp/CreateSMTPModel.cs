@@ -15,8 +15,9 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
         [Required]
         public string Server { get; set; }
         [Required]
-        public int Port { get; set; }
+        public int? Port { get; set; }
         [Required]
+        [Display(Name = "Sender Name")]
         public string SenderName { get; set; }
         [Required]
         public string SenderEmail { get; set; }
@@ -45,7 +46,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
             var entity = new SMTPConfig
             {
                 Server = this.Server,
-                Port=this.Port,
+                Port=this.Port??0,
                 SenderName=this.SenderName,
                 SenderEmail=this.SenderEmail,
                 UserName=this.UserName,

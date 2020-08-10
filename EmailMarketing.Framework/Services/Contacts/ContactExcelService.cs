@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -61,7 +62,7 @@ namespace EmailMarketing.Framework.Services.Contacts
 
                             var newContact = new Contact();
                             newContact.ContactValueMaps = new List<ContactValueMap>();
-                            newContact.GroupId = contactUpload.GroupId;
+                            //newContact.GroupId = contactUpload.GroupId;
                             newContact.ContactUploadId = contactUpload.Id;
                             newContact.Email = reader.GetString(emailIndex.Value);
                             newContact.Created = _dateTime.Now;
@@ -86,9 +87,11 @@ namespace EmailMarketing.Framework.Services.Contacts
                             #region Existing Contact Update
                             if (contactUpload.IsUpdateExisting)
                             {
-                                var existingContact = await _contactExcelUnitOfWork.ContactRepository.GetFirstOrDefaultAsync(x => x, 
-                                                                x => x.GroupId == newContact.GroupId && x.Email.ToLower() == newContact.Email, 
-                                                                null, true);
+                                //var existingContact = await _contactExcelUnitOfWork.ContactRepository.GetFirstOrDefaultAsync(x => x, 
+                                //                                x => x.GroupId == newContact.GroupId && x.Email.ToLower() == newContact.Email, 
+                                //                                null, true);
+
+                                var existingContact = (Contact?)null;
 
                                 if (existingContact != null)
                                 {
@@ -202,11 +205,13 @@ namespace EmailMarketing.Framework.Services.Contacts
 
         public async Task<IList<Contact>> GetAllContactsAsync(Guid? userId)
         {
-            return await _contactExcelUnitOfWork.ContactRepository.GetAsync(x => x,
-                 x => !x.IsDeleted && x.IsActive && (!userId.HasValue || x.Group.UserId == userId.Value),
-                 x => x.OrderByDescending(o => o.Created), 
-                 x => x.Include(o => o.Group).Include(o => o.ContactValueMaps).ThenInclude(o => o.FieldMap),
-                 true);
+            //return await _contactExcelUnitOfWork.ContactRepository.GetAsync(x => x,
+            //     x => !x.IsDeleted && x.IsActive && (!userId.HasValue || x.Group.UserId == userId.Value),
+            //     x => x.OrderByDescending(o => o.Created), 
+            //     x => x.Include(o => o.Group).Include(o => o.ContactValueMaps).ThenInclude(o => o.FieldMap),
+            //     true);
+
+            return null;
         }
 
         public void Dispose()

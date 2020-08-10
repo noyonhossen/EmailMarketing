@@ -49,6 +49,8 @@ namespace EmailMarketing.Framework.Context
         public DbSet<Entities.CampaignReport> CampaignReports { get; set; }
         public DbSet<Entities.Group> Groups { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<ContactGroup> ContactGroups { get; set; }
+        public DbSet<ContactUploadGroup> ContactUploadGroups { get; set; }
         public DbSet<ContactValueMap> ContactValueMaps { get; set; }
         public DbSet<ContactUpload> ContactUploads { get; set; }
         public DbSet<FieldMap> FieldMaps { get; set; }
