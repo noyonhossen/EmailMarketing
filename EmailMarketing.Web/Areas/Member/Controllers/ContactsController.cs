@@ -48,7 +48,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> EditContact(Guid id)
+        public async Task<IActionResult> EditContact(int id)
         {
             var model = new ContactsModel();
             return View(model);
@@ -64,10 +64,25 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var model = new ContactsModel();
-            return View(model);
+            if (ModelState.IsValid)
+            {
+                var model = new ContactsModel();
+                try
+                {
+                    var title = await model.DeleteAsync(id);
+                    model.Response = new ResponseModel($"Contact {title} successfully deleted.", ResponseType.Success);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    model.Response = new ResponseModel("Contact delete failured.", ResponseType.Failure);
+                    _logger.LogError(ex.Message);
+                }
+            }
+
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> GetContacts()
@@ -78,9 +93,10 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var data = await model.GetAllContactAsync(tableModel);
             return Json(data);
         }
-        public async Task<IActionResult> ContactDetails(Guid id)
+        public async Task<IActionResult> ContactDetails(int id)
         {
-            var model = new ContactsModel();
+            var model = new ContactDetailsModel();
+            await model.LoadByIdAsync(id);
             return View(model);
         }
 

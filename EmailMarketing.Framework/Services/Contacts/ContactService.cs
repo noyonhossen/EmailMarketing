@@ -39,6 +39,17 @@ namespace EmailMarketing.Framework.Services.Contacts
                 pageIndex, pageSize, true);
             return (result.Items, result.Total, result.TotalFilter);
         }
+        public async Task<Entities.Contacts.Contact> GetByIdAsync(int id)
+        {
+            return await _contactUnitOfWork.ContactRepository.GetByIdAsync(id);
+        }
+        public async Task<Entities.Contacts.Contact> DeleteAsync(int id)
+        {
+            var contact = await GetByIdAsync(id);
+            await _contactUnitOfWork.ContactRepository.DeleteAsync(id);
+            await _contactUnitOfWork.SaveChangesAsync();
+            return contact;
+        }
         public void Dispose()
         {
             _contactUnitOfWork?.Dispose();

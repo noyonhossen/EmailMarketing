@@ -49,5 +49,11 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 
             };
         }
+
+        public async Task<string> DeleteAsync(int id)
+        {
+            var name = await _contactService.DeleteAsync(id);
+            return name.Email;
+        }
     }
 }

@@ -13,5 +13,7 @@ namespace EmailMarketing.Framework.Services.Contacts
             string orderBy,
             int pageIndex,
             int pageSize);
+        Task<Entities.Contacts.Contact> GetByIdAsync(int id);
+        Task<Entities.Contacts.Contact> DeleteAsync(int id);
     }
 }
