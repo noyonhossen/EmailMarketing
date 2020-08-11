@@ -1,6 +1,7 @@
 ﻿using EmailMarketing.Common.Services;
 using EmailMarketing.Framework.Entities.Contacts;
 using EmailMarketing.Framework.Services.Contacts;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,11 +22,6 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         {
 
         }
-
-        //public async Task<IList<Contact>> GetAllContactAsync()
-        //{
-        //    return (await _contactExcelService.GetAllContactsAsync(_currentUserService.UserId));
-        //}
         public async Task<object> GetAllContactAsync(DataTablesAjaxRequestModel tableModel)
         {
             var result = await _contactService.GetAllContactAsync(
@@ -42,7 +38,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                 data = (from item in result.Items
                         select new string[]
                         {
-                            item.Email,
+                            string.Join(", ",item.ContactGroups.Select(x=>x.Group.Name)),
                             item.Email,
                             item.Id.ToString()
                         }).ToArray()
