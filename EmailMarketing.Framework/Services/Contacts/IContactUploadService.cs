@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Framework.Services.Contacts
 {
-    public interface IContactExcelService : IDisposable
+    public interface IContactUploadService : IDisposable
     {
         Task<(int SucceedCount, int ExistCount, int InvalidCount)> ContactExcelImportAsync(ContactUpload contactUpload);
         Task<(int SucceedCount, int ExistCount, int InvalidCount)> ContactExcelImportAsync(int contactUploadId);

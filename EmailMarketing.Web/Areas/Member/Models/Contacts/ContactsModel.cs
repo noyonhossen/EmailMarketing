@@ -12,8 +12,8 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
     {
         public IList<Contact> Contacts { get; set; }
 
-        public ContactsModel(IContactExcelService contactExcelService,
-            ICurrentUserService currentUserService) : base(contactExcelService, currentUserService)
+        public ContactsModel(IContactUploadService contactUploadService,
+            ICurrentUserService currentUserService) : base(contactUploadService, currentUserService)
         {
 
         }
@@ -24,7 +24,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 
         public async Task<IList<Contact>> GetAllContactAsync()
         {
-            return (await _contactExcelService.GetAllContactsAsync(_currentUserService.UserId));
+            return (await _contactUploadService.GetAllContactsAsync(_currentUserService.UserId));
         }
     }
 }

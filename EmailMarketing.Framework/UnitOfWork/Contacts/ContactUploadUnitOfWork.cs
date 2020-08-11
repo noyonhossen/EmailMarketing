@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Framework.UnitOfWork.Contacts
 {
-    public class ContactExcelUnitOfWork : EmailMarketing.Data.UnitOfWork, IContactExcelUnitOfWork
+    public class ContactUploadUnitOfWork : EmailMarketing.Data.UnitOfWork, IContactUploadUnitOfWork
     {
         public IContactRepository ContactRepository { get; set; }
         public IContactUploadRepository ContactUploadRepository { get; set; }
@@ -16,7 +16,7 @@ namespace EmailMarketing.Framework.UnitOfWork.Contacts
         public IContactUploadFieldMapRepository ContactUploadFieldMapRepository { get; set; }
         public IContactValueMapRepository ContactValueMapRepository { get; set; }
 
-        public ContactExcelUnitOfWork(FrameworkContext dbContext,
+        public ContactUploadUnitOfWork(FrameworkContext dbContext,
             IContactRepository contactRepository, 
             IContactUploadRepository contactUploadRepository,
             IFieldMapRepository fieldMapRepository,

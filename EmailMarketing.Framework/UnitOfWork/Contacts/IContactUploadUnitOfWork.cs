@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Framework.UnitOfWork.Contacts
 {
-    public interface IContactExcelUnitOfWork : IUnitOfWork
+    public interface IContactUploadUnitOfWork : IUnitOfWork
     {
         IContactRepository ContactRepository { get; set; }
         IContactUploadRepository ContactUploadRepository { get; set; }

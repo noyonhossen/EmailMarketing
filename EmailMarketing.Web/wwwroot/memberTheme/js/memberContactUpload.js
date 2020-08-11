@@ -1,59 +1,65 @@
-$(function() {
-    $("#upload_link").on('click', function(e) {
+
+
+var mapFieldDropdownData = [];
+var groupDropdownData = [];
+var mapFieldTableColumnHeaderData = [];
+var mapFieldTableRowData = [];
+var hasColumnHeader = true;
+
+$(function () {
+    $("#uploadFileDiv").on('click', function(e) {
         e.preventDefault();
-        $("#upload:hidden").trigger('click');
+        $("#uploadFile").trigger('click');
     });
 
-    $("#upload:hidden").change(function (e) {
+    //$("#finishBtn").on('click', function(e) {
+    //    //e.preventDefault();
+    //    $('#submit_form').submit();
+    //    $("#exampleModalCenter").modal('show');
+    //});
+
+    $("#uploadFile").on('change', function (e) {
         var file = e.target.files[0];
         var isFileSelected = false;
         var fileName = 'Recommended file formats: .csv, .xls, .xlsx';
+        var exfileName = 'FileName.xlsx';
 
         if (file !== null && file !== undefined) {
             fileName = 'The file "' + file.name + '" has been selected.';
+            exfileName = file.name;
             isFileSelected = file.size > 0;
             parseExcel(file);
         }
 
-        $("#upload_file_name").text(fileName);
+        $("#uploadFileName").text(fileName);
+        $("#reviewFileName").text(exfileName);
         document.getElementById('nextBtn').disabled = !isFileSelected;
     });
 
     
 
-    $('#has-column-header').change(function (e) {
+    $('#hasColumnHeader').on('change', function (e) {
         var has = $(this).is(":checked");
         generateColumnHeaderDisable(has);
     });
 
-
-
-
-    //Show Hide
-    $('#showHide').click(function () {
-        $(this).text(function (i, old) {
-            return old == 'Show' ? 'Hide' : 'Show';
-        });
+    $('#selectAllGroups').on('change', function (e) {
+        changeGroupSelect(this,true);
     });
-
-    $('#showHideCustom').click(function () {
-        $(this).text(function (i, old) {
-            return old == 'Show' ? 'Hide' : 'Show';
-        });
-    });
-
-//Show Hide
 });
 
-var mapFieldDropdownData = [];
-var mapFieldTableColumnHeaderData = [];
-var mapFieldTableRowData = [];
-var hasColumnHeader = true;
-
-function renderGetAllFieldMapsForUploadContacts(response) {
+function renderGetAllFieldMapsForUploadContact(response) {
     console.log(response);
     mapFieldDropdownData = response;
     console.log(mapFieldDropdownData);
+    callGroupFromServer();
+}
+
+function renderGetAllGroupsForUploadContact(response) {
+    console.log(response);
+    groupDropdownData = response;
+    console.log(groupDropdownData);
+    generateGroupData();
 }
 
 
@@ -106,7 +112,7 @@ function generateMapFieldTableColumnHeaderData() {
     var rowMarkup = '';
 
     mapFieldDropdownData.forEach(function (grpValue, grpIndex) {
-        rowMarkup += '<optgroup label="' + (grpValue.isStandard ? 'Standard Fields' : 'Custome Fields') + '">';
+        rowMarkup += '<optgroup label="' + (grpValue.isChecked ? 'Standard Fields' : 'Custom Fields') + '">';
 
         grpValue.values.forEach(function (value, index) {
             rowMarkup += '<option value = "' + value.value + '">' + value.text + '</option>';
@@ -114,35 +120,35 @@ function generateMapFieldTableColumnHeaderData() {
         rowMarkup += '</optgroup >';
     });
 
-    $('.map-field-dropdown').append(rowMarkup);
+    $('.mapFieldDropdown').append(rowMarkup);
 }
 
 function generateMapFieldTableData() {
     var rowMarkup = '';
+    $('#mapFieldTable > thead').empty();
+    $('#mapFieldTable > tbody').empty();
 
     mapFieldTableColumnHeaderData.forEach(function (value, index) {
-
-        rowMarkup += '<th><select class="form-control map-field-dropdown">' +
+        rowMarkup += '<th><select class="form-control mapFieldDropdown" id="ContactUploadFieldMaps_' + index + '_Value" name="ContactUploadFieldMaps[' + index + '].Value">' +
             '<option value = "-1">---Ignore---</option>' +
             '</select></th>';
     });
 
     rowMarkup = '<tr class="text-center">' + rowMarkup + '</tr>';
+    $('#mapFieldTable > thead').append(rowMarkup);
 
-    $('#map-field-table > thead').append(rowMarkup);
-
-    rowMarkup = '<tr class="text-center has-column-header-row">';
+    rowMarkup = '<tr class="text-center hasColumnHeaderRow">';
 
     mapFieldTableColumnHeaderData.forEach(function (colValue, colIndex) {
         rowMarkup += '<td>' + colValue + '</td>';
     });
 
     rowMarkup += '</tr>'
-    $('#map-field-table > tbody').append(rowMarkup);
+    $('#mapFieldTable > tbody').append(rowMarkup);
 
     generateColumnHeaderDisable(hasColumnHeader);
 
-    mapFieldTableRowData.forEach(function (rowValue, rowIndex) {
+    mapFieldTableRowData.slice(0, 10).forEach(function (rowValue, rowIndex) {
         rowMarkup = '<tr class="text-center">';
 
         mapFieldTableColumnHeaderData.forEach(function (colValue, colIndex) {
@@ -150,33 +156,89 @@ function generateMapFieldTableData() {
         });
 
         rowMarkup += '</tr>'
-        $('#map-field-table > tbody').append(rowMarkup);
+        $('#mapFieldTable > tbody').append(rowMarkup);
     });
 
     generateMapFieldTableColumnHeaderData();
 }
 
 function generateColumnHeaderDisable(has) {
+
+    var rowCount = mapFieldTableRowData.length;
+    var showRowCount = mapFieldTableRowData.length > 10 ? 10 : mapFieldTableRowData.length;
+
     if (has) {
         hasColumnHeader = true;
-        $('.has-column-header-row').addClass('bg-col-header text-muted');
+        //rowCount--;
+        $('.hasColumnHeaderRow').addClass('bg-col-header text-muted');
     } else {
         hasColumnHeader = false;
-        $('.has-column-header-row').removeClass('bg-col-header text-muted');
+        rowCount++;
+        showRowCount++;
+        $('.hasColumnHeaderRow').removeClass('bg-col-header text-muted');
     }
+
+    $("#showRowCount").text(showRowCount);
+    $("#allRowCount").text(rowCount);
+    $("#reviewAllRowCount").text(rowCount);
 }
 
+function generateGroupData() {
+    var rowMarkup = '';
 
+    groupDropdownData.forEach(function (value, index) {
+        rowMarkup += '<li class="list-group-item border-bottom">' +
+                            '<input type="hidden" class="selectSingleGroupValue" name="ContactUploadGroups[' + index + '].Value" value="' + value.value + '">' +
+                            '<div class="form-check">' +
+                            '<input type="checkbox" class="form-check-input selectSingleGroup" id="ContactUploadGroups_' + index + '_IsChecked" ' +
+                            'name="ContactUploadGroups[' + index + '].IsChecked" value="false" onchange="changeGroupSelect(this,false)">' +
+                            '<label class="form-check-label" for="ContactUploadGroups_' + index + '_IsChecked"> ' + value.text +' <span class="border" style="padding: 2px 5px;">' +
+                            '<span class="mr-1">' + value.count +'</span><i class="fas fa-user fa-xs" style="font-size: 10px;"></i></span></label>'+
+                     '</div></li>';
+    });
 
+    $('#groupDropdown').append(rowMarkup);
+}
 
+function changeGroupSelect(obj, isAllSelectFrom) {
+    var chkAll = $('#selectAllGroups').is(":checked");
+    var chk = $(obj).is(":checked");
+    var selectedGroup = [];
+    var isAllSelect = true;
+    var showSelectText = 'No Group Selected';
+    var reviewSelectText = 'None';
 
+    if (isAllSelectFrom && chkAll) {
+        //$('.selectSingleGroup:checkbox').attr('checked', 'checked');
+        $(".selectSingleGroup:checkbox").prop("checked", true);
+    } else if (isAllSelectFrom) {
+        $(".selectSingleGroup:checkbox").prop("checked", false);
+    }
 
+    $('.selectSingleGroup:checkbox').each(function (i, e) {
+        if ($(this).is(":checked")) {
+            $(this).val(true);
+            var val = $(this).closest('li').find('.selectSingleGroupValue').val();
+            var text = groupDropdownData.find(x => x.value == val).text;
+            selectedGroup.push(text);
+        } else {
+            $(this).val(false);
+            isAllSelect = false;
+        }
+    });
 
+    if (selectedGroup.length == 1) {
+        showSelectText = '1 Group Selected';
+        reviewSelectText = selectedGroup.join(', ');
+    } else if (selectedGroup.length > 1) {
+        showSelectText = selectedGroup.length.toString() + ' Groups Selected';
+        reviewSelectText = selectedGroup.join(', ');
+    }
 
-
-
-
-
+    $("#selectAllGroups:checkbox").prop("checked", isAllSelect);
+    $("#showSelectedGroups").text(showSelectText);
+    $("#reviewSelectedGroups").text(reviewSelectText);
+}
 
 //upload contact
 const previousBtn = document.getElementById('previousBtn');
@@ -190,7 +252,6 @@ const bullets = [...document.querySelectorAll('.bullet')];
 
 const MAX_STEPS = 4;
 let currentStep = 1;
-
 
 nextBtn.addEventListener('click', () => {
 
@@ -226,8 +287,6 @@ nextBtn.addEventListener('click', () => {
         chooseActions.style.display = 'none';
         reviewConfirm.style.display = 'block';
     }
-
-
 });
 
 previousBtn.addEventListener('click', () => {
@@ -238,7 +297,7 @@ previousBtn.addEventListener('click', () => {
     previousBullet2.classList.remove('current');
     currentStep--;
     //nextBtn.disabled = true;
-    const file = document.getElementById("upload").files[0];
+    const file = document.getElementById("uploadFile").files[0];
     const isFileSelected = file !== null && file !== undefined ? file.size > 0 : false;
     nextBtn.disabled = !isFileSelected;
     finishBtn.disabled = true;
@@ -268,5 +327,4 @@ previousBtn.addEventListener('click', () => {
     }
 
     //content.innerText = `Step Number ${currentStep}`;
-
 });

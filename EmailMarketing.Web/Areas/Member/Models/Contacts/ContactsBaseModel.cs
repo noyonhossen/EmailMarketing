@@ -11,25 +11,25 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 {
     public class ContactsBaseModel : MemberBaseModel, IDisposable
     {
-        protected readonly IContactExcelService _contactExcelService;
+        protected readonly IContactUploadService _contactUploadService;
         protected readonly ICurrentUserService _currentUserService;
 
-        public ContactsBaseModel(IContactExcelService contactExcel,
+        public ContactsBaseModel(IContactUploadService contactUpload,
             ICurrentUserService currentUserService)
         {
-            _contactExcelService = contactExcel;
+            _contactUploadService = contactUpload;
             _currentUserService = currentUserService;
         }
 
         public ContactsBaseModel()
         {
-            _contactExcelService = Startup.AutofacContainer.Resolve<IContactExcelService>();
+            _contactUploadService = Startup.AutofacContainer.Resolve<IContactUploadService>();
             _currentUserService = Startup.AutofacContainer.Resolve<ICurrentUserService>();
         }
 
         public void Dispose()
         {
-            _contactExcelService?.Dispose();
+            _contactUploadService?.Dispose();
         }
     }
 }

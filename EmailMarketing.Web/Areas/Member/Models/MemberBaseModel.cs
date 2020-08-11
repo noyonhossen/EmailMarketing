@@ -95,7 +95,7 @@ namespace EmailMarketing.Web.Areas.Member.Models
                                     Icon = "icon-users4", IsActive = false },
                                 new MenuChildItem () { Controller = "Contacts", Action = "ManageUploads", Area="Member", Title = "Manage Uploads",
                                     Icon = "icon-file-text3", IsActive = false },
-                                new MenuChildItem () { Controller = "Contacts", Action = "UploadContacts", Area="Member", Title = "Upload/Add Contacts",
+                                new MenuChildItem () { Controller = "ContactUpload", Action = "UploadContact", Area="Member", Title = "Upload/Add Contacts",
                                     Icon = "icon-file-upload2", IsActive = false },
                                 new MenuChildItem () { Controller = "Contacts", Action = "AddSingleContact", Area="Member", Title = "Add Single Contact",
                                     Icon = "icon-plus-circle2", IsActive = false },
