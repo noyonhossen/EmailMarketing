@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EmailMarketing.Common.Services;
+using EmailMarketing.EmailSendingWorkerService.Templates;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -32,16 +33,31 @@ namespace EmailMarketing.EmailSendingWorkerService
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
+                var list = new List<string>();
+                list.Add("shamimalmamunsamir@gmail.com");
+                list.Add("bad5432@gmail.com");
+                list.Add("shamimalmamunsamir@gmail.com");
+                list.Add("bad5432@gmail.com");
+                list.Add("shamimalmamunsamir@gmail.com");
+                list.Add("samamun009@gmail.com");
+                list.Add("bad5432@gmail.com");
+
+                var demoEmailTempalte = new DemoEmailTemplate();
+                var emailBody = demoEmailTempalte.TransformText();
+
                 try
                 {
-                    await _mailerService.SendEmailAsync("shamimalmamunsamir@gmail.com", "Bulk Mail", "Dear sir, <br/> Happy to see u sir");
+                    foreach(var item in list)
+                    {
+                        await _mailerService.SendEmailAsync(item, "Bulk Mail", emailBody);
+                    }
                 }
                 catch(Exception ex)
                 {
                     _logger.LogInformation($"Error Message: {ex.Message}");
                 }
 
-                await Task.Delay(100000, stoppingToken);
+                await Task.Delay(20000, stoppingToken);
             }
         }
 
