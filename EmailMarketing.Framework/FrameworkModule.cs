@@ -79,6 +79,13 @@ namespace EmailMarketing.Framework
             builder.RegisterType<ContactExcelService>().As<IContactExcelService>()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterType<ContactService>().As<IContactService>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<ContactUnitOfWork>().As<IContactUnitOfWork>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<ContactRepository>().As<IContactRepository>()
+                .InstancePerLifetimeScope();
+
             base.Load(builder);
         }
     }

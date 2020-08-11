@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
 using EmailMarketing.Web.Areas.Member.Enums;
 using EmailMarketing.Web.Areas.Member.Models;
 using EmailMarketing.Web.Areas.Member.Models.Contacts;
@@ -22,8 +23,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var model = new ContactsModel();
-            model.Contacts = await model.GetAllContactAsync();
+            var model = Startup.AutofacContainer.Resolve<ContactsModel>();
             return View(model);
         }
 
@@ -47,12 +47,42 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var model = new ContactsModel();
             return View(model);
         }
-        public IActionResult EditContact()
+
+        public async Task<IActionResult> EditContact(Guid id)
         {
             var model = new ContactsModel();
             return View(model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditContact()
+        {
+            var model = new ContactsModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var model = new ContactsModel();
+            return View(model);
+        }
+
+        public async Task<IActionResult> GetContacts()
+        {
+
+            var tableModel = new DataTablesAjaxRequestModel(Request);
+            var model = Startup.AutofacContainer.Resolve<ContactsModel>();
+            var data = await model.GetAllContactAsync(tableModel);
+            return Json(data);
+        }
+        public async Task<IActionResult> ContactDetails(Guid id)
+        {
+            var model = new ContactsModel();
+            return View(model);
+        }
 
 
 

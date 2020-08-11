@@ -12,8 +12,15 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
     public class ContactsBaseModel : MemberBaseModel, IDisposable
     {
         protected readonly IContactExcelService _contactExcelService;
+        protected readonly IContactService _contactService;
         protected readonly ICurrentUserService _currentUserService;
 
+        public ContactsBaseModel(IContactService contactService,
+            ICurrentUserService currentUserService)
+        {
+            _contactService = contactService;
+            _currentUserService = currentUserService;
+        }
         public ContactsBaseModel(IContactExcelService contactExcel,
             ICurrentUserService currentUserService)
         {
@@ -24,12 +31,14 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         public ContactsBaseModel()
         {
             _contactExcelService = Startup.AutofacContainer.Resolve<IContactExcelService>();
+            _contactService = Startup.AutofacContainer.Resolve<IContactService>();
             _currentUserService = Startup.AutofacContainer.Resolve<ICurrentUserService>();
         }
 
         public void Dispose()
         {
             _contactExcelService?.Dispose();
+            _contactService?.Dispose();
         }
     }
 }
