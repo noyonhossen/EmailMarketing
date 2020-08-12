@@ -67,8 +67,14 @@ namespace EmailMarketing.Framework
                 .InstancePerLifetimeScope();
             builder.RegisterType<ContactUploadRepository>().As<IContactUploadRepository>()
                 .InstancePerLifetimeScope();
+
+            builder.RegisterType<FieldMapService>().As<IFieldMapService>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<FieldMapUnitOfWork>().As<IFieldMapUnitOfWork>()
+                .InstancePerLifetimeScope();
             builder.RegisterType<FieldMapRepository>().As<IFieldMapRepository>()
                 .InstancePerLifetimeScope();
+
             builder.RegisterType<ContactUploadFieldMapRepository>().As<IContactUploadFieldMapRepository>()
                 .InstancePerLifetimeScope();
             builder.RegisterType<ContactValueMapRepository>().As<IContactValueMapRepository>()
@@ -77,6 +83,13 @@ namespace EmailMarketing.Framework
             builder.RegisterType<GroupService>().As<IGroupService>()
                 .InstancePerLifetimeScope();
             builder.RegisterType<ContactExcelService>().As<IContactExcelService>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<ContactService>().As<IContactService>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<ContactUnitOfWork>().As<IContactUnitOfWork>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<ContactRepository>().As<IContactRepository>()
                 .InstancePerLifetimeScope();
 
             base.Load(builder);
