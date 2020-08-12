@@ -24,7 +24,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 
         public async Task<IList<Contact>> GetAllContactAsync()
         {
-            return (await _contactUploadService.GetAllContactsAsync(_currentUserService.UserId));
+            return new List<Contact>();
         }
     }
 }

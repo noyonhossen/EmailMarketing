@@ -1,112 +1,57 @@
-﻿using Autofac;
-using EmailMarketing.Common.Constants;
-using EmailMarketing.Common.Services;
-using EmailMarketing.Framework.Entities;
-using EmailMarketing.Framework.Entities.Contacts;
+﻿using EmailMarketing.Common.Services;
 using EmailMarketing.Framework.Services.Contacts;
-using EmailMarketing.Framework.Services.Groups;
-using EmailMarketing.Web.Core;
-using EmailMarketing.Web.Models;
-using Microsoft.AspNetCore.Http;
+using EmailMarketing.Membership.Services;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 {
-    public class ContactUploadModel : ContactsBaseModel 
+    public class ContactUploadModel : ContactUploadBaseModel
     {
-        [Required]
-        public IFormFile ContactFile { get; set; }
-        public bool IsUpdateExisting { get; set; }
-        public bool HasColumnHeader { get; set; }
-        public bool IsSendEmailNotify { get; set; }
-        public string SendEmailAddress { get; set; }
-        public IList<ValueTextModel> ContactUploadFieldMaps { get; set; }
-        public IList<ValueTextModel> ContactUploadGroups { get; set; }
-
-
-        private readonly IFileStorage _fileStorage;
-        private readonly IGroupService _groupService;
-
-        public ContactUploadModel(IContactUploadService contactUploadService, IGroupService groupService, IFileStorage fileStorage,
+        public ContactUploadModel(IContactUploadService contactUploadService,
             ICurrentUserService currentUserService) : base(contactUploadService, currentUserService)
         {
-            this._fileStorage = fileStorage;
-            this._groupService = groupService;
+
         }
 
         public ContactUploadModel() : base()
         {
-            this._fileStorage = Startup.AutofacContainer.Resolve<IFileStorage>();
-            this._groupService = Startup.AutofacContainer.Resolve<IGroupService>();
+
         }
 
-        public async Task SaveContactsUploadAsync()
+        public async Task<object> GetAllAsync(DataTablesAjaxRequestModel tableModel)
         {
-            if (!this.ContactUploadGroups.Any(x => x.IsChecked)) throw new Exception("Please select at least one group.");
-            if (!(await this._contactUploadService.IsSelectedEmailFieldMap(this.ContactUploadFieldMaps.Select(x => int.Parse(x.Value)).ToList()))) throw new Exception("Please select at least email field map.");
+            var userId = _currentUserService.UserId;
 
-            #region file save
-            if (this.ContactFile == null || this.ContactFile.Length <= 0) throw new Exception("Please select a file");
+            var result = await _contactUploadService.GetAllAsync(userId,
+                tableModel.SearchText,
+                tableModel.GetSortText(new string[] { "FileName", "Created" }),
+                tableModel.PageIndex, tableModel.PageSize);
 
-            var fileUrl = ConstantsValue.ContactFileSaveUrl;
-            var url = await _fileStorage.StoreFileAsync(fileUrl, this.ContactFile);
-            fileUrl = Path.Combine(fileUrl, url);
-            var fileName = this.ContactFile.FileName;
-            #endregion
-
-            var entity = new ContactUpload();
-            entity.FileUrl = fileUrl;
-            entity.FileName = fileName;
-            entity.HasColumnHeader = this.HasColumnHeader;
-            entity.IsUpdateExisting = this.IsUpdateExisting;
-            entity.IsSendEmailNotify = this.IsSendEmailNotify;
-            entity.SendEmailAddress = this.SendEmailAddress;
-            entity.ContactUploadFieldMaps = new List<ContactUploadFieldMap>();
-            entity.ContactUploadGroups = new List<ContactUploadGroup>();
-
-            for (int i = 0; i < this.ContactUploadFieldMaps.Count; i++)
+            return new
             {
-                if(int.Parse(this.ContactUploadFieldMaps[i].Value) != -1)
-                {
-                    var conFieldMap = new ContactUploadFieldMap();
-                    conFieldMap.FieldMapId = int.Parse(this.ContactUploadFieldMaps[i].Value);
-                    conFieldMap.Index = i;
+                recordsTotal = result.Total,
+                recordsFiltered = result.TotalFilter,
 
-                    entity.ContactUploadFieldMaps.Add(conFieldMap);
-                }    
-            }
+                data = (from item in result.Items
+                        where (item.UserId == userId)
+                        select new string[]
+                        {
+                                    item.FileName,
+                                    item.Created.ToString("dd-MM-yyyy"),
+                                    item.IsSendEmailNotify.ToString(),
+                                    item.IsUpdateExisting.ToString(),
+                                    item.IsProcessing.ToString(),
+                                    item.IsSucceed.ToString(),
+                                    item.SucceedEntryCount.ToString(),
+                                    item.Id.ToString()
+                        }
+                        ).ToArray()
 
-            for (int i = 0; i < this.ContactUploadGroups.Count; i++)
-            {
-                if(this.ContactUploadGroups[i].IsChecked)
-                {
-                    var conGrp = new ContactUploadGroup();
-                    conGrp.GroupId = int.Parse(this.ContactUploadGroups[i].Value);
-
-                    entity.ContactUploadGroups.Add(conGrp);
-                }    
-            }
-
-            await _contactUploadService.AddContactUploadAsync(entity);
-        }
-
-        public async Task<object> GetAllFieldMapForSelectAsync()
-        {
-            return (await _contactUploadService.GetAllFieldMapForSelectAsync(_currentUserService.UserId)).GroupBy(x => x.IsStandard)
-                                .Select(x => new { IsChecked = x.Key, Values = x.Select(y => 
-                                    new ValueTextModel { Value = y.Value.ToString(), Text = y.Text, IsChecked = y.IsStandard }).ToList() })
-                                .OrderByDescending(x => x.IsChecked).ToList();
-        }
-
-        public async Task<IList<ValueTextModel>> GetAllGroupForSelectAsync()
-        {
-            return (await _groupService.GetAllGroupForSelectAsync(_currentUserService.UserId))
-                                .Select(x => new ValueTextModel { Value = x.Value.ToString(), Text = x.Text, Count = x.ContactCount }).ToList();
+            };
         }
     }
 }

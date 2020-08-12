@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
 using EmailMarketing.Web.Areas.Member.Enums;
 using EmailMarketing.Web.Areas.Member.Models;
 using EmailMarketing.Web.Areas.Member.Models.Contacts;
@@ -22,18 +23,19 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var model = Startup.AutofacContainer.Resolve<ContactUploadModel>();
+            return View(model);
         }
 
         public async Task<IActionResult> UploadContact()
         {
-            var model = new ContactUploadModel();
+            var model = new CreateContactUploadModel();
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UploadContact(ContactUploadModel model)
+        public async Task<IActionResult> UploadContact(CreateContactUploadModel model)
         {
             if (ModelState.IsValid)
             {
@@ -57,15 +59,23 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         #region json helper method
         public async Task<JsonResult> GetAllFieldMaps()
         {
-            var model = new ContactUploadModel();
+            var model = new CreateContactUploadModel();
             var data = await model.GetAllFieldMapForSelectAsync();
             return Json(data);
         }
 
         public async Task<JsonResult> GetAllGroups()
         {
-            var model = new ContactUploadModel();
+            var model = new CreateContactUploadModel();
             var data = await model.GetAllGroupForSelectAsync();
+            return Json(data);
+        }
+
+        public async Task<IActionResult> GetContactUploads()
+        {
+            var tableModel = new DataTablesAjaxRequestModel(Request);
+            var model = Startup.AutofacContainer.Resolve<ContactUploadModel>();
+            var data = await model.GetAllAsync(tableModel);
             return Json(data);
         }
         #endregion

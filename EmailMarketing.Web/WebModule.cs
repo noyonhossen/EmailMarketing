@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EmailMarketing.Web.Areas.Member.Models.Smtp;
+using EmailMarketing.Web.Areas.Member.Models.Contacts;
 
 namespace EmailMarketing.Web
 {
@@ -34,6 +35,7 @@ namespace EmailMarketing.Web
             builder.RegisterType<GroupModel>();
             builder.RegisterType<SMTPModel>();
             builder.RegisterType<ChangeDefaultPasswordViewModel>();
+            builder.RegisterType<ContactUploadModel>();
 
             builder.RegisterType<MemberBaseModel>();
             base.Load(builder);

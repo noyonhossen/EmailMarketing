@@ -64,6 +64,10 @@ namespace EmailMarketing.Framework
                 .InstancePerLifetimeScope();
             builder.RegisterType<ContactValueMapRepository>().As<IContactValueMapRepository>()
                 .InstancePerLifetimeScope();
+            builder.RegisterType<ContactUploadGroupRepository>().As<IContactUploadGroupRepository>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<ContactGroupRepository>().As<IContactGroupRepository>()
+                .InstancePerLifetimeScope();
 
             builder.RegisterType<GroupService>().As<IGroupService>()
                 .InstancePerLifetimeScope();
