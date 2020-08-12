@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
+using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Web.Areas.Member.Enums;
 using EmailMarketing.Web.Areas.Member.Models;
 using EmailMarketing.Web.Areas.Member.Models.Contacts;
@@ -32,16 +33,61 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var model = new ContactsModel();
             return View(model);
         }
+
         public IActionResult CustomFields()
         {
-            var model = new ContactsModel();
+            var model = Startup.AutofacContainer.Resolve<FieldMapModel>();
             return View(model);
         }
-        public IActionResult EditCustomField()
+        [HttpGet]
+        public async Task<IActionResult> AddOrEdit(int? id)
         {
-            var model = new ContactsModel();
-            return View(model);
+            var model = new FieldMapModel();
+
+            #region for edit
+            if (id.HasValue && id != 0)
+            {
+                await model.LoadByIdAsync(id.Value);
+            }
+            #endregion
+
+            return PartialView("_AddOrEdit", model);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddOrEdit(FieldMapModel model)
+        {
+            ModelState.Remove("Id");
+
+            if (ModelState.IsValid)
+            {
+                if (model.UserId == null) await model.AddFieldMapAsync();
+                else await model.UpdateFieldMapAsync();
+
+                TempData["SuccessNotify"] = "Field has been successfully saved";
+                return RedirectToAction("CustomFields");
+            }
+
+            TempData["ErrorNotify"] = "Field could not be saved";
+            return RedirectToAction("CustomFields");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteFieldMap(int id)
+        {
+            var model = new FieldMapModel();
+            await model.DeleteFieldMapAsync(id);
+            return Json(true);
+        }
+        public async Task<IActionResult> GetAllFieldMap()
+        {
+            var tableModel = new DataTablesAjaxRequestModel(Request);
+            var model = Startup.AutofacContainer.Resolve<FieldMapModel>();
+            var data = await model.GetAllFieldMapAsync(tableModel);
+            return Json(data);
+        }
+
         public IActionResult AddSingleContact()
         {
             var model = new ContactsModel();
@@ -99,8 +145,6 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             await model.LoadByIdAsync(id);
             return View(model);
         }
-
-
 
         public async Task<IActionResult> UploadContacts()
         {
