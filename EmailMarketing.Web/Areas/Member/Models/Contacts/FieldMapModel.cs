@@ -11,6 +11,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 {
     public class FieldMapModel : ContactsBaseModel
     {
+        public int? Id { get; set; }
         public Guid? UserId { get; set; }
         [Required]
         public string DisplayName { get; set; }
@@ -68,6 +69,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         public async Task LoadByIdAsync(int id)
         {
             var result = await _fieldMapService.GetByIdAsync(id);
+            this.Id = result.Id;
             this.UserId = result.UserId;
             this.DisplayName = result.DisplayName;
             this.IsStandard = result.IsStandard;
@@ -77,6 +79,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         {
             var entity = new FieldMap
             {
+                Id = this.Id.Value,
                 DisplayName = this.DisplayName,
                 UserId = _currentUserService.UserId,
                 IsStandard = false

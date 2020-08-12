@@ -62,8 +62,8 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
 
             if (ModelState.IsValid)
             {
-                if (model.UserId == null) await model.AddFieldMapAsync();
-                else await model.UpdateFieldMapAsync();
+                if (model.Id.HasValue && model.Id != 0) await model.UpdateFieldMapAsync();
+                else await model.AddFieldMapAsync();
 
                 TempData["SuccessNotify"] = "Field has been successfully saved";
                 return RedirectToAction("CustomFields");
