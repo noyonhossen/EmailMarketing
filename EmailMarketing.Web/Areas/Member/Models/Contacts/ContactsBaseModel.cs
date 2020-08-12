@@ -13,11 +13,18 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
     {
         protected readonly IContactExcelService _contactExcelService;
         protected readonly ICurrentUserService _currentUserService;
-
+        protected  IContactService _contactService;
+             
         public ContactsBaseModel(IContactExcelService contactExcel,
             ICurrentUserService currentUserService)
         {
             _contactExcelService = contactExcel;
+            _currentUserService = currentUserService;
+        }
+        public ContactsBaseModel(IContactService contactService,
+           ICurrentUserService currentUserService)
+        {
+            _contactService = contactService;
             _currentUserService = currentUserService;
         }
 

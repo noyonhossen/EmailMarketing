@@ -60,6 +60,8 @@ namespace EmailMarketing.Framework
 
             builder.RegisterType<GroupUnitOfWork>().As<IGroupUnitOfWork>()
                    .InstancePerLifetimeScope();
+            builder.RegisterType<ContactUnitOfWork>().As<IContactUnitOfWork>()
+                   .InstancePerLifetimeScope();
 
             builder.RegisterType<GroupRepository>().As<IGroupRepository>()
                 .InstancePerLifetimeScope();
@@ -73,11 +75,15 @@ namespace EmailMarketing.Framework
                 .InstancePerLifetimeScope();
             builder.RegisterType<ContactValueMapRepository>().As<IContactValueMapRepository>()
                 .InstancePerLifetimeScope();
+            builder.RegisterType<GroupContactRepository>().As<IGroupContactRepository>()
+                .InstancePerLifetimeScope();
 
             builder.RegisterType<GroupService>().As<IGroupService>()
                 .InstancePerLifetimeScope();
             builder.RegisterType<ContactExcelService>().As<IContactExcelService>()
-                .InstancePerLifetimeScope();
+                .InstancePerLifetimeScope(); 
+            builder.RegisterType<ContactService>().As<IContactService>()
+                 .InstancePerLifetimeScope();
 
             base.Load(builder);
         }

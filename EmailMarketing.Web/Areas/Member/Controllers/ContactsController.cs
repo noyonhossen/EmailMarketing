@@ -42,11 +42,44 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var model = new ContactsModel();
             return View(model);
         }
-        public IActionResult AddSingleContact()
+
+        [HttpGet]
+        public async Task<IActionResult> AddSingleContact()
         {
-            var model = new ContactsModel();
+            var model = new SingleContactModel();
+            model.GroupSelectList = await model.GetAllGroupForSelectAsync();
+            model.ContactValueMaps = await model.GetAllContactValueMaps();
+            model.ContactValueMapsCustom = await model.GetAllContactValueMapsCustom();
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddSingleContact(SingleContactModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await model.SaveContactAsync();
+                    var msg = "Congrats! Added Contact Successfully";
+                    model.Response = new ResponseModel(msg, ResponseType.Success);
+                    //return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    //model.Response = new ResponseModel("Contacts Upload added failured.", ResponseType.Failure);
+                    model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
+                    _logger.LogError(ex.Message);
+                }
+            }
+
+            //model.GroupSelectList = await model.GetAllGroupForSelectAsync();
+
+            return View(model);
+        }
+
+
+
         public IActionResult EditContact()
         {
             var model = new ContactsModel();
