@@ -30,7 +30,6 @@ namespace EmailMarketing.Web
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<ExpenseModel>();
             builder.RegisterType<AdminUsersModel>();
             builder.RegisterType<MemberUserModel>();
             builder.RegisterType<GroupModel>();
@@ -38,6 +37,7 @@ namespace EmailMarketing.Web
             builder.RegisterType<FieldMapModel>();
             builder.RegisterType<SMTPModel>();
             builder.RegisterType<ChangeDefaultPasswordViewModel>();
+            builder.RegisterType<ContactUploadModel>();
 
             builder.RegisterType<MemberBaseModel>();
             base.Load(builder);

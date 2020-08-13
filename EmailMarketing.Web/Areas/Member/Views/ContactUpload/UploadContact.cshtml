@@ -1,16 +1,16 @@
-﻿@model EmailMarketing.Web.Areas.Member.Models.Contacts.ContactsUploadModel
-@using EmailMarketing.Web.Extensions
+﻿@model EmailMarketing.Web.Areas.Member.Models.Contacts.CreateContactUploadModel
+@using EmailMarketing.Membership.Extensions
 
 @{
-    ViewData["Title"] = "UploadContacts";
-    //var loggedInUserEmail = EmailMarketing.Web.Extensions.Email(System.Security.Principal.IIdentity);
+    ViewData["Title"] = "Upload Contacts";
+    var loggedInUserEmail = User.Identity.Email();
 }
 
 <!-- Content area -->
 <div class="content">
 
     <div class="pb-3">
-        <h4 class="d-inline">Upload Contacts</h4>
+        <h2 class="d-inline">Upload Contacts</h2>
     </div>
 
     <!-- navigation -->
@@ -42,43 +42,41 @@
             <partial name="_ActionMessage" model="@Model.Response" />
         </div>
 
-        <form action="UploadContacts" method="post" enctype="multipart/form-data" id="submit_form">
+        <form action="UploadContact" method="post" enctype="multipart/form-data" id="submitForm">
             @Html.AntiForgeryToken()
+            <div asp-validation-summary="All" class="text-danger"></div>
 
             <div id="main">
                 <div id="uploadContacts">
-
                     <div class="row">
                         <div class="col-md-8">
-
-                            <div class="card p-5 card-border-dotted">
+                            <input id="uploadFile" type="file" asp-for="ContactFile" />
+                            <div class="card p-5 card-border-dotted" id="uploadFileDiv">
                                 <div class="text-center p-5">
                                     <h4>
                                         Browse your computer and select a file to upload.
                                     </h4>
-                                    <p class="text-muted" id="upload_file_name">Recommended file formats: .csv, .xls, .xlsx</p>
-                                    <input id="upload" type="file" asp-for="ContactFile" />
-                                    <a href="" type="submit" class="btn btn-primary" id="upload_link"> <i class="icon-upload4"></i> Upload</a>
+                                    <p class="text-muted" id="uploadFileName">Recommended file formats: .csv, .xls, .xlsx</p>
+                                    @*<a href="" class="btn btn-primary" id="uploadFileBtn"> <i class="icon-upload4"></i> Upload</a>*@
                                 </div>
                             </div>
                             <div class="pt-3">
                                 <div class="form-group">
                                     <div class="form-check form-check-inline form-check-switchery">
                                         <label class="form-check-label">
-                                            <input type="checkbox" class="form-input-switchery" checked data-fouc asp-for="HasColumnHeader" id="has-column-header">
+                                            <input type="checkbox" class="form-input-switchery" checked data-fouc asp-for="HasColumnHeader" id="hasColumnHeader">
                                             Column Headers
                                         </label>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <div class="col-md-4">
                             <div class="col-12">
                                 <div class="card p-2">
                                     <h6 class="font-weight-bold">Helpful Tips:</h6>
                                     <ul>
-                                        <li>Need help formatting? Download a sample file <a href="~/memberTheme/assets/demo.xlsx" download>here</a> and add your contacts. Once you save the file, you can upload it on the left.</li>
+                                        <li>Need help formatting? Download a sample file <a href="~/memberTheme/assets/ContactExcelDemo.xlsx" download>here</a> and add your contacts. Once you save the file, you can upload it on the left.</li>
                                         <li>For importing larger files, we recommend using xlsx for best performance.</li>
                                         <li>Date fields must be in MM/DD/YYYY format.</li>
                                     </ul>
@@ -86,7 +84,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="card p-2">
-                                    <h6 class="font-weight-bold">Helpful Tips:</h6>
+                                    <h6 class="font-weight-bold">More Resources:</h6>
                                     <ul>
                                         <li><a asp-area="Member" asp-controller="Resources" asp-action="ImportContact" target="_blank">How to Upload Contacts</a></li>
                                         <li><a asp-area="Member" asp-controller="Resources" asp-action="HelpfulTips" target="_blank">Helpful Tips</a></li>
@@ -96,22 +94,15 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
                 <div id="mapFields">
-
-                    <!-- Table -->
-                    <div class="scrollmenu bg-field-map ">
-                        <table id="map-field-table" class="table table-sm">
+                    <div class="scrollmenu bg-field-map">
+                        <table id="mapFieldTable" class="table table-sm">
                             <thead></thead>
                             <tbody></tbody>
                         </table>
                     </div>
-
-
-                    <h5 class="text-muted">Preview: Showing <span id="show_row_count">0</span> rows out of <span id="all_row_count">0</span></h5>
-
+                    <h5 class="text-muted">Preview: Showing <span id="showRowCount">0</span> rows out of <span id="allRowCount">0</span></h5>
                 </div>
                 <div id="chooseActions">
                     <div class="row">
@@ -130,36 +121,29 @@
                             </div>
 
                             <!-- selected -->
-                            @*<div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                <label class="form-check-label" for="exampleCheck1">Select All Lists</label>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="selectAllGroups">
+                                <label class="form-check-label" for="selectAllGroups">Select All Groups</label>
                             </div>
                             <div class="bg-white">
                                 <p class="p-2">
-                                    <i class="icon-collaboration"></i>&nbsp;&nbsp; <span>No</span> <span>List</span> Selected
+                                    <i class="icon-collaboration mr-1"></i><span id="showSelectedGroups">No Group Selected</span>
                                 </p>
-                            </div>*@
+                            </div>
 
                             <div class="bg-white">
-                                <ul class="list-group">
-                                    @{
-                                        var items = Model.GroupSelectList;
-                                        for (int i = 0; i < items.Count; i++)
-                                        {
-                                            <li class="list-group-item border-bottom">
-                                                <div class="form-check">
-                                                    <input type="radio" class="form-check-input" id='"groupcheck_"+@i+"2"' asp-for="GroupId" value="@items[i].Value">
-                                                    <label class="form-check-label" for='"groupcheck_"+@i+"2"'>
-                                                        @(items[i].Text)
-                                                        @*<span class="border p-1">
-                                                            <span>2</span>&nbsp;&nbsp;
-                                                            <i class="fas fa-user"></i>
-                                                        </span>*@
-                                                    </label>
-                                                </div>
-                                            </li>
-                                        }
-                                    }
+                                <ul class="list-group" id="groupDropdown">
+                                    @*<li class="list-group-item border-bottom">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="groupcheck_2">
+                                                <label class="form-check-label" for="groupcheck_2"> test test
+                                                    <span class="border p-1">
+                                                        <span>2</span>&nbsp;&nbsp;
+                                                        <i class="fas fa-user fa-xs"></i>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </li>*@
                                 </ul>
                             </div>
                             <!-- /selected -->
@@ -167,9 +151,9 @@
                         </div>
 
                         <div class="col-md-6">
-                            <div class="pt-5 pl-5">
-                                <h3>For Create Group goto "Groups > Add Group"</h3>
-                            </div>
+                            @*<div class="pt-5 pl-5">
+                                    <h3>For Create Group goto "Groups > Add Group"</h3>
+                                </div>*@
                         </div>
                     </div>
                 </div>
@@ -187,7 +171,7 @@
                                         <span class="font-weight-bold">File Name</span>
                                     </div>
                                     <div class="w-75 d-inline">
-                                        <span id="review_file_name">FileName.xlsx</span>
+                                        <span id="reviewFileName">FileName.xlsx</span>
                                     </div>
                                 </div>
                                 <div class="pb-3">
@@ -195,7 +179,15 @@
                                         <span class="font-weight-bold">Contacts Detected</span>
                                     </div>
                                     <div class="w-75 d-inline">
-                                        <span id="review_all_row_count">14</span>
+                                        <span id="reviewAllRowCount">0</span>
+                                    </div>
+                                </div>
+                                <div class="pb-3">
+                                    <div class="w-25 d-inline-block">
+                                        <span class="font-weight-bold">Groups</span>
+                                    </div>
+                                    <div class="w-75 d-inline">
+                                        <span id="reviewSelectedGroups">None</span>
                                     </div>
                                 </div>
                             </div>
@@ -211,13 +203,13 @@
                                 </div>
                                 <div>
                                     <div class="form-group row">
-                                        <label for="inputEmail" class="col-md-3 col-form-label">Email Address</label>
+                                        <label for="inputEmail" class="col-md-3 col-form-label">Email</label>
                                         <div class="col-md-9">
-                                            <input type="email" class="form-control" id="inputEmail" placeholder="Enter Email" asp-for="SendEmailAddress">
+                                            <input type="email" class="form-control" id="inputEmail" placeholder="Enter Email" asp-for="SendEmailAddress" value="@loggedInUserEmail">
                                         </div>
-                                        @*<div class="col-md-12">
-                                            <p>You can send to multiple email addresses by comma separating email addresses.</p>
-                                        </div>*@
+                                        <div class="col-md-12">
+                                            <p>You can send to multiple email by comma separating email.</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -263,14 +255,28 @@
 <!-- /Done modal -->
 
 @section Scripts{
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
-    <script src="~/memberTheme/js/member.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>*@
+    <script src="~/js/jszip.js"></script>
+    <script src="~/js/xlsx.js"></script>
     <script src="~/js/ajax-call.js"></script>
+    <script src="~/memberTheme/js/memberContactUpload.js"></script>
     <script>
         $(function () {
-            var url = '@Url.Action("GetAllFieldMaps", "Contacts", new { Area = "Member" })';
-            ajaxCall(url, null, 'renderGetAllFieldMapsForUploadContacts', 'POST');
+            var url1 = '@Url.Action("GetAllFieldMaps", "ContactUpload", new { Area = "Member" })';
+            ajaxCall(url1, null, 'renderGetAllFieldMapsForUploadContact', 'POST');
+
+            @*var url2 = '@Url.Action("GetAllGroups", "ContactUpload", new { Area = "Member" })';
+            ajaxCall(url2, null, 'renderGetAllGroupsForUploadContact', 'POST');*@
         });
+
+        function callGroupFromServer() {
+            var url2 = '@Url.Action("GetAllGroups", "ContactUpload", new { Area = "Member" })';
+            ajaxCall(url2, null, 'renderGetAllGroupsForUploadContact', 'POST');
+        }
     </script>
+}
+
+@section Styles{
+    <link href="~/memberTheme/css/memberContactUpload.css" rel="stylesheet" type="text/css">
 }

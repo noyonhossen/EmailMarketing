@@ -145,44 +145,5 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             await model.LoadByIdAsync(id);
             return View(model);
         }
-
-        public async Task<IActionResult> UploadContacts()
-        {
-            var model = new ContactsUploadModel();
-            model.GroupSelectList = await model.GetAllGroupForSelectAsync();
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UploadContacts(ContactsUploadModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    await model.SaveContactsUploadAsync();
-                    var msg = "Congrats! contacts upload is currently being processed! This could take a few minutes .In the meantime you can continue working in DevSkill Email marketting.";
-                    model.Response = new ResponseModel("Contacts Upload Added successful.", ResponseType.Success);
-                    return RedirectToAction("Index");
-                }
-                catch (Exception ex)
-                {
-                    //model.Response = new ResponseModel("Contacts Upload added failured.", ResponseType.Failure);
-                    model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
-                    _logger.LogError(ex.Message);
-                }
-            }
-
-            model.GroupSelectList = await model.GetAllGroupForSelectAsync();
-            return View(model);
-        }
-
-        public async Task<JsonResult> GetAllFieldMaps()
-        {
-            var model = new ContactsUploadModel();
-            var data = await model.GetAllFieldMapForSelectAsync();
-            return Json(data);
-        }
     }
 }

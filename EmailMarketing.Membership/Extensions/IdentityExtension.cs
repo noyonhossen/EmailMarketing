@@ -6,7 +6,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.Web.Extensions
+namespace EmailMarketing.Membership.Extensions
 {
     public static class IdentityExtension
     {

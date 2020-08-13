@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Framework.Services.Contacts
 {
-    public interface IContactExcelService : IDisposable
+    public interface IContactUploadService : IDisposable
     {
         Task<(int SucceedCount, int ExistCount, int InvalidCount)> ContactExcelImportAsync(ContactUpload contactUpload);
         Task<(int SucceedCount, int ExistCount, int InvalidCount)> ContactExcelImportAsync(int contactUploadId);
@@ -16,6 +16,7 @@ namespace EmailMarketing.Framework.Services.Contacts
         Task AddContactUploadAsync(ContactUpload entity);
         Task<bool> IsSelectedEmailFieldMap(IList<int> values);
         Task<IList<ContactUpload>> GetUploadedContact();
-        Task<IList<Contact>> GetAllContactsAsync(Guid? userId);
+        Task<(IList<ContactUpload> Items, int Total, int TotalFilter)> GetAllAsync(
+           Guid? userId, string searchText, string orderBy, int pageIndex, int pageSize);
     }
 }

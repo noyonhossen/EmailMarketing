@@ -15,9 +15,9 @@ namespace EmailMarketing.ExcelWorkerService
     {
         private readonly ILogger<Worker> _logger;
         private readonly IMailerService _mailerService;
-        private readonly IContactExcelService _contactExcelService;
+        private readonly IContactUploadService _contactExcelService;
 
-        public Worker(ILogger<Worker> logger, IContactExcelService contactExcelService, IMailerService mailerService)
+        public Worker(ILogger<Worker> logger, IContactUploadService contactExcelService, IMailerService mailerService)
         {
             _logger = logger;
             _mailerService = mailerService;

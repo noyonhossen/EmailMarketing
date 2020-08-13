@@ -72,10 +72,13 @@ namespace EmailMarketing.Web.Controllers
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 //var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                var isValidUser = await _userManager.CheckPasswordAsync(user, model.Password);
+                var user = await _userManager.FindByEmailAsync(model.Email); 
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                }
 
-                var roles = await _userManager.GetRolesAsync(user);
+                var isValidUser = await _userManager.CheckPasswordAsync(user, model.Password);
 
                 if (isValidUser)
                 {
@@ -93,6 +96,12 @@ namespace EmailMarketing.Web.Controllers
                     }
                     else
                     {
+                        var roles = await _userManager.GetRolesAsync(user);
+                        if (roles == null || roles.Count == 0)
+                        {
+                            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                        }
+
                         var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                         if (!result.Succeeded)
                         {
