@@ -1,6 +1,6 @@
 ﻿using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Framework.Entities;
-using EmailMarketing.Framework.UnitOfWork;
+using EmailMarketing.Framework.UnitOfWork.Group;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
