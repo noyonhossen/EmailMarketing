@@ -1,4 +1,5 @@
-﻿@{
+﻿@model GroupModel
+@{
     ViewData["Title"] = "Index";
 }
 
@@ -11,7 +12,7 @@
         </div>
 
         <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="Groups" asp-action="Add" asp-area="Member" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-plus-circle2 mr-2"></i> <span class="font-weight-semibold">New Group</span></a>
+            <a data-toggle="modal" data-target="#exampleModal" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-plus-circle2 mr-2"></i> <span class="font-weight-semibold">New Group</span></a>
         </div>
     </div>
 </div>
@@ -24,11 +25,6 @@
         <div class="card-header header-elements-inline">
             <h5 class="card-title">Groups</h5>
             <div class="header-elements">
-                @*<div class="list-icons">
-                    <a class="list-icons-item" data-action="collapse"></a>
-                    <a class="list-icons-item" data-action="reload"></a>
-                    <a class="list-icons-item" data-action="remove"></a>
-                </div>*@
             </div>
         </div>
 
@@ -74,6 +70,31 @@
     </div>
 </div>
 <!-- /default modal -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Group Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Add" asp-controller="Groups" asp-area="Member" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Name">Name</label>
+                        <input name="Name" type="text" class="form-control" id="Name" placeholder="Enter Group Name" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="icon-cancel-circle2"></i> Cancel</button>
+                    <button type="submit" class="btn btn-primary"> <i class="icon-file-check2"></i> Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />

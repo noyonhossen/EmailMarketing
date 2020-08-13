@@ -20,12 +20,15 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
         [Display(Name = "Sender Name")]
         public string SenderName { get; set; }
         [Required]
+        [Display(Name = "Sender Email")]
         public string SenderEmail { get; set; }
         [Required]
+        [Display(Name = "User Name")]
         public string UserName { get; set; }
         [Required]
         public string Password { get; set; }
-        [Required]
+        
+        [Display(Name = "Enable SSL")]
         public bool EnableSSL { get; set; }
         public Guid UserId { get; set; }
 
