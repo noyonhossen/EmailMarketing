@@ -47,17 +47,8 @@ namespace EmailMarketing.Framework
             builder.RegisterType<SMTPService>().As<ISmtpService>()
                    .InstancePerLifetimeScope();
                    
-            builder.RegisterType<ContactExcelUnitOfWork>().As<IContactExcelUnitOfWork>()
+            builder.RegisterType<ContactUploadUnitOfWork>().As<IContactUploadUnitOfWork>()
                    .InstancePerLifetimeScope();
-
-            builder.RegisterType<ExpenseUnitOfWork>().As<IExpenseUnitOfWork>()
-                   .InstancePerLifetimeScope();
-
-            builder.RegisterType<ExpenseRepository>().As<IExpenseRepository>()
-                .InstancePerLifetimeScope();
-
-            builder.RegisterType<ExpenseService>().As<IExpenseService>()
-                .InstancePerLifetimeScope();
 
             builder.RegisterType<GroupUnitOfWork>().As<IGroupUnitOfWork>()
                    .InstancePerLifetimeScope();
@@ -68,16 +59,33 @@ namespace EmailMarketing.Framework
                 .InstancePerLifetimeScope();
             builder.RegisterType<ContactUploadRepository>().As<IContactUploadRepository>()
                 .InstancePerLifetimeScope();
+
+            builder.RegisterType<FieldMapService>().As<IFieldMapService>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<FieldMapUnitOfWork>().As<IFieldMapUnitOfWork>()
+                .InstancePerLifetimeScope();
             builder.RegisterType<FieldMapRepository>().As<IFieldMapRepository>()
                 .InstancePerLifetimeScope();
+
             builder.RegisterType<ContactUploadFieldMapRepository>().As<IContactUploadFieldMapRepository>()
                 .InstancePerLifetimeScope();
             builder.RegisterType<ContactValueMapRepository>().As<IContactValueMapRepository>()
                 .InstancePerLifetimeScope();
+            builder.RegisterType<ContactUploadGroupRepository>().As<IContactUploadGroupRepository>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<ContactGroupRepository>().As<IContactGroupRepository>()
+                .InstancePerLifetimeScope();
 
             builder.RegisterType<GroupService>().As<IGroupService>()
                 .InstancePerLifetimeScope();
-            builder.RegisterType<ContactExcelService>().As<IContactExcelService>()
+            builder.RegisterType<ContactUploadService>().As<IContactUploadService>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<ContactService>().As<IContactService>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<ContactUnitOfWork>().As<IContactUnitOfWork>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<ContactRepository>().As<IContactRepository>()
                 .InstancePerLifetimeScope();
 
             base.Load(builder);

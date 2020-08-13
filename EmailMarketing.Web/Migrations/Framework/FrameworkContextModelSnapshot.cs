@@ -240,6 +240,9 @@ namespace EmailMarketing.Web.Migrations.Framework
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FileUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -275,6 +278,9 @@ namespace EmailMarketing.Web.Migrations.Framework
 
                     b.Property<int>("SucceedEntryCount")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 

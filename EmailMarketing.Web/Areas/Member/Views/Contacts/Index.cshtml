@@ -10,11 +10,24 @@
     <!-- Content area -->
     <div class="content">
 
-        <div class="pb-3">
-            <h4 class="d-inline">Contacts</h4>
-            <a asp-area="Member" asp-controller="Contacts" asp-action="UploadContacts" class="btn btn-primary float-right">
+        <div class="row">
+            <div class="col-12">
+                <div class="pb-3">
+                    <h4 class="d-inline">Contacts</h4>
+                    <div class="dropdown float-right">
+                        <a href="#" class="list-icons-item bg-primary text-white p-2 rounded" data-toggle="dropdown">
+                            <i class="icon-menu9"></i> <span>Upload/Add Contact</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a asp-area="Member" asp-controller="Contacts" asp-action="UploadContacts" class="dropdown-item text-primary"><i class="icon-file-upload2"></i>Upload Contracts</a>
+                            <a asp-area="Member" asp-controller="Contacts" asp-action="AddSingleContact" class="dropdown-item text-primary"><i class="icon-plus-circle2"></i>Add Single Contract</a>
+                        </div>
+                    </div>
+                    @*<a asp-area="Member" asp-controller="Contacts" asp-action="UploadContacts" class="btn btn-primary float-right">
                 <i class="icon-file-upload2"></i> Upload Contracts
-            </a>
+            </a>*@
+                </div>
+            </div>
         </div>
 
         <!-- Basic datatable -->
@@ -23,182 +36,74 @@
                 <partial name="_ActionMessage" model="@Model.Response" />
             </div>
 
-            <table class="table datatable-basic">
+            <table class="table datatable-basic" id="contact-table">
                 <thead>
                     <tr>
-                    <th>Group</th>
-                    <th>Email</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Contacts)
-                    {
-                        <tr>
-                            @*<td>@item.Group.Name</td>*@
-                            <td>@item.Email</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-
-            @*<table class="table datatable-basic">
-                <thead>
-                    <tr>
-                        <th>E-Mail Address</th>
-                        <th>First Name</th>
-                        <th>Last name</th>
-                        <th>Added Date</th>
+                        <th>Group</th>
+                        <th>Email</th>
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>teama@gmail.com</td>
-                        <td>Dev</td>
-                        <td>Skill</td>
-                        <td>12/02/2020</td>
-                        <td class="text-center">
-                            <div class="list-icons">
-                                <div class="dropdown">
-                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                                        <i class="icon-more"></i>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a asp-area="Member" asp-controller="Contacts" asp-action="EditContact" class="dropdown-item text-primary"><i class="icon-pencil7"></i>Edit</a>
-                                        <a href="#" class="dropdown-item text-danger"><i class="icon-trash"></i> Delete</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>teama@gmail.com</td>
-                        <td>Dev</td>
-                        <td>Skill</td>
-                        <td>12/02/2020</td>
-                        <td class="text-center">
-                            <div class="list-icons">
-                                <div class="dropdown">
-                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                                        <i class="icon-more"></i>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a asp-area="Member" asp-controller="Contacts" asp-action="EditContact" class="dropdown-item text-primary"><i class="icon-pencil7"></i>Edit</a>
-                                        <a href="#" class="dropdown-item text-danger"><i class="icon-trash"></i> Delete</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>teama@gmail.com</td>
-                        <td>Dev</td>
-                        <td>Skill</td>
-                        <td>12/02/2020</td>
-                        <td class="text-center">
-                            <div class="list-icons">
-                                <div class="dropdown">
-                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                                        <i class="icon-more"></i>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a asp-area="Member" asp-controller="Contacts" asp-action="EditContact" class="dropdown-item text-primary"><i class="icon-pencil7"></i>Edit</a>
-                                        <a href="#" class="dropdown-item text-danger"><i class="icon-trash"></i> Delete</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>teama@gmail.com</td>
-                        <td>Dev</td>
-                        <td>Skill</td>
-                        <td>12/02/2020</td>
-                        <td class="text-center">
-                            <div class="list-icons">
-                                <div class="dropdown">
-                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                                        <i class="icon-more"></i>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a asp-area="Member" asp-controller="Contacts" asp-action="EditContact" class="dropdown-item text-primary"><i class="icon-pencil7"></i>Edit</a>
-                                        <a href="#" class="dropdown-item text-danger"><i class="icon-trash"></i> Delete</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>teama@gmail.com</td>
-                        <td>Dev</td>
-                        <td>Skill</td>
-                        <td>12/02/2020</td>
-                        <td class="text-center">
-                            <div class="list-icons">
-                                <div class="dropdown">
-                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                                        <i class="icon-more"></i>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a asp-area="Member" asp-controller="Contacts" asp-action="EditContact" class="dropdown-item text-primary"><i class="icon-pencil7"></i>Edit</a>
-                                        <a href="#" class="dropdown-item text-danger"><i class="icon-trash"></i> Delete</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>teama@gmail.com</td>
-                        <td>Dev</td>
-                        <td>Skill</td>
-                        <td>12/02/2020</td>
-                        <td class="text-center">
-                            <div class="list-icons">
-                                <div class="dropdown">
-                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                                        <i class="icon-more"></i>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a asp-area="Member" asp-controller="Contacts" asp-action="EditContact" class="dropdown-item text-primary"><i class="icon-pencil7"></i>Edit</a>
-                                        <a href="#" class="dropdown-item text-danger"><i class="icon-trash"></i> Delete</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>teama@gmail.com</td>
-                        <td>Dev</td>
-                        <td>Skill</td>
-                        <td>12/02/2020</td>
-                        <td class="text-center">
-                            <div class="list-icons">
-                                <div class="dropdown">
-                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                                        <i class="icon-more"></i>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a asp-area="Member" asp-controller="Contacts" asp-action="EditContact" class="dropdown-item text-primary"><i class="icon-pencil7"></i>Edit</a>
-                                        <a href="#" class="dropdown-item text-danger"><i class="icon-trash"></i> Delete</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-
                 </tbody>
-            </table>*@
+            </table>
         </div>
         <!-- /basic datatable -->
-
     </div>
     <!-- /content area -->
 </div>
 <!-- /main content -->
+
+<!-- Delete modal -->
+<div id="modal-delete" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Delete</h6>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure want to delete?</p>
+                <form id="deleteForm" action="@Url.Action("Delete", "Contacts", new { Area = "Member" })" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="deleteId" value="" name="id" />
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                <button type="button" id="deleteButton" class="btn bg-danger">Yes, Delete!</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete modal -->
+
+@section Scripts {
+    <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+    <partial name="~/Views/Bundle/_DatatableScriptsPartial.cshtml" />
+    <script src="~/js/ajax-call.js"></script>
+    <script src="~/js/project/contact.js"></script>
+
+    <script>
+        $(function () {
+            var url = '@Url.Action("GetContacts", "Contacts", new { Area = "Member" })';
+            var editUrl = '@Url.Action("EditContact", "Contacts", new { Area = "Member" })';
+            var contactDetailsUrl = '@Url.Action("ContactDetails", "Contacts", new { Area = "Member" })';
+            loadDatatable(url, editUrl, contactDetailsUrl);
+
+            //Delete User
+            $('#modal-delete').on('show.bs.modal', function (e) {
+                var id = $(e.relatedTarget).attr('data-id');
+                var modal = $("#modal-delete");
+                modal.find('.modal-body p').text('Are you sure want to delete this record?')
+                $("#deleteId").val(id);
+                modal.modal('show');
+            })
+            $("#deleteButton").click(function () {
+                $("#deleteForm").submit();
+            });
+        });
+    </script>
+}

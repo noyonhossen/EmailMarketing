@@ -11,8 +11,11 @@ function ajaxCall(url, paramData, callback, method, obj) {
             if (callback == 'renderDeleteItem') {
                 renderDeleteItem(response);
             }
-            if (callback == 'renderGetAllFieldMapsForUploadContacts') {
-                renderGetAllFieldMapsForUploadContacts(response);
+            else if (callback == 'renderGetAllFieldMapsForUploadContact') {
+                renderGetAllFieldMapsForUploadContact(response);
+            }    
+            else if (callback == 'renderGetAllGroupsForUploadContact') {
+                renderGetAllGroupsForUploadContact(response);
             }    
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {

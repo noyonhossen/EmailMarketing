@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EmailMarketing.Common.Services;
+using EmailMarketing.ExcelWorkerService.Templates;
 using EmailMarketing.Framework.Services.Contacts;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -14,9 +15,9 @@ namespace EmailMarketing.ExcelWorkerService
     {
         private readonly ILogger<Worker> _logger;
         private readonly IMailerService _mailerService;
-        private readonly IContactExcelService _contactExcelService;
+        private readonly IContactUploadService _contactExcelService;
 
-        public Worker(ILogger<Worker> logger, IContactExcelService contactExcelService, IMailerService mailerService)
+        public Worker(ILogger<Worker> logger, IContactUploadService contactExcelService, IMailerService mailerService)
         {
             _logger = logger;
             _mailerService = mailerService;
@@ -48,11 +49,16 @@ namespace EmailMarketing.ExcelWorkerService
                         {
                             if(importResult.SucceedCount > 0)
                             {
-                                await _mailerService.SendEmailAsync(item.SendEmailAddress, "Demo Subject", "Hi!! Your file has been uploaded successfully.<br/> Succeed Count: " + importResult.SucceedCount + " <br/> Exists Count: " + importResult.ExistCount + "<br/> Invalid Count: " + importResult.InvalidCount);
+                                var fileUploadConfirmationEmailTemplate = new FileUploadConfirmationEmailTemplate("Shamim", importResult.SucceedCount, importResult.ExistCount, importResult.InvalidCount);
+                                var emailBody = fileUploadConfirmationEmailTemplate.TransformText();
+
+                                await _mailerService.SendEmailAsync(item.SendEmailAddress, "File Upload Confirmation", emailBody);
                             }
                             else
                             {
-                                await _mailerService.SendEmailAsync(item.SendEmailAddress, "Demo Subject", "Hi!! Your file upload operation failed. <br/> Succeed Count: " + importResult.SucceedCount + " Exists Count: " + importResult.ExistCount + " Invalid Count: " + importResult.InvalidCount);
+                                var fileUploadFailedEmailTemplate = new FileUploadFailedEmailTemplate("Shamim");
+                                var emailBody = fileUploadFailedEmailTemplate.TransformText();
+                                await _mailerService.SendEmailAsync(item.SendEmailAddress, "Upload Failed", emailBody);
                             }
                         }
 

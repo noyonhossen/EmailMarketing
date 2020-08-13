@@ -1,5 +1,4 @@
 ﻿@model CreateAdminUsersModel
-
 @{
     ViewData["Title"] = "Add";
 }
@@ -13,7 +12,7 @@
         </div>
 
         <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">User List</span></a>
+            <a asp-controller="AdminUsers" asp-action="Index" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Admin List</span></a>
         </div>
     </div>
 </div>
@@ -23,29 +22,29 @@
 
     <div class="card">
         <div class="card-header header-elements-inline">
-            <h5 class="card-title text-primary">Add New Admin</h5>
+            <h5 class="card-title text-primary">Add Admin</h5>
             <div class="header-elements">
                 @*<div class="list-icons">
-                    <a class="list-icons-item" data-action="collapse"></a>
-                    <a class="list-icons-item" data-action="reload"></a>
-                    <a class="list-icons-item" data-action="remove"></a>
-                </div>*@
+                        <a class="list-icons-item" data-action="collapse"></a>
+                        <a class="list-icons-item" data-action="reload"></a>
+                        <a class="list-icons-item" data-action="remove"></a>
+                    </div>*@
             </div>
         </div>
 
         <div class="card-body">
             <partial name="_ActionMessage" model="@Model.Response" />
             <div class="">
-                <form asp-action="Add" asp-controller="AdminUsers" asp-area="Admin">
+                <form asp-action="Add" asp-controller="AdminUsers" asp-area="Admin" method="post">
                     <div class="">
                         <fieldset class="mb-3">
-
 
                             @Html.AntiForgeryToken()
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                             <div class="row">
                                 <div class="col-md-6 border-right p-2">
+
                                     <div class="form-group row">
                                         <label class="col-form-label col-lg-4 required" asp-for="FullName"></label>
                                         <div class="col-lg-8">
@@ -60,19 +59,12 @@
                                             <span asp-validation-for="Email" class="text-danger"></span>
                                         </div>
                                     </div>
-
                                     <div class="form-group row">
-                                        <label class="col-form-label col-lg-4" asp-for="DateOfBirth"></label>
+                                        <label class="col-form-label col-lg-4" asp-for="PhoneNumber"></label>
                                         <div class="col-lg-8">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control pickadate-accessibility" placeholder="Select Date" asp-for="DateOfBirth">
-                                                <span class="input-group-append">
-                                                    <span class="input-group-text"><i class="icon-calendar22"></i></span>
-                                                </span>
-                                            </div>
-                                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                                            <input type="text" class="form-control" asp-for="PhoneNumber">
+                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                         </div>
-
                                     </div>
 
                                 </div>
@@ -83,29 +75,45 @@
                                         <div class="col-lg-8">
 
                                             <select asp-for="Gender" class="form-control">
-                                                <option value="">---Select Gender---</option>
-                                                <option value="Male">Male</option>
-                                                <option value="Female">Female</option>
-                                                <option value="Others">Others</option>
+                                                @if (@Model.Gender != null)
+                                                {
+                                                    @if (@Model.Gender.Equals("Male"))
+                                                    {
+                                                        <option value="Male" selected>Male</option>
+                                                        <option value="Female">Female</option>
+                                                    }
+                                                    else if (@Model.Gender.Equals("Female"))
+                                                    {
+                                                        <option value="Female" selected>Female</option>
+                                                        <option value="Male">Male</option>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <option value="">--- Select Gender ---</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                }
+
                                             </select>
                                             <span asp-validation-for="Gender" class="text-danger"></span>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label class="col-form-label col-lg-4" asp-for="PhoneNumber"></label>
-                                        <div class="col-lg-8">
-                                            <input type="text" class="form-control" asp-for="PhoneNumber">
-                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                                        </div>
-                                    </div>
+
+
+
                                     <div class="form-group row">
                                         <label class="col-form-label col-lg-4" asp-for="Address"></label>
                                         <div class="col-lg-8">
-                                            <input type="text" class="form-control" asp-for="Address">
+                                            <textarea type="text" class="form-control" asp-for="Address"></textarea>
                                             <span asp-validation-for="Address" class="text-danger"></span>
                                         </div>
                                     </div>
+
+
+
                                 </div>
+
                             </div>
 
                         </fieldset>
@@ -126,11 +134,8 @@
 <!-- /Content area -->
 
 
-
 @section Scripts {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
     <partial name="~/Views/Bundle/_FormInputScriptsPartial.cshtml" />
     <partial name="~/Views/Bundle/_DateTimePickerScriptsPartial.cshtml" />
-
-
 }

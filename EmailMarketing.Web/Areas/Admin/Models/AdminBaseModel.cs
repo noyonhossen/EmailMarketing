@@ -56,7 +56,7 @@ namespace EmailMarketing.Web.Areas.Admin.Models
                     {
                         new MenuItem
                         {
-                            Title = "Admin Users",
+                            Title = "Admins",
                             Icon = "icon-user-tie",
                             Children = new List<MenuChildItem>
                             {

@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EmailMarketing.Web.Areas.Member.Models.Smtp;
+using EmailMarketing.Web.Areas.Member.Models.Contacts;
 
 namespace EmailMarketing.Web
 {
@@ -29,12 +30,14 @@ namespace EmailMarketing.Web
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<ExpenseModel>();
             builder.RegisterType<AdminUsersModel>();
             builder.RegisterType<MemberUserModel>();
             builder.RegisterType<GroupModel>();
+            builder.RegisterType<ContactsModel>();
+            builder.RegisterType<FieldMapModel>();
             builder.RegisterType<SMTPModel>();
             builder.RegisterType<ChangeDefaultPasswordViewModel>();
+            builder.RegisterType<ContactUploadModel>();
 
             builder.RegisterType<MemberBaseModel>();
             base.Load(builder);
