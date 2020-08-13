@@ -177,13 +177,63 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
 
             return View(model);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BlockUser(Guid id)
+        {
+            if (ModelState.IsValid)
+            {
+                var model = new AdminUsersModel();
+                try
+                {
+                    var user = await model.BlockUnblockAsync(id);
+                    model.Response = new ResponseModel($"Admin {user.Name} successfully { (user.IsBlocked == true ? "Blocked" : "Unblocked")}.", ResponseType.Success);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    model.Response = new ResponseModel("Block/Unblock Operation failured.", ResponseType.Failure);
+                    _logger.LogError(ex.Message);
+                }
+            }
 
-        public async Task<IActionResult> GetAdminUsers()
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(Guid id)
+        {
+            if (ModelState.IsValid)
+            {
+                var model = new  AdminUsersModel();
+                try
+                {
+                    var title = await model.ResetPasswordAsync(id);
+                    model.Response = new ResponseModel($"Admin {title} Password Reset Successfully.", ResponseType.Success);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    model.Response = new ResponseModel("Password Reset failured.", ResponseType.Failure);
+                    _logger.LogError(ex.Message);
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> GetUsers()
         {
             var tableModel = new DataTablesAjaxRequestModel(Request);
             var model = Startup.AutofacContainer.Resolve<AdminUsersModel>();
             var data = await model.GetAllAsync(tableModel);
             return Json(data);
+        }
+        public async Task<IActionResult> UserInformation(Guid id)
+        {
+            var model = new AdminInformationModel();
+            await model.LoadByIdAsync(id);
+            return View(model);
         }
     }
 }

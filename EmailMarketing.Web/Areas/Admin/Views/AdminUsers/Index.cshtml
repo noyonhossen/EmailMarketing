@@ -1,5 +1,4 @@
 ﻿@model AdminUsersModel
-
 @{
     ViewData["Title"] = "Index";
 }
@@ -8,13 +7,13 @@
 <div class="page-header">
     <div class="page-header-content header-elements-md-inline">
         <div class="page-title d-flex">
-            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Admin" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Admin</span></a></h4>
+            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Admin" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
         </div>
 
         <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-                <a asp-controller="AdminUsers" asp-action="Add" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-plus-circle2 mr-2"></i> <span class="font-weight-semibold">Add New Admin</span></a>
-            </div>
+            <a asp-controller="AdminUsers" asp-action="Add" asp-area="Admin" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-user-plus mr-2"></i> <span class="font-weight-semibold">Add Admin</span></a>
+        </div>
     </div>
 </div>
 <!-- /page header -->
@@ -24,35 +23,39 @@
     <!-- Basic datatable -->
     <div class="card">
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Admin Panel</h5>
+            <h5 class="card-title text-primary">Admins</h5>
             <div class="header-elements">
                 @*<div class="list-icons">
-                    <a class="list-icons-item" data-action="collapse"></a>
-                    <a class="list-icons-item" data-action="reload"></a>
-                    <a class="list-icons-item" data-action="remove"></a>
-                </div>*@
+                        <a class="list-icons-item" data-action="collapse"></a>
+                        <a class="list-icons-item" data-action="reload"></a>
+                        <a class="list-icons-item" data-action="remove"></a>
+                    </div>*@
             </div>
         </div>
 
         <div class="card-body">
             <partial name="_ActionMessage" model="@Model.Response" />
         </div>
-
-        <table class="table" id="adminusers-table">
+        <table class="table" id="user-table">
             <thead>
                 <tr>
-                    <th>FullName</th>
+                    @*<th>UserName</th>*@
+                    <td>Full Name</td>
                     <th>Email</th>
-                    <th>Gender</th>
+                    <th>Email Confirmed</th>
                     <th>Phone Number</th>
+                    <th>Blocked</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody></tbody>
         </table>
+
     </div>
     <!-- /basic datatable -->
 </div>
+
+<!-- Delete modal -->
 <div id="modal-delete" class="modal fade" tabindex="-1">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -76,36 +79,119 @@
         </div>
     </div>
 </div>
+<!-- /default modal -->
+<!-- Block User modal -->
+<div id="modal-blockUser" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title"><span id="blockUserTitle">Block User</span></h6>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure want to <span id="blockUserSure">Block User</span>?</p>
+                <form id="blockUserdForm" action="@Url.Action("BlockUser", "AdminUsers", new { Area = "Admin" })" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="blockId" value="" name="id" />
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                <button type="button" id="blockButton" class="btn bg-danger">Yes, <span id="blockUserButton">Block</span>!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Reset Password modal -->
+<div id="modal-resetUserPassword" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Reset User Password</h6>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure want to Reset User Password?</p>
+                <form id="resetUserdPasswordForm" action="@Url.Action("ResetPassword", "AdminUsers", new { Area = "Admin" })" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="resetId" value="" name="id" />
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                <button type="button" id="resetButton" class="btn bg-danger">Yes, Reset!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 @section Scripts {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
     <partial name="~/Views/Bundle/_DatatableScriptsPartial.cshtml" />
     <script src="~/js/ajax-call.js"></script>
     @*<script src="~/theme/global_assets/js/main/jquery.min.js"></script>
-    <script src="~/theme/global_assets/js/main/bootstrap.bundle.min.js"></script>
-    <script src="~/theme/global_assets/js/plugins/tables/datatables/datatables.min.js"></script>*@
+        <script src="~/theme/global_assets/js/main/bootstrap.bundle.min.js"></script>
+        <script src="~/theme/global_assets/js/plugins/tables/datatables/datatables.min.js"></script>*@
     <script src="~/js/project/adminusers.js"></script>
 
     <script>
         $(function () {
-            var url = '@Url.Action("GetAdminUsers", "AdminUsers", new { Area = "Admin" })';
+            var url = '@Url.Action("GetUsers", "AdminUsers", new { Area = "Admin" })';
             var editUrl = '@Url.Action("Edit", "AdminUsers", new { Area = "Admin" })';
-            loadDatatable(url, editUrl);
+            var userInformationUrl = '@Url.Action("UserInformation", "AdminUsers", new { Area = "Admin" })';
+            loadDatatable(url, editUrl, userInformationUrl);
 
-            $('#adminusers-table').on('click', '.show-bs-modal', function (event) {
-                var id = $(this).data("id");
+            //Delete User
+            $('#modal-delete').on('show.bs.modal', function (e) {
+                var id = $(e.relatedTarget).attr('data-id');
                 var modal = $("#modal-delete");
                 modal.find('.modal-body p').text('Are you sure want to delete this record?')
-                //$("#deleteForm").attr("action", "/admin/category/delete/" + id );
                 $("#deleteId").val(id);
                 modal.modal('show');
-            });
-
+            })
             $("#deleteButton").click(function () {
                 $("#deleteForm").submit();
             });
+
+
+            //Block User
+            $('#modal-blockUser').on('show.bs.modal', function (e) {
+                var id = $(e.relatedTarget).attr('data-id');
+                var title = $(e.relatedTarget).attr('data-title');
+                var modal = $("#modal-blockUser");
+                $("#blockId").val(id);
+                $("#blockUserTitle").text(title == 'Yes' ? 'Unblock User' : 'Block User');
+                $("#blockUserSure").text(title == 'Yes' ? 'Unblock User' : 'Block User');
+                $("#blockUserButton").text(title == 'Yes' ? 'Unblock' : 'Block');
+                console.log(title);
+                modal.modal('show');
+            })
+            $("#blockButton").click(function () {
+                $("#blockUserdForm").submit();
+            });
+
+
+            //Reset User password
+            $('#modal-resetUserPassword').on('show.bs.modal', function (e) {
+                var id = $(e.relatedTarget).attr('data-id');
+                var modal = $("#modal-resetUserPassword");
+                modal.find('.modal-body p').text('Are you sure want to Reset this User Password?')
+                $("#resetId").val(id);
+                modal.modal('show');
+            })
+
+            $("#resetButton").click(function () {
+                $("#resetUserdPasswordForm").submit();
+            });
         });
     </script>
-
-
 }

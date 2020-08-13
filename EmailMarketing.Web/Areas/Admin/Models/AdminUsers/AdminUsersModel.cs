@@ -14,16 +14,19 @@ namespace EmailMarketing.Web.Areas.Admin.Models.AdminUsers
 {
     public class AdminUsersModel : AdminBaseModel
     {
+        private readonly AppSettings _appSettings;
         private readonly IApplicationUserService _applicationUserService;
 
         public AdminUsersModel()
         {
             _applicationUserService = Startup.AutofacContainer.Resolve<IApplicationUserService>();
+            _appSettings = Startup.AutofacContainer.Resolve<IOptions<AppSettings>>().Value;
         }
 
-        public AdminUsersModel(IApplicationUserService applicationUserService)
+        public AdminUsersModel(IApplicationUserService applicationUserService , IOptions<AppSettings> appSettings)
         {
             _applicationUserService = applicationUserService;
+            _appSettings = appSettings.Value;
         }
 
         public async Task<object> GetAllAsync(DataTablesAjaxRequestModel tableModel)
@@ -40,11 +43,12 @@ namespace EmailMarketing.Web.Areas.Admin.Models.AdminUsers
                 data = (from item in result.Items
                         select new string[]
                         {
-                                    item.FullName,
-                                    item.Email,
-                                    item.Gender,
-                                    item.PhoneNumber,
-                                    item.Id.ToString()
+                            item.FullName,
+                            item.Email,
+                            item.EmailConfirmed ? "Yes" : "No",
+                            item.PhoneNumber,
+                            item.IsBlocked ? "Yes" : "No",
+                            item.Id.ToString()
                         }).ToArray()
             };
         }
@@ -53,6 +57,17 @@ namespace EmailMarketing.Web.Areas.Admin.Models.AdminUsers
         {
             var name = await _applicationUserService.DeleteAsync(id);
             return name;
+        }
+        public async Task<string> ResetPasswordAsync(Guid id)
+        {
+            var name = await _applicationUserService.ResetPasswordAsync(id, _appSettings.UserDefaultPassword);
+            return name;
+        }
+
+        public async Task<(string Name, bool IsBlocked)> BlockUnblockAsync(Guid id)
+        {
+            var user = await _applicationUserService.BlockUnblockAsync(id);
+            return user;
         }
     }
 }
