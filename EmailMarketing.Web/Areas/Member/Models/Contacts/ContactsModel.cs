@@ -1,6 +1,7 @@
 ﻿using EmailMarketing.Common.Services;
 using EmailMarketing.Framework.Entities.Contacts;
 using EmailMarketing.Framework.Services.Contacts;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
     {
         public IList<Contact> Contacts { get; set; }
 
-        public ContactsModel(IContactUploadService contactUploadService,
-            ICurrentUserService currentUserService) : base(contactUploadService, currentUserService)
+        public ContactsModel(IContactService contactService,
+            ICurrentUserService currentUserService) : base(contactService, currentUserService)
         {
 
         }
@@ -21,10 +22,34 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         {
 
         }
-
-        public async Task<IList<Contact>> GetAllContactAsync()
+        public async Task<object> GetAllContactAsync(DataTablesAjaxRequestModel tableModel)
         {
-            return new List<Contact>();
+            var result = await _contactService.GetAllContactAsync(
+                _currentUserService.UserId,
+                tableModel.SearchText,
+                tableModel.GetSortText(new string[] { "Email" }),
+                tableModel.PageIndex, tableModel.PageSize);
+
+           
+            return new
+            {
+                recordsTotal = result.Total,
+                recordsFiltered = result.TotalFilter,
+                data = (from item in result.Items
+                        select new string[]
+                        {
+                            string.Join(", ",item.ContactGroups.Select(x=>x.Group.Name)),
+                            item.Email,
+                            item.Id.ToString()
+                        }).ToArray()
+
+            };
+        }
+
+        public async Task<string> DeleteAsync(int id)
+        {
+            var name = await _contactService.DeleteAsync(id);
+            return name.Email;
         }
     }
 }

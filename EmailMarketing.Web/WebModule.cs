@@ -33,6 +33,8 @@ namespace EmailMarketing.Web
             builder.RegisterType<AdminUsersModel>();
             builder.RegisterType<MemberUserModel>();
             builder.RegisterType<GroupModel>();
+            builder.RegisterType<ContactsModel>();
+            builder.RegisterType<FieldMapModel>();
             builder.RegisterType<SMTPModel>();
             builder.RegisterType<ChangeDefaultPasswordViewModel>();
             builder.RegisterType<ContactUploadModel>();
