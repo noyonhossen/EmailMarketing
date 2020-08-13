@@ -43,19 +43,39 @@
                                         for (int i = 0; i < items.Count(); i++)
                                         {
                                             @*<input type="hidden" asp-for="@items[i].Count" />
-                                                <input type="hidden" asp-for="@items[i].IsStandard" />
-                                                <input type="hidden" asp-for="@items[i].IsChecked" />*@
-                                            <div class="form-group row">
-                                                @if (@items[i].Text.Contains("mail") == false)
-                                                {
-                                                    <label asp-for="@items[i].Input" class="col-sm-3 col-form-label">@items[i].Text</label>
-                                                    <div class="col-sm-9">
+                                        <input type="hidden" asp-for="@items[i].IsStandard" />
+                                        <input type="hidden" asp-for="@items[i].IsChecked" />*@
+                                    <div class="form-group row">
+                                        @if (@items[i].Text.Contains("mail") == false)
+                                        {
+                                            <label asp-for="@items[i].Input" class="col-sm-3 col-form-label">@items[i].Text</label>
+                                            <div class="col-sm-9">
 
-                                                        <input type="text" class="form-control" asp-for="@items[i].Input">
+                                                <input type="text" class="form-control" asp-for="@items[i].Input">
 
-                                                    </div>
-                                                }
                                             </div>
+                                        }
+                                        else if (@items[i].Text.Contains("Gender") || @items[i].Text.Contains("gender"))
+                                        {
+                                            <label asp-for="@items[i].Input" class="col-sm-3 col-form-label">@items[i].Text</label>
+                                            <div class="col-sm-9">
+                                                <select asp-for="@items[i].Input" class="form-control">
+
+                                                    <option value="">--- Select Gender ---</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+
+                                                </select>
+                                            </div>
+                                        }
+                                        else if (@items[i].Text.Contains("Date") || @items[i].Text.Contains("DOB") || @items[i].Text.Contains("Birth"))
+                                        {
+                                        <label asp-for="@items[i].Input" class="col-sm-3 col-form-label">@items[i].Text</label>
+                                        <div class="col-sm-9">
+                                            <input type="date" class="form-control" asp-for="@items[i].Input">
+                                        </div>
+                                        }
+                                    </div>
 
                                         }
                                     }
@@ -77,11 +97,24 @@
                                         for (int i = 0; i < item.Count(); i++)
                                         {
                                             <div class="form-group row">
-                                                @if (@item[i].Text.Contains("Date"))
+                                                @if (@item[i].Text.Contains("Date") || @items[i].Text.Contains("DOB") || @items[i].Text.Contains("Birth"))
                                                 {
                                                     <label asp-for="@item[i].Input" class="col-sm-3 col-form-label">@item[i].Text</label>
                                                     <div class="col-sm-9">
                                                         <input type="date" class="form-control" asp-for="@item[i].Input">
+                                                    </div>
+                                                }
+                                                else if (@item[i].Text.Contains("Gender") || @item[i].Text.Contains("gender"))
+                                                {
+                                                    <label asp-for="@item[i].Input" class="col-sm-3 col-form-label">@item[i].Text</label>
+                                                    <div class="col-sm-9">
+                                                        <select asp-for="@item[i].Input" class="form-control">
+
+                                                            <option value="">--- Select Gender ---</option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female">Female</option>
+
+                                                        </select>
                                                     </div>
                                                 }
                                                 else
@@ -98,10 +131,7 @@
                                         }
                                     }
                                 </div>
-
-                                @*<a asp-area="Member" asp-controller="Contacts" asp-action="AddSingleContact" class="btn btn-primary float-right"> <i class="icon-file-check2"></i> Save</a>*@
-
-                                </div>
+                            </div>
                         </form>
 
                     </div>
@@ -119,7 +149,7 @@
 
                         <div class="bg-white">
                             <p class="p-2">
-                                <i class="icon-collaboration"></i>&nbsp;&nbsp; <span>No</span> <span>List</span> Selected
+                                <i class="icon-collaboration"></i>&nbsp;&nbsp; <span id="selected">No</span> <span>List</span> Selected
                             </p>
                         </div>
 
@@ -151,13 +181,13 @@
 
                 </div>
 
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <button class="btn btn-primary" onclick="submitForm()">Save</button>
-                        @*<input id="sub" type="button" value="Save" class="btn btn-primary" onclick="submitForm()" />*@
 
-                    </div>
-                </div>
+
+
+            </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" onclick="submitForm()"><i class="icon-file-check2"></i> Save</button>
+                @*<input id="sub" type="button" value="Save" class="btn btn-primary" onclick="submitForm()" />*@
 
             </div>
 
@@ -173,7 +203,19 @@
     $('#checkAll').click(function () {
         $('input:checkbox').prop('checked', this.checked);
     });
-    //var numberChecked = $('input:checkbox:checked').length;
+
+
+    //Count selected List
+    var selectedElm = document.getElementById('selected');
+    function showChecked() {
+        var count = document.querySelectorAll('input#exampleCheck2:checked').length;
+        if (count > 0) selectedElm.innerHTML = count;
+        else selectedElm.innerHTML = "No";
+    }
+    document.querySelectorAll("input").forEach(i => {
+        i.onclick = () => showChecked();
+    });
+
 
     submitForm = function () {
         document.getElementById("form1").submit();

@@ -19,5 +19,6 @@ namespace EmailMarketing.Framework.Services.Contacts
         Task AddContacValueMaps(IList<ContactValueMap> contactValueMap);
         Task AddContactGroups(IList<ContactGroup> contactGroups);
         Task<int> GetIdByEmail(string email);
+        Task UpdateAsync(Contact contact);
     }
 }

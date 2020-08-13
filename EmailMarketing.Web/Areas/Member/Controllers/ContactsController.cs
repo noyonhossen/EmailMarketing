@@ -76,8 +76,8 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                 }
                 catch (Exception ex)
                 {
-                    //model.Response = new ResponseModel("Contacts Upload added failured.", ResponseType.Failure);
-                    model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
+                    var msg = "Failed to Add Contact";
+                    model.Response = new ResponseModel(msg, ResponseType.Failure);
                     _logger.LogError(ex.Message);
                 }
             }

@@ -25,7 +25,7 @@ namespace EmailMarketing.Framework.Services.Contacts
 
         public async Task<int> GroupContactCountAsync(int id)
         {
-            return _contactUnitOfWork.GroupContactRepository.GetCount();
+            return await _contactUnitOfWork.GroupContactRepository.GetCountAsync();
         }
         
         public async Task AddContact(Contact contact)
@@ -42,6 +42,11 @@ namespace EmailMarketing.Framework.Services.Contacts
         public async Task AddContactGroups(IList<ContactGroup> contactGroups)
         {
             await _contactUnitOfWork.GroupContactRepository.AddRangeAsync(contactGroups);
+            await _contactUnitOfWork.SaveChangesAsync();
+        }
+        public async Task UpdateAsync(Contact contact)
+        {
+            await _contactUnitOfWork.ContactRepository.UpdateAsync(contact);
             await _contactUnitOfWork.SaveChangesAsync();
         }
         public async Task<IList<(int Value, string Text,int Count)>> GetAllGroupsAsync(Guid? userId)
@@ -70,8 +75,9 @@ namespace EmailMarketing.Framework.Services.Contacts
         public async Task<int> GetIdByEmail(string email)
         {
             var contact = await _contactUnitOfWork.ContactRepository.GetFirstOrDefaultAsync(x => x, x => x.Email == email,null,true);
-            return contact.Id;
+            return (contact == null?-1:contact.Id);
         }
+        
         public void Dispose()
         {
             _contactUnitOfWork.Dispose();
