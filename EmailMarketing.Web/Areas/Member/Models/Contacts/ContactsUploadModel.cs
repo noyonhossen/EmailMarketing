@@ -28,7 +28,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         public string SendEmailAddress { get; set; }
         public IList<int> ContactUploadFieldMaps { get; set; }
 
-        public IList<ValueTextModel> GroupSelectList { get; set; }
+        public IList<ContactValueTextModel> GroupSelectList { get; set; }
 
         private readonly IFileStorage _fileStorage;
         private readonly IGroupService _groupService;
@@ -89,10 +89,10 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                                 .OrderByDescending(x => x.IsStandard).ToList();
         }
 
-        public async Task<IList<ValueTextModel>> GetAllGroupForSelectAsync()
+        public async Task<IList<ContactValueTextModel>> GetAllGroupForSelectAsync()
         {
             return (await _groupService.GetAllGroupForSelectAsync(_currentUserService.UserId))
-                                           .Select(x => new ValueTextModel { Value = x.Value, Text = x.Text }).ToList();
+                                           .Select(x => new ContactValueTextModel { Value = x.Value, Text = x.Text }).ToList();
         }
     }
 }

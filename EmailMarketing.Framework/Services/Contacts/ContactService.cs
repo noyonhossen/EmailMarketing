@@ -34,13 +34,22 @@ namespace EmailMarketing.Framework.Services.Contacts
             await _contactUnitOfWork.SaveChangesAsync();
         }
 
-
-        public async Task<IList<(int Value, string Text)>> GetAllGroupsAsync(Guid? userId)
+        public async Task AddContacValueMaps(IList<ContactValueMap> contactValueMaps)
         {
-            return (await _groupUnitOfWork.GroupRepository.GetAsync(x => new { Value = x.Id, Text = x.Name },
+            await _contactUnitOfWork.ContactValueMapRepository.AddRangeAsync(contactValueMaps);
+            await _contactUnitOfWork.SaveChangesAsync();
+        }
+        public async Task AddContactGroups(IList<ContactGroup> contactGroups)
+        {
+            await _contactUnitOfWork.GroupContactRepository.AddRangeAsync(contactGroups);
+            await _contactUnitOfWork.SaveChangesAsync();
+        }
+        public async Task<IList<(int Value, string Text,int Count)>> GetAllGroupsAsync(Guid? userId)
+        {
+            return (await _groupUnitOfWork.GroupRepository.GetAsync(x => new { Value = x.Id, Text = x.Name , Count = x.ContactGroups.Count() },
                                                    x => !x.IsDeleted && x.IsActive &&
                                                    (!userId.HasValue || x.UserId == userId.Value), x => x.OrderBy(o => o.Name), null, true))
-                                                   .Select(x => (Value: x.Value, Text: x.Text)).ToList();
+                                                   .Select(x => (Value: x.Value, Text: x.Text , Count: x.Count)).ToList();
         }
         public async Task<IList<(int Value,string Text)>> GetAllContactValueMaps(Guid? userId)
         {
@@ -58,7 +67,11 @@ namespace EmailMarketing.Framework.Services.Contacts
                                                    .Select(x => (Value: x.Value, Text: x.Text)).ToList();
         }
 
-
+        public async Task<int> GetIdByEmail(string email)
+        {
+            var contact = await _contactUnitOfWork.ContactRepository.GetFirstOrDefaultAsync(x => x, x => x.Email == email,null,true);
+            return contact.Id;
+        }
         public void Dispose()
         {
             _contactUnitOfWork.Dispose();

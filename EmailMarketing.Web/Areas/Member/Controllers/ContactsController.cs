@@ -54,14 +54,23 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddSingleContact(SingleContactModel model)
+        public async Task<IActionResult> AddSingleContact(
+            [Bind(nameof(SingleContactModel.Email),
+            nameof(SingleContactModel.GroupSelectList),
+            nameof(SingleContactModel.ContactValueMaps),
+            nameof(SingleContactModel.ContactValueMapsCustom))] SingleContactModel model)
         {
+            model.GroupSelectList = await model.GetAllGroupForSelectAsync();
+            model.ContactValueMaps = await model.GetAllContactValueMaps();
+            model.ContactValueMapsCustom = await model.GetAllContactValueMapsCustom();
+
             if (ModelState.IsValid)
             {
                 try
                 {
                     await model.SaveContactAsync();
                     var msg = "Congrats! Added Contact Successfully";
+                    _logger.LogInformation("Single Contact Added Successfully");
                     model.Response = new ResponseModel(msg, ResponseType.Success);
                     //return RedirectToAction("Index");
                 }
@@ -72,9 +81,6 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                     _logger.LogError(ex.Message);
                 }
             }
-
-            //model.GroupSelectList = await model.GetAllGroupForSelectAsync();
-
             return View(model);
         }
 
