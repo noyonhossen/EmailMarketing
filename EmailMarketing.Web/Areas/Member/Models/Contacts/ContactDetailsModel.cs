@@ -30,8 +30,8 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                 { 
                     Value = x.Value, 
                     Text = x.FieldMap.DisplayName, 
-                    IsStandard = x.FieldMap.IsStandard 
-                }).GroupBy(x => x.IsStandard).Select(x =>
+                    IsChecked = x.FieldMap.IsStandard 
+                }).GroupBy(x => x.IsChecked).Select(x =>
                 (IsStandard: x.Key, Values: x.ToList())).ToList();
             this.Groups = string.Join(", ", contact.ContactGroups.Select(x => x.Group.Name));
         }

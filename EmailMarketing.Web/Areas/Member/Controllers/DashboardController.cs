@@ -18,9 +18,9 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
     {
         private readonly ILogger<DashboardController> _logger;
         private readonly IWebHostEnvironment _env;
-        private readonly IContactExcelService _contactExcelService;
+        private readonly IContactUploadService _contactExcelService;
 
-        public DashboardController(ILogger<DashboardController> logger, IWebHostEnvironment env, IContactExcelService contactExcelService)
+        public DashboardController(ILogger<DashboardController> logger, IWebHostEnvironment env, IContactUploadService contactExcelService)
         {
             _logger = logger;
             _env = env;

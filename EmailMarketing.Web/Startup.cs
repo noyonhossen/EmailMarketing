@@ -22,6 +22,7 @@ using EmailMarketing.Web.Core;
 using EmailMarketing.Web.Areas.Admin.Models;
 using EmailMarketing.Web.Services;
 using EmailMarketing.Common.Services;
+using EmailMarketing.Membership.Extensions;
 
 namespace EmailMarketing.Web
 {
@@ -72,7 +73,8 @@ namespace EmailMarketing.Web
                 .AddDefaultTokenProviders()
                 .AddUserManager<ApplicationUserManager>()
                 .AddRoleManager<ApplicationRoleManager>()
-                .AddSignInManager<ApplicationSignInManager>();
+                .AddSignInManager<ApplicationSignInManager>()
+                .AddClaimsPrincipalFactory<ApplicationClaimsPrincipalFactory>();
 
             services.Configure<IdentityOptions>(options =>
             {

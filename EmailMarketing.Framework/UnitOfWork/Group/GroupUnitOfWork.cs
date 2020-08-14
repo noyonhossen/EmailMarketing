@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.Framework.UnitOfWork
+namespace EmailMarketing.Framework.UnitOfWork.Group
 {
     public class GroupUnitOfWork : EmailMarketing.Data.UnitOfWork, IGroupUnitOfWork
     {

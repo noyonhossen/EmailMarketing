@@ -8,9 +8,9 @@ namespace EmailMarketing.Framework.Entities.Contacts
 {
     public class ContactUpload : IAuditableEntity<int>
     {
+        public Guid UserId { get; set; }
         public string FileUrl { get; set; }
-        //public int GroupId { get; set; }
-        //public Group Group { get; set; }
+        public string FileName { get; set; }
         public bool IsSucceed { get; set; }
         public bool IsUpdateExisting { get; set; }
         public bool HasColumnHeader { get; set; }
@@ -24,7 +24,6 @@ namespace EmailMarketing.Framework.Entities.Contacts
 
         public ContactUpload()
         {
-            IsProcessing = true;
             this.ContactUploadFieldMaps = new List<ContactUploadFieldMap>();
             this.ContactUploadGroups = new List<ContactUploadGroup>();
         }

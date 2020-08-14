@@ -15,13 +15,13 @@ namespace EmailMarketing.ExcelWorkerService
     {
         private readonly ILogger<Worker> _logger;
         private readonly IMailerService _mailerService;
-        private readonly IContactExcelService _contactExcelService;
+        private readonly IContactUploadService _contactUploadService;
 
-        public Worker(ILogger<Worker> logger, IContactExcelService contactExcelService, IMailerService mailerService)
+        public Worker(ILogger<Worker> logger, IContactUploadService contactUploadService, IMailerService mailerService)
         {
             _logger = logger;
             _mailerService = mailerService;
-            _contactExcelService = contactExcelService;
+            _contactUploadService = contactUploadService;
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
@@ -38,12 +38,12 @@ namespace EmailMarketing.ExcelWorkerService
 
                 try
                 {
-                    var result = await _contactExcelService.GetUploadedContact();
+                    var result = await _contactUploadService.GetUploadedContact();
 
                     foreach (var item in result)
                     {
                         _logger.LogInformation($"item values - file url is = {item.FileUrl}");
-                        var importResult = await _contactExcelService.ContactExcelImportAsync(item.Id);
+                        var importResult = await _contactUploadService.ContactExcelImportAsync(item.Id);
 
                         if(item.IsSendEmailNotify)
                         {

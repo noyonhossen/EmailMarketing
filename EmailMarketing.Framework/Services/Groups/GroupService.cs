@@ -1,6 +1,6 @@
 ﻿using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Framework.Entities;
-using EmailMarketing.Framework.UnitOfWork;
+using EmailMarketing.Framework.UnitOfWork.Group;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using EmailMarketing.Common.Extensions;
 using System.Linq;
 using EmailMarketing.Common.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmailMarketing.Framework.Services.Groups
 {
@@ -76,12 +77,13 @@ namespace EmailMarketing.Framework.Services.Groups
             return group;
         }
 
-        public async Task<IList<(int Value, string Text)>> GetAllGroupForSelectAsync(Guid? userId)
+        public async Task<IList<(int Value, string Text, int ContactCount)>> GetAllGroupForSelectAsync(Guid? userId)
         {
-            return (await _groupUnitOfWork.GroupRepository.GetAsync(x => new { Value = x.Id, Text = x.Name },
+            return (await _groupUnitOfWork.GroupRepository.GetAsync(x => new { Value = x.Id, Text = x.Name, ContactCount = x.ContactGroups.Count },
                                                     x => !x.IsDeleted && x.IsActive &&
-                                                    (!userId.HasValue || x.UserId == userId.Value), x => x.OrderBy(o => o.Name), null, true))
-                                                    .Select(x => (Value: x.Value, Text: x.Text)).ToList();
+                                                    (!userId.HasValue || x.UserId == userId.Value), x => x.OrderBy(o => o.Name), 
+                                                    x => x.Include(i => i.ContactGroups), true))
+                                                    .Select(x => (Value: x.Value, Text: x.Text, ContactCount: x.ContactCount)).ToList();
         }
 
         public void Dispose()

@@ -27,7 +27,13 @@ namespace EmailMarketing.ExcelWorkerService.Services
             {
                 var messgae = new MimeMessage();
                 messgae.From.Add(new MailboxAddress(_workerSmtpSettings.SenderName, _workerSmtpSettings.SenderEmail));
-                messgae.To.Add(MailboxAddress.Parse(email));
+                InternetAddressList toList = new InternetAddressList();
+                foreach (var item in email.Split(',').ToList())
+                {
+                    toList.Add(MailboxAddress.Parse(item.Trim()));
+                }
+                //messgae.To.Add(MailboxAddress.Parse(email));
+                messgae.To.AddRange(toList);
                 messgae.Subject = subject;
                 messgae.Body = new TextPart("html")
                 {

@@ -54,7 +54,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                     model.Response = new ResponseModel("Group creation failured.", ResponseType.Failure);
                 }
             }
-            return View(model);
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Edit(int id)
