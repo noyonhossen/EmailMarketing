@@ -1,12 +1,12 @@
 ﻿using Autofac;
+using EmailMarketing.Common.Services;
 using EmailMarketing.Framework.Extensions;
 using EmailMarketing.Framework.Menus;
+using EmailMarketing.Membership.Services;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmailMarketing.Web.Areas.Admin.Models
 {
@@ -35,15 +35,26 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         }
 
         protected IHttpContextAccessor _httpContextAccessor;
+        protected ICurrentUserService _currentUserService;
+        protected IApplicationUserService _applicationuserService;
         public AdminBaseModel(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
             SetupMenu();
         }
 
+        public AdminBaseModel(ICurrentUserService currentUserService, IApplicationUserService applicationuserService)
+        {
+            _applicationuserService = applicationuserService;
+            _currentUserService = currentUserService;
+            SetupMenu();
+        }
+
         public AdminBaseModel()
         {
             _httpContextAccessor = Startup.AutofacContainer.Resolve<IHttpContextAccessor>();
+            _applicationuserService = Startup.AutofacContainer.Resolve<IApplicationUserService>();
+            _currentUserService = Startup.AutofacContainer.Resolve<ICurrentUserService>();
             SetupMenu();
         }
 
