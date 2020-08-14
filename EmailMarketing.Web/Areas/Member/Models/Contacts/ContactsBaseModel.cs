@@ -15,8 +15,10 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         protected readonly IContactService _contactService;
         protected readonly IFieldMapService _fieldMapService;
         protected readonly ICurrentUserService _currentUserService;
-
-        public ContactsBaseModel(IContactService contactService,
+        
+             
+        public ContactsBaseModel(IContactExcelService contactExcel,
+            IContactService contactService,
             ICurrentUserService currentUserService)
         {
             _contactService = contactService;
@@ -32,6 +34,12 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
             ICurrentUserService currentUserService)
         {
             _contactUploadService = contactUpload;
+            _currentUserService = currentUserService;
+        }
+        public ContactsBaseModel(IContactService contactService,
+           ICurrentUserService currentUserService)
+        {
+            _contactService = contactService;
             _currentUserService = currentUserService;
         }
 

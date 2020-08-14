@@ -13,7 +13,7 @@ namespace EmailMarketing.Framework.Entities.Contacts
         public Guid UserId { get; set; }
         //public int GroupId { get; set; }
         //public Group Group { get; set; }
-        public int ContactUploadId { get; set; }
+        public int? ContactUploadId { get; set; }
         public ContactUpload ContactUpload { get; set; }
 
         public IList<ContactValueMap> ContactValueMaps { get; set; }

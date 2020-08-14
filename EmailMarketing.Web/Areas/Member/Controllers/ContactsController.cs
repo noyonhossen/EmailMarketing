@@ -88,9 +88,41 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             return Json(data);
         }
 
-        public IActionResult AddSingleContact()
+        [HttpGet]
+        public async Task<IActionResult> AddSingleContact()
         {
-            var model = new ContactsModel();
+            var model = new SingleContactModel();
+            model.GroupSelectList = await model.GetAllGroupForSelectAsync();
+            model.ContactValueMaps = await model.GetAllContactValueMaps();
+            model.ContactValueMapsCustom = await model.GetAllContactValueMapsCustom();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddSingleContact(SingleContactModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await model.SaveContactAsync();
+                    var msg = "Congrats! Added Contact Successfully";
+                    _logger.LogInformation("Single Contact Added Successfully");
+                    model.Response = new ResponseModel(msg, ResponseType.Success);
+                    //return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    var msg = "Failed to Add Contact";
+                    model.Response = new ResponseModel(msg, ResponseType.Failure);
+                    _logger.LogError(ex.Message);
+                }
+            }
+
+            model.GroupSelectList = await model.GetAllGroupForSelectAsync();
+            model.ContactValueMaps = await model.GetAllContactValueMaps();
+            model.ContactValueMapsCustom = await model.GetAllContactValueMapsCustom();
+
             return View(model);
         }
 
