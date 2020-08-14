@@ -54,16 +54,8 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddSingleContact(
-            [Bind(nameof(SingleContactModel.Email),
-            nameof(SingleContactModel.GroupSelectList),
-            nameof(SingleContactModel.ContactValueMaps),
-            nameof(SingleContactModel.ContactValueMapsCustom))] SingleContactModel model)
+        public async Task<IActionResult> AddSingleContact(SingleContactModel model)
         {
-            model.GroupSelectList = await model.GetAllGroupForSelectAsync();
-            model.ContactValueMaps = await model.GetAllContactValueMaps();
-            model.ContactValueMapsCustom = await model.GetAllContactValueMapsCustom();
-
             if (ModelState.IsValid)
             {
                 try
@@ -81,6 +73,11 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                     _logger.LogError(ex.Message);
                 }
             }
+
+            model.GroupSelectList = await model.GetAllGroupForSelectAsync();
+            model.ContactValueMaps = await model.GetAllContactValueMaps();
+            model.ContactValueMapsCustom = await model.GetAllContactValueMapsCustom();
+
             return View(model);
         }
 

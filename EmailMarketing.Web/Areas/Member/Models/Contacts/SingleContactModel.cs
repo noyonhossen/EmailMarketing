@@ -18,6 +18,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
+        //[Required]
         public IList<ContactValueTextModel> GroupSelectList { get; set; }
         public IList<ContactValueTextModel> ContactValueMaps { get; set; }
         public IList<ContactValueTextModel> ContactValueMapsCustom { get; set; }
@@ -26,25 +27,22 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
            ICurrentUserService currentUserService) : base(contactService, currentUserService)
         {
             _contactService = contactService;
-            //_currentUserService = currentUserService; 
-             
+            
         }
         public SingleContactModel() : base()
         {
             _contactService = Startup.AutofacContainer.Resolve<IContactService>();
-            //ContactValueMaps = new List<ContactValueTextModel>();
-            //ContactValueMapsCustom = new List<ContactValueTextModel>();
         }
 
         public async Task<IList<ContactValueTextModel>> GetAllGroupForSelectAsync()
         {
             return (await _contactService.GetAllGroupsAsync(_currentUserService.UserId))
-                                           .Select(x => new ContactValueTextModel { Value = x.Value , Text = x.Text, Count = x.Count}).ToList();
+                                           .Select(x => new ContactValueTextModel { Value = x.Value , Text = x.Text, Count = x.Count, IsChecked = false}).ToList();
         }
         public async Task<IList<ContactValueTextModel>> GetAllContactValueMaps()
         {
             return (await _contactService.GetAllContactValueMaps(_currentUserService.UserId))
-                                           .Select(x => new ContactValueTextModel { Value = x.Value, Text = x.Text }).ToList();
+                                           .Select(x => new ContactValueTextModel { Value = x.Value, Text = x.Text}).ToList();
         }
 
         public async Task<IList<ContactValueTextModel>> GetAllContactValueMapsCustom()
@@ -52,6 +50,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
             return (await _contactService.GetAllContactValueMapsCustom(_currentUserService.UserId))
                                            .Select(x => new ContactValueTextModel { Value = x.Value, Text = x.Text }).ToList();
         }
+
 
         public async Task SaveContactAsync()
         {
@@ -63,7 +62,11 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
             newContact.UserId = _currentUserService.UserId;
             var newcontactId = await _contactService.GetIdByEmail(Email);
 
-            if (newcontactId == -1) await _contactService.UpdateAsync(newContact);
+            if (newcontactId != -1)
+            {
+                newContact.Id = newcontactId;
+                await _contactService.UpdateAsync(newContact);
+            }
             else
             {
                 await _contactService.AddContact(newContact);
@@ -90,8 +93,6 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                     contactValueMapCustoms.Add(contactValueMap);
                 }
                 await _contactService.AddContacValueMaps(contactValueMapCustoms);
-
-                //TODO Update Exsiting Model -- 
 
                 var contactGroups = new List<ContactGroup>();
                 foreach (var item in GroupSelectList)
