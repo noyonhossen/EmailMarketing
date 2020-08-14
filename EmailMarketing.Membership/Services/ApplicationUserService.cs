@@ -563,7 +563,7 @@ namespace EmailMarketing.Membership.Services
                     var oldPassword = user.PasswordHash;
                     var result = await _userManager.ChangePasswordAsync(user, CurrentPassword, NewPassword);
 
-                    if (result.Succeeded)
+                    if (!result.Succeeded)
                     {
                         throw new IdentityValidationException(result.Errors);
                     }
