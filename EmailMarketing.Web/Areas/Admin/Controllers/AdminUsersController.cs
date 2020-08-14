@@ -135,48 +135,14 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
 
             return RedirectToAction("index");
         }
-
-        [HttpGet]
-        public async Task<IActionResult> ShowProfile(AdminUsersShowProfileModel model)
+        public async Task<IActionResult> GetUsers()
         {
-            await model.ShowProfileAsync();
-            return View(model);
+            var tableModel = new DataTablesAjaxRequestModel(Request);
+            var model = Startup.AutofacContainer.Resolve<AdminUsersModel>();
+            var data = await model.GetAllAsync(tableModel);
+            return Json(data);
         }
 
-        [HttpGet]
-        public IActionResult UpdateInformation()
-        {
-            var model = new AdminUsersProfileUpdateModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateInformation(
-            [Bind(nameof(AdminUsersProfileUpdateModel.FullName),
-            nameof(AdminUsersProfileUpdateModel.Email),
-            nameof(AdminUsersProfileUpdateModel.DateOfBirth),
-            nameof(AdminUsersProfileUpdateModel.PhoneNumber),
-            nameof(AdminUsersProfileUpdateModel.Gender),
-            nameof(AdminUsersProfileUpdateModel.Address))] AdminUsersProfileUpdateModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    await model.UpdateProfileAsync();
-                    model.Response = new ResponseModel($"Admin successfully updated.", ResponseType.Success);
-                    return RedirectToAction("ShowProfile");
-                }
-                catch (Exception ex)
-                {
-                    model.Response = new ResponseModel("Admin update failured.", ResponseType.Failure);
-                    _logger.LogError(ex.Message);
-                }
-            }
-
-            return View(model);
-        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> BlockUser(Guid id)
@@ -220,15 +186,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             }
 
             return RedirectToAction("Index");
-        }
-
-        public async Task<IActionResult> GetUsers()
-        {
-            var tableModel = new DataTablesAjaxRequestModel(Request);
-            var model = Startup.AutofacContainer.Resolve<AdminUsersModel>();
-            var data = await model.GetAllAsync(tableModel);
-            return Json(data);
-        }
+        }      
         public async Task<IActionResult> UserInformation(Guid id)
         {
             var model = new AdminInformationModel();
