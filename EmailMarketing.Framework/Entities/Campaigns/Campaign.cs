@@ -13,8 +13,12 @@ namespace EmailMarketing.Framework.Entities.Campaigns
         public string Name { get; set; }
         public string Description { get; set; }
         public string EmailSubject { get; set; }
-        public string EmailBody { get; set; }
+        //public string EmailBody { get; set; }
+        public int EmailTemplateId { get; set; }
+        public EmailTemplate EmailTemplate { get; set; }
         public DateTime SendDateTime { get; set; }
+        public bool IsSendEmailNotify { get; set; }
+        public string SendEmailAddress { get; set; }
         public bool IsDraft { get; set; }
         public bool IsProcessing { get; set; }
         public bool IsSucceed { get; set; }

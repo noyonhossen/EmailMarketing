@@ -57,5 +57,7 @@ namespace EmailMarketing.Framework.Context
         public DbSet<ContactUpload> ContactUploads { get; set; }
         public DbSet<FieldMap> FieldMaps { get; set; }
         public DbSet<ContactUploadFieldMap> ContactUploadFieldMaps { get; set; }
+        public DbSet<EmailTemplate> EmailTemplates { get; set; }
+        public DbSet<DownloadQueue> DownloadQueues { get; set; }
     }
 }
