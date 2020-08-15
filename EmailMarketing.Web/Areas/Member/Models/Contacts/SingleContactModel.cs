@@ -26,12 +26,12 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         public SingleContactModel(IContactService contactService,
            ICurrentUserService currentUserService) : base(contactService, currentUserService)
         {
-            _contactService = contactService;
+            //_contactService = contactService;
             
         }
         public SingleContactModel() : base()
         {
-            _contactService = Startup.AutofacContainer.Resolve<IContactService>();
+            //_contactService = Startup.AutofacContainer.Resolve<IContactService>();
         }
 
         public async Task<IList<ContactValueTextModel>> GetAllGroupForSelectAsync()

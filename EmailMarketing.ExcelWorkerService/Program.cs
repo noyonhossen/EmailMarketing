@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using EmailMarketing.Common.Constants;
 using EmailMarketing.Common.Services;
 using EmailMarketing.ExcelWorkerService.Entities;
 using EmailMarketing.ExcelWorkerService.Services;
@@ -34,7 +35,7 @@ namespace EmailMarketing.ExcelWorkerService
                         .MinimumLevel.Debug()
                         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                         .Enrich.FromLogContext()
-                        .WriteTo.File("C://EmailMarketingTeamA//WorkerLogs//log.txt", rollingInterval: RollingInterval.Day)
+                        .WriteTo.File(ConstantsValue.WorkerExcelLogFileSaveUrl, rollingInterval: RollingInterval.Day)
                         .CreateLogger();
 
             try

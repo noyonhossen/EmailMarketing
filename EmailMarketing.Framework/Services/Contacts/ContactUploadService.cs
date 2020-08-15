@@ -4,7 +4,7 @@ using EmailMarketing.Common.Extensions;
 using EmailMarketing.Common.Services;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.Contacts;
-using EmailMarketing.Framework.UnitOfWork.Contacts;
+using EmailMarketing.Framework.UnitOfWorks.Contacts;
 using ExcelDataReader;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;

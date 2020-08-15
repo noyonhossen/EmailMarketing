@@ -1,6 +1,6 @@
 ﻿using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Framework.Entities;
-using EmailMarketing.Framework.UnitOfWork.Smtp;
+using EmailMarketing.Framework.UnitOfWorks.SMTP;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using EmailMarketing.Common.Extensions;
+using EmailMarketing.Framework.Entities.SMTP;
 
-namespace EmailMarketing.Framework.Services.Smtp
+namespace EmailMarketing.Framework.Services.SMTP
 {
-    public class SMTPService : ISmtpService
+    public class SMTPService : ISMTPService
     {
         private ISMTPUnitOfWork _smtpUnitOfWork;
 
@@ -21,10 +22,10 @@ namespace EmailMarketing.Framework.Services.Smtp
             _smtpUnitOfWork = smtpUnitOfWork;
         }
 
-        public async Task<(IList<Entities.SMTPConfig> Items, int Total, int TotalFilter)> GetAllAsync(
+        public async Task<(IList<SMTPConfig> Items, int Total, int TotalFilter)> GetAllAsync(
             string searchText, string orderBy, int pageIndex, int pageSize)
         {
-            var columnsMap = new Dictionary<string, Expression<Func<Entities.SMTPConfig, object>>>()
+            var columnsMap = new Dictionary<string, Expression<Func<SMTPConfig, object>>>()
             {
                 ["server"] = v => v.Server,
                 ["port"] = v => v.Port,
@@ -35,7 +36,7 @@ namespace EmailMarketing.Framework.Services.Smtp
                 ["enableSSL"] = v => v.EnableSSL
             };
 
-            var result = await _smtpUnitOfWork.SMTPRepository.GetAsync<Entities.SMTPConfig>(
+            var result = await _smtpUnitOfWork.SMTPRepository.GetAsync<SMTPConfig>(
                 x => x, x => x.Server.Contains(searchText),
                 x => x.ApplyOrdering(columnsMap, orderBy), null,
                 pageIndex, pageSize, true);
@@ -43,12 +44,12 @@ namespace EmailMarketing.Framework.Services.Smtp
             return (result.Items, result.Total, result.TotalFilter);
         }
 
-        public async Task<Entities.SMTPConfig> GetByIdAsync(Guid id)
+        public async Task<SMTPConfig> GetByIdAsync(Guid id)
         {
             return await _smtpUnitOfWork.SMTPRepository.GetByIdAsync(id);
         }
 
-        public async Task AddAsync(Entities.SMTPConfig entity)
+        public async Task AddAsync(SMTPConfig entity)
         {
             var isExists = await _smtpUnitOfWork.SMTPRepository.IsExistsAsync(x => x.Server == entity.Server && x.Id != entity.Id);
             if (isExists)
@@ -58,7 +59,7 @@ namespace EmailMarketing.Framework.Services.Smtp
             await _smtpUnitOfWork.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Entities.SMTPConfig entity)
+        public async Task UpdateAsync(SMTPConfig entity)
         {
             var isExists = await _smtpUnitOfWork.SMTPRepository.IsExistsAsync(x => x.Server == entity.Server && x.Id != entity.Id);
             if (isExists)

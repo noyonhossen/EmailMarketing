@@ -1,6 +1,7 @@
 ﻿using EmailMarketing.Common.Services;
 using EmailMarketing.Framework.Entities;
-using EmailMarketing.Framework.Services.Smtp;
+using EmailMarketing.Framework.Entities.SMTP;
+using EmailMarketing.Framework.Services.SMTP;
 using EmailMarketing.Membership.Services;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
         public bool EnableSSL { get; set; }
         public Guid UserId { get; set; }
 
-        public CreateSMTPModel(ISmtpService smtpService, IApplicationUserService applicationUserService,
+        public CreateSMTPModel(ISMTPService smtpService, IApplicationUserService applicationUserService,
             ICurrentUserService currentUserService): base(smtpService, applicationUserService, currentUserService)
         {
             

@@ -1,5 +1,8 @@
 ﻿using EmailMarketing.Framework.Entities;
+using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.Entities.Contacts;
+using EmailMarketing.Framework.Entities.Groups;
+using EmailMarketing.Framework.Entities.SMTP;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -42,12 +45,11 @@ namespace EmailMarketing.Framework.Context
             });
         }
 
-        //public DbSet<Entities.Expense> Expenses { get; set; }
-        public DbSet<Entities.SMTPConfig> SMTPConfigs { get; set; }
-        public DbSet<Entities.Campaign> Campaigns { get; set; }
-        public DbSet<Entities.CampaignGroup> CampaignGroups { get; set; }
-        public DbSet<Entities.CampaignReport> CampaignReports { get; set; }
-        public DbSet<Entities.Group> Groups { get; set; }
+        public DbSet<SMTPConfig> SMTPConfigs { get; set; }
+        public DbSet<Campaign> Campaigns { get; set; }
+        public DbSet<CampaignGroup> CampaignGroups { get; set; }
+        public DbSet<CampaignReport> CampaignReports { get; set; }
+        public DbSet<Group> Groups { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<ContactGroup> ContactGroups { get; set; }
         public DbSet<ContactUploadGroup> ContactUploadGroups { get; set; }

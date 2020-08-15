@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using EmailMarketing.Common.Services;
 using EmailMarketing.Framework.Entities;
+using EmailMarketing.Framework.Entities.Groups;
 using EmailMarketing.Framework.Services.Groups;
 using EmailMarketing.Membership.Services;
 using EmailMarketing.Web.Areas.Member.Models.Groups;

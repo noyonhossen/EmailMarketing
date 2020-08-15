@@ -2,9 +2,9 @@
 ﻿using Autofac.Extras.Moq;
 using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Framework.Entities;
-using EmailMarketing.Framework.Repositories.Group;
+using EmailMarketing.Framework.Repositories.Groups;
 using EmailMarketing.Framework.Services.Groups;
-using EmailMarketing.Framework.UnitOfWork.Group;
+using EmailMarketing.Framework.UnitOfWorks.Groups;
 using Moq;
 using NUnit.Framework;
 using Shouldly;
@@ -15,7 +15,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using EmailMarketing.Common.Extensions;
-
+using EmailMarketing.Framework.Entities.Groups;
 
 namespace EmailMarketing.Framework.Tests
 {

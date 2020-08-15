@@ -17,7 +17,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         protected readonly ICurrentUserService _currentUserService;
         
              
-        public ContactsBaseModel(IContactExcelService contactExcel,
+        public ContactsBaseModel(IContactUploadService contactExcel,
             IContactService contactService,
             ICurrentUserService currentUserService)
         {

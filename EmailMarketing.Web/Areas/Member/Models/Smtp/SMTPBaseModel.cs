@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using EmailMarketing.Common.Services;
-using EmailMarketing.Framework.Services.Smtp;
+using EmailMarketing.Framework.Services.SMTP;
 using EmailMarketing.Membership.Services;
 using EmailMarketing.Web.Areas.Admin.Models;
 using System;
@@ -12,11 +12,11 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
 {
     public class SMTPBaseModel:MemberBaseModel, IDisposable
     {
-        protected readonly ISmtpService _smtpService;
+        protected readonly ISMTPService _smtpService;
         protected readonly IApplicationUserService _applicationUserService;
         protected readonly ICurrentUserService _currentUserService;
 
-        public SMTPBaseModel(ISmtpService smtpService, IApplicationUserService applicationUserService,
+        public SMTPBaseModel(ISMTPService smtpService, IApplicationUserService applicationUserService,
             ICurrentUserService currentUserService)
         {
             _smtpService = smtpService;
@@ -26,7 +26,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
 
         public SMTPBaseModel()
         {
-            _smtpService = Startup.AutofacContainer.Resolve<ISmtpService>();
+            _smtpService = Startup.AutofacContainer.Resolve<ISMTPService>();
             _applicationUserService = Startup.AutofacContainer.Resolve<IApplicationUserService>();
             _currentUserService = Startup.AutofacContainer.Resolve<ICurrentUserService>();
         }

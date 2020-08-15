@@ -1,7 +1,7 @@
 ﻿using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Common.Extensions;
 using EmailMarketing.Framework.Entities.Contacts;
-using EmailMarketing.Framework.UnitOfWork.Contacts;
+using EmailMarketing.Framework.UnitOfWorks.Contacts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

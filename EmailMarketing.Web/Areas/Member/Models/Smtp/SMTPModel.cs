@@ -1,5 +1,5 @@
 ﻿using EmailMarketing.Common.Services;
-using EmailMarketing.Framework.Services.Smtp;
+using EmailMarketing.Framework.Services.SMTP;
 using EmailMarketing.Membership.Services;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
 {
     public class SMTPModel:SMTPBaseModel
     {
-        public SMTPModel(ISmtpService smtpService, IApplicationUserService applicationUserService,
+        public SMTPModel(ISMTPService smtpService, IApplicationUserService applicationUserService,
             ICurrentUserService currentUserService):base(smtpService, applicationUserService, currentUserService)
         {
         }

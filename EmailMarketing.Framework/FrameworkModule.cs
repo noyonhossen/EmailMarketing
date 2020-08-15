@@ -2,21 +2,22 @@
 using EmailMarketing.Framework.Context;
 using EmailMarketing.Framework.Repositories;
 using EmailMarketing.Framework.Repositories.Contacts;
-using EmailMarketing.Framework.Repositories.Group;
-using EmailMarketing.Framework.Repositories.Smtp;
+using EmailMarketing.Framework.Repositories.Groups;
+using EmailMarketing.Framework.Repositories.SMTP;
 using EmailMarketing.Framework.Services;
 using EmailMarketing.Framework.Services.Contacts;
 using EmailMarketing.Framework.Services.Groups;
-using EmailMarketing.Framework.Services.Smtp;
-using EmailMarketing.Framework.UnitOfWork;
-using EmailMarketing.Framework.UnitOfWork.Smtp;
-using EmailMarketing.Framework.UnitOfWork.Contacts;
+using EmailMarketing.Framework.Services.SMTP;
+using EmailMarketing.Framework.UnitOfWorks;
+using EmailMarketing.Framework.UnitOfWorks.SMTP;
+using EmailMarketing.Framework.UnitOfWorks.Contacts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EmailMarketing.Framework.UnitOfWork.Group;
+using EmailMarketing.Framework.UnitOfWorks.Groups;
+using EmailMarketing.Framework.UnitOfWorks.Campaigns;
 
 namespace EmailMarketing.Framework
 {
@@ -44,7 +45,7 @@ namespace EmailMarketing.Framework
                    .InstancePerLifetimeScope();
             builder.RegisterType<SMTPUnitOfWork>().As<ISMTPUnitOfWork>()
                    .InstancePerLifetimeScope();
-            builder.RegisterType<SMTPService>().As<ISmtpService>()
+            builder.RegisterType<SMTPService>().As<ISMTPService>()
                    .InstancePerLifetimeScope();
                    
             builder.RegisterType<ContactUploadUnitOfWork>().As<IContactUploadUnitOfWork>()

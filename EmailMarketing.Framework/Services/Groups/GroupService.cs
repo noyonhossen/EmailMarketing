@@ -1,6 +1,6 @@
 ﻿using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Framework.Entities;
-using EmailMarketing.Framework.UnitOfWork.Group;
+using EmailMarketing.Framework.UnitOfWorks.Groups;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -10,6 +10,7 @@ using EmailMarketing.Common.Extensions;
 using System.Linq;
 using EmailMarketing.Common.Services;
 using Microsoft.EntityFrameworkCore;
+using EmailMarketing.Framework.Entities.Groups;
 
 namespace EmailMarketing.Framework.Services.Groups
 {
@@ -25,15 +26,15 @@ namespace EmailMarketing.Framework.Services.Groups
             _currentUserService = currentUserService;
 
         }
-        public async Task<(IList<Entities.Group> Items, int Total, int TotalFilter)> GetAllAsync(
+        public async Task<(IList<Group> Items, int Total, int TotalFilter)> GetAllAsync(
             string searchText, string orderBy, int pageIndex, int pageSize)
         {
-            var columnsMap = new Dictionary<string, Expression<Func<Entities.Group, object>>>()
+            var columnsMap = new Dictionary<string, Expression<Func<Group, object>>>()
             {
                 ["name"] = v => v.Name
             };
             
-            var result = await _groupUnitOfWork.GroupRepository.GetAsync<Entities.Group>(
+            var result = await _groupUnitOfWork.GroupRepository.GetAsync<Group>(
                 x => x, x => x.Name.Contains(searchText),
                 x => x.ApplyOrdering(columnsMap, orderBy), null,
                 pageIndex, pageSize, true);
@@ -41,12 +42,12 @@ namespace EmailMarketing.Framework.Services.Groups
             return (result.Items, result.Total, result.TotalFilter);
         }
 
-        public async Task<Entities.Group> GetByIdAsync(int id)
+        public async Task<Group> GetByIdAsync(int id)
         {
             return await _groupUnitOfWork.GroupRepository.GetByIdAsync(id);
         }
 
-        public async Task AddAsync(Entities.Group entity)
+        public async Task AddAsync(Group entity)
         {
             var isExists = await _groupUnitOfWork.GroupRepository.IsExistsAsync(x => x.Name == entity.Name && x.Id != entity.Id);
             if (isExists)
@@ -56,7 +57,7 @@ namespace EmailMarketing.Framework.Services.Groups
             await _groupUnitOfWork.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Entities.Group entity)
+        public async Task UpdateAsync(Group entity)
         {
             var isExists = await _groupUnitOfWork.GroupRepository.IsExistsAsync(x => x.Name == entity.Name && x.Id != entity.Id);
             if (isExists)
