@@ -1,4 +1,5 @@
 ﻿using EmailMarketing.Framework.Context;
+using EmailMarketing.Framework.Repositories.Campaigns;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,11 @@ namespace EmailMarketing.Framework.UnitOfWorks.Campaigns
 {
     public class CampaignUnitOfWork : EmailMarketing.Data.UnitOfWork, ICampaignUnitOfWork
     {
-        public CampaignUnitOfWork(FrameworkContext dbContext) : base(dbContext)
+        public ICampaingRepository CampaingRepository { get; set; }
+        public CampaignUnitOfWork(FrameworkContext dbContext,
+            ICampaingRepository campaingRepository) : base(dbContext)
         {
-
+            this.CampaingRepository = campaingRepository;
         }
     }
 }
