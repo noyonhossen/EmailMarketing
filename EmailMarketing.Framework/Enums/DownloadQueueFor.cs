@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Framework.Enums
 {
-    public enum DownloadFor
+    public enum DownloadQueueFor
     {
-        ContactExport = 1,
-        CampaignReport = 2
+        ContactAllExport = 1,
+        ContactGroupWiseExport = 2,
+        CampaignAllReportExport = 3,
+        CampaignDetailsReportExport = 4
     }
 }
