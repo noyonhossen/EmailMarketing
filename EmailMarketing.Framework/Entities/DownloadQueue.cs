@@ -8,8 +8,7 @@ namespace EmailMarketing.Framework.Entities
 {
     public class DownloadQueue : IAuditableEntity<int>
     {
-        public DownloadFor DownloadFor { get; set; }
-        public int DownloadEntityId { get; set; }
+        public DownloadQueueFor DownloadQueueFor { get; set; }
         public Guid UserId { get; set; }
         public bool IsSendEmailNotify { get; set; }
         public string SendEmailAddress { get; set; }
@@ -18,5 +17,12 @@ namespace EmailMarketing.Framework.Entities
         public bool IsSucceed { get; set; }
         public int SucceedEntryCount { get; set; }
         public bool IsProcessing { get; set; }
+
+        public IList<DownloadQueueSubEntity> DownloadQueueSubEntities { get; set; }
+
+        public DownloadQueue()
+        {
+            this.DownloadQueueSubEntities = new List<DownloadQueueSubEntity>();
+        }
     }
 }
