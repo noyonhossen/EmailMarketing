@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EmailMarketing.Framework.Services.Campaigns
 {
     public interface ICampaignService : IDisposable
     {
+        Task<IList<(int Value, string Text, int Count)>> GetAllGroupsAsync(Guid? userId);
     }
 }

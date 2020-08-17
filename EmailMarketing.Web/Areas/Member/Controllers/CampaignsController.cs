@@ -15,9 +15,10 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var model = new CampaignsModel();
             return View(model);
         }
-        public IActionResult Add()
+        public async Task<IActionResult> AddCampaign()
         {
-            var model = new CampaignsModel();
+            var model = new CreateCampaignModel();
+            model.GroupSelectList = await model.GetAllGroupForSelectAsync();
             return View(model);
         }
 

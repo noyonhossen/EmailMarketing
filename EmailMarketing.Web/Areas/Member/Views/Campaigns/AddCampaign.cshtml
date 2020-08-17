@@ -1,0 +1,165 @@
+﻿@model CreateCampaignModel
+@{
+    ViewData["Title"] = "Add Campaign";
+}
+
+<!-- Main content -->
+<div class="content-wrapper">
+    <!-- Content area -->
+    <div class="content">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header header-elements-inline">
+                        <h5 class="card-title text-primary">Add Campaign</h5>
+                    </div>
+
+                    <div class="card-body">
+                        <form action="" method="post">
+                            <div class="row">
+                                <div class="col-6 p-4">
+                                    <div class="form-group row">
+                                        <label asp-for="Name" class="col-sm-3 col-form-label required"></label>
+                                        <div class="col-sm-9">
+                                            <input asp-for="Name" class="form-control">
+                                            <span asp-validation-for="Name" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 p-4">
+                                    <div class="form-group row">
+                                        <label asp-for="Description" class="col-sm-3 col-form-label required"></label>
+                                        <div class="col-sm-9">
+                                            <textarea asp-for="Description" class="form-control"></textarea>
+                                            <span asp-validation-for="Description" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 p-4">
+                                    <div class="form-group row">
+                                        <label asp-for="EmailSubject" class="col-sm-3 col-form-label required"></label>
+                                        <div class="col-sm-9">
+                                            <input asp-for="EmailSubject" class="form-control" />
+                                            <span asp-validation-for="EmailSubject" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label asp-for="SendDateTime" class="col-sm-3 col-form-label required"></label>
+                                        <div class="col-sm-9">
+                                            <input asp-for="SendDateTime" class="form-control" />
+                                            <span asp-validation-for="SendDateTime" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label asp-for="IsDraft" class="col-sm-3 col-form-label"></label>
+                                        <div class="col-sm-9">
+                                            <div class="dropdown-item form-check form-check-switchery ">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-input-switchery" data-fouc asp-for="IsDraft">
+                                                    <span class="font-weight-bold">Want to save in draft?</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label asp-for="IsSendEmailNotify" class="col-sm-3 col-form-label"></label>
+                                        <div class="col-sm-9">
+                                            <div class="dropdown-item form-check form-check-switchery ">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-input-switchery" data-fouc asp-for="IsSendEmailNotify">
+                                                    <span class="font-weight-bold">Want to save in draft?</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label asp-for="SendEmailAddress" class="col-sm-3 col-form-label"></label>
+                                        <div class="col-sm-9">
+                                            <input asp-for="SendEmailAddress" class="form-control" />
+                                            <span asp-validation-for="SendEmailAddress" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 p-4">
+                                    <h3>Where you want to add this Campaign?</h3>
+                                    @Html.AntiForgeryToken()
+                                    <!-- selected -->
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="checkAll">
+                                        <label class="form-check-label" for="checkAll">Select All Lists</label>
+                                    </div>
+
+                                    <div class="bg-white">
+                                        <p class="p-2">
+                                            <i class="icon-collaboration"></i>&nbsp;&nbsp; <span id="selected">No</span> <span>List</span> Selected
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-white">
+                                        <ul class="list-group">
+                                            @{
+                                                for (int i = 0; i < Model.GroupSelectList.Count(); i++)
+                                                {
+                                                    <li class="list-group-item border-bottom">
+                                                        <div class="form-check">
+                                                            <input type="checkbox" class="form-check-input group-select" id="checkSingle[@i]" value="@Model.GroupSelectList[i].IsChecked.ToString().ToLower()" name="GroupSelectList[@i].IsChecked">
+                                                            <input type="hidden" class="form-control" asp-for="@Model.GroupSelectList[i].Value">
+                                                            <input type="hidden" class="form-control" asp-for="@Model.GroupSelectList[i].Text">
+
+                                                            <label class="form-check-label" for="checkSingle[@i]">
+                                                                @Model.GroupSelectList[i].Text
+                                                                <span class="border p-1">
+                                                                    <span>@Model.GroupSelectList[i].Count</span>&nbsp;&nbsp;
+                                                                    <i class="fas fa-user"></i>
+                                                                </span>
+                                                            </label> &nbsp;&nbsp;
+                                                        </div>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                    <!-- /selected -->
+
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-between pt-3">
+                                <a asp-controller="Campaigns" asp-action="Index" asp-area="Member" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
+                                <button type="submit" class="btn btn-primary"><i class="icon-file-check2"></i> Save</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Content area -->
+</div>
+<!-- /Main content -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+<script>
+    //$(function () { });
+    $('#checkAll').click(function (event) {
+        if (this.checked) {
+            // Iterate each checkbox
+            $(':checkbox').each(function () {
+                this.checked = true;
+                $(this).val(this.checked);
+            });
+        } else {
+            $(':checkbox').each(function () {
+                this.checked = false;
+                $(this).val(this.checked);
+            });
+        }
+    });
+</script>
