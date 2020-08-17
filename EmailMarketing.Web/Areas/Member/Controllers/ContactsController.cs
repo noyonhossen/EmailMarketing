@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
@@ -126,6 +127,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             return View(model);
         }
 
+        
         public async Task<IActionResult> EditContact(int id)
         {
             var model = new ContactsModel();
@@ -177,5 +179,65 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             await model.LoadByIdAsync(id);
             return View(model);
         }
+
+        // TODO - Don't know what to do with this later!
+        [HttpGet]
+        public async Task<IActionResult> Export()
+        {
+            var model = new ContactExportModel();
+            model.GroupSelectList = await model.GetAllGroupForSelectAsync();
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Export(
+            ContactExportModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.CheckSelectOption();
+
+            }
+
+            model.GroupSelectList = await model.GetAllGroupForSelectAsync();
+            return View(model);
+
+
+
+
+
+
+            //var users = new IList<>
+            //using (var workbook = new XLWorkbook())
+            //{
+            //    var worksheet = workbook.Worksheets.Add("Users");
+            //    var currentRow = 1;
+            //    worksheet.Cell(currentRow, 1).Value = "Id";
+            //    worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+            //    worksheet.Cell(currentRow, 2).Value = "Username";
+            //    worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
+            //    for (int i=0;i<10;i++)
+            //    {
+            //        currentRow++;
+            //        worksheet.Cell(currentRow, 1).Value = "Id"+i;
+            //        worksheet.Cell(currentRow, 2).Value = "User"+i;
+            //    }
+
+            //    using (var stream = new MemoryStream())
+            //    {
+            //        workbook.SaveAs(stream);
+            //        //var content = stream.ToArray();
+            //        var link = "D:\\Working\\Employees.xlsx";
+            //        var net = new System.Net.WebClient();
+            //        var data = net.DownloadData(link);
+            //        var content = new System.IO.MemoryStream(data);
+
+            //        return File(
+            //            content,
+            //            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            //            "Employees.xlsx");
+            //    }
+        }
+
+
     }
 }
