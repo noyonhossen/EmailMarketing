@@ -96,6 +96,14 @@ namespace EmailMarketing.Framework
             builder.RegisterType<ContactRepository>().As<IContactRepository>()
                 .InstancePerLifetimeScope();
 
+
+            builder.RegisterType<ContactExportRepository>().As<IContactExportRepository>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<ContactExportUnitOfWork>().As<IContactExportUnitOfWork>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<ContactExportService>().As<IContactExportService>()
+                .InstancePerLifetimeScope();
+
             base.Load(builder);
         }
     }

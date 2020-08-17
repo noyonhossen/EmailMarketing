@@ -194,7 +194,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         {
             if (ModelState.IsValid)
             {
-                model.CheckSelectOption();
+                await model.CheckSelectOption();
 
             }
 
