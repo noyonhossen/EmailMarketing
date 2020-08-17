@@ -8,7 +8,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
 {
     public interface ICampaignService : IDisposable
     {
-        Task<IList<CampaignReport>> GetAllCampaignReportAsync(
+        Task<IList<(int Value, string CampaignName, string Email, bool IsDelivered, bool IsSeen, DateTime SendDateTime, DateTime? SeenDateTime)>> GetAllCampaignReportAsync(
             Guid? userId);
     }
 }
