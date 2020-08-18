@@ -1,103 +1,61 @@
-﻿@model GroupModel
+﻿
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Group";
 }
 
-<!-- Page header -->
-<div class="page-header">
-    <div class="page-header-content header-elements-md-inline">
-        <div class="page-title d-flex">
-            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Member" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
-            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-        </div>
-
-        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a data-toggle="modal" data-target="#exampleModal" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-plus-circle2 mr-2"></i> <span class="font-weight-semibold">New Group</span></a>
-        </div>
-    </div>
-</div>
-<!-- /page header -->
 <!-- Content area -->
-<div class="content pt-0">
+<div class="content">
 
-    <!-- Basic datatable -->
-    <div class="card">
-        <div class="card-header header-elements-inline">
-            <h5 class="card-title">Groups</h5>
-            <div class="header-elements">
-            </div>
-        </div>
-
-        <div class="card-body">
-            <partial name="_ActionMessage" model="@Model.Response" />
-        </div>
-
-        <table class="table" id="group-table">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+    <div class="pb-3">
+        <h4 class="d-inline">Groups</h4>
+        <a href="#" class="btn btn-primary float-right" onclick="add_edit_Data('')"> <i class="icon-plus-circle2"></i> Create Group</a>
     </div>
-    <!-- /basic datatable -->
-</div>
 
-<!-- Danger modal -->
-<div id="modal-delete" class="modal fade" tabindex="-1">
-    <div class="modal-dialog modal-sm">
+    <div class="row">
+        <div class="col-12 m-auto">
+            <!-- Basic datatable -->
+            <div class="card">
+                <div>
+                    <partial name="_ActionMessage" model="@Model.Response" />
+                </div>
+
+                <table class="table datatable-basic" id="group-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /basic datatable -->
+        </div>
+    </div>
+
+</div>
+<!-- /content area -->
+<!-- Add or Edit Modal -->
+<div id="addOrEditModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title">Delete</h6>
+                <h5 class="modal-title" id="addOrEditModalTitle">Add Group</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
-            <div class="modal-body">
-                <p>Are you sure want to delete?</p>
-                <form id="deleteForm" action="@Url.Action("Delete", "Groups", new { Area = "Member" })" method="post">
-                    @Html.AntiForgeryToken()
-                    <input type="hidden" id="deleteId" value="" name="id" />
-                </form>
-            </div>
+            <div class="modal-body" id="addOrEditModalContent"></div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                <button type="button" id="deleteButton" class="btn bg-danger">Yes, Delete!</button>
-            </div>
         </div>
     </div>
 </div>
-<!-- /default modal -->
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Group Name</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form asp-action="Add" asp-controller="Groups" asp-area="Member" method="post">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="Name">Name</label>
-                        <input name="Name" type="text" class="form-control" id="Name" placeholder="Enter Group Name" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="icon-cancel-circle2"></i> Cancel</button>
-                    <button type="submit" class="btn btn-primary"> <i class="icon-file-check2"></i> Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<!-- Add or Edit Modal -->
 
 @section Scripts {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+    <partial name="~/Views/Bundle/_FormInputScriptsPartial.cshtml" />
+    <partial name="~/Views/Bundle/_SweetAlertScriptsPartial.cshtml" />
     <partial name="~/Views/Bundle/_DatatableScriptsPartial.cshtml" />
     <script src="~/js/project/group.js"></script>
     <script src="~/js/ajax-call.js"></script>
@@ -105,20 +63,31 @@
     <script>
         $(function () {
             var url = '@Url.Action("GetGroups", "Groups", new { Area = "Member" })';
-            var editUrl = '@Url.Action("Edit", "Groups", new { Area = "Member" })';
-            loadDatatable(url, editUrl);
-
-            $('#group-table').on('click', '.show-bs-modal', function (event) {
-                var id = $(this).data("id");
-                var modal = $("#modal-delete");
-                modal.find('.modal-body p').text('Are you sure want to delete this record?')
-                $("#deleteId").val(id);
-                modal.modal('show');
-            });
-
-            $("#deleteButton").click(function () {
-                $("#deleteForm").submit();
-            });
+            loadDatatable(url);
         });
+
+        function delete_Data(id) {
+            var url = '@Url.Action("Delete", "Groups", new { Area = "Member" })';
+            var paramData = { id: id };
+            delete_confirm(url, paramData);
+        }
+
+        function add_edit_Data(id) {
+            if (id !== null && id !== '') {
+                $('#addOrEditModalTitle').text('Edit Group');
+            } else {
+                $('#addOrEditModalTitle').text('Add Group');
+            }
+
+            var url = '@Url.Action("AddOrEdit", "Groups", new { Area = "Member" })';
+            var paramData = { id: id };
+            ajaxCallModal(url, paramData, "renderStudentAddOrEditLoad", "GET");
+        }
+
+        function renderStudentAddOrEditLoad(data) {
+            $("#addOrEditModalContent").html(data);
+            $("#addOrEditModal").modal("show");
+        }
     </script>
 }
+
