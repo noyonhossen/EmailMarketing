@@ -42,11 +42,19 @@ namespace EmailMarketing.Framework
                    .WithParameter("migrationAssemblyName", _migrationAssemblyName)
                    .InstancePerLifetimeScope();
 
+            builder.RegisterType<CampaignReportExportUnitOfWork>().As<ICampaignReportExportUnitOfWork>()
+                   .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignReportExportService>().As<ICampaignReportExportService>()
+                   .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignReportExportRepository>().As<ICampaignReportExportRepository>()
+                   .InstancePerLifetimeScope();
+
+            builder.RegisterType<CampaingReportRepository>().As<ICampaingReportRepository>()
+                   .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignReportUnitOfWork>().As<ICampaignReportUnitOfWork>()
+                   .InstancePerLifetimeScope();
+
             builder.RegisterType<CampaignUnitOfWork>().As<ICampaignUnitOfWork>()
-                   .InstancePerLifetimeScope();
-            builder.RegisterType<CampaignService>().As<ICampaignService>()
-                   .InstancePerLifetimeScope();
-            builder.RegisterType<CampaingRepository>().As<ICampaingRepository>()
                    .InstancePerLifetimeScope();
 
             builder.RegisterType<SMTPRepository>().As<ISMTPRepository>()

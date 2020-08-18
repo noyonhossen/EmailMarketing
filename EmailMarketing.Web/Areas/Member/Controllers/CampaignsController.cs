@@ -28,14 +28,17 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var model = new CampaignsModel();
             return View(model);
         }
-        public async Task<IActionResult> Export()
+
+        [HttpPost]
+        public async Task<IActionResult> Export(
+            CampaignsModel model)
         {
-            var model = new CampaignsModel();
-            var content = await model.GetAllGroupForSelectAsync();
-            return File(
-                        content,
-                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        "users.xlsx");
+            if (ModelState.IsValid)
+            {
+                await model.CheckSelectOption();
+
+            }
+            return RedirectToAction("ViewReport");
         }
     }
 }

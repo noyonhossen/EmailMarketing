@@ -10,9 +10,9 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
 {
     public class CampaignBaseModel : MemberBaseModel, IDisposable
     {
-        protected readonly ICampaignService _campaignService;
+        protected readonly ICampaignReportExportService _campaignService;
         protected readonly ICurrentUserService _currentUserService;
-        public CampaignBaseModel(ICampaignService campaignService,
+        public CampaignBaseModel(ICampaignReportExportService campaignService,
             ICurrentUserService currentUserService)
         {
             _campaignService = campaignService;
@@ -21,7 +21,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
 
         public CampaignBaseModel()
         {
-            _campaignService = Startup.AutofacContainer.Resolve<ICampaignService>();
+            _campaignService = Startup.AutofacContainer.Resolve<ICampaignReportExportService>();
             _currentUserService = Startup.AutofacContainer.Resolve<ICurrentUserService>();
         }
         public void Dispose()

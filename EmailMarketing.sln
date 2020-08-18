@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailMarketing.ExcelWorkerS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailMarketing.EmailSendingWorkerService", "EmailMarketing.EmailSendingWorkerService\EmailMarketing.EmailSendingWorkerService.csproj", "{1DDF76B3-1BC6-4849-A1BB-139B36AE8C13}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailMarketing.CampaingReportExcelExportService", "EmailMarketing.CampaingReportExcelExportService\EmailMarketing.CampaingReportExcelExportService.csproj", "{F080EB26-01A2-4255-84B3-94EF3D585A16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{1DDF76B3-1BC6-4849-A1BB-139B36AE8C13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DDF76B3-1BC6-4849-A1BB-139B36AE8C13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DDF76B3-1BC6-4849-A1BB-139B36AE8C13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F080EB26-01A2-4255-84B3-94EF3D585A16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F080EB26-01A2-4255-84B3-94EF3D585A16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F080EB26-01A2-4255-84B3-94EF3D585A16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F080EB26-01A2-4255-84B3-94EF3D585A16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +82,7 @@ Global
 		{82C0491F-C379-4F0B-B91C-770A157AC6A9} = {264C8047-F6C5-48EB-A6B2-AD726B439803}
 		{1B66EF63-C15C-49F8-95B6-A5E947ECDE6F} = {5ABC1C06-BB99-4DEF-B641-F8BD710CE78C}
 		{1DDF76B3-1BC6-4849-A1BB-139B36AE8C13} = {5ABC1C06-BB99-4DEF-B641-F8BD710CE78C}
+		{F080EB26-01A2-4255-84B3-94EF3D585A16} = {5ABC1C06-BB99-4DEF-B641-F8BD710CE78C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7DAD83B0-F7F4-4B4E-A9CF-91606D152347}
