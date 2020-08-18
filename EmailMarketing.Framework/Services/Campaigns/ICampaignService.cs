@@ -9,5 +9,6 @@ namespace EmailMarketing.Framework.Services.Campaigns
     public interface ICampaignService : IDisposable
     {
         Task<IList<(int Value, string Text, int Count)>> GetAllGroupsAsync(Guid? userId);
+        Task<IList<EmailTemplate>> GetEmailTemplateByUserIdAsync(Guid? userId);
     }
 }

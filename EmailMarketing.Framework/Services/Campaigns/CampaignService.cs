@@ -29,6 +29,11 @@ namespace EmailMarketing.Framework.Services.Campaigns
                                                    .Select(x => (Value: x.Value, Text: x.Text, Count: x.Count)).ToList();
         }
 
+        public async Task<IList<EmailTemplate>> GetEmailTemplateByUserIdAsync(Guid? userId)
+        {
+            return (await _campaignUnitOfWork.EmailTemplateRepository.GetAsync(x => x, x => x.UserId == userId, null, null, true));
+        }
+
         public void Dispose()
         {
             _campaignUnitOfWork?.Dispose();

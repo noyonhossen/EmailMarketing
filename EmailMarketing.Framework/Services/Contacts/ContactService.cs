@@ -40,7 +40,7 @@ namespace EmailMarketing.Framework.Services.Contacts
             };
             var result = await _contactUnitOfWork.ContactRepository.GetAsync<Entities.Contacts.Contact>(
                 x => x, x => (!userId.HasValue || x.UserId == userId.Value)&& (x.Email.Contains(searchText)),
-                x => x.ApplyOrdering(columnsMap, orderBy), x=> x.Include(i=> i.ContactGroups).ThenInclude(i=>i.Group).Include(i => i.ContactValueMaps),
+                x => x.ApplyOrdering(columnsMap, orderBy), x=> x.Include(i=> i.ContactGroups).ThenInclude(i=>i.Group),
                 pageIndex, pageSize, true);
             return (result.Items, result.Total, result.TotalFilter);
         }
