@@ -6,12 +6,20 @@ using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Web.Areas.Member.Models;
 using EmailMarketing.Web.Areas.Member.Models.Campaigns;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
     [Area("Member")]
     public class EmailTemplateController : Controller
     {
+        private readonly ILogger<EmailTemplateController> _logger;
+
+        public EmailTemplateController(ILogger<EmailTemplateController> logger)
+        {
+            _logger = logger;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -34,15 +42,18 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                 try
                 {
                     await model.CreateEmailTemplate();
+                    _logger.LogInformation("Email Template Added Successfully");
                     model.Response = new ResponseModel("Template Added Successfully", Enums.ResponseType.Success);
                     return RedirectToAction("AddEmailTemplate");
                 }
                 catch (DuplicationException ex)
                 {
+                    _logger.LogError(ex.Message);
                     model.Response = new ResponseModel(ex.Message, Enums.ResponseType.Failure);
                 }
                 catch (Exception ex)
                 {
+                    _logger.LogError(ex.Message);
                     model.Response = new ResponseModel("Template Creation Failed", Enums.ResponseType.Failure);
                 }
             }

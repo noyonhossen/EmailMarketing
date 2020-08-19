@@ -65,23 +65,28 @@ $(function () {
 
     $(".selected_template_copy").click(function () {
         var text = $(this).closest('.custom_card_body').find(".template_body").html();
-        $(".mce-content-body").val();
+        tinyMCE.activeEditor.setContent(text);
     });
 
-    $(document).ready(function () {
-        tinymce.init({
-            selector: '.editor_textarea',
-            height: 440,
-            plugins: [
-                "advlist autolink lists link image charmap print preview anchor",
-                "searchreplace visualblocks code fullscreen",
-                "insertdatetime media table paste imagetools wordcount"
-            ],
-            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-            toolbar_mode: 'floating',
-            tinycomments_mode: 'embedded',
-            tinycomments_author: 'Author name',
-        });
+
+    tinymce.init({
+        selector: '.editor_textarea',
+        height: 440,
+        plugins: [
+            "advlist autolink lists link image charmap print preview anchor",
+            "searchreplace visualblocks code fullscreen",
+            "insertdatetime media table paste imagetools wordcount"
+        ],
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+        toolbar_mode: 'floating',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Author name',
+    });
+
+    $("#remove_all").click(function () {
+        $(".selected_template").prop('checked', false);
+        $(".selected_template").closest(".custom_template_card").removeClass('custom_template_opacity');
+        $(".selected_template").closest(".overlay").removeClass('overlay_opacity');
     });
 
     //$(document).ready(function () {

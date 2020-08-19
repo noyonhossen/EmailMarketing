@@ -1,6 +1,9 @@
-﻿using EmailMarketing.Common.Services;
+﻿using Autofac;
+using EmailMarketing.Common.Services;
 using EmailMarketing.Framework.Entities.Campaigns;
+using EmailMarketing.Framework.Entities.SMTP;
 using EmailMarketing.Framework.Services.Campaigns;
+using EmailMarketing.Framework.Services.SMTP;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -35,21 +38,30 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         public string EmailTemplateTitle { get; set; }
         [Display(Name = "Email Body")]
         public string EmailTemplateBody { get; set; }
+        [Required]
+        [Display(Name = "SMTP Configuration")]
+        public Guid SMTPConfigId { get; set; }
         public IList<EmailTemplate> EmailTemplateList { get; set; }
         public IList<CampaignValueTextModel> GroupSelectList { get; set; }
         public IList<CampaignGroup> CampaignGroups { get; set; }
+        public IList<SMTPConfig> SMTPConfigList { get; set; }
 
-
+        public IDateTime _dateTime;
+        private ISMTPService _sMTPService;
         public CreateCampaignModel(ICampaignService campaignService,
             ICurrentUserService currentUserService,
-            IEmailTemplateService emailTemplateService)
+            IEmailTemplateService emailTemplateService,
+            ISMTPService sMTPService,
+            IDateTime dateTime)
             : base(campaignService, currentUserService, emailTemplateService)
         {
-
+            _dateTime = dateTime;
+            _sMTPService = sMTPService;
         }
         public CreateCampaignModel() : base()
         {
-
+            _dateTime = Startup.AutofacContainer.Resolve<IDateTime>();
+            _sMTPService = Startup.AutofacContainer.Resolve<ISMTPService>();
         }
 
         public async Task<IList<CampaignValueTextModel>> GetAllGroupForSelectAsync()
@@ -63,18 +75,14 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
             return (await _campaignService.GetEmailTemplateByUserIdAsync(_currentUserService.UserId));
         }
 
+        public async Task<IList<SMTPConfig>> GetAllSMTPConfigByUserIdAsync()
+        {
+            return await _sMTPService.GetAllSMTPConfig(_currentUserService.UserId);
+        }
+
         public async Task SaveCampaignAsync()
         {
-            if(this.EmailTemplateBody != null)
-            {
-                var emailTemplate = new EmailTemplate
-                {
-                    EmailTemplateName = this.EmailTemplateTitle,
-                    EmailTemplateBody = this.EmailTemplateBody
-                };
-
-                await _emailTemplateService.AddEmailTemplateAsync(emailTemplate);
-            }
+            
             
             var campaign = new Campaign
             {
@@ -82,11 +90,11 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 Name = this.Name,
                 Description = this.Description,
                 EmailSubject = this.EmailSubject,
-                SendDateTime = (DateTime)this.SendDateTime,
+                SendDateTime = this.SendNow ? _dateTime.Now : this.SendDateTime ?? _dateTime.Now,
                 IsDraft = this.IsDraft,
                 IsSendEmailNotify = this.IsSendEmailNotify,
                 SendEmailAddress = this.SendEmailAddress,
-                EmailTemplateId = (int)this.SelectedTemplateId,
+                SMTPConfigId = this.SMTPConfigId,
             };
 
             
@@ -102,6 +110,22 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                     campaign.CampaignGroups.Add(campaignGroup);
                 }
                 
+            }
+
+            
+            if(this.SelectedTemplateId.HasValue && this.SelectedTemplateId.Value != 0)
+            {
+                campaign.EmailTemplateId = this.SelectedTemplateId.Value;
+            }
+            else if (!string.IsNullOrWhiteSpace(this.EmailTemplateBody))
+            {
+                var emailTemplate = new EmailTemplate
+                {
+                    EmailTemplateName = this.EmailTemplateTitle,
+                    EmailTemplateBody = this.EmailTemplateBody,
+                    UserId = _currentUserService.UserId
+                };
+                campaign.EmailTemplate = emailTemplate;
             }
 
             await _campaignService.AddCampaign(campaign);
