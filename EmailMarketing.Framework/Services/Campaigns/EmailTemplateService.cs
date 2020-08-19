@@ -4,6 +4,7 @@ using EmailMarketing.Framework.UnitOfWorks.Campaigns;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EmailMarketing.Framework.Services.Campaigns
 {
@@ -16,7 +17,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
             _campaignUnitOfWork = campaignUnitOfWork;
         }
 
-        public async void AddEmailTemplateAsync(EmailTemplate emailTemplate)
+        public async Task AddEmailTemplateAsync(EmailTemplate emailTemplate)
         {
             var count = await _campaignUnitOfWork.EmailTemplateRepository.GetCountAsync(x => x.EmailTemplateBody == emailTemplate.EmailTemplateBody);
             if (count > 0)

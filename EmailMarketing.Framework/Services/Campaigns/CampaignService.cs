@@ -38,5 +38,11 @@ namespace EmailMarketing.Framework.Services.Campaigns
         {
             _campaignUnitOfWork?.Dispose();
         }
+
+        public async Task AddCampaign(Campaign campaign)
+        {
+            await _campaignUnitOfWork.CampaignRepository.AddAsync(campaign);
+            await _campaignUnitOfWork.SaveChangesAsync();
+        }
     }
 }

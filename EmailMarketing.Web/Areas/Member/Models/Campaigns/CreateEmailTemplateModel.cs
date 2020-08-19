@@ -32,7 +32,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
 
         }
 
-        public void CreateEmailTemplate()
+        public async Task CreateEmailTemplate()
         {
             var emailTempalte = new EmailTemplate
             {
@@ -41,7 +41,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 EmailTemplateBody = this.EmailTemplateBody
             };
 
-            _emailTemplateService.AddEmailTemplateAsync(emailTempalte);
+            await _emailTemplateService.AddEmailTemplateAsync(emailTempalte);
         }
     }
 }

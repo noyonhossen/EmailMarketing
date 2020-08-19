@@ -22,7 +22,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form action="" method="post">
+                        <form asp-area="Member" asp-controller="Campaigns" asp-action="AddCampaign" method="post">
                             <div class="row">
                                 <div class="col-6 ml-2">
                                     <div class="form-group row">
@@ -187,7 +187,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-form-label col-lg-2 required" asp-for="EmailTemplateBody"></label>
+                                            <label class="col-form-label col-lg-2" asp-for="EmailTemplateBody"></label>
                                             <div class="col-lg-10">
                                                 <textarea asp-for="EmailTemplateBody" class="form-control editor_textarea abcd"></textarea>
                                                 <span asp-validation-for="EmailTemplateBody" class="text-danger"></span>
@@ -237,6 +237,7 @@
 {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="https://cdn.tiny.cloud/1/plj32oi7siumt37tnxcbarowphfd2zt66talpivgjvpt70i5/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/plj32oi7siumt37tnxcbarowphfd2zt66talpivgjvpt70i5/tinymce/5/jquery.tinymce.min.js" referrerpolicy="origin"></script>
     <script src="~/js/project/member_add_campaign.js"></script>
 }
 

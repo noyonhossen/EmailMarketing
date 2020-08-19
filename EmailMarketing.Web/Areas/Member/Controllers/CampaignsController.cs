@@ -24,6 +24,19 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddCampaign(CreateCampaignModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                await model.SaveCampaignAsync();
+            }
+            model.GroupSelectList = await model.GetAllGroupForSelectAsync();
+            model.EmailTemplateList = await model.GetTemplateByUserIDAsync();
+            return View(model);
+        }
+
         public IActionResult ViewReport()
         {
             var model = new CampaignsModel();

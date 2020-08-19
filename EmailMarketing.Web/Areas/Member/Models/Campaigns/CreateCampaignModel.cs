@@ -37,7 +37,8 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         public string EmailTemplateBody { get; set; }
         public IList<EmailTemplate> EmailTemplateList { get; set; }
         public IList<CampaignValueTextModel> GroupSelectList { get; set; }
-        
+        public IList<CampaignGroup> CampaignGroups { get; set; }
+
 
         public CreateCampaignModel(ICampaignService campaignService,
             ICurrentUserService currentUserService,
@@ -60,6 +61,51 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         public async Task<IList<EmailTemplate>> GetTemplateByUserIDAsync()
         {
             return (await _campaignService.GetEmailTemplateByUserIdAsync(_currentUserService.UserId));
+        }
+
+        public async Task SaveCampaignAsync()
+        {
+            if(this.EmailTemplateBody != null)
+            {
+                var emailTemplate = new EmailTemplate
+                {
+                    EmailTemplateName = this.EmailTemplateTitle,
+                    EmailTemplateBody = this.EmailTemplateBody
+                };
+
+                await _emailTemplateService.AddEmailTemplateAsync(emailTemplate);
+            }
+            
+            var campaign = new Campaign
+            {
+                UserId = _currentUserService.UserId,
+                Name = this.Name,
+                Description = this.Description,
+                EmailSubject = this.EmailSubject,
+                SendDateTime = (DateTime)this.SendDateTime,
+                IsDraft = this.IsDraft,
+                IsSendEmailNotify = this.IsSendEmailNotify,
+                SendEmailAddress = this.SendEmailAddress,
+                EmailTemplateId = (int)this.SelectedTemplateId,
+            };
+
+            
+            foreach(var item in GroupSelectList)
+            {
+                if(item.IsChecked)
+                {
+                    var campaignGroup = new CampaignGroup
+                    {
+                        GroupId = item.Value
+                    };
+                    
+                    campaign.CampaignGroups.Add(campaignGroup);
+                }
+                
+            }
+
+            await _campaignService.AddCampaign(campaign);
+
         }
     }
 }

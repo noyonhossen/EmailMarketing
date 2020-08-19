@@ -26,14 +26,14 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddEmailTemplate([Bind(nameof(CreateEmailTemplateModel.EmailTemplateBody),
+        public async Task<IActionResult> AddEmailTemplateAsync([Bind(nameof(CreateEmailTemplateModel.EmailTemplateBody),
             nameof(CreateEmailTemplateModel.EmailTemplateName))] CreateEmailTemplateModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    model.CreateEmailTemplate();
+                    await model.CreateEmailTemplate();
                     model.Response = new ResponseModel("Template Added Successfully", Enums.ResponseType.Success);
                     return RedirectToAction("AddEmailTemplate");
                 }

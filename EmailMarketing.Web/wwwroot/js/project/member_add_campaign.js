@@ -58,8 +58,7 @@ $(function () {
 
     $(".selected_template_copy").click(function () {
         var text = $(this).closest('.custom_card_body').find(".template_body").html();
-        var value = text.toString();
-        $(".abcd").innerHTML(value);
+        $(".mce-content-body").val();
     });
 
     $(document).ready(function () {
@@ -77,5 +76,21 @@ $(function () {
             tinycomments_author: 'Author name',
         });
     });
+
+    //$(document).ready(function () {
+    //    $('.editor_textarea').tinymce({
+    //        //selector: '.editor_textarea',
+    //        height: 440,
+    //        plugins: [
+    //            "advlist autolink lists link image charmap print preview anchor",
+    //            "searchreplace visualblocks code fullscreen",
+    //            "insertdatetime media table paste imagetools wordcount"
+    //        ],
+    //        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+    //        toolbar_mode: 'floating',
+    //        tinycomments_mode: 'embedded',
+    //        tinycomments_author: 'Author name',
+    //    });
+    //});
 
 });
