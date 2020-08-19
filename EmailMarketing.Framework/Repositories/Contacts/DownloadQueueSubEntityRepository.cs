@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Framework.Repositories.Contacts
 {
-    public class ContactExportRepository : Repository<DownloadQueue, int, FrameworkContext>, IContactExportRepository
+    public class DownloadQueueSubEntityRepository : Repository<DownloadQueueSubEntity, int, FrameworkContext>, IDownloadQueueSubEntityRepository
     {
-        public ContactExportRepository(FrameworkContext dbContext)
+        public DownloadQueueSubEntityRepository(FrameworkContext dbContext)
            : base(dbContext)
         {
 

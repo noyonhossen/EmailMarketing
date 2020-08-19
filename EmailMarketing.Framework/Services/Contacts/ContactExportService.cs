@@ -34,18 +34,35 @@ namespace EmailMarketing.Framework.Services.Contacts
             return contacts;
         }
 
+        public async Task<IList<ContactGroup>> GetAllGroupsByIdAsync(int groupId)
+        {
+            var contacts = await _contactUnitOfWork.GroupContactRepository.GetAsync<ContactGroup>(
+                x => x, x => (x.GroupId == groupId), null, null, true
+                );
+            return contacts;
+        }
+        public async Task<Contact>  GetContactById(int contactId)
+        {
+            var contact = await _contactUnitOfWork.ContactRepository.GetByIdAsync(contactId);
+            return contact;
+        }
         public async Task<IList<DownloadQueue>> GetDownloadQueue()
         {
-            var result = await _contactExportUnitOfWork.ContactExportRepository.GetAsync(x => x, x => x.IsProcessing == true && x.IsSucceed ==false, null, null, true);
+            var result = await _contactExportUnitOfWork.DownloadQueueRepository.GetAsync(x => x, x => x.IsProcessing == true && x.IsSucceed ==false, null, null, true);
             return result;
         }
 
         public async Task<DownloadQueue> GetDownloadQueueByIdAsync(int contactUploadId)
         {
-            var contactUpload = await _contactExportUnitOfWork.ContactExportRepository.GetFirstOrDefaultAsync(x => x, x => x.Id == contactUploadId,
+            var contactUpload = await _contactExportUnitOfWork.DownloadQueueRepository.GetFirstOrDefaultAsync(x => x, x => x.Id == contactUploadId,
                                     null, true);
 
             return contactUpload;
+        }
+        public async Task UpdateDownloadQueueAync(DownloadQueue downloadQueue)
+        {
+            await _contactExportUnitOfWork.DownloadQueueRepository.UpdateAsync(downloadQueue);
+            await _contactExportUnitOfWork.SaveChangesAsync();
         }
         public void Dispose()
         {
@@ -61,7 +78,12 @@ namespace EmailMarketing.Framework.Services.Contacts
         }
         public async Task SaveDownloadQueueAsync(DownloadQueue downloadQueue)
         {
-            await _contactExportUnitOfWork.ContactExportRepository.AddAsync(downloadQueue);
+            await _contactExportUnitOfWork.DownloadQueueRepository.AddAsync(downloadQueue);
+            await _contactExportUnitOfWork.SaveChangesAsync();
+        }
+        public async Task AddDownloadQueueSubEntities(IList<DownloadQueueSubEntity> downloadQueueSubEntities)
+        {
+            await _contactExportUnitOfWork.DownloadQueueSubEntityRepository.AddRangeAsync(downloadQueueSubEntities);
             await _contactExportUnitOfWork.SaveChangesAsync();
         }
 

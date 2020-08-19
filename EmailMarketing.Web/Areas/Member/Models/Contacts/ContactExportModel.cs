@@ -1,4 +1,5 @@
-﻿using EmailMarketing.Common.Services;
+﻿using EmailMarketing.Common.Constants;
+using EmailMarketing.Common.Services;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.Services.Contacts;
@@ -14,6 +15,10 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
     {
         public bool IsExportAll{get;set;}
         public IList<ContactValueTextModel> GroupSelectList { get; set; }
+        public string SendEmailAddress { get; set; }
+        public bool IsSendEmailNotifyForAll { get; set; }
+        public bool IsSendEmailNotifyForGroupwise { get; set; }
+
         public ContactExportModel(IContactExportService contactService,
            ICurrentUserService currentUserService) : base(contactService, currentUserService)
         {
@@ -23,23 +28,65 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         {
             
         }
-        public async Task<IList<ContactValueTextModel>> GetAllGroupForSelectAsync()
+        public async Task<IList<ContactValueTextModel>> GetAllGroupDetailsAsync()
         {
             return (await _contactExportService.GetAllGroupsAsync(_currentUserService.UserId))
                                            .Select(x => new ContactValueTextModel { Value = x.Value, Text = x.Text, Count = x.Count, IsChecked = false }).ToList();
         }
 
-        public async Task CheckSelectOption()
+        public async Task ExportAllContact()
         {
-            var downloadQueue = new DownloadQueue();
-            downloadQueue.FileName = "AllContacts";
-            downloadQueue.FileUrl = "D:\\Working";
-            downloadQueue.IsProcessing = true;
-            downloadQueue.IsSucceed = false;
-            downloadQueue.DownloadQueueFor = DownloadQueueFor.ContactAllExport;
-            downloadQueue.IsSendEmailNotify = true;
-            downloadQueue.SendEmailAddress = "alpha.bug.debuger@gmail.com";
-            await _contactExportService.SaveDownloadQueueAsync(downloadQueue);
+            if (IsSendEmailNotifyForAll == true && SendEmailAddress.Length ==0)
+            {
+                throw new Exception();
+            }
+            else
+            {
+                var downloadQueue = new DownloadQueue();
+                downloadQueue.FileUrl = ConstantsValue.AllContactExportFileUrl;
+                downloadQueue.IsProcessing = true;
+                downloadQueue.IsSucceed = false;
+                downloadQueue.UserId = _currentUserService.UserId;
+                downloadQueue.DownloadQueueFor = DownloadQueueFor.ContactAllExport;
+                downloadQueue.IsSendEmailNotify = IsSendEmailNotifyForAll;
+                downloadQueue.SendEmailAddress = SendEmailAddress;
+                await _contactExportService.SaveDownloadQueueAsync(downloadQueue);
+
+            }
+        }
+
+        public async Task ExportContactsGroupwise()
+        {
+            if (IsSendEmailNotifyForGroupwise == true && SendEmailAddress.Length == 0)
+            {
+                throw new Exception();
+            }
+            else
+            {
+                var downloadQueue = new DownloadQueue();
+                downloadQueue.FileName = "AllContacts";
+                downloadQueue.FileUrl = ConstantsValue.GroupwiseContactExportFileUrl;
+                downloadQueue.IsProcessing = true;
+                downloadQueue.IsSucceed = false;
+                downloadQueue.UserId = _currentUserService.UserId;
+                downloadQueue.DownloadQueueFor = DownloadQueueFor.ContactGroupWiseExport;
+                downloadQueue.IsSendEmailNotify = IsSendEmailNotifyForGroupwise;
+                downloadQueue.SendEmailAddress = SendEmailAddress;
+                await _contactExportService.SaveDownloadQueueAsync(downloadQueue);
+
+                var dowloadQueueSubEntityList = new List<DownloadQueueSubEntity>();
+                foreach (var item in GroupSelectList)
+                {
+                    if (item.IsChecked)
+                    {
+                        var dowloadQueueSubEntity = new DownloadQueueSubEntity();
+                        dowloadQueueSubEntity.DownloadQueueId = downloadQueue.Id;
+                        dowloadQueueSubEntity.DownloadQueueSubEntityId = item.Value;
+                        dowloadQueueSubEntityList.Add(dowloadQueueSubEntity);
+                    }
+                }
+                await _contactExportService.AddDownloadQueueSubEntities(dowloadQueueSubEntityList);
+            }
         }
     }
 }

@@ -9,8 +9,12 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Framework.Repositories.Contacts
 {
-    public interface IContactExportRepository : IRepository<DownloadQueue, int, FrameworkContext>
+    public class DownloadQueueRepository : Repository<DownloadQueue, int, FrameworkContext>, IDownloadQueueRepository
     {
-        
+        public DownloadQueueRepository(FrameworkContext dbContext)
+           : base(dbContext)
+        {
+
+        }
     }
 }

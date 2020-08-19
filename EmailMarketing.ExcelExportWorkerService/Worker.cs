@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Office.CustomUI;
 using EmailMarketing.Common.Services;
+using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.Services.Contacts;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -44,79 +45,145 @@ namespace EmailMarketing.ExcelExportWorkerService
 
                     foreach (var item in result)
                     {
-
                         var importResult = await _contactExportService.GetDownloadQueueByIdAsync(item.Id);
-
-                        using (var workbook = new XLWorkbook())
+                        if (item.DownloadQueueFor == DownloadQueueFor.ContactAllExport)
                         {
-                            var contacts = await _contactExportService.GetAllContactsAsync(item.UserId);
 
-                            var worksheet = workbook.Worksheets.Add("Users");
-                            var currentRow = 1;
-                            int i = 3;
-
-                            worksheet.Cell(currentRow, 1).Value = "Email";
-                            worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
-
-                            worksheet.Cell(currentRow, 2).Value = "Group";
-                            //worksheet.Cell(currentRow, 2).Style.Border = 
-                            worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
-                            
-                            var fieldmaplist = contacts.SelectMany(x => x.ContactValueMaps).Select(x => x.FieldMap.DisplayName).Distinct().ToList();
-
-
-                            Dictionary<string, int> keyValuePairs = new Dictionary<string, int>();
-
-                            for(int j=0;j<fieldmaplist.Count();j++)
+                            using (var workbook = new XLWorkbook())
                             {
-                                worksheet.Cell(currentRow, j + 3).Value = fieldmaplist[j];
+                                var contacts = await _contactExportService.GetAllContactsAsync(item.UserId);
 
-                                worksheet.Cell(currentRow, j+3).Style.Font.Bold = true;
-                                keyValuePairs.Add(fieldmaplist[j], j+3);
-                            }
-                            
+                                var worksheet = workbook.Worksheets.Add("Users");
+                                var currentRow = 1;
+                                int i = 3;
 
-                            foreach (var item1 in contacts)
-                            {
-                                i++; currentRow++;
-                                worksheet.Cell(currentRow, 1).Value = item1.Email;
-                                
-                                string group = string.Join(", ",item1.ContactGroups.Select(x => x.Group.Name));
-                                
+                                worksheet.Cell(currentRow, 1).Value = "Contact Email Address";
+                                worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
 
-                                worksheet.Cell(currentRow, 2).Value = group;
+                                worksheet.Cell(currentRow, 2).Value = "Groups";
+                                worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
 
-                                for (int j=0;j<item1.ContactValueMaps.Count();j++)
+                                var fieldmaplist = contacts.SelectMany(x => x.ContactValueMaps).Select(x => x.FieldMap.DisplayName).Distinct().ToList();
+
+                                int currentColumn = 3,columnCount = 2;
+                                Dictionary<string, int> keyValuePairs = new Dictionary<string, int>();
+
+                                for (int j = 0; j < fieldmaplist.Count(); j++)
                                 {
-                                    if(keyValuePairs.ContainsKey(item1.ContactValueMaps.Select(x => x.FieldMap.DisplayName).ToArray()[j]))
+                                    worksheet.Cell(currentRow, j + currentColumn).Value = fieldmaplist[j];
+                                    worksheet.Cell(currentRow, j + currentColumn).Style.Font.Bold = true;
+                                    keyValuePairs.Add(fieldmaplist[j], j + currentColumn);
+                                    columnCount++;
+                                }
+
+
+                                foreach (var item1 in contacts)
+                                {
+                                    i++; currentRow++;
+                                    worksheet.Cell(currentRow, 1).Value = item1.Email;
+
+                                    string group = string.Join(", ", item1.ContactGroups.Select(x => x.Group.Name));
+
+
+                                    worksheet.Cell(currentRow, 2).Value = group;
+
+                                    for (int j = 0; j < item1.ContactValueMaps.Count(); j++)
                                     {
-                                        worksheet.Cell(currentRow, keyValuePairs[item1.ContactValueMaps.Select(x => x.FieldMap.DisplayName).ToArray()[j]]).Value = item1.ContactValueMaps[j].Value;
-                                        //worksheet.Cell(currentRow, keyValuePairs[item1.ContactValueMaps.Select(x => x.FieldMap.DisplayName).ToArray()[j]]).Co
+                                        if (keyValuePairs.ContainsKey(item1.ContactValueMaps.Select(x => x.FieldMap.DisplayName).ToArray()[j]))
+                                        {
+                                            worksheet.Cell(currentRow, keyValuePairs[item1.ContactValueMaps.Select(x => x.FieldMap.DisplayName).ToArray()[j]]).Value = item1.ContactValueMaps[j].Value;
+
+                                        }
+
                                     }
                                 }
-                                
+                                //need to change
+                                worksheet.Columns("1", columnCount.ToString()).AdjustToContents();
 
-
+                                var memory = new MemoryStream();
+                                using (var stream = new FileStream(Path.Combine(item.FileUrl, item.FileName), FileMode.Create))
+                                {
+                                    workbook.SaveAs(stream);
+                                }
                             }
-                            //need to change
-                            worksheet.Columns("1", "6").AdjustToContents();
-                            
-                            var memory = new MemoryStream();
-                            using (var stream = new FileStream(Path.Combine(item.FileUrl, item.FileName), FileMode.Append))
-                            {
-                                workbook.SaveAs(stream);
-                                //await stream.CopyToAsync(memory);
-                            }
-                            //workbook.SaveAs("D:\\Working\\Demo.xlsx");
-                            
-
+                            importResult.IsProcessing = false;
+                            importResult.IsSucceed = true;
+                            item.FileName = Guid.NewGuid().ToString();
+                            importResult.FileUrl = Path.Combine(item.FileUrl, item.FileName);
+                           // await _contactExportService.UpdateDownloadQueueAync(importResult);
                         }
-                        importResult.IsProcessing = false;
-                        importResult.IsSucceed = true;
-                        importResult.FileUrl = Path.Combine(item.FileUrl, item.FileName);
-                        //_contactExportService.UpdateDownloadQueue(importResult);
-                    }
 
+                        else if (item.DownloadQueueFor == DownloadQueueFor.ContactGroupWiseExport)
+                        {
+                            for (int cnt = 0; cnt < item.DownloadQueueSubEntities.Count(); cnt++)
+                            {
+                                using (var workbook = new XLWorkbook()) 
+                                {
+                                    var contacts = await _contactExportService.GetAllGroupsByIdAsync(item.DownloadQueueSubEntities[cnt].DownloadQueueSubEntityId);
+
+                                    for (int contact = 0; contact < contacts.Count(); contact++)
+                                    {
+                                        var getcontactbyid = await _contactExportService.GetContactById(contacts[contact].ContactId);
+                                        var worksheet = workbook.Worksheets.Add("Users");
+                                        var currentRow = 1;
+                                        int i = 3;
+
+                                        worksheet.Cell(currentRow, 1).Value = "Email";
+                                        worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+
+                                        worksheet.Cell(currentRow, 2).Value = "Group";
+                                        worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
+
+                                        var fieldmaplist = getcontactbyid.ContactValueMaps.Select(x => x.FieldMap.DisplayName).Distinct().ToList();
+
+
+                                        Dictionary<string, int> keyValuePairs = new Dictionary<string, int>();
+
+                                        for (int j = 0; j < fieldmaplist.Count(); j++)
+                                        {
+                                            worksheet.Cell(currentRow, j + 3).Value = fieldmaplist[j];
+
+                                            worksheet.Cell(currentRow, j + 3).Style.Font.Bold = true;
+                                            keyValuePairs.Add(fieldmaplist[j], j + 3);
+                                        }
+
+                                            i++; currentRow++;
+                                            worksheet.Cell(currentRow, 1).Value = getcontactbyid.Email;
+
+                                            string group = string.Join(", ", getcontactbyid.ContactGroups.Select(x => x.Group.Name));
+
+
+                                            worksheet.Cell(currentRow, 2).Value = group;
+
+                                            for (int j = 0; j < getcontactbyid.ContactValueMaps.Count(); j++)
+                                            {
+                                                if (keyValuePairs.ContainsKey(getcontactbyid.ContactValueMaps.Select(x => x.FieldMap.DisplayName).ToArray()[j]))
+                                                {
+                                                    worksheet.Cell(currentRow, keyValuePairs[getcontactbyid.ContactValueMaps.Select(x => x.FieldMap.DisplayName).ToArray()[j]]).Value = getcontactbyid.ContactValueMaps[j].Value;
+                                                    //worksheet.Cell(currentRow, keyValuePairs[item1.ContactValueMaps.Select(x => x.FieldMap.DisplayName).ToArray()[j]]).Co
+                                                }
+                                            }
+
+
+
+                                        
+                                        //need to change
+                                       // worksheet.Columns("1", "6").AdjustToContents();
+
+                                        var memory = new MemoryStream();
+                                        using (var stream = new FileStream(Path.Combine(item.FileUrl, item.FileName), FileMode.Create))
+                                        {
+                                            workbook.SaveAs(stream);
+                                        }
+                                    }
+                                    importResult.IsProcessing = false;
+                                    importResult.IsSucceed = true;
+                                    importResult.FileUrl = Path.Combine(item.FileUrl, item.FileName);
+                                    //_contactExportService.UpdateDownloadQueue(importResult);
+                                }
+                            }
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {

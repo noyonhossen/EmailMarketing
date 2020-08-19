@@ -11,12 +11,14 @@ namespace EmailMarketing.Framework.UnitOfWorks.Contacts
 {
     public class ContactExportUnitOfWork : UnitOfWork,IContactExportUnitOfWork
     {
-        public IContactExportRepository ContactExportRepository { get; set; }
-
+        public IDownloadQueueRepository DownloadQueueRepository { get; set; }
+        public IDownloadQueueSubEntityRepository DownloadQueueSubEntityRepository { get; set; }
         public ContactExportUnitOfWork(FrameworkContext dbContext,
-            IContactExportRepository contactExportRepository) : base(dbContext)
+            IDownloadQueueRepository downloadQueueRepository,
+            IDownloadQueueSubEntityRepository downloadQueueSubEntityRepository) : base(dbContext)
         {
-            this.ContactExportRepository = contactExportRepository;
+            this.DownloadQueueRepository = downloadQueueRepository;
+            this.DownloadQueueSubEntityRepository = downloadQueueSubEntityRepository;
         }
     }
 }

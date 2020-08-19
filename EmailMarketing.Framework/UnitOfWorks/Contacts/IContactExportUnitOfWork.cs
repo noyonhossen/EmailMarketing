@@ -10,6 +10,7 @@ namespace EmailMarketing.Framework.UnitOfWorks.Contacts
 {
     public interface IContactExportUnitOfWork : IUnitOfWork
     {
-        IContactExportRepository ContactExportRepository { get; set; }
+        IDownloadQueueRepository DownloadQueueRepository { get; set; }
+        IDownloadQueueSubEntityRepository DownloadQueueSubEntityRepository { get; set; }
     }
 }

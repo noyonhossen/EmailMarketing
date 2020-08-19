@@ -97,7 +97,10 @@ namespace EmailMarketing.Framework
                 .InstancePerLifetimeScope();
 
 
-            builder.RegisterType<ContactExportRepository>().As<IContactExportRepository>()
+            builder.RegisterType<DownloadQueueRepository>().As<IDownloadQueueRepository>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<DownloadQueueSubEntityRepository>().As<IDownloadQueueSubEntityRepository>()
                 .InstancePerLifetimeScope();
             builder.RegisterType<ContactExportUnitOfWork>().As<IContactExportUnitOfWork>()
                 .InstancePerLifetimeScope();

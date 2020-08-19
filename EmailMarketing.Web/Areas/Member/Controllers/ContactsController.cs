@@ -180,12 +180,12 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             return View(model);
         }
 
-        // TODO - Don't know what to do with this later!
+        
         [HttpGet]
         public async Task<IActionResult> Export()
         {
             var model = new ContactExportModel();
-            model.GroupSelectList = await model.GetAllGroupForSelectAsync();
+            model.GroupSelectList = await model.GetAllGroupDetailsAsync();
             return View(model);
         }
         [HttpPost]
@@ -194,48 +194,26 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         {
             if (ModelState.IsValid)
             {
-                await model.CheckSelectOption();
-
+                try
+                {
+                    if (model.IsExportAll)
+                    {
+                        await model.ExportAllContact();
+                    }
+                    else
+                    {
+                        await model.ExportContactsGroupwise();
+                    }
+                    _logger.LogInformation("Succecssfully Added to DownloadQueue. Waiting to Complete to Export");
+                }
+                catch
+                {
+                    model.Response= new ResponseModel("Please provide Email", ResponseType.Failure);
+                }
             }
 
-            model.GroupSelectList = await model.GetAllGroupForSelectAsync();
+            model.GroupSelectList = await model.GetAllGroupDetailsAsync();
             return View(model);
-
-
-
-
-
-
-            //var users = new IList<>
-            //using (var workbook = new XLWorkbook())
-            //{
-            //    var worksheet = workbook.Worksheets.Add("Users");
-            //    var currentRow = 1;
-            //    worksheet.Cell(currentRow, 1).Value = "Id";
-            //    worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
-            //    worksheet.Cell(currentRow, 2).Value = "Username";
-            //    worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
-            //    for (int i=0;i<10;i++)
-            //    {
-            //        currentRow++;
-            //        worksheet.Cell(currentRow, 1).Value = "Id"+i;
-            //        worksheet.Cell(currentRow, 2).Value = "User"+i;
-            //    }
-
-            //    using (var stream = new MemoryStream())
-            //    {
-            //        workbook.SaveAs(stream);
-            //        //var content = stream.ToArray();
-            //        var link = "D:\\Working\\Employees.xlsx";
-            //        var net = new System.Net.WebClient();
-            //        var data = net.DownloadData(link);
-            //        var content = new System.IO.MemoryStream(data);
-
-            //        return File(
-            //            content,
-            //            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            //            "Employees.xlsx");
-            //    }
         }
 
 

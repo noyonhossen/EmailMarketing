@@ -3,36 +3,92 @@
     ViewData["Title"] = "Export";
 }
 
-<h1>Export</h1>
+    <div class="page-header">
+        <div class="page-header-content header-elements-md-inline">
+            <div class="page-title d-flex">
+                <h4><a class="text-black-50" href="/Member"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
+                <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+            </div>
 
-
-<div class="content">
-    <div class="card">
-        <div class="card-header">
-            <div class="pl-5 pr-3">
-                <h4 class="card-title">Add Single Contact</h4>
+            <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
+                <a class="btn btn-labeled btn-labeled-right bg-primary" href="/Member/Contacts"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Contact List</span></a>
             </div>
         </div>
-        <hr />
-        <div class="card-body">
-            <div class="row">
-
-                <div class="col-md-8 mx-auto">
-                    <form asp-action="Export" asp-controller="Contacts" asp-area="Member" method="post">
-                        <input type="hidden" asp-for="IsExportAll" value="true" />
-                    <button><i class="icon-1x">Export All Contacts</i></button>
-                    </form>
+    </div>
+<div class="content">
     
-    @*</div>
+    <div class="row">
 
-                        <div class="col-md-4">*@
-                    <h4>Or</h4>
-                    @*</div>*@
+        <div class="col-md-6 m-auto text-center">
+            <h3 class="mb-1 pb-0">Export Your Contacts</h3>
+            <partial name="_ActionMessage" model="@Model.Response" />
+            @*<h5 class="pt-0 mt-0">If everything looks good, click 'Confirm Upload' below.</h5>*@
+
+
+            <div class="bg-white text-left p-3 mb-3">
+
+                <form asp-action="Export" asp-controller="Contacts" asp-area="Member" method="post">
+                    <div class="pb-3">
+                        <div class="dropdown-item form-check form-check-switchery ">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-input-switchery" asp-for="IsSendEmailNotifyForAll">
+                                <span class="font-weight-bold">Send file via email once export is complete</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group row">
+                            <label for="inputEmail" class="col-md-3 col-form-label">Email</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="inputEmail" placeholder="Enter Email" asp-for="SendEmailAddress">
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" asp-for="IsExportAll" value="true" />
+                    <div class="text-center">
+                        <button class="btn btn-primary"><i class="icon-file-download2 text-white"> Export All Contacts</i></button>
+                    </div>
+                </form>
+            </div>
+            <h5 class="text-center">Or</h5>
+            <div class="bg-white text-left p-3 mt-3">
+                <div class="pb-3">
 
                     <form asp-action="Export" asp-controller="Contacts" asp-area="Member" method="post">
-                        @*<div class="col-md-4">*@
+                        <div class="pb-3">
+                            <div class="dropdown-item form-check form-check-switchery ">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-input-switchery" asp-for="IsSendEmailNotifyForGroupwise">
+                                    <span class="font-weight-bold">Send file via email once export is complete</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="form-group row">
+                                <label for="inputEmail" class="col-md-3 col-form-label">Email</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" id="inputEmail" placeholder="Enter Email" asp-for="SendEmailAddress">
+                                </div>
+                            </div>
+                        </div>
                         <div class="bg-white">
-                            <h4 class="card-title">Select Groupwise</h4>
+                            <h5 class="card-title">Select Groupwise</h5>
+                            
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="checkAll">
+                                <label class="form-check-label" for="checkAll">Select All Lists</label>
+                            </div>
+
+                            <div class="bg-white">
+                                <p class="p-2">
+                                    <i class="icon-collaboration"></i>&nbsp;&nbsp; <span id="selected">No</span> <span>List</span> Selected
+                                    @*<span asp-validation-for="@Model.GroupSelectList"></span>*@
+                                </p>
+                            </div>
+
+
+
                             <ul class="list-group">
                                 @for (int i = 0; i < Model.GroupSelectList.Count(); i++)
                                 {
@@ -41,9 +97,6 @@
                                             <input type="checkbox" class="form-check-input group-select" id="checkSingle[@i]" value="@Model.GroupSelectList[i].IsChecked.ToString().ToLower()" name="GroupSelectList[@i].IsChecked">
                                             <input type="hidden" class="form-control" asp-for="@Model.GroupSelectList[i].Value">
                                             <input type="hidden" class="form-control" asp-for="@Model.GroupSelectList[i].Text">
-                                            @*<input type="hidden" class="form-control" value="@Model.GroupSelectList[i].Count" name="GroupSelectList[@i].Count">
-                                                <input type="hidden" class="form-control" value="@Model.GroupSelectList[i].Input" name="GroupSelectList[@i].Input">
-                                                <input type="hidden" class="form-control" value="@Model.GroupSelectList[i].Text" name="GroupSelectList[@i].Text">*@
 
                                             <label class="form-check-label" for="checkSingle[@i]">
                                                 @Model.GroupSelectList[i].Text
@@ -57,11 +110,14 @@
                                 }
                             </ul>
                         </div>
-                        <button>Export Selected Group</button>
+                        <div class="text-center">
+                            <button class="btn btn-primary m-2"><i class="icon-file-download2 text-white"> Export Selected Group</i></button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 
@@ -69,9 +125,40 @@
 
 <script>
 
-    $('.group-select').change(function () {
-        var val = this.checked;
-        $(this).val(val);
+    $('#checkAll').click(function (event) {
+        if (this.checked) {
+            // Iterate each checkbox
+            $(':checkbox.group-select').each(function () {
+                this.checked = true;
+                $(this).val(this.checked);
+            });
+        } else {
+            $(':checkbox.group-select').each(function () {
+                this.checked = false;
+                $(this).val(this.checked);
+            });
+        }
     });
 
+
+    $(document).ready(function () {
+        $('.group-select').change(function () {
+            var val = this.checked;
+            $(this).val(val);
+        });
+        $('.form-input-switchery').change(function () {
+            var val = this.checked;
+            $(this).val(val);
+        });
+    });
+
+    var selectedElm = document.getElementById('selected');
+    function showChecked() {
+        var count = document.querySelectorAll('input.group-select:checked').length;
+        if (count > 0) selectedElm.innerHTML = count;
+        else selectedElm.innerHTML = "No";
+    }
+    document.querySelectorAll("input").forEach(i => {
+        i.onclick = () => showChecked();
+    });
 </script>
