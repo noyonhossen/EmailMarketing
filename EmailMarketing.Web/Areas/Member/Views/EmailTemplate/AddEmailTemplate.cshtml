@@ -12,7 +12,7 @@
         </div>
 
         <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="Groups" asp-action="Index" asp-area="Member" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Group List</span></a>
+            <a asp-controller="Campaigns" asp-action="AddCampaign" asp-area="Member" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Template List</span></a>
         </div>
     </div>
 </div>
@@ -26,6 +26,8 @@
             <div class="header-elements">
             </div>
         </div>
+
+        <hr class="mt-0" />
 
         <div class="card-body">
             <partial name="_ActionMessage" model="@Model.Response" />

@@ -1,5 +1,12 @@
 ﻿
 $(function () {
+
+    $(".display_editor").hide();
+
+    $(".editor_btn").click(function () {
+        $(".display_editor").show();
+    });
+
     $('#checkAll').click(function (event) {
         if (this.checked) {
             // Iterate each checkbox

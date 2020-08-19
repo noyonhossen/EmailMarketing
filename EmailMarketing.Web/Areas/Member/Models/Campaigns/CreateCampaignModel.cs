@@ -21,13 +21,13 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         [Required]
         [Display(Name = "Email Subject")]
         public string EmailSubject { get; set; }
-        [Required]
         [Display(Name = "Send DateTime")]
         public DateTime? SendDateTime { get; set; }
         [Display(Name = "Notify Me")]
         public bool IsSendEmailNotify { get; set; }
         [Display(Name = "Sender Email")]
         public string SendEmailAddress { get; set; }
+        public bool SendNow { get; set; }
         [Display(Name = "Draft")]
         public bool IsDraft { get; set; }
         public int? SelectedTemplateId { get; set; }

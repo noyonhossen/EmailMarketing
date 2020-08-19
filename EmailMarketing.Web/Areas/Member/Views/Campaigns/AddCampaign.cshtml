@@ -9,17 +9,30 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 }
 
+<div class="page-header">
+    <div class="page-header-content header-elements-md-inline">
+        <div class="page-title d-flex">
+            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Member" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+
+        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
+            <a asp-controller="Campaigns" asp-action="Index" asp-area="Member" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Campaign List</span></a>
+        </div>
+    </div>
+</div>
+
 <!-- Main content -->
 <div class="content-wrapper">
     <!-- Content area -->
-    <div class="content">
-
+    <div class="content pt-0">
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header header-elements-inline">
                         <h5 class="card-title text-primary">Add Campaign</h5>
                     </div>
+                    <hr class="mt-0"/>
 
                     <div class="card-body">
                         <form asp-area="Member" asp-controller="Campaigns" asp-action="AddCampaign" method="post">
@@ -47,10 +60,16 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label asp-for="SendDateTime" class="col-sm-3 col-form-label required"></label>
+                                        <label asp-for="SendDateTime" class="col-sm-3 col-form-label"></label>
                                         <div class="col-sm-9">
                                             <input asp-for="SendDateTime" class="form-control" />
                                             <span asp-validation-for="SendDateTime" class="text-danger"></span>
+                                            <div class="dropdown-item form-check form-check-switchery ">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-input-switchery" checked data-fouc asp-for="SendNow">
+                                                    <span class="font-weight-bold">Send Now?</span>
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -79,6 +98,7 @@
                                         <label asp-for="SendEmailAddress" class="col-sm-3 col-form-label"></label>
                                         <div class="col-sm-9">
                                             <input asp-for="SendEmailAddress" class="form-control" />
+                                            <span>[You can send to multiple email by using comma between emails.]</span>
                                             <span asp-validation-for="SendEmailAddress" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -131,7 +151,7 @@
                             <!--Template Preview-->
                             <div class="row"></div>
                             <div class="row">
-                                
+
                             </div>
                             <div class="row">
                                 <div class="col-2 mx-2">
