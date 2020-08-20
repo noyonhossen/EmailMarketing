@@ -11,10 +11,14 @@ namespace EmailMarketing.Framework.Services.Campaigns
     {
         Task<IList<(int Value, string CampaignName, string Email, bool IsDelivered, bool IsSeen, DateTime SendDateTime, DateTime? SeenDateTime)>> GetAllCampaignReportAsync(
             Guid? userId);
+        Task<IList<Campaign>> GetAllCampaignsAsync(Guid? userId);
+        Task<IList<CampaignGroup>> GetAllGroupsByIdAsync(int campaignId);
+        Task<CampaignReport> GetCampaignReportById(int campaignId);
         Task SaveDownloadQueueAsync(DownloadQueue downloadQueue);
         Task<IList<DownloadQueue>> GetDownloadQueue();
-        Task<DownloadQueue> GetDownloadQueueByIdAsync(int contactUploadId);
-        Task<IList<CampaignReport>> GetAllCampaignsReportAsync(Guid? userId);
-        Task UpdateDownloadQueue(DownloadQueue importResult);
+        Task<DownloadQueue> GetDownloadQueueByIdAsync(int campaingReportId);
+        Task UpdateDownloadQueueAync(DownloadQueue downloadQueue);
+        Task AddDownloadQueueSubEntities(DownloadQueueSubEntity downloadQueueSubEntity);
+        Task<IList<(int Value, string CampaignName, string Email, bool IsDelivered, bool IsSeen, DateTime SendDateTime, DateTime? SeenDateTime)>> GetCampaignWiseReportAsync(Guid? userId, int campaignId);
     }
 }

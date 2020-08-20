@@ -4,14 +4,23 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
+using EmailMarketing.Web.Areas.Member.Enums;
+using EmailMarketing.Web.Areas.Member.Models;
 using EmailMarketing.Web.Areas.Member.Models.Campaigns;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
     [Area("Member")]
     public class CampaignsController : Controller
     {
+        private readonly ILogger<CampaignsController> _logger;
+
+        public CampaignsController(ILogger<CampaignsController> logger)
+        {
+            _logger = logger;
+        }
         public IActionResult Index()
         {
             var model = new CampaignsModel();
@@ -35,7 +44,22 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         {
             if (ModelState.IsValid)
             {
-                await model.CheckSelectOption();
+                try
+                {
+                    if (model.IsExportAll)
+                    {
+                        await model.ExportAllCampaign();
+                    }
+                    else
+                    {
+                        await model.ExportCampaignWise();
+                    }
+                    _logger.LogInformation("Succecssfully Added to DownloadQueue. Waiting to Complete to Export");
+                }
+                catch
+                {
+                    model.Response = new ResponseModel("Please provide Email", ResponseType.Failure);
+                }
 
             }
             return RedirectToAction("ViewReport");

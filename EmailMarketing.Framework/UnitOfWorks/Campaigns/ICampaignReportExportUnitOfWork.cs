@@ -10,6 +10,7 @@ namespace EmailMarketing.Framework.UnitOfWorks.Campaigns
 {
     public interface ICampaignReportExportUnitOfWork : IUnitOfWork
     {
-        ICampaignReportExportRepository CampaignReportExportRepository { get; set; }
+        IDownloadQueueRepository DownloadQueueRepository { get; set; }
+        IDownloadQueueSubEntityRepository DownloadQueueSubEntityRepository { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ClosedXML.Excel;
 using EmailMarketing.Common.Services;
 using EmailMarketing.ExcelWorkerService.Templates;
+using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.Services.Campaigns;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -44,79 +45,113 @@ namespace EmailMarketing.CampaingReportExcelExportService
 
                     foreach (var item in result)
                     {
+                        if (Directory.Exists(item.FileUrl) == false)
+                        {
+                            DirectoryInfo directory = Directory.CreateDirectory(item.FileUrl);
+                        }
                         _logger.LogInformation($"item values - file url is = {item.FileUrl}");
                         var importResult = await _campaignReportExportService.GetDownloadQueueByIdAsync(item.Id);
-
-                        using (var workbook = new XLWorkbook())
+                        if (item.DownloadQueueFor == DownloadQueueFor.CampaignAllReportExport)
                         {
-                            var campaignReport = await _campaignReportExportService.GetAllCampaignReportAsync(item.UserId);
-
-                            var worksheet = workbook.Worksheets.Add("CampaignReport");
-                            var currentRow = 1;
-                            int i = 3;
-
-                            worksheet.Cell(currentRow, 1).Value = "Email";
-                            worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
-                            worksheet.Column(1).AdjustToContents();
-                            worksheet.Cell(currentRow, 2).Value = "Delivered";
-                            worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
-                            worksheet.Column(2).AdjustToContents();
-                            worksheet.Cell(currentRow, 3).Value = "Seen";
-                            worksheet.Cell(currentRow, 3).Style.Font.Bold = true;
-                            worksheet.Column(3).AdjustToContents();
-                            worksheet.Cell(currentRow, 4).Value = "Send Date";
-                            worksheet.Cell(currentRow, 4).Style.Font.Bold = true;
-                            worksheet.Column(4).AdjustToContents();
-                            worksheet.Cell(currentRow, 5).Value = "Seen Date";
-                            worksheet.Cell(currentRow, 5).Style.Font.Bold = true;
-                            worksheet.Column(5).AdjustToContents();
-
-                            foreach (var report in campaignReport)
+                            using (var workbook = new XLWorkbook())
                             {
-                                currentRow++;
-                                worksheet.Cell(currentRow, 1).Value = report.Email;
-                                worksheet.Cell(currentRow, 2).Value = report.IsDelivered == true ? "Yes" : "NO";
-                                worksheet.Cell(currentRow, 3).Value = report.IsSeen == true ? "Yes" : "NO";
-                                worksheet.Cell(currentRow, 4).Value = "" + report.SendDateTime.ToString();
-                                worksheet.Cell(currentRow, 5).Value = report.SeenDateTime.ToString();
+                                var campaignReport = await _campaignReportExportService.GetAllCampaignReportAsync(item.UserId);
+
+                                var worksheet = workbook.Worksheets.Add("CampaignReport");
+                                var currentRow = 1;
+                                int i = 3;
+
+                                worksheet.Cell(currentRow, 1).Value = "Email";
+                                worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+
+                                worksheet.Cell(currentRow, 2).Value = "Delivered";
+                                worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
+
+                                worksheet.Cell(currentRow, 3).Value = "Seen";
+                                worksheet.Cell(currentRow, 3).Style.Font.Bold = true;
+
+                                worksheet.Cell(currentRow, 4).Value = "Send Date";
+                                worksheet.Cell(currentRow, 4).Style.Font.Bold = true;
+
+                                worksheet.Cell(currentRow, 5).Value = "Seen Date";
+                                worksheet.Cell(currentRow, 5).Style.Font.Bold = true;
+
+                                foreach (var report in campaignReport)
+                                {
+                                    currentRow++;
+                                    worksheet.Cell(currentRow, 1).Value = report.Email;
+                                    worksheet.Cell(currentRow, 2).Value = report.IsDelivered == true ? "Yes" : "NO";
+                                    worksheet.Cell(currentRow, 3).Value = report.IsSeen == true ? "Yes" : "NO";
+                                    worksheet.Cell(currentRow, 4).Value = "" + report.SendDateTime.ToString();
+                                    worksheet.Cell(currentRow, 5).Value = report.SeenDateTime.ToString();
+                                }
+                                //need to change
+                                worksheet.Columns("1", "5").AdjustToContents();
+
+                                var memory = new MemoryStream();
+                                using (var stream = new FileStream(Path.Combine(item.FileUrl, item.FileName), FileMode.Append))
+                                {
+                                    workbook.SaveAs(stream);
+                                }
                             }
-                            //need to change
-                            worksheet.Columns("1", "5").AdjustToContents();
-
-                            var memory = new MemoryStream();
-                            using (var stream = new FileStream(Path.Combine(item.FileUrl, item.FileName), FileMode.Append))
-                            {
-                                workbook.SaveAs(stream);
-                                //await stream.CopyToAsync(memory);
-                            }
-                            //workbook.SaveAs("D:\\Working\\Demo.xlsx");
-
-
+                            importResult.IsProcessing = false;
+                            importResult.IsSucceed = true;
+                            importResult.FileUrl = Path.Combine(item.FileUrl, item.FileName);
+                            //await _campaignReportExportService.UpdateDownloadQueueAync(importResult);
                         }
-                        importResult.IsProcessing = false;
-                        importResult.IsSucceed = true;
-                        importResult.FileUrl = Path.Combine(item.FileUrl, item.FileName);
-                        _campaignReportExportService.UpdateDownloadQueue(importResult);
+                        else if (item.DownloadQueueFor == DownloadQueueFor.CampaignDetailsReportExport)
+                        {
 
-                        //if (item.IsSendEmailNotify)
-                        //{
-                        //    if (importResult.SucceedEntryCount > 0)
-                        //    {
-                        //        var fileUploadConfirmationEmailTemplate = new FileUploadConfirmationEmailTemplate("Noyon", importResult.SucceedEntryCount);
-                        //        var emailBody = fileUploadConfirmationEmailTemplate.TransformText();
+                            for (int cnt = 0; cnt < item.DownloadQueueSubEntities.Count(); cnt++)
+                            {
+                                using (var workbook = new XLWorkbook())
+                                {
+                                    var campaignReport = await _campaignReportExportService.GetCampaignWiseReportAsync(item.UserId, item.DownloadQueueSubEntities[cnt].DownloadQueueSubEntityId);
 
-                        //        await _mailerService.SendEmailAsync(item.SendEmailAddress, "File Upload Confirmation", emailBody);
-                        //    }
-                        //    else
-                        //    {
-                        //        var fileUploadFailedEmailTemplate = new FileUploadFailedEmailTemplate("Shamim");
-                        //        var emailBody = fileUploadFailedEmailTemplate.TransformText();
-                        //        await _mailerService.SendEmailAsync(item.SendEmailAddress, "Upload Failed", emailBody);
-                        //    }
-                        //}
+                                    var worksheet = workbook.Worksheets.Add("CampaignWiseReport");
+                                    var currentRow = 1;
+                                    int i = 3;
 
+                                    worksheet.Cell(currentRow, 1).Value = "Email";
+                                    worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+
+                                    worksheet.Cell(currentRow, 2).Value = "Delivered";
+                                    worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
+
+                                    worksheet.Cell(currentRow, 3).Value = "Seen";
+                                    worksheet.Cell(currentRow, 3).Style.Font.Bold = true;
+
+                                    worksheet.Cell(currentRow, 4).Value = "Send Date";
+                                    worksheet.Cell(currentRow, 4).Style.Font.Bold = true;
+
+                                    worksheet.Cell(currentRow, 5).Value = "Seen Date";
+                                    worksheet.Cell(currentRow, 5).Style.Font.Bold = true;
+
+                                    foreach (var report in campaignReport)
+                                    {
+                                        currentRow++;
+                                        worksheet.Cell(currentRow, 1).Value = report.Email;
+                                        worksheet.Cell(currentRow, 2).Value = report.IsDelivered == true ? "Yes" : "NO";
+                                        worksheet.Cell(currentRow, 3).Value = report.IsSeen == true ? "Yes" : "NO";
+                                        worksheet.Cell(currentRow, 4).Value = "" + report.SendDateTime.ToString();
+                                        worksheet.Cell(currentRow, 5).Value = report.SeenDateTime.ToString();
+                                    }
+                                    //need to change
+                                    worksheet.Columns("1", "5").AdjustToContents();
+
+                                    var memory = new MemoryStream();
+                                    using (var stream = new FileStream(Path.Combine(item.FileUrl, item.FileName), FileMode.Append))
+                                    {
+                                        workbook.SaveAs(stream);
+                                    }
+                                }
+                                importResult.IsProcessing = false;
+                                importResult.IsSucceed = true;
+                                importResult.FileUrl = Path.Combine(item.FileUrl, item.FileName);
+                                //await _campaignReportExportService.UpdateDownloadQueueAync(importResult);
+                            }
+                        }
                     }
-                    _logger.LogInformation("item values is done showing");
                 }
                 catch (Exception ex)
                 {

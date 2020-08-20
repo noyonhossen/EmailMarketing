@@ -10,12 +10,14 @@ namespace EmailMarketing.Framework.UnitOfWorks.Campaigns
 {
     public class CampaignReportExportUnitOfWork : UnitOfWork, ICampaignReportExportUnitOfWork
     {
-        public ICampaignReportExportRepository CampaignReportExportRepository { get; set; }
-
+        public IDownloadQueueRepository DownloadQueueRepository { get; set; }
+        public IDownloadQueueSubEntityRepository DownloadQueueSubEntityRepository { get; set; }
         public CampaignReportExportUnitOfWork(FrameworkContext dbContext,
-            ICampaignReportExportRepository contactExportRepository) : base(dbContext)
+            IDownloadQueueRepository downloadQueueRepository,
+            IDownloadQueueSubEntityRepository downloadQueueSubEntityRepository) : base(dbContext)
         {
-            this.CampaignReportExportRepository = contactExportRepository;
+            this.DownloadQueueRepository = downloadQueueRepository;
+            this.DownloadQueueSubEntityRepository = downloadQueueSubEntityRepository;
         }
     }
 }
