@@ -1,4 +1,5 @@
 ﻿using EmailMarketing.Data;
+using EmailMarketing.Framework.Entities.SMTP;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace EmailMarketing.Framework.Entities.Campaigns
         public bool IsDraft { get; set; }
         public bool IsProcessing { get; set; }
         public bool IsSucceed { get; set; }
+        public Guid SMTPConfigId { get; set; }
+        public SMTPConfig SMTPConfig { get; set; }
 
         public IList<CampaignGroup> CampaignGroups { get; set; }
         public IList<CampaignReport> CampaignReports { get; set; }
