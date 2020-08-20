@@ -30,7 +30,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         }
         public async Task<IList<ContactValueTextModel>> GetAllGroupDetailsAsync()
         {
-            return (await _contactExportService.GetAllGroupsAsync(_currentUserService.UserId))
+            return (await _contactExportService.GetAllGroupAsync(_currentUserService.UserId))
                                            .Select(x => new ContactValueTextModel { Value = x.Value, Text = x.Text, Count = x.Count, IsChecked = false }).ToList();
         }
 

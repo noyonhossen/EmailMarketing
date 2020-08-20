@@ -27,7 +27,7 @@ namespace EmailMarketing.Framework.Services.Contacts
             _groupUnitOfWork = groupUnitOfWork;
         }
 
-        public async Task<IList<Contact>> GetAllContactsAsync(Guid? userId)
+        public async Task<IList<Contact>> GetAllContactAsync(Guid? userId)
         {
             var contacts = await _contactUnitOfWork.ContactRepository.GetAsync<Contact>(
                 x => x, x => (!userId.HasValue || x.UserId == userId.Value), null, x => x.Include(i => i.ContactValueMaps).ThenInclude(i => i.FieldMap)
@@ -36,10 +36,10 @@ namespace EmailMarketing.Framework.Services.Contacts
             return contacts;
         }
 
-        public async Task<IList<ContactGroup>> GetAllGroupsByIdAsync(Guid? userId,int groupId)
+        public async Task<IList<ContactGroup>> GetAllContactGroupByUserIdAsync(Guid? userId,int groupId)
         {
             var contacts = await _contactUnitOfWork.GroupContactRepository.GetAsync<ContactGroup>(
-                x => x, x => (x.GroupId == groupId) && (x.Contact.UserId == userId), null, x => x.Include(i => i.Contact).ThenInclude(i => i.ContactValueMaps).ThenInclude(i => i.FieldMap).Include(i=>i.Group), true
+                x => x, x => ((x.GroupId == groupId) && (x.Contact.UserId == userId)), null, x => x.Include(i => i.Contact).ThenInclude(i => i.ContactValueMaps).ThenInclude(i => i.FieldMap).Include(i=>i.Group), true
                 );
             return contacts;
         }
@@ -50,7 +50,7 @@ namespace EmailMarketing.Framework.Services.Contacts
         }
         
 
-        public async Task<IList<(int Value, string Text, int Count)>> GetAllGroupsAsync(Guid? userId)
+        public async Task<IList<(int Value, string Text, int Count)>> GetAllGroupAsync(Guid? userId)
         {
             return (await _groupUnitOfWork.GroupRepository.GetAsync(x => new { Value = x.Id, Text = x.Name, Count = x.ContactGroups.Count() },
                                                    x => !x.IsDeleted && x.IsActive &&
@@ -74,12 +74,11 @@ namespace EmailMarketing.Framework.Services.Contacts
             return result;
         }
 
-        public async Task<DownloadQueue> GetDownloadQueueByIdAsync(int contactUploadId)
+        public async Task<DownloadQueue> GetDownloadQueueByIdAsync(int downloadQueueId)
         {
-            var contactUpload = await _contactExportUnitOfWork.DownloadQueueRepository.GetFirstOrDefaultAsync(x => x, x => x.Id == contactUploadId,
-                                    null, true);
+            var downloadQueue = await _contactExportUnitOfWork.DownloadQueueRepository.GetByIdAsync(downloadQueueId);
 
-            return contactUpload;
+            return downloadQueue;
         }
         public async Task UpdateDownloadQueueAsync(DownloadQueue downloadQueue)
         {
@@ -91,7 +90,7 @@ namespace EmailMarketing.Framework.Services.Contacts
         {
             using (var workbook = new XLWorkbook())
             {
-                var contacts = await GetAllContactsAsync(downloadQueue.UserId);
+                var contacts = await GetAllContactAsync(downloadQueue.UserId);
 
                 var worksheet = workbook.Worksheets.Add("All Contacts");
                 var currentRow = 1;
@@ -154,7 +153,7 @@ namespace EmailMarketing.Framework.Services.Contacts
                 for (int cnt = 0; cnt < downloadQueue.DownloadQueueSubEntities.Count(); cnt++)
                 {
                     int currentRow = 1, currentColumn = 3, columnCount = 2;
-                    var contacts = await GetAllGroupsByIdAsync(downloadQueue.UserId, downloadQueue.DownloadQueueSubEntities[cnt].DownloadQueueSubEntityId);
+                    var contacts = await GetAllContactGroupByUserIdAsync(downloadQueue.UserId, downloadQueue.DownloadQueueSubEntities[cnt].DownloadQueueSubEntityId);
                     var groupName = contacts.Select(x => x.Group.Name).FirstOrDefault();
                     var worksheet = workbook.Worksheets.Add(groupName + " contacts");
                     worksheet.Cell(currentRow, 1).Value = "Contact Email Address";
@@ -162,7 +161,7 @@ namespace EmailMarketing.Framework.Services.Contacts
                     worksheet.Cell(currentRow, 2).Value = "Group";
                     worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
 
-                    var allcontacts = contacts.Select(x => x.Contact).ToList();
+                    var contactsForSelectedGroupId = contacts.Select(x => x.Contact).ToList();
                     var fieldmaplist = contacts.Select(x => x.Contact).SelectMany(x => x.ContactValueMaps).Select(x => x.FieldMap.DisplayName).Distinct().ToList();
 
                     Dictionary<string, int> keyValuePairs = new Dictionary<string, int>();
@@ -175,20 +174,20 @@ namespace EmailMarketing.Framework.Services.Contacts
                         keyValuePairs.Add(fieldmaplist[j], j + currentColumn);
                         columnCount++;
                     }
-                    foreach (var item1 in allcontacts)
+                    foreach (var item in contactsForSelectedGroupId)
                     {
                         currentRow++;
-                        worksheet.Cell(currentRow, 1).Value = item1.Email;
-                        string group = string.Join(", ", item1.ContactGroups.Select(x => x.Group.Name));
+                        worksheet.Cell(currentRow, 1).Value = item.Email;
+                        string group = string.Join(", ", item.ContactGroups.Select(x => x.Group.Name));
 
                         worksheet.Cell(currentRow, 2).Value = group;
 
-                        for (int j = 0; j < item1.ContactValueMaps.Count(); j++)
+                        for (int j = 0; j < item.ContactValueMaps.Count(); j++)
                         {
-                            var key = item1.ContactValueMaps.Select(x => x.FieldMap.DisplayName).ToArray()[j];
+                            var key = item.ContactValueMaps.Select(x => x.FieldMap.DisplayName).ToArray()[j];
                             if (keyValuePairs.ContainsKey(key))
                             {
-                                worksheet.Cell(currentRow, keyValuePairs[key]).Value = item1.ContactValueMaps[j].Value;
+                                worksheet.Cell(currentRow, keyValuePairs[key]).Value = item.ContactValueMaps[j].Value;
                             }
                         }
                     }
