@@ -19,7 +19,8 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         public bool IsExportAll { get; set; }
         public string SendEmailAddress { get; set; }
         public bool IsSendEmailNotifyForAll { get; set; }
-        public bool IsSendEmailNotifyForGroupwise { get; set; }
+        public bool IsSendEmailNotifyForCampaignwise { get; set; }
+        public IList<object> CampaignSelectList { get; set; }
         public CampaignsModel(ICampaignReportExportService campaignService,
             ICurrentUserService currentUserService) : base(campaignService, currentUserService)
         {
@@ -29,9 +30,13 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         {
 
         }
+        public async Task LoadAllCampaignSelectListAsync()
+        { 
+            this.CampaignSelectList = await _campaignService.GetCampaignsForSelectAsync(_currentUserService.UserId);
+        }
         public async Task ExportAllCampaign()
         {
-            if (IsSendEmailNotifyForAll == true && SendEmailAddress.Length == 0)
+            if (IsSendEmailNotifyForAll == true && string.IsNullOrWhiteSpace(SendEmailAddress))
             {
                 throw new Exception();
             }
@@ -52,7 +57,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
 
         public async Task ExportCampaignWise()
         {
-            if (IsSendEmailNotifyForGroupwise == true && SendEmailAddress.Length == 0)
+            if (IsSendEmailNotifyForCampaignwise == true && string.IsNullOrWhiteSpace(SendEmailAddress))
             {
                 throw new Exception();
             }
@@ -65,7 +70,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 downloadQueue.IsSucceed = false;
                 downloadQueue.UserId = _currentUserService.UserId;
                 downloadQueue.DownloadQueueFor = DownloadQueueFor.CampaignDetailsReportExport;
-                downloadQueue.IsSendEmailNotify = IsSendEmailNotifyForGroupwise;
+                downloadQueue.IsSendEmailNotify = IsSendEmailNotifyForCampaignwise;
                 downloadQueue.SendEmailAddress = SendEmailAddress;
                 await _campaignService.SaveDownloadQueueAsync(downloadQueue);
 

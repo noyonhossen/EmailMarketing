@@ -18,7 +18,7 @@
                             <div class="pb-3">
                                 <div class="dropdown-item form-check form-check-switchery ">
                                     <label class="form-check-label">
-                                        <input type="checkbox" class="form-input-switchery" asp-for="IsSendEmailNotifyForAll">
+                                        <input type="checkbox" id="email-checkbox-all-campaign" class="form-input-switchery" asp-for="IsSendEmailNotifyForAll">
                                         <span class="font-weight-bold">Send file via email once export is complete</span>
                                     </label>
                                 </div>
@@ -27,7 +27,7 @@
                                 <div class="form-group row">
                                     <label for="inputEmail" class="col-md-3 col-form-label">Email</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" id="inputEmail" placeholder="Enter Email" asp-for="SendEmailAddress">
+                                        <input type="text" class="form-control" name="inputEmail-all-campaign" placeholder="Enter Email" asp-for="SendEmailAddress">
                                     </div>
                                 </div>
                             </div>
@@ -44,7 +44,7 @@
                             <div class="pb-3">
                                 <div class="dropdown-item form-check form-check-switchery ">
                                     <label class="form-check-label">
-                                        <input type="checkbox" class="form-input-switchery" asp-for="IsSendEmailNotifyForAll">
+                                        <input type="checkbox" class="form-input-switchery" id="email-checkbox-campaign-wise" asp-for="IsSendEmailNotifyForCampaignwise">
                                         <span class="font-weight-bold">Send file via email once export is complete</span>
                                     </label>
                                 </div>
@@ -53,14 +53,24 @@
                                 <div class="form-group row">
                                     <label for="inputEmail" class="col-md-3 col-form-label">Email</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" id="inputEmail" placeholder="Enter Email" asp-for="SendEmailAddress">
+                                        <input type="text" class="form-control" name="inputEmail-campaign-wise" placeholder="Enter Email" asp-for="SendEmailAddress">
                                     </div>
                                 </div>
                             </div>
 
+                            <div>
+                                <div class="form-group row">
+                                    <label for="Id" class="col-md-3 col-form-label">Campaign</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" asp-for="Id" asp-items="@(new SelectList(Model.CampaignSelectList,"Value","Text"))">
+                                            <option value="">--- Choose Campaign ---</option>
+                                        </select>
+                                        <span asp-validation-for="Id" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
                             <input type="hidden" asp-for="IsExportAll" value="false" />
-                            <input type="hidden" asp-for="Id" value="3" />
-                            <div class="text-center">
+                            <div class="text-center mt-3">
                                 <button class="btn btn-primary"><i class="icon-file-download2 text-white"> Export Campaign Wise Report</i></button>
                             </div>
                         </form>
@@ -74,5 +84,4 @@
     </div>
     <!-- /Content area -->
 </div>
-
 <!-- /Main content -->

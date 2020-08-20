@@ -56,6 +56,9 @@ namespace EmailMarketing.Framework
 
             builder.RegisterType<CampaignUnitOfWork>().As<ICampaignUnitOfWork>()
                    .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignRepository>().As<ICampaignRepository>()
+                   .InstancePerLifetimeScope();
+
             builder.RegisterType<DownloadQueueRepository>().As<IDownloadQueueRepository>()
                 .InstancePerLifetimeScope();
 

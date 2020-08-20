@@ -18,21 +18,33 @@ namespace EmailMarketing.Framework.Services.Campaigns
         private ICampaignReportExportUnitOfWork _campaignReportExportUnitOfWork;
         private ICampaignReportUnitOfWork _campaignReportUnitOfWork;
         private ICampaignUnitOfWork _campaignUnitOfWork;
-        public CampaignReportExportService(ICampaignReportExportUnitOfWork campaignReportExportUnitOfWork, ICampaignReportUnitOfWork campaignReportUnitOfWork)
+        public CampaignReportExportService(
+            ICampaignReportExportUnitOfWork campaignReportExportUnitOfWork, 
+            ICampaignReportUnitOfWork campaignReportUnitOfWork,
+            ICampaignUnitOfWork campaignUnitOfWork)
         {
             _campaignReportExportUnitOfWork = campaignReportExportUnitOfWork;
             _campaignReportUnitOfWork = campaignReportUnitOfWork;
+            _campaignUnitOfWork = campaignUnitOfWork;
         }
         public async Task<IList<DownloadQueue>> GetDownloadQueue()
         {
-            var result = await _campaignReportExportUnitOfWork.DownloadQueueRepository.GetAsync(x => x, x => x.IsProcessing == true && x.IsSucceed == false, null, x=> x.Include(y=> y.DownloadQueueSubEntities), true);
+            var result = await _campaignReportExportUnitOfWork.DownloadQueueRepository.GetAsync(
+                x => x,
+                x => x.IsProcessing == true && x.IsSucceed == false,
+                null,
+                x=> x.Include(y=> y.DownloadQueueSubEntities),
+                true);
             return result;
         }
 
-        public async Task<DownloadQueue> GetDownloadQueueByIdAsync(int campaingReportId)
+        public async Task<DownloadQueue> GetDownloadQueueByIdAsync(int downloadQueueId)
         {
-            var contactUpload = await _campaignReportExportUnitOfWork.DownloadQueueRepository.GetFirstOrDefaultAsync(x => x, x => x.Id == campaingReportId,
-                                    null, true);
+            var contactUpload = await _campaignReportExportUnitOfWork.DownloadQueueRepository.GetFirstOrDefaultAsync(
+                x => x,
+                x => x.Id == downloadQueueId,
+                null,
+                true);
             return contactUpload;
         }
         public async Task UpdateDownloadQueueAync(DownloadQueue downloadQueue)
@@ -44,21 +56,33 @@ namespace EmailMarketing.Framework.Services.Campaigns
         {
             _campaignReportUnitOfWork?.Dispose();
         }
-        public async Task<IList<(int Value, string CampaignName, string Email, bool IsDelivered, bool IsSeen, DateTime SendDateTime, DateTime? SeenDateTime)>> GetAllCampaignReportAsync(Guid? userId)
+        public async Task<IList<CampaignReport>> GetAllCampaignReportAsync(Guid? userId)
         {
-            var result = (await _campaignReportUnitOfWork.CampaingReportRepository.GetAsync(x => new { Value = x.Id, CampaignName = x.Campaign.Name, Email = x.Contact.Email, IsDelivered = x.IsDelivered, IsSeen = x.IsSeen, SendDateTime = x.SendDateTime, SeenDateTime = x.SeenDateTime },
+            var result = (await _campaignReportUnitOfWork.CampaingReportRepository.GetAsync(x => x,
                                                    x => !x.IsDeleted && x.IsActive &&
-                                                   (!userId.HasValue || x.Campaign.UserId == userId.Value), x => x.OrderBy(o => o.Contact.Email), null, true))
-                                                   .Select(x => (Value: x.Value, CampaignName: x.CampaignName, Email: x.Email, IsDelivered: x.IsDelivered, IsSeen: x.IsSeen, SendDateTime: x.SendDateTime, SeenDateTime: x.SeenDateTime)).ToList();
+                                                   (!userId.HasValue || x.Campaign.UserId == userId.Value),
+                                                   x => x.OrderBy(o => o.Contact.Email),
+                                                   x => x.Include(y=> y.Contact).Include(y=> y.Campaign),
+                                                   true));
             if (result == null) throw new NotFoundException(nameof(CampaignReport), userId);
             return result;
         }
-        public async Task<IList<(int Value, string CampaignName, string Email, bool IsDelivered, bool IsSeen, DateTime SendDateTime, DateTime? SeenDateTime)>> GetCampaignWiseReportAsync(Guid? userId,int campaignId)
+        public async Task<IList<object>> GetCampaignsForSelectAsync(Guid? userId)
         {
-            var result = (await _campaignReportUnitOfWork.CampaingReportRepository.GetAsync(x => new { Value = x.Id, CampaignName = x.Campaign.Name, Email = x.Contact.Email, IsDelivered = x.IsDelivered, IsSeen = x.IsSeen, SendDateTime = x.SendDateTime, SeenDateTime = x.SeenDateTime },
+            return await _campaignUnitOfWork.CampaignRepository.GetAsync<object>(
+                                                    x => new { Value = x.Id, Text = x.Name },
+                                                    x => !x.IsDeleted && x.IsActive &&
+                                                   (!userId.HasValue || x.UserId == userId.Value),
+                                                    null, null, true);
+        }
+        public async Task<IList<CampaignReport>> GetCampaignWiseReportAsync(Guid? userId,int campaignId)
+        {
+            var result = (await _campaignReportUnitOfWork.CampaingReportRepository.GetAsync(x => x,
                                                    x => !x.IsDeleted && x.IsActive &&
-                                                   (!userId.HasValue || x.Campaign.UserId == userId.Value) && (x.CampaignId == campaignId), x => x.OrderBy(o => o.Contact.Email), null, true))
-                                                   .Select(x => (Value: x.Value, CampaignName: x.CampaignName, Email: x.Email, IsDelivered: x.IsDelivered, IsSeen: x.IsSeen, SendDateTime: x.SendDateTime, SeenDateTime: x.SeenDateTime)).ToList();
+                                                   (!userId.HasValue || x.Campaign.UserId == userId.Value) && (x.CampaignId == campaignId),
+                                                   x => x.OrderBy(o => o.Contact.Email),
+                                                   x => x.Include(y => y.Contact).Include(y => y.Campaign),
+                                                   true));
             if (result == null) throw new NotFoundException(nameof(CampaignReport), userId);
             return result;
         }
@@ -90,7 +114,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
                 foreach (var report in campaignReport)
                 {
                     currentRow++;
-                    worksheet.Cell(currentRow, 1).Value = report.Email;
+                    worksheet.Cell(currentRow, 1).Value = report.Contact.Email;
                     worksheet.Cell(currentRow, 2).Value = report.IsDelivered == true ? "Yes" : "No";
                     worksheet.Cell(currentRow, 3).Value = report.IsSeen == true ? "Yes" : "No";
                     worksheet.Cell(currentRow, 4).Value = "" + report.SendDateTime.ToString();
@@ -135,7 +159,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
                     foreach (var report in campaignReport)
                     {
                         currentRow++;
-                        worksheet.Cell(currentRow, 1).Value = report.Email;
+                        worksheet.Cell(currentRow, 1).Value = report.Contact.Email;
                         worksheet.Cell(currentRow, 2).Value = report.IsDelivered == true ? "Yes" : "No";
                         worksheet.Cell(currentRow, 3).Value = report.IsSeen == true ? "Yes" : "No";
                         worksheet.Cell(currentRow, 4).Value = "" + report.SendDateTime.ToString();

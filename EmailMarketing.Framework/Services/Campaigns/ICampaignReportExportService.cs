@@ -9,8 +9,9 @@ namespace EmailMarketing.Framework.Services.Campaigns
 {
     public interface ICampaignReportExportService : IDisposable
     {
-        Task<IList<(int Value, string CampaignName, string Email, bool IsDelivered, bool IsSeen, DateTime SendDateTime, DateTime? SeenDateTime)>> GetAllCampaignReportAsync(
+        Task<IList<CampaignReport>> GetAllCampaignReportAsync(
             Guid? userId);
+        Task<IList<object>> GetCampaignsForSelectAsync(Guid? userId);
         Task SaveDownloadQueueAsync(DownloadQueue downloadQueue);
         Task<IList<DownloadQueue>> GetDownloadQueue();
         Task<DownloadQueue> GetDownloadQueueByIdAsync(int campaingReportId);
@@ -18,6 +19,6 @@ namespace EmailMarketing.Framework.Services.Campaigns
         Task AddDownloadQueueSubEntities(DownloadQueueSubEntity downloadQueueSubEntity);
         Task ExcelExportForAllCampaignAsync(DownloadQueue downloadQueue);
         Task ExcelExportForCampaignWiseAsync(DownloadQueue downloadQueue);
-        Task<IList<(int Value, string CampaignName, string Email, bool IsDelivered, bool IsSeen, DateTime SendDateTime, DateTime? SeenDateTime)>> GetCampaignWiseReportAsync(Guid? userId, int campaignId);
+        Task<IList<CampaignReport>> GetCampaignWiseReportAsync(Guid? userId, int campaignId);
     }
 }

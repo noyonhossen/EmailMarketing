@@ -32,9 +32,10 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             return View(model);
         }
 
-        public IActionResult ViewReport()
+        public async Task<IActionResult> ViewReport()
         {
             var model = new CampaignsModel();
+            await model.LoadAllCampaignSelectListAsync();
             return View(model);
         }
 
