@@ -19,5 +19,6 @@ namespace EmailMarketing.Framework.Services.SMTP
         Task AddAsync(SMTPConfig entity);
         Task UpdateAsync(SMTPConfig entity);
         Task<SMTPConfig> DeleteAsync(Guid id);
+        Task<IList<SMTPConfig>> GetAllSMTPConfig(Guid? userId);
     }
 }

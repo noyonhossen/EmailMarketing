@@ -117,10 +117,12 @@ namespace EmailMarketing.Web.Areas.Member.Models
                             {
                                 new MenuChildItem () { Controller = "Campaigns", Action = "Index", Area="Member", Title = "View Campaigns",
                                     Icon = "icon-paperplane", IsActive = false },
-                                new MenuChildItem () { Controller = "Campaigns", Action = "Add", Area="Member", Title = "Add Campaign",
+                                new MenuChildItem () { Controller = "Campaigns", Action = "AddCampaign", Area="Member", Title = "Add Campaign",
                                     Icon = "icon-plus-circle2", IsActive = false },
                                 new MenuChildItem () { Controller = "Campaigns", Action = "ViewReport", Area="Member", Title = "View Report",
                                     Icon = "icon-eye", IsActive = false },
+                                new MenuChildItem () { Controller = "EmailTemplate", Action = "AddEmailTemplate", Area="Member", Title = "Create Template",
+                                    Icon = "icon-plus-circle2", IsActive = false },
 
                             }
                         }

@@ -90,5 +90,10 @@ namespace EmailMarketing.Framework.Services.SMTP
         {
             _smtpUnitOfWork?.Dispose();
         }
+
+        public async Task<IList<SMTPConfig>> GetAllSMTPConfig(Guid? userId)
+        {
+            return await _smtpUnitOfWork.SMTPRepository.GetAsync(x => x, x => x.UserId == userId, null, null, true);
+        }
     }
 }

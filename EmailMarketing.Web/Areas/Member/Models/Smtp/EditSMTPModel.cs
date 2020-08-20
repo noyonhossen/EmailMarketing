@@ -19,10 +19,14 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
         [Required]
         public int Port { get; set; }
         [Required]
+        [Display(Name = "Sender Name")]
         public string SenderName { get; set; }
         [Required]
+        [Display(Name = "Sender Email")]
+        [EmailAddress]
         public string SenderEmail { get; set; }
         [Required]
+        [Display(Name = "User Name")]
         public string UserName { get; set; }
         [Required]
         public string Password { get; set; }
