@@ -11,13 +11,14 @@ namespace EmailMarketing.Framework.Services.Contacts
 
         Task<IList<(int Value, string Text, int Count)>> GetAllGroupsAsync(Guid? userId);
         Task<IList<Contact>> GetAllContactsAsync(Guid? userId);
-        Task<Contact> GetContactById(int contactId);
-        Task<IList<ContactGroup>> GetAllGroupsByIdAsync(int groupId);
+        Task<Contact> GetContactByIdAsync(int contactId);
+        Task<IList<ContactGroup>> GetAllGroupsByIdAsync(Guid? userId,int groupId);
         Task SaveDownloadQueueAsync(DownloadQueue downloadQueue);
-        Task<IList<DownloadQueue>> GetDownloadQueue();
+        Task UpdateDownloadQueueAsync(DownloadQueue downloadQueue);
+        Task<IList<DownloadQueue>> GetDownloadQueueAsync();
         Task<DownloadQueue> GetDownloadQueueByIdAsync(int contactUploadId);
-        Task AddDownloadQueueSubEntities(IList<DownloadQueueSubEntity> downloadQueueSubEntities);
-        Task UpdateDownloadQueueAync(DownloadQueue downloadQueue);
-        Task ExcelExportForAllContacts(DownloadQueue downloadQueue);
+        Task AddDownloadQueueSubEntitiesAsync(IList<DownloadQueueSubEntity> downloadQueueSubEntities);
+        Task ExcelExportForAllContactsAsync(DownloadQueue downloadQueue);
+        Task ExcelExportForGroupwiseContactsAsync(DownloadQueue downloadQueue);
     }
 }

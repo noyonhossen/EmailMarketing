@@ -36,14 +36,14 @@ namespace EmailMarketing.Framework.Services.Contacts
             return contacts;
         }
 
-        public async Task<IList<ContactGroup>> GetAllGroupsByIdAsync(int groupId)
+        public async Task<IList<ContactGroup>> GetAllGroupsByIdAsync(Guid? userId,int groupId)
         {
             var contacts = await _contactUnitOfWork.GroupContactRepository.GetAsync<ContactGroup>(
-                x => x, x => (x.GroupId == groupId), null, x => x.Include(i => i.Contact).ThenInclude(i => i.ContactValueMaps).ThenInclude(i => i.FieldMap).Include(i=>i.Group), true
+                x => x, x => (x.GroupId == groupId) && (x.Contact.UserId == userId), null, x => x.Include(i => i.Contact).ThenInclude(i => i.ContactValueMaps).ThenInclude(i => i.FieldMap).Include(i=>i.Group), true
                 );
             return contacts;
         }
-        public async Task<Contact>  GetContactById(int contactId)
+        public async Task<Contact>  GetContactByIdAsync(int contactId)
         {
             var contact = await _contactUnitOfWork.ContactRepository.GetByIdAsync(contactId);
             return contact;
@@ -63,14 +63,14 @@ namespace EmailMarketing.Framework.Services.Contacts
             await _contactExportUnitOfWork.DownloadQueueRepository.AddAsync(downloadQueue);
             await _contactExportUnitOfWork.SaveChangesAsync();
         }
-        public async Task AddDownloadQueueSubEntities(IList<DownloadQueueSubEntity> downloadQueueSubEntities)
+        public async Task AddDownloadQueueSubEntitiesAsync(IList<DownloadQueueSubEntity> downloadQueueSubEntities)
         {
             await _contactExportUnitOfWork.DownloadQueueSubEntityRepository.AddRangeAsync(downloadQueueSubEntities);
             await _contactExportUnitOfWork.SaveChangesAsync();
         }
-        public async Task<IList<DownloadQueue>> GetDownloadQueue()
+        public async Task<IList<DownloadQueue>> GetDownloadQueueAsync()
         {
-            var result = await _contactExportUnitOfWork.DownloadQueueRepository.GetAsync(x => x, x => x.IsProcessing == true && x.IsSucceed == false, null, x => x.Include(x => x.DownloadQueueSubEntities), true);
+            var result = await _contactExportUnitOfWork.DownloadQueueRepository.GetAsync(x => x, x => (x.IsProcessing == true || x.IsSucceed == false), null, x => x.Include(x => x.DownloadQueueSubEntities), true);
             return result;
         }
 
@@ -81,21 +81,20 @@ namespace EmailMarketing.Framework.Services.Contacts
 
             return contactUpload;
         }
-        public async Task UpdateDownloadQueueAync(DownloadQueue downloadQueue)
+        public async Task UpdateDownloadQueueAsync(DownloadQueue downloadQueue)
         {
             await _contactExportUnitOfWork.DownloadQueueRepository.UpdateAsync(downloadQueue);
             await _contactExportUnitOfWork.SaveChangesAsync();
         }
 
-        public async Task ExcelExportForAllContacts(DownloadQueue downloadQueue)
+        public async Task ExcelExportForAllContactsAsync(DownloadQueue downloadQueue)
         {
             using (var workbook = new XLWorkbook())
             {
                 var contacts = await GetAllContactsAsync(downloadQueue.UserId);
 
-                var worksheet = workbook.Worksheets.Add("Contacts");
+                var worksheet = workbook.Worksheets.Add("All Contacts");
                 var currentRow = 1;
-                int i = 3;
 
                 worksheet.Cell(currentRow, 1).Value = "Contact Email Address";
                 worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
@@ -117,28 +116,28 @@ namespace EmailMarketing.Framework.Services.Contacts
                 }
 
 
-                foreach (var item1 in contacts)
+                foreach (var item in contacts)
                 {
-                    i++; currentRow++;
-                    worksheet.Cell(currentRow, 1).Value = item1.Email;
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = item.Email;
 
-                    string group = string.Join(", ", item1.ContactGroups.Select(x => x.Group.Name));
+                    string group = string.Join(", ", item.ContactGroups.Select(x => x.Group.Name));
 
 
                     worksheet.Cell(currentRow, 2).Value = group;
 
-                    for (int j = 0; j < item1.ContactValueMaps.Count(); j++)
+                    for (int j = 0; j < item.ContactValueMaps.Count(); j++)
                     {
-                        var key = item1.ContactValueMaps.Select(x => x.FieldMap.DisplayName).ToArray()[j];
+                        var key = item.ContactValueMaps.Select(x => x.FieldMap.DisplayName).ToArray()[j];
                         if (keyValuePairs.ContainsKey(key))
                         {
-                            worksheet.Cell(currentRow, keyValuePairs[key]).Value = item1.ContactValueMaps[j].Value;
+                            worksheet.Cell(currentRow, keyValuePairs[key]).Value = item.ContactValueMaps[j].Value;
 
                         }
 
                     }
                 }
-                //need to change
+
                 worksheet.Columns("1", columnCount.ToString()).AdjustToContents();
 
                 var memory = new MemoryStream();
@@ -148,10 +147,65 @@ namespace EmailMarketing.Framework.Services.Contacts
                 }
             }
         }
+        public async Task ExcelExportForGroupwiseContactsAsync(DownloadQueue downloadQueue)
+        {
+            using (var workbook = new XLWorkbook())
+            {
+                for (int cnt = 0; cnt < downloadQueue.DownloadQueueSubEntities.Count(); cnt++)
+                {
+                    int currentRow = 1, currentColumn = 3, columnCount = 2;
+                    var contacts = await GetAllGroupsByIdAsync(downloadQueue.UserId, downloadQueue.DownloadQueueSubEntities[cnt].DownloadQueueSubEntityId);
+                    var groupName = contacts.Select(x => x.Group.Name).FirstOrDefault();
+                    var worksheet = workbook.Worksheets.Add(groupName + " contacts");
+                    worksheet.Cell(currentRow, 1).Value = "Contact Email Address";
+                    worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, 2).Value = "Group";
+                    worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
 
+                    var allcontacts = contacts.Select(x => x.Contact).ToList();
+                    var fieldmaplist = contacts.Select(x => x.Contact).SelectMany(x => x.ContactValueMaps).Select(x => x.FieldMap.DisplayName).Distinct().ToList();
+
+                    Dictionary<string, int> keyValuePairs = new Dictionary<string, int>();
+
+                    for (int j = 0; j < fieldmaplist.Count(); j++)
+                    {
+                        worksheet.Cell(currentRow, j + currentColumn).Value = fieldmaplist[j];
+
+                        worksheet.Cell(currentRow, j + currentColumn).Style.Font.Bold = true;
+                        keyValuePairs.Add(fieldmaplist[j], j + currentColumn);
+                        columnCount++;
+                    }
+                    foreach (var item1 in allcontacts)
+                    {
+                        currentRow++;
+                        worksheet.Cell(currentRow, 1).Value = item1.Email;
+                        string group = string.Join(", ", item1.ContactGroups.Select(x => x.Group.Name));
+
+                        worksheet.Cell(currentRow, 2).Value = group;
+
+                        for (int j = 0; j < item1.ContactValueMaps.Count(); j++)
+                        {
+                            var key = item1.ContactValueMaps.Select(x => x.FieldMap.DisplayName).ToArray()[j];
+                            if (keyValuePairs.ContainsKey(key))
+                            {
+                                worksheet.Cell(currentRow, keyValuePairs[key]).Value = item1.ContactValueMaps[j].Value;
+                            }
+                        }
+                    }
+
+                    worksheet.Columns("1", columnCount.ToString()).AdjustToContents();
+
+                }
+                using (var stream = new FileStream(Path.Combine(downloadQueue.FileUrl, downloadQueue.FileName), FileMode.Create))
+                {
+                    workbook.SaveAs(stream);
+                }
+            }
+        }
         public void Dispose()
         {
             _contactUnitOfWork.Dispose();
         }
+
     }
 }

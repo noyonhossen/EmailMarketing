@@ -43,6 +43,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
             else
             {
                 var downloadQueue = new DownloadQueue();
+                downloadQueue.FileName = Guid.NewGuid().ToString() + ".xlsx";
                 downloadQueue.FileUrl = ConstantsValue.AllContactExportFileUrl;
                 downloadQueue.IsProcessing = true;
                 downloadQueue.IsSucceed = false;
@@ -64,7 +65,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
             else
             {
                 var downloadQueue = new DownloadQueue();
-                downloadQueue.FileName = "AllContacts";
+                downloadQueue.FileName = Guid.NewGuid().ToString() + ".xlsx";
                 downloadQueue.FileUrl = ConstantsValue.GroupwiseContactExportFileUrl;
                 downloadQueue.IsProcessing = true;
                 downloadQueue.IsSucceed = false;
@@ -85,7 +86,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                         dowloadQueueSubEntityList.Add(dowloadQueueSubEntity);
                     }
                 }
-                await _contactExportService.AddDownloadQueueSubEntities(dowloadQueueSubEntityList);
+                await _contactExportService.AddDownloadQueueSubEntitiesAsync(dowloadQueueSubEntityList);
             }
         }
     }
