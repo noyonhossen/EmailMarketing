@@ -17,8 +17,6 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
     {
         public int Id { get; set; }
         public bool IsExportAll { get; set; }
-        //public IList<CampaignValueTextModel> CampaignReportList { get; set; }
-        public IList<CampaignReportValueTextModel> CampaignSelectList { get; set; }
         public string SendEmailAddress { get; set; }
         public bool IsSendEmailNotifyForAll { get; set; }
         public bool IsSendEmailNotifyForGroupwise { get; set; }
@@ -31,12 +29,6 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         {
 
         }
-        //public async Task<IList<CampaignReportValueTextModel>> GetAllCampaignDetailsAsync()
-        //{
-        //    return (await _campaignService.GetAllCampaignsAsync(_currentUserService.UserId))
-        //                                   .Select(x => new CampaignReportValueTextModel { Value = x.Value, Text = x.Text, Count = x.Count, IsChecked = false }).ToList();
-        //}
-
         public async Task ExportAllCampaign()
         {
             if (IsSendEmailNotifyForAll == true && SendEmailAddress.Length == 0)

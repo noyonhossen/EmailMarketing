@@ -1,10 +1,12 @@
-﻿using EmailMarketing.Common.Exceptions;
+﻿using ClosedXML.Excel;
+using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.UnitOfWorks.Campaigns;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,33 +23,6 @@ namespace EmailMarketing.Framework.Services.Campaigns
             _campaignReportExportUnitOfWork = campaignReportExportUnitOfWork;
             _campaignReportUnitOfWork = campaignReportUnitOfWork;
         }
-        //public async Task<IList<(int Value, string Text, int Count)>> GetAllCampaignsAsync(Guid? userId)
-        //{
-        //    return (await _campaignUnitOfWork.CampaignRepository.GetAsync(x => new { Value = x.Id, Text = x.Name, Count = x.CampaignGroups.Count() },
-        //                                           x => !x.IsDeleted && x.IsActive &&
-        //                                           (!userId.HasValue || x.UserId == userId.Value), x => x.OrderBy(o => o.Name), null, true))
-        //                                           .Select(x => (Value: x.Value, Text: x.Text, Count: x.Count)).ToList();
-        //}
-        //public async Task<IList<Campaign>> GetAllCampaignsAsync(Guid? userId)
-        //{
-        //    var campaigns = await _campaignUnitOfWork.CampaignRepository.GetAsync<Campaign>(
-        //        x => x, x => (!userId.HasValue || x.UserId == userId.Value), null, x => x.Include(i => i.ContactValueMaps).ThenInclude(i => i.FieldMap)
-        //        .Include(i => i.ContactGroups).ThenInclude(i => i.Group), true
-        //        );
-        //    return campaigns;
-        //}
-        //public async Task<IList<Campaign>> GetAllGroupsByIdAsync(int campaignId)
-        //{
-        //    var campaigns = await _campaignReportUnitOfWork.CampaingReportRepository.GetAsync<Campaign>(
-        //        x => x, x => (x.Id == campaignId), null, null, true
-        //        );
-        //    return campaigns;
-        //}
-        //public async Task<Campaign> GetCampaignReportById(int campaignId)
-        //{
-        //    var contact = await _campaignReportUnitOfWork.CampaingReportRepository.GetByIdAsync(campaignId);
-        //    return contact;
-        //}
         public async Task<IList<DownloadQueue>> GetDownloadQueue()
         {
             var result = await _campaignReportExportUnitOfWork.DownloadQueueRepository.GetAsync(x => x, x => x.IsProcessing == true && x.IsSucceed == false, null, x=> x.Include(y=> y.DownloadQueueSubEntities), true);
@@ -87,6 +62,95 @@ namespace EmailMarketing.Framework.Services.Campaigns
             if (result == null) throw new NotFoundException(nameof(CampaignReport), userId);
             return result;
         }
+        public async Task ExcelExportForAllCampaignAsync(DownloadQueue downloadQueue)
+        {
+            using (var workbook = new XLWorkbook())
+            {
+                var campaignReport = await GetAllCampaignReportAsync(downloadQueue.UserId);
+
+                var worksheet = workbook.Worksheets.Add("All Campaign Report");
+                var currentRow = 1;
+                int i = 3;
+
+                worksheet.Cell(currentRow, 1).Value = "Email";
+                worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+
+                worksheet.Cell(currentRow, 2).Value = "Delivered";
+                worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
+
+                worksheet.Cell(currentRow, 3).Value = "Seen";
+                worksheet.Cell(currentRow, 3).Style.Font.Bold = true;
+
+                worksheet.Cell(currentRow, 4).Value = "Send Date";
+                worksheet.Cell(currentRow, 4).Style.Font.Bold = true;
+
+                worksheet.Cell(currentRow, 5).Value = "Seen Date";
+                worksheet.Cell(currentRow, 5).Style.Font.Bold = true;
+
+                foreach (var report in campaignReport)
+                {
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = report.Email;
+                    worksheet.Cell(currentRow, 2).Value = report.IsDelivered == true ? "Yes" : "No";
+                    worksheet.Cell(currentRow, 3).Value = report.IsSeen == true ? "Yes" : "No";
+                    worksheet.Cell(currentRow, 4).Value = "" + report.SendDateTime.ToString();
+                    worksheet.Cell(currentRow, 5).Value = report.SeenDateTime.ToString();
+                }
+                worksheet.Columns("1", "5").AdjustToContents();
+
+                var memory = new MemoryStream();
+                using (var stream = new FileStream(Path.Combine(downloadQueue.FileUrl, downloadQueue.FileName), FileMode.Append))
+                {
+                    workbook.SaveAs(stream);
+                }
+            }
+        }
+        public async Task ExcelExportForCampaignWiseAsync(DownloadQueue downloadQueue)
+        {
+            for (int cnt = 0; cnt < downloadQueue.DownloadQueueSubEntities.Count(); cnt++)
+            {
+                using (var workbook = new XLWorkbook())
+                {
+                    var campaignReport = await GetCampaignWiseReportAsync(downloadQueue.UserId, downloadQueue.DownloadQueueSubEntities[cnt].DownloadQueueSubEntityId);
+
+                    var worksheet = workbook.Worksheets.Add("CampaignWiseReport");
+                    var currentRow = 1;
+                    int i = 3;
+
+                    worksheet.Cell(currentRow, 1).Value = "Email";
+                    worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+
+                    worksheet.Cell(currentRow, 2).Value = "Delivered";
+                    worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
+
+                    worksheet.Cell(currentRow, 3).Value = "Seen";
+                    worksheet.Cell(currentRow, 3).Style.Font.Bold = true;
+
+                    worksheet.Cell(currentRow, 4).Value = "Send Date";
+                    worksheet.Cell(currentRow, 4).Style.Font.Bold = true;
+
+                    worksheet.Cell(currentRow, 5).Value = "Seen Date";
+                    worksheet.Cell(currentRow, 5).Style.Font.Bold = true;
+
+                    foreach (var report in campaignReport)
+                    {
+                        currentRow++;
+                        worksheet.Cell(currentRow, 1).Value = report.Email;
+                        worksheet.Cell(currentRow, 2).Value = report.IsDelivered == true ? "Yes" : "No";
+                        worksheet.Cell(currentRow, 3).Value = report.IsSeen == true ? "Yes" : "No";
+                        worksheet.Cell(currentRow, 4).Value = "" + report.SendDateTime.ToString();
+                        worksheet.Cell(currentRow, 5).Value = report.SeenDateTime.ToString();
+                    }
+                    worksheet.Columns("1", "5").AdjustToContents();
+
+                    var memory = new MemoryStream();
+                    using (var stream = new FileStream(Path.Combine(downloadQueue.FileUrl, downloadQueue.FileName), FileMode.Append))
+                    {
+                        workbook.SaveAs(stream);
+                    }
+                }
+            }
+        }
         public async Task SaveDownloadQueueAsync(DownloadQueue downloadQueue)
         {
             await _campaignReportExportUnitOfWork.DownloadQueueRepository.AddAsync(downloadQueue);
@@ -96,21 +160,6 @@ namespace EmailMarketing.Framework.Services.Campaigns
         {
             await _campaignReportExportUnitOfWork.DownloadQueueSubEntityRepository.AddAsync(downloadQueueSubEntity);
             await _campaignReportExportUnitOfWork.SaveChangesAsync();
-        }
-
-        Task<IList<CampaignGroup>> ICampaignReportExportService.GetAllGroupsByIdAsync(int campaignId)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<CampaignReport> ICampaignReportExportService.GetCampaignReportById(int campaignId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IList<Campaign>> GetAllCampaignsAsync(Guid? userId)
-        {
-            throw new NotImplementedException();
         }
     }
 }

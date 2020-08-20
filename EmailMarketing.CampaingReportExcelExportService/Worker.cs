@@ -49,108 +49,20 @@ namespace EmailMarketing.CampaingReportExcelExportService
                         {
                             DirectoryInfo directory = Directory.CreateDirectory(item.FileUrl);
                         }
-                        _logger.LogInformation($"item values - file url is = {item.FileUrl}");
+
                         var importResult = await _campaignReportExportService.GetDownloadQueueByIdAsync(item.Id);
+
                         if (item.DownloadQueueFor == DownloadQueueFor.CampaignAllReportExport)
                         {
-                            using (var workbook = new XLWorkbook())
-                            {
-                                var campaignReport = await _campaignReportExportService.GetAllCampaignReportAsync(item.UserId);
-
-                                var worksheet = workbook.Worksheets.Add("CampaignReport");
-                                var currentRow = 1;
-                                int i = 3;
-
-                                worksheet.Cell(currentRow, 1).Value = "Email";
-                                worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
-
-                                worksheet.Cell(currentRow, 2).Value = "Delivered";
-                                worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
-
-                                worksheet.Cell(currentRow, 3).Value = "Seen";
-                                worksheet.Cell(currentRow, 3).Style.Font.Bold = true;
-
-                                worksheet.Cell(currentRow, 4).Value = "Send Date";
-                                worksheet.Cell(currentRow, 4).Style.Font.Bold = true;
-
-                                worksheet.Cell(currentRow, 5).Value = "Seen Date";
-                                worksheet.Cell(currentRow, 5).Style.Font.Bold = true;
-
-                                foreach (var report in campaignReport)
-                                {
-                                    currentRow++;
-                                    worksheet.Cell(currentRow, 1).Value = report.Email;
-                                    worksheet.Cell(currentRow, 2).Value = report.IsDelivered == true ? "Yes" : "NO";
-                                    worksheet.Cell(currentRow, 3).Value = report.IsSeen == true ? "Yes" : "NO";
-                                    worksheet.Cell(currentRow, 4).Value = "" + report.SendDateTime.ToString();
-                                    worksheet.Cell(currentRow, 5).Value = report.SeenDateTime.ToString();
-                                }
-                                //need to change
-                                worksheet.Columns("1", "5").AdjustToContents();
-
-                                var memory = new MemoryStream();
-                                using (var stream = new FileStream(Path.Combine(item.FileUrl, item.FileName), FileMode.Append))
-                                {
-                                    workbook.SaveAs(stream);
-                                }
-                            }
-                            importResult.IsProcessing = false;
-                            importResult.IsSucceed = true;
-                            importResult.FileUrl = Path.Combine(item.FileUrl, item.FileName);
-                            //await _campaignReportExportService.UpdateDownloadQueueAync(importResult);
+                            await _campaignReportExportService.ExcelExportForAllCampaignAsync(item);
                         }
                         else if (item.DownloadQueueFor == DownloadQueueFor.CampaignDetailsReportExport)
                         {
-
-                            for (int cnt = 0; cnt < item.DownloadQueueSubEntities.Count(); cnt++)
-                            {
-                                using (var workbook = new XLWorkbook())
-                                {
-                                    var campaignReport = await _campaignReportExportService.GetCampaignWiseReportAsync(item.UserId, item.DownloadQueueSubEntities[cnt].DownloadQueueSubEntityId);
-
-                                    var worksheet = workbook.Worksheets.Add("CampaignWiseReport");
-                                    var currentRow = 1;
-                                    int i = 3;
-
-                                    worksheet.Cell(currentRow, 1).Value = "Email";
-                                    worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
-
-                                    worksheet.Cell(currentRow, 2).Value = "Delivered";
-                                    worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
-
-                                    worksheet.Cell(currentRow, 3).Value = "Seen";
-                                    worksheet.Cell(currentRow, 3).Style.Font.Bold = true;
-
-                                    worksheet.Cell(currentRow, 4).Value = "Send Date";
-                                    worksheet.Cell(currentRow, 4).Style.Font.Bold = true;
-
-                                    worksheet.Cell(currentRow, 5).Value = "Seen Date";
-                                    worksheet.Cell(currentRow, 5).Style.Font.Bold = true;
-
-                                    foreach (var report in campaignReport)
-                                    {
-                                        currentRow++;
-                                        worksheet.Cell(currentRow, 1).Value = report.Email;
-                                        worksheet.Cell(currentRow, 2).Value = report.IsDelivered == true ? "Yes" : "NO";
-                                        worksheet.Cell(currentRow, 3).Value = report.IsSeen == true ? "Yes" : "NO";
-                                        worksheet.Cell(currentRow, 4).Value = "" + report.SendDateTime.ToString();
-                                        worksheet.Cell(currentRow, 5).Value = report.SeenDateTime.ToString();
-                                    }
-                                    //need to change
-                                    worksheet.Columns("1", "5").AdjustToContents();
-
-                                    var memory = new MemoryStream();
-                                    using (var stream = new FileStream(Path.Combine(item.FileUrl, item.FileName), FileMode.Append))
-                                    {
-                                        workbook.SaveAs(stream);
-                                    }
-                                }
-                                importResult.IsProcessing = false;
-                                importResult.IsSucceed = true;
-                                importResult.FileUrl = Path.Combine(item.FileUrl, item.FileName);
-                                //await _campaignReportExportService.UpdateDownloadQueueAync(importResult);
-                            }
+                            await _campaignReportExportService.ExcelExportForCampaignWiseAsync(item);
                         }
+                        importResult.IsProcessing = false;
+                        importResult.IsSucceed = true;
+                        await _campaignReportExportService.UpdateDownloadQueueAync(importResult);
                     }
                 }
                 catch (Exception ex)

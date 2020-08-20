@@ -9,17 +9,11 @@
     <div class="content">
         <div class="pb-3">
             <h1 class="text-center">Report</h1>
-           
             <div class="row">
-
                 <div class="col-md-6 m-auto text-center">
-                    <h3 class="mb-1 pb-0">Export Your Contacts</h3>
+                    <h3 class="mb-1 pb-0">Export Your Campaign Report</h3>
                     <partial name="_ActionMessage" model="@Model.Response" />
-                    @*<h5 class="pt-0 mt-0">If everything looks good, click 'Confirm Upload' below.</h5>*@
-
-
                     <div class="bg-white text-left p-3 mb-3">
-
                         <form asp-action="Export" asp-controller="Campaigns" asp-area="Member" method="post">
                             <div class="pb-3">
                                 <div class="dropdown-item form-check form-check-switchery ">
@@ -37,10 +31,9 @@
                                     </div>
                                 </div>
                             </div>
-
                             <input type="hidden" asp-for="IsExportAll" value="true" />
                             <div class="text-center">
-                                <button class="btn btn-primary"><i class="icon-file-download2 text-white"> Export All Contacts</i></button>
+                                <button class="btn btn-primary"><i class="icon-file-download2 text-white"> Export All Campaign Report</i></button>
                             </div>
                         </form>
                     </div>
@@ -68,7 +61,7 @@
                             <input type="hidden" asp-for="IsExportAll" value="false" />
                             <input type="hidden" asp-for="Id" value="3" />
                             <div class="text-center">
-                                <button class="btn btn-primary"><i class="icon-file-download2 text-white"> Export All Contacts</i></button>
+                                <button class="btn btn-primary"><i class="icon-file-download2 text-white"> Export Campaign Wise Report</i></button>
                             </div>
                         </form>
                     </div>
