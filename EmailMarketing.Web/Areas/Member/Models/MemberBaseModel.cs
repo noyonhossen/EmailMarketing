@@ -101,6 +101,8 @@ namespace EmailMarketing.Web.Areas.Member.Models
                                     Icon = "icon-plus-circle2", IsActive = false },
                                 new MenuChildItem () { Controller = "Contacts", Action = "CustomFields", Area="Member", Title = "Custom Fields",
                                     Icon = "icon-list3", IsActive = false },
+                                new MenuChildItem () { Controller = "Contacts", Action = "Export", Area="Member", Title = "Export Contacts",
+                                    Icon = "icon-file-download2", IsActive = false }
 
                             }
                         }
