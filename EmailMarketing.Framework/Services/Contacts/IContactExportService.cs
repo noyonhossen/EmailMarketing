@@ -18,5 +18,6 @@ namespace EmailMarketing.Framework.Services.Contacts
         Task<DownloadQueue> GetDownloadQueueByIdAsync(int contactUploadId);
         Task AddDownloadQueueSubEntities(IList<DownloadQueueSubEntity> downloadQueueSubEntities);
         Task UpdateDownloadQueueAync(DownloadQueue downloadQueue);
+        Task ExcelExportForAllContacts(DownloadQueue downloadQueue);
     }
 }
