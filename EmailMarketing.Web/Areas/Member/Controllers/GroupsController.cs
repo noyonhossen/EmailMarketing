@@ -26,24 +26,47 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var model = Startup.AutofacContainer.Resolve<GroupModel>();
             return View(model);
         }
-        public IActionResult Add()
+
+        [HttpGet]
+        public async Task<IActionResult> AddOrEdit(int? id)
         {
-            var model = new CreateGroupModel();
-            return View(model);
+            var model = new GroupModel();
+
+            #region for edit
+            if (id.HasValue && id != 0)
+            {
+                await model.LoadByIdAsync(id.Value);
+            }
+            #endregion
+
+            return PartialView("_AddOrEdit", model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(
-            [Bind(nameof(CreateGroupModel.Name))] CreateGroupModel model)
+        public async Task<IActionResult> AddOrEdit(GroupModel model)
         {
+            ModelState.Remove("Id");
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await model.AddAsync();
-                    model.Response = new ResponseModel("Group creation successful.", ResponseType.Success);
-                    return RedirectToAction("Index");
+
+                    if (model.Id.HasValue && model.Id != 0)
+                    {
+                        await model.UpdateAsync();
+                        model.Response = new ResponseModel("Group Update successful.", ResponseType.Success);
+                        return RedirectToAction("Index");
+                    }
+                        
+                    else
+                    {
+                        await model.AddAsync();
+                        model.Response = new ResponseModel("Group creation successful.", ResponseType.Success);
+                        return RedirectToAction("Index");
+                    }
+                        
                 }
                 catch (DuplicationException ex)
                 {
@@ -53,62 +76,21 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                 {
                     model.Response = new ResponseModel("Group creation failured.", ResponseType.Failure);
                 }
+
+                return RedirectToAction("Index");
             }
+
+
+            model.Response = new ResponseModel("Group edit failured.", ResponseType.Failure);
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Edit(int id)
-        {
-            var model = new EditGroupModel();
-            await model.LoadByIdAsync(id);
-            return View(model); 
-        }
-
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(
-            [Bind(nameof(EditGroupModel.Id),
-            nameof(CreateGroupModel.Name))] EditGroupModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    await model.UpdateAsync();
-                    model.Response = new ResponseModel("Group edit successful.", ResponseType.Success);
-                    return RedirectToAction("Index");
-                }
-                catch (DuplicationException ex)
-                {
-                    model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
-                }
-                catch (Exception ex)
-                {
-                    model.Response = new ResponseModel("Group edit failured.", ResponseType.Failure);
-                }
-            }
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            if (ModelState.IsValid)
-            {
-                var model = new GroupModel();
-                try
-                {
-                    var title = await model.DeleteAsync(id);
-                    model.Response = new ResponseModel($"Group {title} successfully deleted.", ResponseType.Success);
-                    return RedirectToAction("Index");
-                }
-                catch (Exception ex)
-                {
-                    model.Response = new ResponseModel("Group delete failured.", ResponseType.Failure);
-                }
-            }
-            return RedirectToAction("Index");
+            var model = new GroupModel();
+            await model.DeleteAsync(id);
+            return Json(true);
         }
         public async Task<IActionResult> GetGroups()
         {
