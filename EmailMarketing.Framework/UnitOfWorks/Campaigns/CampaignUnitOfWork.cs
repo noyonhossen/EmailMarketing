@@ -1,17 +1,19 @@
 ﻿using EmailMarketing.Framework.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EmailMarketing.Data;
+using EmailMarketing.Framework.Repositories.Campaign;
 
 namespace EmailMarketing.Framework.UnitOfWorks.Campaigns
 {
-    public class CampaignUnitOfWork : EmailMarketing.Data.UnitOfWork, ICampaignUnitOfWork
+    public class CampaignUnitOfWork : UnitOfWork, ICampaignUnitOfWork
     {
-        public CampaignUnitOfWork(FrameworkContext dbContext) : base(dbContext)
-        {
+        
+        public ICampaignReportRepository CampaignReportRepository { get; set; }
 
+        public CampaignUnitOfWork(FrameworkContext dbContext , ICampaignReportRepository campaignReportRepository ) : base(dbContext)
+        {
+            CampaignReportRepository = campaignReportRepository;
         }
+
+        
     }
 }

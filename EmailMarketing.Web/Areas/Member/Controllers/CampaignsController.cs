@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmailMarketing.Web.Areas.Member.Models.Campaigns;
 using Microsoft.AspNetCore.Mvc;
-
+using Autofac;
+using EmailMarketing.Web.Areas.Member.Models;
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
     [Area("Member")]
@@ -26,5 +27,15 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var model = new CampaignsModel();
             return View(model);
         }
+        public async Task<IActionResult> ViewDeleveryReport()
+        {
+
+            var tableModel = new DataTablesAjaxRequestModel(Request);
+            var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
+            var data = await model.GetAllAsync(tableModel);
+            return Json(data);
+        }
+
+       
     }
 }

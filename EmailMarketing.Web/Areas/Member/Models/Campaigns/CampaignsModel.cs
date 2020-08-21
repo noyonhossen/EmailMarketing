@@ -2,10 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using EmailMarketing.Framework.Services.Campaigns;
 namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
 {
-    public class CampaignsModel : MemberBaseModel
+    public class CampaignsModel : CampaignBaseModel
     {
+        public CampaignsModel(ICampaignService campaignService) : base(campaignService) { }
+        public CampaignsModel() : base() { }
+        public async Task<object> GetAllAsync(DataTablesAjaxRequestModel tableModel)
+        {
+            var result = await _campaignService.GetAllCampaignReportAsync(
+                tableModel.SearchText,
+                tableModel.GetSortText(new string[] { "CampaignName","Email" }),
+                tableModel.PageIndex, tableModel.PageSize);
+
+            return new
+            {
+                recordsTotal = result.Total,
+                recordsFiltered = result.TotalFilter,
+                data = (from item in result.items
+                        select new string[]
+                        {       
+                                item.Email.ToString(),
+                                item.IsDelivered ? "YES" : "NO",
+                                item.IsSeen ? "YES" : "NO",
+                                item.SeenDateTime.ToString(),
+                                item.SendDateTime.ToString(),
+                        }).ToArray()
+            };
+        }
+
+
     }
 }
+
