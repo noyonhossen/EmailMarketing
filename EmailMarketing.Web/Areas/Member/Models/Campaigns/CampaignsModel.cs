@@ -7,11 +7,16 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
 {
     public class CampaignsModel : CampaignBaseModel
     {
+        public int CampaignId { get; set; } = 2;
         public CampaignsModel(ICampaignService campaignService) : base(campaignService) { }
         public CampaignsModel() : base() { }
-        public async Task<object> GetAllAsync(DataTablesAjaxRequestModel tableModel)
+       
+         public async Task<object> GetAllAsync(DataTablesAjaxRequestModel tableModel)
         {
+            
             var result = await _campaignService.GetAllCampaignReportAsync(
+                _currentUserService.UserId,
+                CampaignId ,
                 tableModel.SearchText,
                 tableModel.GetSortText(new string[] { "CampaignName","Email" }),
                 tableModel.PageIndex, tableModel.PageSize);
@@ -20,14 +25,15 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
             {
                 recordsTotal = result.Total,
                 recordsFiltered = result.TotalFilter,
-                data = (from item in result.items
+                data = (from item in result.Items
                         select new string[]
                         {       
-                                item.Email.ToString(),
-                                item.IsDelivered ? "YES" : "NO",
-                                item.IsSeen ? "YES" : "NO",
+                                item.Contact.Email.ToString(),
+                                item.IsDelivered ? "Yes" : "No",
+                                item.IsSeen ? "Yes" : "No",
                                 item.SeenDateTime.ToString(),
-                                item.SendDateTime.ToString(),
+                                item.SendDateTime.ToString()
+
                         }).ToArray()
             };
         }

@@ -22,7 +22,7 @@ function loadDatatable(url, editUrl) {
         }
     });
 
-    $('#user-table').DataTable({
+    $('#campaign-table').DataTable({
         "processing": true,
         "serverSide": true,
         "ajax": url,
@@ -38,7 +38,11 @@ function loadDatatable(url, editUrl) {
                 "targets": [1],
                 'sortable': true,
                 'searchable': false,
-                "orderData": [1]
+                "orderData": [1],
+                "render": function (data, type, row, meta) {
+                    var lbl = data == "Yes" ? "badge-success" : "badge-danger";
+                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
+                }
             },
             {
                 "targets": [2],
@@ -62,29 +66,10 @@ function loadDatatable(url, editUrl) {
                 "targets": [4],
                 'sortable': true,
                 'searchable': false,
-                "orderData": [4],
-                "render": function (data, type, row, meta) {
-                    var lbl = data == "Yes" ? "badge-danger" : "badge-success";
-                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
-                }
+                "orderData": [4]
+               
             }
-            ,
-            {
-                "targets": [5],
-                'sortable': false,
-                'searchable': false,
-                "width": "15%",
-                "className": "text-center",
-                "render": function (data, type, row, meta) {
-                    var editButton = '<a class="text-primary" href="' + editUrl + '/' + data + '" title="Edit">' +
-                        '<i class="icon-pencil7"></i></a>';
-
-                    var deleteButton = '<a class="text-danger" data-toggle="modal" data-target="#modal-delete" data-id="' + data + '" href="#" title="Delete">' +
-                        '<i class="icon-trash"></i></a>';
-
-                    return editButton + ' ' + deleteButton;
-                }
-            }
+         
         ]
     });
 }

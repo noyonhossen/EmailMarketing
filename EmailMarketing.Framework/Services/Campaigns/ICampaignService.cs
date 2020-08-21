@@ -8,11 +8,13 @@ namespace EmailMarketing.Framework.Services.Campaigns
 {
     public interface ICampaignService
     {
-        Task<(IList<(int Value, string CampaignName, string Email, bool IsDelivered, bool IsSeen, DateTime SendDateTime, DateTime? SeenDateTime)> items, int Total, int TotalFilter)> GetAllCampaignReportAsync(
-           string searchText,
-           string orderBy,
-           int pageIndex,
-           int pageSize);
+        Task<(IList<CampaignReport> Items, int Total, int TotalFilter)> GetAllCampaignReportAsync(
+        Guid? userId,
+        int campaignId,
+        string searchText,
+        string orderBy,
+        int pageIndex,
+        int pageSize);
 
     }  
 }

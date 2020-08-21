@@ -18,6 +18,8 @@ using System.Text;
 using System.Threading.Tasks;
 using EmailMarketing.Framework.UnitOfWorks.Groups;
 using EmailMarketing.Framework.UnitOfWorks.Campaigns;
+using EmailMarketing.Framework.Services.Campaigns;
+using EmailMarketing.Framework.Repositories.Campaign;
 
 namespace EmailMarketing.Framework
 {
@@ -41,6 +43,10 @@ namespace EmailMarketing.Framework
 
             builder.RegisterType<CampaignUnitOfWork>().As<ICampaignUnitOfWork>()
                    .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignService>().As<ICampaignService>()
+                  .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignReportRepository>().As<ICampaignReportRepository>()
+                  .InstancePerLifetimeScope();
             builder.RegisterType<SMTPRepository>().As<ISMTPRepository>()
                    .InstancePerLifetimeScope();
             builder.RegisterType<SMTPUnitOfWork>().As<ISMTPUnitOfWork>()
@@ -95,7 +101,7 @@ namespace EmailMarketing.Framework
                 .InstancePerLifetimeScope();
             builder.RegisterType<ContactRepository>().As<IContactRepository>()
                 .InstancePerLifetimeScope();
-
+            
             base.Load(builder);
         }
     }

@@ -6,6 +6,8 @@ using EmailMarketing.Web.Areas.Member.Models.Campaigns;
 using Microsoft.AspNetCore.Mvc;
 using Autofac;
 using EmailMarketing.Web.Areas.Member.Models;
+using EmailMarketing.Web.Areas.Member.Models.Contacts;
+
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
     [Area("Member")]
@@ -26,6 +28,12 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         {
             var model = new CampaignsModel();
             return View(model);
+        }
+        public IActionResult ViewCampignWiseReport()
+        {
+            var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
+            return View(model);
+          
         }
         public async Task<IActionResult> ViewDeleveryReport()
         {
