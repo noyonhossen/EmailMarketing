@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using EmailMarketing.Web.Areas.Member.Models.Campaigns;
 using Microsoft.AspNetCore.Mvc;
 using Autofac;
 using EmailMarketing.Web.Areas.Member.Models;
-using EmailMarketing.Web.Areas.Member.Models.Contacts;
 
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
@@ -15,7 +11,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
     {
         public IActionResult Index()
         {
-            var model = new CampaignsModel();
+            var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
             return View(model);
         }
         public IActionResult Add()
@@ -29,17 +25,12 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var model = new CampaignsModel();
             return View(model);
         }
-        public IActionResult ViewAllCampigns()
-        {
-            var model = Startup.AutofacContainer.Resolve<CampaignBaseModel>();
-            return View(model);
 
-        }
         public async Task<IActionResult> ViewCampaigns()
         {
 
             var tableModel = new DataTablesAjaxRequestModel(Request);
-            var model = Startup.AutofacContainer.Resolve<CampaignBaseModel>();
+            var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
             var data = await model.GetAllCampaignsAsync(tableModel);
             return Json(data);
         }

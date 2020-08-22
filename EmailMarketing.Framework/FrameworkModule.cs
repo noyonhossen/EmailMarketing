@@ -47,6 +47,8 @@ namespace EmailMarketing.Framework
                   .InstancePerLifetimeScope();
             builder.RegisterType<CampaignReportRepository>().As<ICampaignReportRepository>()
                   .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignRepository>().As<ICampaignRepository>()
+                  .InstancePerLifetimeScope();
             builder.RegisterType<SMTPRepository>().As<ISMTPRepository>()
                    .InstancePerLifetimeScope();
             builder.RegisterType<SMTPUnitOfWork>().As<ISMTPUnitOfWork>()

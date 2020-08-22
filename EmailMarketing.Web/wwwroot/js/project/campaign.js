@@ -77,7 +77,7 @@ function loadDatatable(url,ReportUrl) {
                 "className": "text-center",
                 "render": function (data, type, row, meta) {
                     var reportButton = '<a class="text-primary" href="' + ReportUrl + '/' + data + '" title="Details">' +
-                        '<i class="fa fa-bars"></i></a>';
+                        '<i class="icon-info22"></i></a>';
 
                     return reportButton;
                 }

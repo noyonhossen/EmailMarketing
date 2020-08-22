@@ -8,10 +8,12 @@ namespace EmailMarketing.Framework.UnitOfWorks.Campaigns
     {
         
         public ICampaignReportRepository CampaignReportRepository { get; set; }
+        public ICampaignRepository CampaignRepository { get; set; }
 
-        public CampaignUnitOfWork(FrameworkContext dbContext , ICampaignReportRepository campaignReportRepository ) : base(dbContext)
+        public CampaignUnitOfWork(FrameworkContext dbContext , ICampaignReportRepository campaignReportRepository, ICampaignRepository campaignRepository) : base(dbContext)
         {
             CampaignReportRepository = campaignReportRepository;
+            CampaignRepository = campaignRepository;
         }
 
         

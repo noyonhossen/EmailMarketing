@@ -11,5 +11,6 @@ namespace EmailMarketing.Framework.UnitOfWorks.Campaigns
     public interface ICampaignUnitOfWork : IUnitOfWork
     {
         ICampaignReportRepository CampaignReportRepository { get; set; }
+        ICampaignRepository CampaignRepository { get; set; }
     }
 }
