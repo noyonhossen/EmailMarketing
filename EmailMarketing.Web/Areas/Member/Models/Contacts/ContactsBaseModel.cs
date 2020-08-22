@@ -15,13 +15,19 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         protected readonly IContactService _contactService;
         protected readonly IFieldMapService _fieldMapService;
         protected readonly ICurrentUserService _currentUserService;
-        
-             
+        protected readonly IContactExportService _contactExportService;
+
         public ContactsBaseModel(IContactUploadService contactExcel,
             IContactService contactService,
             ICurrentUserService currentUserService)
         {
             _contactService = contactService;
+            _currentUserService = currentUserService;
+        }
+        public ContactsBaseModel(IContactExportService contactExportService,
+            ICurrentUserService currentUserService)
+        {
+            _contactExportService = contactExportService;
             _currentUserService = currentUserService;
         }
         public ContactsBaseModel(IFieldMapService fieldMapService,
@@ -48,12 +54,14 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
             _contactUploadService = Startup.AutofacContainer.Resolve<IContactUploadService>();
             _contactService = Startup.AutofacContainer.Resolve<IContactService>();
             _fieldMapService = Startup.AutofacContainer.Resolve<IFieldMapService>();
-            _currentUserService = Startup.AutofacContainer.Resolve<ICurrentUserService>();
+            _currentUserService = Startup.AutofacContainer.Resolve<ICurrentUserService>(); 
+            _contactExportService = Startup.AutofacContainer.Resolve<IContactExportService>();
         }
 
         public void Dispose()
         {
             _contactUploadService?.Dispose();
+            _contactService?.Dispose();
             _contactService?.Dispose();
         }
     }

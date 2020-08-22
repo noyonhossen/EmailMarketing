@@ -22,6 +22,7 @@ using EmailMarketing.Framework.Services.Campaigns;
 using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.Repositories.Campaigns;
 
+
 namespace EmailMarketing.Framework
 {
     public class FrameworkModule : Module
@@ -118,6 +119,27 @@ namespace EmailMarketing.Framework
             builder.RegisterType<ContactUnitOfWork>().As<IContactUnitOfWork>()
                 .InstancePerLifetimeScope();
             builder.RegisterType<ContactRepository>().As<IContactRepository>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<DownloadQueueRepository>().As<IDownloadQueueRepository>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<DownloadQueueSubEntityRepository>().As<IDownloadQueueSubEntityRepository>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<ContactExportUnitOfWork>().As<IContactExportUnitOfWork>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<ContactExportService>().As<IContactExportService>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignRepository>().As<ICampaignRepository>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignUnitOfWork>().As<ICampaignUnitOfWork>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignService>().As<ICampaignService>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<EmailTemplateRepository>().As<IEmailTemplateRepository>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<EmailTemplateService>().As<IEmailTemplateService>()
                 .InstancePerLifetimeScope();
 
             base.Load(builder);

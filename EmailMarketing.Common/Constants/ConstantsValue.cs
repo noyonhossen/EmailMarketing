@@ -13,5 +13,7 @@ namespace EmailMarketing.Common.Constants
         public const string WorkerEmailSendingLogFileSaveUrl = "C:\\EmailMarketingTeamA\\WorkerEmailSendingLogs\\log.txt";
         public const string CampaignwiseReportExportFileUrl = "C:\\EmailMarketingTeamA\\CampaignwiseAllReportExportFiles";
         public const string AllCampaignReportExportFileUrl = "C:\\EmailMarketingTeamA\\AllCampaignReportExportFiles";
+        public const string AllContactExportFileUrl = "C:\\EmailMarketingTeamA\\AllContactExportFiles";
+        public const string GroupwiseContactExportFileUrl = "C:\\EmailMarketingTeamA\\GroupwiseAllContactExportFiles";
     }
 }

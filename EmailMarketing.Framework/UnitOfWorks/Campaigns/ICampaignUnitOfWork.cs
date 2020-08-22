@@ -8,6 +8,8 @@ namespace EmailMarketing.Framework.UnitOfWorks.Campaigns
 {
     public interface ICampaignUnitOfWork : IUnitOfWork
     {
-        ICampaignRepository CampaignRepository { get; set; }
+        public ICampaignRepository CampaignRepository { get; set; }
+        public IEmailTemplateRepository EmailTemplateRepository { get; set; }
+
     }
 }

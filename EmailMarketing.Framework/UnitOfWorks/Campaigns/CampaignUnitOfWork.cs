@@ -9,9 +9,14 @@ namespace EmailMarketing.Framework.UnitOfWorks.Campaigns
     public class CampaignUnitOfWork : EmailMarketing.Data.UnitOfWork, ICampaignUnitOfWork
     {
         public ICampaignRepository CampaignRepository { get; set; }
-        public CampaignUnitOfWork(ICampaignRepository campaignRepository, FrameworkContext dbContext) : base(dbContext)
+
+        public IEmailTemplateRepository EmailTemplateRepository { get; set; }
+        public CampaignUnitOfWork(FrameworkContext dbContext, ICampaignRepository campaignRepository,
+            IEmailTemplateRepository emailTemplateRepository)
+            : base(dbContext)
         {
-            this.CampaignRepository = campaignRepository;
+            CampaignRepository = campaignRepository;
+            EmailTemplateRepository = emailTemplateRepository;
         }
     }
 }
