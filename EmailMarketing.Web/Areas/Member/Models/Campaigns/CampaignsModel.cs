@@ -12,7 +12,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         public CampaignsModel() : base() { }
        
          public async Task<object> GetAllAsync(DataTablesAjaxRequestModel tableModel)
-        {
+         {
             
             var result = await _campaignService.GetAllCampaignReportAsync(
                 _currentUserService.UserId,
@@ -27,12 +27,12 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 recordsFiltered = result.TotalFilter,
                 data = (from item in result.Items
                         select new string[]
-                        {       
-                                item.Contact.Email.ToString(),
-                                item.IsDelivered ? "Yes" : "No",
-                                item.IsSeen ? "Yes" : "No",
-                                item.SeenDateTime.ToString(),
-                                item.SendDateTime.ToString()
+                        {
+                            item.Contact.Email.ToString(),
+                            item.IsDelivered ? "Yes" : "No",
+                            item.IsSeen ? "Yes" : "No",
+                            item.SeenDateTime.ToString(),
+                            item.SendDateTime.ToString()
 
                         }).ToArray()
             };

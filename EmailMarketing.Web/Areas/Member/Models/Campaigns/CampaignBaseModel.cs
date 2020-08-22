@@ -18,6 +18,33 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         {
             _campaignService = Startup.AutofacContainer.Resolve<ICampaignService>();
         }
-        
+
+        public async Task<object> GetAllCampaignsAsync(DataTablesAjaxRequestModel tableModel)
+        {
+
+            var result = await _campaignService.GetAllCampaignAsync(
+                _currentUserService.UserId,
+                tableModel.SearchText,
+                tableModel.GetSortText(new string[] { "Name" }),
+                tableModel.PageIndex, tableModel.PageSize);
+
+            return new
+            {
+                recordsTotal = result.Total,
+                recordsFiltered = result.TotalFilter,
+                data = (from item in result.Items
+                        select new string[]
+                        {
+                                //item.Contact.Email.ToString(),
+                                //item.IsDelivered ? "Yes" : "No",
+                                //item.IsSeen ? "Yes" : "No",
+                                //item.SeenDateTime.ToString(),
+                                //item.SendDateTime.ToString()
+
+                        }).ToArray()
+            };
+        }
+
+       
     }
 }

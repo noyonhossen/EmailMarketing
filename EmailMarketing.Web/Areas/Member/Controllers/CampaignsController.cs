@@ -29,11 +29,25 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var model = new CampaignsModel();
             return View(model);
         }
+        public IActionResult ViewAllCampigns()
+        {
+            var model = Startup.AutofacContainer.Resolve<CampaignBaseModel>();
+            return View(model);
+
+        }
+        public async Task<IActionResult> ViewCampaigns()
+        {
+
+            var tableModel = new DataTablesAjaxRequestModel(Request);
+            var model = Startup.AutofacContainer.Resolve<CampaignBaseModel>();
+            var data = await model.GetAllCampaignsAsync(tableModel);
+            return Json(data);
+        }
         public IActionResult ViewCampignWiseReport()
         {
             var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
             return View(model);
-          
+
         }
         public async Task<IActionResult> ViewDeleveryReport()
         {
@@ -43,6 +57,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var data = await model.GetAllAsync(tableModel);
             return Json(data);
         }
+       
 
        
     }

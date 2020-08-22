@@ -8,6 +8,12 @@ namespace EmailMarketing.Framework.Services.Campaigns
 {
     public interface ICampaignService
     {
+        Task<(IList<Campaign> Items, int Total, int TotalFilter)> GetAllCampaignAsync(
+        Guid? userId,
+        string searchText,
+        string orderBy,
+        int pageIndex,
+        int pageSize);
         Task<(IList<CampaignReport> Items, int Total, int TotalFilter)> GetAllCampaignReportAsync(
         Guid? userId,
         int campaignId,
@@ -15,6 +21,6 @@ namespace EmailMarketing.Framework.Services.Campaigns
         string orderBy,
         int pageIndex,
         int pageSize);
-
+        
     }  
 }

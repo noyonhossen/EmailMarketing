@@ -1,5 +1,5 @@
 ﻿
-function loadDatatable(url,ReportUrl) {
+function loadDatatable(url) {
 
     if (!$().DataTable) {
         console.warn('Warning - datatables.min.js is not loaded.');
@@ -68,21 +68,7 @@ function loadDatatable(url,ReportUrl) {
                 'searchable': false,
                 "orderData": [4]
                
-            },
-            {
-                "targets": [5],
-                'sortable': false,
-                'searchable': false,
-                "width": "15%",
-                "className": "text-center",
-                "render": function (data, type, row, meta) {
-                    var reportButton = '<a class="text-primary" href="' + ReportUrl + '/' + data + '" title="Details">' +
-                        '<i class="fa fa-bars"></i></a>';
-
-                    return reportButton;
-                }
             }
-         
         ]
     });
 }

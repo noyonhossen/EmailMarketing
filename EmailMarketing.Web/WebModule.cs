@@ -35,6 +35,7 @@ namespace EmailMarketing.Web
             builder.RegisterType<MemberUserModel>();
             builder.RegisterType<GroupModel>();
             builder.RegisterType<CampaignsModel>();
+            builder.RegisterType<CampaignBaseModel>();
             builder.RegisterType<ContactsModel>();
             builder.RegisterType<FieldMapModel>();
             builder.RegisterType<SMTPModel>();
