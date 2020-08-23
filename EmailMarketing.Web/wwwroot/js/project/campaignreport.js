@@ -11,7 +11,7 @@ function loadDatatable(url) {
         columnDefs: [{
             orderable: false,
             width: 100,
-            targets: [6]
+            targets: [5]
         }],
         dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
         language: {
@@ -38,11 +38,8 @@ function loadDatatable(url) {
                 "targets": [1],
                 'sortable': true,
                 'searchable': false,
-                "orderData": [1],
-                "render": function (data, type, row, meta) {
-                    var lbl = data == "Yes" ? "badge-success" : "badge-danger";
-                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
-                }
+                "orderData": [1]
+                
             },
             {
                 "targets": [2],

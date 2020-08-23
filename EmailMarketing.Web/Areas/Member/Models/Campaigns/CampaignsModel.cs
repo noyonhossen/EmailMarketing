@@ -30,7 +30,8 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                         {
                                 item.Name,
                                 item.IsProcessing ? "Yes" : "No",
-                                item.IsSucceed ? "Yes" : "No",
+                                //item.SMTPConfig.SenderEmail,
+                                "hello",
                                 item.SendDateTime.ToString(),
                                 item.SendEmailAddress.ToString(),
                                 item.Id.ToString()
@@ -38,7 +39,13 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                         }).ToArray()
             };
         }
-        public async Task<object> GetAllAsync(DataTablesAjaxRequestModel tableModel)
+
+        internal void SetCapaignId(int id)
+        {
+            this.CampaignId = id;
+        }
+
+        public async Task<object> GetCampaignReportByCampaignIdAsync(DataTablesAjaxRequestModel tableModel, int CampaignId)
          {
             
             var result = await _campaignService.GetAllCampaignReportAsync(
@@ -56,7 +63,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                         select new string[]
                         {
                             item.Contact.Email.ToString(),
-                            item.IsDelivered ? "Yes" : "No",
+                            item.Contact.Email.Count().ToString(),
                             item.IsSeen ? "Yes" : "No",
                             item.SeenDateTime.ToString(),
                             item.SendDateTime.ToString()

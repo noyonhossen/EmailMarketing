@@ -34,9 +34,11 @@ namespace EmailMarketing.Framework.Services.Campaigns
             var result = (await _campaignUnitOfWork.CampaignRepository.GetAsync(x => x,
                                                   x => !x.IsDeleted && x.IsActive &&
                                                   (!userId.HasValue || x.UserId == userId.Value) && x.Name.Contains(searchText),
-                                                  x => x.OrderBy(o => o.Name),null,
+                                                  x => x.OrderBy(o => o.Name),
+                                                  null,
                                                   pageIndex, pageSize,
                                                   true));
+           
             if (result.Items == null) throw new NotFoundException(nameof(CampaignReport), userId);
 
             return (result.Items, result.Total, result.TotalFilter);
@@ -57,6 +59,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
                                                    x => x.OrderBy(o => o.Contact.Email),
                                                    x => x.Include(y => y.Contact).Include(y => y.Campaign), pageIndex, pageSize,
                                                    true));
+           
             if (result.Items == null) throw new NotFoundException(nameof(CampaignReport), userId);
 
             return (result.Items, result.Total, result.TotalFilter);

@@ -3,6 +3,7 @@ using EmailMarketing.Web.Areas.Member.Models.Campaigns;
 using Microsoft.AspNetCore.Mvc;
 using Autofac;
 using EmailMarketing.Web.Areas.Member.Models;
+using System;
 
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
@@ -34,18 +35,22 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var data = await model.GetAllCampaignsAsync(tableModel);
             return Json(data);
         }
-        public IActionResult ViewCampignWiseReport()
+        public IActionResult ViewCampignWiseReport(int Id)
         {
             var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
+            model.SetCapaignId(Id);
             return View(model);
 
         }
         public async Task<IActionResult> ViewDeleveryReport()
         {
+            var campaignId = Convert.ToInt32(Request.Query["campaignId"]);
 
             var tableModel = new DataTablesAjaxRequestModel(Request);
+
             var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
-            var data = await model.GetAllAsync(tableModel);
+
+            var data = await model.GetCampaignReportByCampaignIdAsync(tableModel,campaignId);
             return Json(data);
         }
        

@@ -48,11 +48,7 @@ function loadDatatable(url,ReportUrl) {
                 "targets": [2],
                 'sortable': true,
                 'searchable': false,
-                "orderData": [2],
-                "render": function (data, type, row, meta) {
-                    var lbl = data == "Yes" ? "badge-success" : "badge-danger";
-                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
-                }
+                "orderData": [2]
             }
             ,
             {
