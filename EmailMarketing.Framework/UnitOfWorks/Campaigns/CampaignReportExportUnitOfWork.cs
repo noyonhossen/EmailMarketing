@@ -2,6 +2,7 @@
 using EmailMarketing.Framework.Context;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Repositories.Campaigns;
+using EmailMarketing.Framework.Repositories.Contacts;
 using System;
 using System.Collections.Generic;
 using System.Text;
