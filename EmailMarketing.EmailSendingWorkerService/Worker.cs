@@ -25,11 +25,13 @@ namespace EmailMarketing.EmailSendingWorkerService
 
         public Worker(ILogger<Worker> logger, 
             IWorkerMailerService mailerService,
-            ICampaignService campaignService)
+            ICampaignService campaignService,
+            ICampaignReportService campaignReportService)
         {
             _logger = logger;
             _mailerService = mailerService;
             _campaignService = campaignService;
+            _campaignReportService = campaignReportService;
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
@@ -67,7 +69,7 @@ namespace EmailMarketing.EmailSendingWorkerService
                                 emailTemplate = ConvertExtension.FormatStringFromDictionary(emailTemplate, fieldmapDict);
                             }
 
-                            var status = await _mailerService.SendBulkEmailAsync(result.Name, "Bulk Mail", emailTemplate, result.SMTPConfig);
+                            var status = await _mailerService.SendBulkEmailAsync(singleContact.Email, "Bulk Mail", emailTemplate, result.SMTPConfig);
 
                             var campaignReport = new CampaignReport
                             {
