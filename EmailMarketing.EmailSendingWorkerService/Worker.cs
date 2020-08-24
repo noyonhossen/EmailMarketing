@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EmailMarketing.Common.Services;
+using EmailMarketing.EmailSendingWorkerService.Services;
 using EmailMarketing.EmailSendingWorkerService.Templates;
 using EmailMarketing.Framework.Services.Campaigns;
 using Microsoft.Extensions.Hosting;
@@ -14,11 +15,11 @@ namespace EmailMarketing.EmailSendingWorkerService
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
-        private readonly IMailerService _mailerService;
+        private readonly IWorkerMailerService _mailerService;
         private readonly ICampaignService _campaignService;
 
         public Worker(ILogger<Worker> logger, 
-            IMailerService mailerService,
+            IWorkerMailerService mailerService,
             ICampaignService campaignService)
         {
             _logger = logger;
@@ -39,15 +40,28 @@ namespace EmailMarketing.EmailSendingWorkerService
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
                 var list = await _campaignService.GetAllProcessingCampaign();
+                var emailList = new List<string>();
 
-                var demoEmailTempalte = new DemoEmailTemplate();
-                var emailBody = demoEmailTempalte.TransformText();
+                //var demoEmailTempalte = new DemoEmailTemplate();
+                //var emailBody = demoEmailTempalte.TransformText();
 
                 try
                 {
                     foreach(var item in list)
                     {
-                        await _mailerService.SendEmailAsync(item.Name, "Bulk Mail", emailBody);
+                        var result = await _campaignService.GetAllEmailByCampaignId(item.Id);
+                        foreach(var campaignList in result)
+                        {
+                            foreach(var campaignGroup in campaignList.CampaignGroups )
+                            {
+                                foreach(var contactGroup in campaignGroup.Group.ContactGroups)
+                                {
+                                    emailList.Add(contactGroup.Contact.Email);
+                                }
+                            }
+                        }
+                        
+                        await _mailerService.SendBulkEmailAsync(item.Name, "Bulk Mail", item.EmailTemplate.EmailTemplateBody, item.SMTPConfig);
                     }
                 }
                 catch(Exception ex)

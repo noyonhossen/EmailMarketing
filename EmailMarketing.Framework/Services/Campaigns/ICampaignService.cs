@@ -12,5 +12,6 @@ namespace EmailMarketing.Framework.Services.Campaigns
         Task<IList<EmailTemplate>> GetEmailTemplateByUserIdAsync(Guid? userId);
         Task AddCampaign(Campaign campaign);
         Task<IList<Campaign>> GetAllProcessingCampaign();
+        Task<IList<Campaign>> GetAllEmailByCampaignId(int campaignId);
     }
 }

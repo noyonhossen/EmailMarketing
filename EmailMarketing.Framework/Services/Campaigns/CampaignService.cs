@@ -49,10 +49,23 @@ namespace EmailMarketing.Framework.Services.Campaigns
         public async Task<IList<Campaign>> GetAllProcessingCampaign()
         {
             return (await _campaignUnitOfWork.CampaignRepository.GetAsync(x => x,
-                                                                            x => x.IsProcessing == true,
-                                                                            null,
-                                                                            x => x.Include(s => s.SMTPConfig).Include(e => e.EmailTemplate),
-                                                                            true));
+                                                                          x => x.IsProcessing == true,
+                                                                          null,
+                                                                          x => x.Include(s => s.SMTPConfig).Include(e => e.EmailTemplate),
+                                                                          true));
+        }
+
+        public async Task<IList<Campaign>> GetAllEmailByCampaignId(int campaignId)
+        {
+            var result = await _campaignUnitOfWork.CampaignRepository.GetAsync(x => x,
+                                                                                x => x.Id == campaignId,
+                                                                                null,
+                                                                                x => x.Include(y => y.CampaignGroups)
+                                                                                    .ThenInclude(g => g.Group)
+                                                                                    .ThenInclude(z => z.ContactGroups)
+                                                                                    .ThenInclude(c => c.Contact),
+                                                                                true);
+            return result;
         }
     }
 }

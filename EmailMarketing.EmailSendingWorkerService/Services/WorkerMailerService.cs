@@ -9,10 +9,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmailMarketing.EmailSendingWorkerService.Entities;
+using EmailMarketing.Framework.Entities.SMTP;
 
 namespace EmailMarketing.EmailSendingWorkerService.Services
 {
-    public class WorkerMailerService : IMailerService
+    public class WorkerMailerService : IWorkerMailerService
     {
         private readonly WorkerSmtpSettings _workerSmtpSettings;
 
@@ -21,7 +22,7 @@ namespace EmailMarketing.EmailSendingWorkerService.Services
             _workerSmtpSettings = smtpSettings.Value;
         }
         
-        public async Task SendEmailAsync(string email, string subject, string body)
+        public async Task SendBulkEmailAsync(string email, string subject, string body, SMTPConfig sMTPConfig)
         {
             try
             {
