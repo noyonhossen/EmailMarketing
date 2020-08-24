@@ -28,13 +28,12 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 data = (from item in result.Items
                         select new string[]
                         {
-                                item.Name,
-                                item.IsProcessing ? "Yes" : "No",
-                                //item.SMTPConfig.SenderEmail,
-                                "hello",
-                                item.SendDateTime.ToString(),
-                                item.SendEmailAddress.ToString(),
-                                item.Id.ToString()
+                            item.Name,
+                            item.IsProcessing ? "Yes" : "No",
+                            item.CampaignReports.Count.ToString(),
+                            item.SendDateTime.ToString(),
+                            item.SendEmailAddress.ToString(),
+                            item.Id.ToString()
 
                         }).ToArray()
             };
@@ -63,7 +62,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                         select new string[]
                         {
                             item.Contact.Email.ToString(),
-                            item.Contact.Email.Count().ToString(),
+                            item.IsDelivered.ToString(),
                             item.IsSeen ? "Yes" : "No",
                             item.SeenDateTime.ToString(),
                             item.SendDateTime.ToString()

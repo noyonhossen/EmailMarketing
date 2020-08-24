@@ -38,8 +38,11 @@ function loadDatatable(url) {
                 "targets": [1],
                 'sortable': true,
                 'searchable': false,
-                "orderData": [1]
-                
+                "orderData": [1],
+                "render": function (data, type, row, meta) {
+                    var lbl = data == "Yes" ? "badge-success" : "badge-danger";
+                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
+                }
             },
             {
                 "targets": [2],

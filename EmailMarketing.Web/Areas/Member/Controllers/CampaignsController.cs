@@ -45,11 +45,8 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         public async Task<IActionResult> ViewDeleveryReport()
         {
             var campaignId = Convert.ToInt32(Request.Query["campaignId"]);
-
             var tableModel = new DataTablesAjaxRequestModel(Request);
-
             var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
-
             var data = await model.GetCampaignReportByCampaignIdAsync(tableModel,campaignId);
             return Json(data);
         }
