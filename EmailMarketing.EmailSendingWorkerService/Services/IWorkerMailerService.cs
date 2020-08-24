@@ -8,6 +8,6 @@ namespace EmailMarketing.EmailSendingWorkerService.Services
 {
     public interface IWorkerMailerService
     {
-        Task SendBulkEmailAsync(string email, string subject, string body, SMTPConfig sMTPConfig);
+        Task<bool> SendBulkEmailAsync(string email, string subject, string body, SMTPConfig sMTPConfig);
     }
 }

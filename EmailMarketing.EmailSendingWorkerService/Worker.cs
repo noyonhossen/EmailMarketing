@@ -21,6 +21,7 @@ namespace EmailMarketing.EmailSendingWorkerService
         private readonly ILogger<Worker> _logger;
         private readonly IWorkerMailerService _mailerService;
         private readonly ICampaignService _campaignService;
+        private readonly ICampaignReportService _campaignReportService;
 
         public Worker(ILogger<Worker> logger, 
             IWorkerMailerService mailerService,
@@ -44,14 +45,10 @@ namespace EmailMarketing.EmailSendingWorkerService
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
                 var campaignList = await _campaignService.GetAllProcessingCampaign();
-                //var emailList = new List<string>();
-
-                //var demoEmailTempalte = new DemoEmailTemplate();
-                //var emailBody = demoEmailTempalte.TransformText();
 
                 try
                 {
-                    var camReports = new List<CampaignReport>();
+                    var campaignReportList = new List<CampaignReport>();
 
                     foreach(var item in campaignList)
                     {
@@ -70,14 +67,25 @@ namespace EmailMarketing.EmailSendingWorkerService
                                 emailTemplate = ConvertExtension.FormatStringFromDictionary(emailTemplate, fieldmapDict);
                             }
 
-                            await _mailerService.SendBulkEmailAsync(result.Name, "Bulk Mail", emailTemplate, result.SMTPConfig);
+                            var status = await _mailerService.SendBulkEmailAsync(result.Name, "Bulk Mail", emailTemplate, result.SMTPConfig);
 
-                            var conReport = new CampaignReport();
-                            camReports.Add(conReport);
+                            var campaignReport = new CampaignReport
+                            {
+                                CampaignId = result.Id,
+                                ContactId = singleContact.Id,
+                                SMTPConfigId = result.SMTPConfigId,
+                                IsDelivered = status,
+                                IsSeen = false,
+                                IsPersonalized = item.IsPersonalized,
+                                SendDateTime = item.SendDateTime,
+                                SeenDateTime = DateTime.Now
+                            };
+
+                            campaignReportList.Add(campaignReport);
                         } 
                     }
 
-                    //-------------------------
+                    await _campaignReportService.AddCampaingReportAsync(campaignReportList);
                 }
                 catch(Exception ex)
                 {
