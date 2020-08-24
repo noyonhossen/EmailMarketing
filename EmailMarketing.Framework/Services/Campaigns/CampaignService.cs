@@ -51,19 +51,22 @@ namespace EmailMarketing.Framework.Services.Campaigns
             return (await _campaignUnitOfWork.CampaignRepository.GetAsync(x => x,
                                                                           x => x.IsProcessing == true,
                                                                           null,
-                                                                          x => x.Include(s => s.SMTPConfig).Include(e => e.EmailTemplate),
+                                                                          null,
                                                                           true));
         }
 
-        public async Task<IList<Campaign>> GetAllEmailByCampaignId(int campaignId)
+        public async Task<Campaign> GetAllEmailByCampaignId(int campaignId)
         {
-            var result = await _campaignUnitOfWork.CampaignRepository.GetAsync(x => x,
+            var result = await _campaignUnitOfWork.CampaignRepository.GetFirstOrDefaultAsync(x => x,
                                                                                 x => x.Id == campaignId,
-                                                                                null,
-                                                                                x => x.Include(y => y.CampaignGroups)
-                                                                                    .ThenInclude(g => g.Group)
-                                                                                    .ThenInclude(z => z.ContactGroups)
-                                                                                    .ThenInclude(c => c.Contact),
+                                                                                x => x.Include(s => s.SMTPConfig)
+                                                                                        .Include(e => e.EmailTemplate)
+                                                                                        .Include(y => y.CampaignGroups)
+                                                                                            .ThenInclude(g => g.Group)
+                                                                                            .ThenInclude(z => z.ContactGroups)
+                                                                                            .ThenInclude(c => c.Contact)
+                                                                                            .ThenInclude(cv => cv.ContactValueMaps)
+                                                                                            .ThenInclude(fm => fm.FieldMap),
                                                                                 true);
             return result;
         }

@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using EmailMarketing.Common.Extensions;
 using EmailMarketing.Common.Services;
 using EmailMarketing.EmailSendingWorkerService.Services;
 using EmailMarketing.EmailSendingWorkerService.Templates;
+using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.Services.Campaigns;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -39,30 +43,41 @@ namespace EmailMarketing.EmailSendingWorkerService
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
-                var list = await _campaignService.GetAllProcessingCampaign();
-                var emailList = new List<string>();
+                var campaignList = await _campaignService.GetAllProcessingCampaign();
+                //var emailList = new List<string>();
 
                 //var demoEmailTempalte = new DemoEmailTemplate();
                 //var emailBody = demoEmailTempalte.TransformText();
 
                 try
                 {
-                    foreach(var item in list)
+                    var camReports = new List<CampaignReport>();
+
+                    foreach(var item in campaignList)
                     {
                         var result = await _campaignService.GetAllEmailByCampaignId(item.Id);
-                        foreach(var campaignList in result)
+
+                        var contactList = result.CampaignGroups.Select(x => x.Group).SelectMany(x => x.ContactGroups).Select(x => x.Contact).ToList();
+
+                        foreach(var singleContact in contactList)
                         {
-                            foreach(var campaignGroup in campaignList.CampaignGroups )
+                            var fieldmapDict = singleContact.ContactValueMaps.ToList().ToDictionary(x => x.FieldMap.DisplayName, x => x.Value);
+                            fieldmapDict.Add("Email", singleContact.Email);
+
+                            var emailTemplate = result.EmailTemplate.EmailTemplateBody;
+                            if(item.IsPersonalized)
                             {
-                                foreach(var contactGroup in campaignGroup.Group.ContactGroups)
-                                {
-                                    emailList.Add(contactGroup.Contact.Email);
-                                }
+                                emailTemplate = ConvertExtension.FormatStringFromDictionary(emailTemplate, fieldmapDict);
                             }
-                        }
-                        
-                        await _mailerService.SendBulkEmailAsync(item.Name, "Bulk Mail", item.EmailTemplate.EmailTemplateBody, item.SMTPConfig);
+
+                            await _mailerService.SendBulkEmailAsync(result.Name, "Bulk Mail", emailTemplate, result.SMTPConfig);
+
+                            var conReport = new CampaignReport();
+                            camReports.Add(conReport);
+                        } 
                     }
+
+                    //-------------------------
                 }
                 catch(Exception ex)
                 {
@@ -84,5 +99,6 @@ namespace EmailMarketing.EmailSendingWorkerService
             _logger.LogInformation($"Worker disposed at: {DateTime.Now}");
             base.Dispose();
         }
+
     }
 }
