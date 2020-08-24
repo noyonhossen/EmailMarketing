@@ -2,6 +2,7 @@
 using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.UnitOfWorks.Campaigns;
 using EmailMarketing.Framework.UnitOfWorks.Groups;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,15 @@ namespace EmailMarketing.Framework.Services.Campaigns
         {
             await _campaignUnitOfWork.CampaignRepository.AddAsync(campaign);
             await _campaignUnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<IList<Campaign>> GetAllProcessingCampaign()
+        {
+            return (await _campaignUnitOfWork.CampaignRepository.GetAsync(x => x,
+                                                                            x => x.IsProcessing == true,
+                                                                            null,
+                                                                            x => x.Include(s => s.SMTPConfig).Include(e => e.EmailTemplate),
+                                                                            true));
         }
     }
 }

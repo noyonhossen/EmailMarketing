@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmailMarketing.Common.Services;
 using EmailMarketing.EmailSendingWorkerService.Templates;
+using EmailMarketing.Framework.Services.Campaigns;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -14,11 +15,15 @@ namespace EmailMarketing.EmailSendingWorkerService
     {
         private readonly ILogger<Worker> _logger;
         private readonly IMailerService _mailerService;
+        private readonly ICampaignService _campaignService;
 
-        public Worker(ILogger<Worker> logger, IMailerService mailerService)
+        public Worker(ILogger<Worker> logger, 
+            IMailerService mailerService,
+            ICampaignService campaignService)
         {
             _logger = logger;
             _mailerService = mailerService;
+            _campaignService = campaignService;
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
@@ -33,14 +38,7 @@ namespace EmailMarketing.EmailSendingWorkerService
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
-                var list = new List<string>();
-                list.Add("shamimalmamunsamir@gmail.com");
-                list.Add("bad5432@gmail.com");
-                list.Add("shamimalmamunsamir@gmail.com");
-                list.Add("bad5432@gmail.com");
-                list.Add("shamimalmamunsamir@gmail.com");
-                list.Add("samamun009@gmail.com");
-                list.Add("bad5432@gmail.com");
+                var list = await _campaignService.GetAllProcessingCampaign();
 
                 var demoEmailTempalte = new DemoEmailTemplate();
                 var emailBody = demoEmailTempalte.TransformText();
@@ -49,7 +47,7 @@ namespace EmailMarketing.EmailSendingWorkerService
                 {
                     foreach(var item in list)
                     {
-                        await _mailerService.SendEmailAsync(item, "Bulk Mail", emailBody);
+                        await _mailerService.SendEmailAsync(item.Name, "Bulk Mail", emailBody);
                     }
                 }
                 catch(Exception ex)
