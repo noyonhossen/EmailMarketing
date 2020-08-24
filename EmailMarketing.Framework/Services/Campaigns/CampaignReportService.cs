@@ -19,6 +19,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
         public async Task AddCampaingReportAsync(IList<CampaignReport> campaignReports)
         {
             await _campaignReportUnitOfWork.CampaingReportRepository.AddRangeAsync(campaignReports);
+            await _campaignReportUnitOfWork.SaveChangesAsync();
         }
 
         public void Dispose()
