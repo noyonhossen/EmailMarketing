@@ -62,7 +62,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                         select new string[]
                         {
                             item.Contact.Email.ToString(),
-                            item.IsDelivered.ToString(),
+                            item.IsDelivered ? "Yes" : "No",
                             item.IsSeen ? "Yes" : "No",
                             item.SeenDateTime.ToString(),
                             item.SendDateTime.ToString()
