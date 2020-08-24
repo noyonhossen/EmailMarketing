@@ -91,7 +91,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         [HttpGet]
         public async Task<IActionResult> AddSingleContact()
         {
-            var model = new SingleContactModel();
+            var model = new AddSingleContactModel();
             model.GroupSelectList = await model.GetAllGroupForSelectAsync();
             model.ContactValueMaps = await model.GetAllContactValueMaps();
             model.ContactValueMapsCustom = await model.GetAllContactValueMapsCustom();
@@ -99,22 +99,31 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddSingleContact(SingleContactModel model)
+        public async Task<IActionResult> AddSingleContact(AddSingleContactModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await model.SaveContactAsync();
-                    var msg = "Congrats! Added Contact Successfully";
-                    _logger.LogInformation("Single Contact Added Successfully");
-                    model.Response = new ResponseModel(msg, ResponseType.Success);
+                    var existingContact = await model.IsContactExistAsync();
+                    if (existingContact != null)
+                    {
+                        model.Response = new ResponseModel("Contact already exist. You can update the existing contact.", ResponseType.Failure);
+                        return RedirectToAction("EditContact", new { id = existingContact.Id });
+                    }
+                    else
+                    {
+                        await model.SaveContactAsync();
+                        var msg = "Added Contact Successfully";
+                        _logger.LogInformation("Single Contact Added Successfully");
+                        model.Response = new ResponseModel(msg, ResponseType.Success);
+                    }
                     //return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
-                    var msg = "Failed to Add Contact";
-                    model.Response = new ResponseModel(msg, ResponseType.Failure);
+                    //var msg = "Failed to Add Contact";
+                    model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
                     _logger.LogError(ex.Message);
                 }
             }
@@ -126,17 +135,36 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public async Task<IActionResult> EditContact(int id)
         {
-            var model = new ContactsModel();
+            var model = new EditContactsModel();
+            await model.LoadContactByIdAsync(id);
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditContact()
+        public async Task<IActionResult> EditContact(EditContactsModel model)
         {
-            var model = new ContactsModel();
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    await model.UpdateAsync();
+                    _logger.LogInformation("Contact Successfully Updated.");
+                    return RedirectToAction("Index");
+                }
+                 catch (DuplicationException ex)
+                {
+                    model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
+                }
+                catch (Exception ex)
+                {
+                    model.Response = new ResponseModel("Contact edit failured.", ResponseType.Failure);
+                }
+            }
+           // model.LoadContactByIdAsync();
             return View(model);
         }
 

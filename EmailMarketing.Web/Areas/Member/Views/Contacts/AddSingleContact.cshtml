@@ -1,4 +1,4 @@
-﻿@model EmailMarketing.Web.Areas.Member.Models.Contacts.SingleContactModel
+﻿@model EmailMarketing.Web.Areas.Member.Models.Contacts.AddSingleContactModel
 @{
     ViewData["Title"] = "AddSingleContact";
 }
@@ -30,6 +30,7 @@
                                 <label asp-for="Email" class="col-sm-3 col-form-label">Email Address *</label>
                                 <div class="col-sm-9">
                                     <input type="email" class="form-control" asp-for="Email">
+                                    <span asp-validation-for="Email"></span>
                                 </div>
                             </div>
 
@@ -45,52 +46,47 @@
                                         //var items = Model.ContactValueMaps;
                                         for (int i = 0; i < Model.ContactValueMaps.Count(); i++)
                                         {
-
-                                            if (Model.ContactValueMaps[i].Text.Contains("Email") == false)
-                                            {
-                                                <div class="form-group row">
-
-                                                    <label asp-for="@Model.ContactValueMaps[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMaps[i].Text</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control" value="@Model.ContactValueMaps[i].Input" name="ContactValueMaps[@i].Input">
-                                                        <input type="hidden" class="form-control" value="@Model.ContactValueMaps[i].Value" name="ContactValueMaps[@i].Value">
-                                                    </div>
+                                            <div class="form-group row">
+                                                <label asp-for="@Model.ContactValueMaps[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMaps[i].Text</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" value="@Model.ContactValueMaps[i].Input" name="ContactValueMaps[@i].Input">
+                                                    <input type="hidden" class="form-control" value="@Model.ContactValueMaps[i].Value" name="ContactValueMaps[@i].Value">
                                                 </div>
-                                            }
+                                            </div>
                                         }
                                     }
 
 
 
                                     @*@if (Model.ContactValueMaps[i].Text.Contains("mail") == false)
-        {
-            <label asp-for="@Model.ContactValueMaps[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMaps[i].Text</label>
-            <div class="col-sm-9">
+                                        {
+                                            <label asp-for="@Model.ContactValueMaps[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMaps[i].Text</label>
+                                            <div class="col-sm-9">
 
-                <input type="text" class="form-control" value="@Model.ContactValueMaps[i].Input" name="ContactValueMaps[@i].Input">
-                <input type="hidden" class="form-control" value="@Model.ContactValueMaps[i].Value" name="ContactValueMaps[@i].Value">
-            </div>
-        }
-        else if (@Model.ContactValueMaps[i].Text.Contains("Gender") || @Model.ContactValueMaps[i].Text.Contains("gender"))
-        {
-            <label asp-for="@Model.ContactValueMaps[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMaps[i].Text</label>
-            <div class="col-sm-9">
-                <select asp-for="@Model.ContactValueMaps[i].Input" class="form-control">
+                                                <input type="text" class="form-control" value="@Model.ContactValueMaps[i].Input" name="ContactValueMaps[@i].Input">
+                                                <input type="hidden" class="form-control" value="@Model.ContactValueMaps[i].Value" name="ContactValueMaps[@i].Value">
+                                            </div>
+                                        }
+                                        else if (@Model.ContactValueMaps[i].Text.Contains("Gender") || @Model.ContactValueMaps[i].Text.Contains("gender"))
+                                        {
+                                            <label asp-for="@Model.ContactValueMaps[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMaps[i].Text</label>
+                                            <div class="col-sm-9">
+                                                <select asp-for="@Model.ContactValueMaps[i].Input" class="form-control">
 
-                    <option value="">--- Select Gender ---</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
+                                                    <option value="">--- Select Gender ---</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
 
-                </select>
-            </div>
-        }
-        else if (@Model.ContactValueMaps[i].Text.Contains("Date") || @Model.ContactValueMaps[i].Text.Contains("DOB") || @Model.ContactValueMaps[i].Text.Contains("Birth"))
-        {
-            <label asp-for="@Model.ContactValueMaps[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMaps[i].Text</label>
-            <div class="col-sm-9">
-                <input type="date" class="form-control" asp-for="@Model.ContactValueMaps[i].Input">
-            </div>
-        }*@
+                                                </select>
+                                            </div>
+                                        }
+                                        else if (@Model.ContactValueMaps[i].Text.Contains("Date") || @Model.ContactValueMaps[i].Text.Contains("DOB") || @Model.ContactValueMaps[i].Text.Contains("Birth"))
+                                        {
+                                            <label asp-for="@Model.ContactValueMaps[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMaps[i].Text</label>
+                                            <div class="col-sm-9">
+                                                <input type="date" class="form-control" asp-for="@Model.ContactValueMaps[i].Input">
+                                            </div>
+                                        }*@
 
                                 </div>
                             </div>
@@ -108,51 +104,45 @@
                                         //var items = Model.ContactValueMapsCustom;
                                         for (int i = 0; i < Model.ContactValueMapsCustom.Count(); i++)
                                         {
-                                            if (Model.ContactValueMapsCustom[i].Text.Contains("Email") == false)
-                                            {
-                                                <div class="form-group row">
+
+                                            <div class="form-group row">
+
+
+
+
+                                                @*@if (@Model.ContactValueMapsCustom[i].Text.Contains("date") || @Model.ContactValueMapsCustom[i].Text.Contains("Date") || @Model.ContactValueMapsCustom[i].Text.Contains("DOB") || @Model.ContactValueMapsCustom[i].Text.Contains("Birth"))
+                                                {
+                                                    <label asp-for="@Model.ContactValueMapsCustom[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMapsCustom[i].Text</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="date" class="form-control" value="@Model.ContactValueMapsCustom[i].Input" name="ContactValueMapsCustom[@i].Input">
+                                                        <input type="hidden" class="form-control" value="@Model.ContactValueMapsCustom[i].Value" name="ContactValueMapsCustom[@i].Value">
+
+                                                    </div>
+                                                }
+                                                else if (@Model.ContactValueMapsCustom[i].Text.Contains("Gender") || @Model.ContactValueMapsCustom[i].Text.Contains("gender"))
+                                                {
+                                                    <label asp-for="@Model.ContactValueMapsCustom[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMapsCustom[i].Text</label>
+                                                    <div class="col-sm-9">
+                                                        <select asp-for="@Model.ContactValueMapsCustom[i].Input" class="form-control">
+
+                                                            <option value="">--- Select Gender ---</option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female">Female</option>
+
+                                                        </select>
+                                                    </div>
+                                                }*@
+                                               
 
                                                     <label asp-for="@Model.ContactValueMapsCustom[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMapsCustom[i].Text</label>
                                                     <div class="col-sm-9">
                                                         <input type="text" class="form-control" value="@Model.ContactValueMapsCustom[i].Input" name="ContactValueMapsCustom[@i].Input">
                                                         <input type="hidden" class="form-control" value="@Model.ContactValueMapsCustom[i].Value" name="ContactValueMapsCustom[@i].Value">
+
                                                     </div>
-                                                </div>
-                                            }
-                                            @*<div class="form-group row">
-                                            @if (@Model.ContactValueMapsCustom[i].Text.Contains("Date") || @Model.ContactValueMapsCustom[i].Text.Contains("DOB") || @Model.ContactValueMapsCustom[i].Text.Contains("Birth"))
-                                            {
-                                                <label asp-for="@Model.ContactValueMapsCustom[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMapsCustom[i].Text</label>
-                                                <div class="col-sm-9">
-                                                    <input type="date" class="form-control" value="@Model.ContactValueMapsCustom[i].Input" name="ContactValueMapsCustom[@i].Input">
-                                                    <input type="hidden" class="form-control" value="@Model.ContactValueMapsCustom[i].Value" name="ContactValueMapsCustom[@i].Value">
+                                                
 
-                                                </div>
-                                            }
-                                            else if (@Model.ContactValueMapsCustom[i].Text.Contains("Gender") || @Model.ContactValueMapsCustom[i].Text.Contains("gender"))
-                                            {
-                                                <label asp-for="@Model.ContactValueMapsCustom[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMapsCustom[i].Text</label>
-                                                <div class="col-sm-9">
-                                                    <select asp-for="@Model.ContactValueMapsCustom[i].Input" class="form-control">
-
-                                                        <option value="">--- Select Gender ---</option>
-                                                        <option value="Male">Male</option>
-                                                        <option value="Female">Female</option>
-
-                                                    </select>
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <label asp-for="@Model.ContactValueMapsCustom[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMapsCustom[i].Text</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" value="@Model.ContactValueMapsCustom[i].Input" name="ContactValueMapsCustom[@i].Input">
-                                                    <input type="hidden" class="form-control" value="@Model.ContactValueMapsCustom[i].Value" name="ContactValueMapsCustom[@i].Value">
-
-                                                </div>
-                                            }
-
-                                        </div>*@
+                                            </div>
                                         }
                                     }
                                 </div>
@@ -164,17 +154,16 @@
 
                     <div class="col-md-6">
                         <h3>Where you want to add this contract?</h3>
-                        @Html.AntiForgeryToken()
                         @*<form id="form2" asp-area="Member" asp-action="AddSingleContact" asp-controller="Contacts" method="post">*@
                         <!-- selected -->
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="checkAll">
-                            <label class="form-check-label" for="checkAll">Select All Lists</label>
+                            <label class="form-check-label" for="checkAll">Select All Groups</label>
                         </div>
                         @*<div asp-validation-summary="All" class="text-danger"></div>*@
                         <div class="bg-white">
                             <p class="p-2">
-                                <i class="icon-collaboration"></i>&nbsp;&nbsp; <span id="selected">No</span> <span>List</span> Selected
+                                <i class="icon-collaboration"></i>&nbsp;&nbsp; <span id="selected">No Group Selected</span>
                                 @*<span asp-validation-for="@Model.GroupSelectList"></span>*@
                             </p>
                         </div>
@@ -182,7 +171,6 @@
                         <div class="bg-white">
                             <ul class="list-group">
                                 @{
-                                    //var groupItems = Model.GroupSelectList;
                                     for (int i = 0; i < Model.GroupSelectList.Count(); i++)
                                     {
                                         <li class="list-group-item border-bottom">
@@ -191,8 +179,8 @@
                                                 <input type="hidden" class="form-control" asp-for="@Model.GroupSelectList[i].Value">
                                                 <input type="hidden" class="form-control" asp-for="@Model.GroupSelectList[i].Text">
                                                 @*<input type="hidden" class="form-control" value="@Model.GroupSelectList[i].Count" name="GroupSelectList[@i].Count">
-                                <input type="hidden" class="form-control" value="@Model.GroupSelectList[i].Input" name="GroupSelectList[@i].Input">
-                                <input type="hidden" class="form-control" value="@Model.GroupSelectList[i].Text" name="GroupSelectList[@i].Text">*@
+                                                    <input type="hidden" class="form-control" value="@Model.GroupSelectList[i].Input" name="GroupSelectList[@i].Input">
+                                                    <input type="hidden" class="form-control" value="@Model.GroupSelectList[i].Text" name="GroupSelectList[@i].Text">*@
 
                                                 <label class="form-check-label" for="checkSingle[@i]">
                                                     @Model.GroupSelectList[i].Text
@@ -218,98 +206,74 @@
 
 
                 </div>
+                <div class="d-flex justify-content-end">
+                    <button id="btnsubmit" class="btn btn-primary"><i class="icon-file-check2"></i> Save</button>
+                    @*<input id="sub" type="button" value="Save" class="btn btn-primary" onclick="submitForm()" />*@
 
+                </div>
             </form>
-            <div class="d-flex justify-content-end">
-                <button id="btnsubmit" class="btn btn-primary"><i class="icon-file-check2"></i> Save</button>
-                @*<input id="sub" type="button" value="Save" class="btn btn-primary" onclick="submitForm()" />*@
-
-            </div>
-        </div>
-           
 
         </div>
+
+
     </div>
+</div>
 
 @*</div>*@
 
 
 <!-- /content area -->
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>*@
+@section Scripts{
+    <script>
+        
+        $(function () {
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-
-<script>
-    //$(function () { });
-    $('#checkAll').click(function (event) {
-        if (this.checked) {
-            // Iterate each checkbox
-            $(':checkbox').each(function () {
-                this.checked = true;
-                $(this).val(this.checked);
+            $('#checkAll').click(function (event) {
+                if (this.checked) {
+                    // Iterate each checkbox
+                    $(':checkbox').each(function () {
+                        this.checked = true;
+                        $(this).val(this.checked);
+                    });
+                } else {
+                    $(':checkbox').each(function () {
+                        this.checked = false;
+                        $(this).val(this.checked);
+                    });
+                }
             });
-        } else {
-            $(':checkbox').each(function () {
-                this.checked = false;
-                $(this).val(this.checked);
+
+            //$("#checkAll").click(function () {
+            //    $('input:checkbox.group-select').not(this).prop('checked', this.checked);
+            //});
+
+            $('.group-select').change(function () {
+                var val = this.checked;
+                $(this).val(val);
             });
-        }
-    });
-
-    //$(function () {
-    //$('#checkAll').click(function () {
-    //    if ($("#checkAll").is(':checked')) {
-    //        $('.group-select').change(function () {
-    //            var val = true;
-    //            $(this).val(val);
-    //        });
-    //    } else {
-    //        $('.group-select').change(function () {
-    //            var val = false;
-    //            $(this).val(val);
-    //        });
-    //    }
-    //});
-    //});
-
-    $('.group-select').change(function () {
-        var val = this.checked;
-        $(this).val(val);
-    });
 
 
-    //Count selected List
-    var selectedElm = document.getElementById('selected');
-    function showChecked() {
-        var count = document.querySelectorAll('input.group-select:checked').length;
-        if (count > 0) selectedElm.innerHTML = count;
-        else selectedElm.innerHTML = "No";
-    }
-    document.querySelectorAll("input").forEach(i => {
-        i.onclick = () => showChecked();
-    });
+            var selectedElm = document.getElementById('selected');
+            function showChecked() {
+                var count = document.querySelectorAll('input.group-select:checked').length;
+                if (count == 1) selectedElm.innerHTML = "1 Group Selected";
+                else if (count > 1) selectedElm.innerHTML = count+" Groups Selected";
+                else selectedElm.innerHTML = "No Group Selected";
+            }
+            document.querySelectorAll("input").forEach(i => {
+                i.onclick = () => showChecked();
+            });
 
-    //$(document).ready(function () {
-    //    $("#submit").click(function (e) {
-    //        //Serialize the form datas.   
-    //        var valdata = $("#form1").serialize();
-    //        //to get alert popup   
-    //        alert(valdata);
-    //        $.ajax({
-    //            url: "/Contacts/AddSingleContact",
-    //            type: "POST",
-    //            dataType: 'json',
-    //            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-    //            data: valdata
-    //        });
-    //        $("#form2").submit();
-    //    });
-    //});  
 
-    document.getElementById("btnsubmit").onclick = function () {
-        document.getElementById("addContactForm").submit();
-    //    document.getElementById("form2").submit();
-    }
+        });
 
-    
 
-</script>
+        //Count selected List
+
+        
+
+
+
+    </script>
+}
