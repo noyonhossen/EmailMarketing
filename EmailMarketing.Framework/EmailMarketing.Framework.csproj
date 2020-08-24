@@ -20,4 +20,8 @@
     <ProjectReference Include="..\EmailMarketing.Membership\EmailMarketing.Membership.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\Campaings\" />
+  </ItemGroup>
+
 </Project>

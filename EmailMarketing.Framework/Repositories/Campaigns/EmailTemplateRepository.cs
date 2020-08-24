@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EmailMarketing.Framework.Repositories.Campaings
+namespace EmailMarketing.Framework.Repositories.Campaigns
 {
     public class EmailTemplateRepository : Repository<EmailTemplate, int, FrameworkContext>, IEmailTemplateRepository
     {
