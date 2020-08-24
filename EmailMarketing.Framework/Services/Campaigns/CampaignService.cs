@@ -35,16 +35,18 @@ namespace EmailMarketing.Framework.Services.Campaigns
                                                   x => !x.IsDeleted && x.IsActive &&
                                                   (!userId.HasValue || x.UserId == userId.Value) && x.Name.Contains(searchText),
                                                   x => x.OrderBy(o => o.Name),
-                                                  null,
+                                                  x => x.Include(y => y.CampaignReports),
                                                   pageIndex, pageSize,
                                                   true));
+
            
+
             if (result.Items == null) throw new NotFoundException(nameof(CampaignReport), userId);
 
             return (result.Items, result.Total, result.TotalFilter);
 
         }
-
+        
         public async Task<(IList<CampaignReport> Items, int Total, int TotalFilter)> GetAllCampaignReportAsync(
           Guid? userId,
           int campaignId,
@@ -59,7 +61,8 @@ namespace EmailMarketing.Framework.Services.Campaigns
                                                    x => x.OrderBy(o => o.Contact.Email),
                                                    x => x.Include(y => y.Contact).Include(y => y.Campaign), pageIndex, pageSize,
                                                    true));
-           
+            
+
             if (result.Items == null) throw new NotFoundException(nameof(CampaignReport), userId);
 
             return (result.Items, result.Total, result.TotalFilter);

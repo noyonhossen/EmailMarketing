@@ -21,6 +21,6 @@ namespace EmailMarketing.Framework.Services.Campaigns
         string orderBy,
         int pageIndex,
         int pageSize);
-        
+       
     }  
 }
