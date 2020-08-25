@@ -11,9 +11,9 @@ namespace EmailMarketing.Framework.UnitOfWorks.Campaigns
 {
     public class CampaignReportUnitOfWork : UnitOfWork, ICampaignReportUnitOfWork
     {
-        public ICampaingReportRepository CampaingReportRepository { get; set; }
+        public ICampaignReportRepository CampaingReportRepository { get; set; }
         public CampaignReportUnitOfWork(FrameworkContext dbContext,
-            ICampaingReportRepository campaingReportRepository) : base(dbContext)
+            ICampaignReportRepository campaingReportRepository) : base(dbContext)
         {
             this.CampaingReportRepository = campaingReportRepository;
         }

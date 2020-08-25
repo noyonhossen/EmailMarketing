@@ -8,9 +8,9 @@ using System.Text;
 
 namespace EmailMarketing.Framework.Repositories.Campaigns
 {
-    public class CampaingReportRepository : Repository<CampaignReport, int, FrameworkContext>, ICampaingReportRepository
+    public class CampaignReportRepository : Repository<CampaignReport, int, FrameworkContext>, ICampaignReportRepository
     {
-        public CampaingReportRepository(FrameworkContext dbContext)
+        public CampaignReportRepository(FrameworkContext dbContext)
             : base(dbContext)
         {
 

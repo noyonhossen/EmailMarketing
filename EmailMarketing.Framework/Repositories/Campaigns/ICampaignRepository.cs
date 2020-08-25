@@ -7,7 +7,7 @@ using System.Text;
 
 namespace EmailMarketing.Framework.Repositories.Campaigns
 {
-    public interface ICampaignRepository : IRepository<Campaign, int, FrameworkContext>
+    public interface ICampaignRepository : IRepository<Entities.Campaigns.Campaign, int, FrameworkContext>
     {
 
     }

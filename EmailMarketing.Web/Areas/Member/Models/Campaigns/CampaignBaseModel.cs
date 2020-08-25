@@ -26,7 +26,6 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         public CampaignBaseModel()
         {
             _campaignService = Startup.AutofacContainer.Resolve<ICampaignService>();
-            _currentUserService = Startup.AutofacContainer.Resolve<ICurrentUserService>();
             _campaignREService = Startup.AutofacContainer.Resolve<ICampaignReportExportService>();
             _currentUserService = Startup.AutofacContainer.Resolve<ICurrentUserService>();
         }

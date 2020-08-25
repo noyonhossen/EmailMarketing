@@ -3,6 +3,7 @@
 using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.UnitOfWorks.Campaigns;
 using EmailMarketing.Framework.UnitOfWorks.Groups;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;

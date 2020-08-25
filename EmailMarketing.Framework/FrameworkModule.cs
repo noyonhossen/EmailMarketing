@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 using EmailMarketing.Framework.UnitOfWorks.Groups;
 using EmailMarketing.Framework.UnitOfWorks.Campaigns;
 using EmailMarketing.Framework.Services.Campaigns;
-using EmailMarketing.Framework.Repositories.Campaign;
+using EmailMarketing.Framework.Repositories.Campaigns;
 using EmailMarketing.Framework.Entities.Campaigns;
 
 namespace EmailMarketing.Framework
@@ -49,7 +49,7 @@ namespace EmailMarketing.Framework
             builder.RegisterType<CampaignReportExportRepository>().As<ICampaignReportExportRepository>()
                    .InstancePerLifetimeScope();
 
-            builder.RegisterType<CampaingReportRepository>().As<ICampaingReportRepository>()
+            builder.RegisterType<CampaignReportRepository>().As<ICampaignReportRepository>()
                    .InstancePerLifetimeScope();
             builder.RegisterType<CampaignReportUnitOfWork>().As<ICampaignReportUnitOfWork>()
                    .InstancePerLifetimeScope();

@@ -1,6 +1,6 @@
 ﻿using EmailMarketing.Framework.Context;
 using EmailMarketing.Data;
-using EmailMarketing.Framework.Repositories.Campaign;
+using EmailMarketing.Framework.Repositories.Campaigns;
 using System;
 using System.Collections.Generic;
 using System.Text;
