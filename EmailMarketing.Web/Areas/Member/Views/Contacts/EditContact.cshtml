@@ -49,23 +49,13 @@
                                         {
 
                                             <div class="form-group row">
-
-
                                                 <label asp-for="@Model.ContactValueMaps1[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMaps1[i].Text</label>
-                                                @*@if (Model.keyValuePairs.ContainsKey(Model.ContactValueMapsCustom[i].Text))
-                    {
-                        <div class="col-sm-9">
-                        <input type="text" class="form-control" value="@Model.keyValuePairs[Model.ContactValueMapsCustom[i].Text]" name="ContactValueMapsCustom[@i].Input">
-                        <input type="hidden" class="form-control" value="@Model.ContactValueMapsCustom[i].Value" name="ContactValueMapsCustom[@i].Value">
-
-                    </div>
-                    }*@
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" value="@Model.ContactValueMaps1[i].Input" name="ContactValueMapsCustom[@i].Input">
-                                                    <input type="hidden" class="form-control" value="@Model.ContactValueMaps1[i].Value" name="ContactValueMapsCustom[@i].Value">
-
-                                                </div>
-
+                                               
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" value="@Model.ContactValueMaps1[i].Input" name="ContactValueMaps1[@i].Input">
+                                                <input type="hidden" class="form-control" value="@Model.ContactValueMaps1[i].Value" name="ContactValueMaps1[@i].Value">
+                                                <input type="hidden" class="form-control" value="@Model.ContactValueMaps1[i].Id" name="ContactValueMaps1[@i].Id">
+                                            </div>
 
                                             </div>
                                         }
@@ -88,8 +78,9 @@
                                             <div class="form-group row">
                                                 <label asp-for="@Model.ContactValueMapsCustom1[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMapsCustom1[i].Text</label>                        
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" value="@Model.ContactValueMapsCustom1[i].Input" name="ContactValueMapsCustom[@i].Input">
-                                                    <input type="hidden" class="form-control" value="@Model.ContactValueMapsCustom1[i].Value" name="ContactValueMapsCustom[@i].Value">
+                                                    <input type="text" class="form-control" value="@Model.ContactValueMapsCustom1[i].Input" name="ContactValueMapsCustom1[@i].Input">
+                                                    <input type="hidden" class="form-control" value="@Model.ContactValueMapsCustom1[i].Value" name="ContactValueMapsCustom1[@i].Value">
+                                                    <input type="hidden" class="form-control" value="@Model.ContactValueMapsCustom1[i].Id" name="ContactValueMapsCustom1[@i].Id">
                                                 </div>
                                             </div>
                                         }
@@ -120,7 +111,7 @@
                                     {
                                         <li class="list-group-item border-bottom">
                                             <div class="form-check">
-                                                <input type="checkbox" class="form-check-input group-select" id="checkSingle[@i]" value="@Model.GroupSelectList[i].IsChecked.ToString().ToLower()" name="GroupSelectList[@i].IsChecked">
+                                                <input type="checkbox" class="form-check-input group-select" id="checkSingle[@i]" value="@Model.GroupSelectList[i].IsChecked.ToString().ToLower()" checked="@Model.GroupSelectList[i].IsChecked" name="GroupSelectList[@i].IsChecked">
                                                 <input type="hidden" class="form-control" asp-for="@Model.GroupSelectList[i].Value">
                                                 <input type="hidden" class="form-control" asp-for="@Model.GroupSelectList[i].Text">
                             
@@ -137,7 +128,6 @@
                                 }
                             </ul>
                         </div>
-                    
                     </div>
 
 

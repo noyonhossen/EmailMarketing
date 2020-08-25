@@ -12,17 +12,18 @@ namespace EmailMarketing.Framework.Services.Contacts
 {
     public interface IContactService : IDisposable
     {
-       Task<IList<(int Value, string Text, string Input)>> GetAllContactValueMapsCustom1(Guid? userId, int contactId);
-        Task<IList<(int Value, string Text, string Input)>> GetAllContactValueMaps1(Guid? userId, int contactId);
+       Task<IList<(int Id, int Value, string Text, string Input)>> GetAllContactValueMapsCustom1(Guid? userId, int contactId);
+        Task<IList<(int Id, int Value, string Text, string Input)>> GetAllContactValueMaps1(Guid? userId, int contactId);
         Task<(IList<Entities.Contacts.Contact> Items, int Total, int TotalFilter)> GetAllContactAsync(
             Guid? userId,
             string searchText,
             string orderBy,
             int pageIndex,
             int pageSize);
+        Task<ContactValueMap> GetContactValueMapByIdAsync(int id);
         Task<Entities.Contacts.Contact> GetByIdAsync(int id);
         Task<Entities.Contacts.Contact> DeleteAsync(int id);
-
+        Task DeleteContactGroupAsync(int id);
         Task<int> GroupContactCountAsync(int id);
         Task<IList<(int Value, string Text,int Count)>> GetAllGroupsAsync(Guid? userId);
 
@@ -34,5 +35,6 @@ namespace EmailMarketing.Framework.Services.Contacts
         Task AddContactGroups(IList<ContactGroup> contactGroups);
         Task<Contact> GetIdByEmail(string email);
         Task UpdateAsync(Contact contact);
+        Task UpdateRangeAsync(IList<ContactValueMap> contact);
     }
 }

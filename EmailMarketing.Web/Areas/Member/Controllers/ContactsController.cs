@@ -164,7 +164,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                     model.Response = new ResponseModel("Contact edit failured.", ResponseType.Failure);
                 }
             }
-           // model.LoadContactByIdAsync();
+            await model.LoadContactByIdAsync(model.Id);
             return View(model);
         }
 
@@ -199,6 +199,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var data = await model.GetAllContactAsync(tableModel);
             return Json(data);
         }
+
         public async Task<IActionResult> ContactDetails(int id)
         {
             var model = new ContactDetailsModel();

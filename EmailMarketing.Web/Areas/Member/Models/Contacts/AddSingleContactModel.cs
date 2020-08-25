@@ -18,8 +18,6 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         public bool IsContactExist { get; set; }
-        public int Id { get; set; }
-        //[Required]
         public IList<ContactValueTextModel> GroupSelectList { get; set; }
         public IList<ContactValueTextModel> ContactValueMaps { get; set; }
         public IList<ContactValueTextModel> ContactValueMapsCustom { get; set; }
@@ -27,12 +25,11 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         public AddSingleContactModel(IContactService contactService,
            ICurrentUserService currentUserService) : base(contactService, currentUserService)
         {
-            //_contactService = contactService;
 
         }
         public AddSingleContactModel() : base()
         {
-            //_contactService = Startup.AutofacContainer.Resolve<IContactService>();
+
         }
 
         public async Task<IList<ContactValueTextModel>> GetAllGroupForSelectAsync()
