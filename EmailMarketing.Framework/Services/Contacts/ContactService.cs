@@ -5,10 +5,12 @@ using EmailMarketing.Common.Extensions;
 ﻿using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.Entities.Contacts;
+using EmailMarketing.Framework.Entities.Groups;
 using EmailMarketing.Framework.Services.Groups;
 using EmailMarketing.Framework.UnitOfWorks;
 using EmailMarketing.Framework.UnitOfWorks.Contacts;
 using EmailMarketing.Framework.UnitOfWorks.Groups;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,23 +27,23 @@ namespace EmailMarketing.Framework.Services.Contacts
 
         private IGroupUnitOfWork _groupUnitOfWork;
 
-        
+
         public ContactService(IContactUnitOfWork contactUnitOfWork, IGroupUnitOfWork groupUnitOfWork)
         {
             _contactUnitOfWork = contactUnitOfWork;
             _groupUnitOfWork = groupUnitOfWork;
         }
-        
+
         public async Task<(IList<Contact> Items, int Total, int TotalFilter)> GetAllContactAsync(
-            Guid? userId,string searchText, string orderBy, int pageIndex, int pageSize)
+            Guid? userId, string searchText, string orderBy, int pageIndex, int pageSize)
         {
             var columnsMap = new Dictionary<string, Expression<Func<Entities.Contacts.Contact, object>>>()
             {
                 ["Email"] = v => v.Email
             };
             var result = await _contactUnitOfWork.ContactRepository.GetAsync<Entities.Contacts.Contact>(
-                x => x, x => (!userId.HasValue || x.UserId == userId.Value)&& (x.Email.Contains(searchText)),
-                x => x.ApplyOrdering(columnsMap, orderBy), x=> x.Include(i=> i.ContactGroups).ThenInclude(i=>i.Group),
+                x => x, x => (!userId.HasValue || x.UserId == userId.Value) && (x.Email.Contains(searchText)),
+                x => x.ApplyOrdering(columnsMap, orderBy), x => x.Include(i => i.ContactGroups).ThenInclude(i => i.Group),
                 pageIndex, pageSize, true);
             return (result.Items, result.Total, result.TotalFilter);
         }
@@ -50,7 +52,7 @@ namespace EmailMarketing.Framework.Services.Contacts
             var result = await _contactUnitOfWork.ContactRepository.GetFirstOrDefaultAsync(
                 x => x, x => x.Id == id,
                 x => x.Include(i => i.ContactGroups).ThenInclude(i => i.Group)
-                        .Include(i => i.ContactValueMaps).ThenInclude(i => i.FieldMap));
+                        .Include(i => i.ContactValueMaps).ThenInclude(i => i.FieldMap),true);
 
             if (result == null) throw new NotFoundException(nameof(Contact), id);
 
@@ -64,13 +66,13 @@ namespace EmailMarketing.Framework.Services.Contacts
             await _contactUnitOfWork.SaveChangesAsync();
             return contact;
         }
-        
+
 
         public async Task<int> GroupContactCountAsync(int id)
         {
             return await _contactUnitOfWork.GroupContactRepository.GetCountAsync();
         }
-        
+
         public async Task AddContact(Contact contact)
         {
             await _contactUnitOfWork.ContactRepository.AddAsync(contact);
@@ -89,22 +91,67 @@ namespace EmailMarketing.Framework.Services.Contacts
         }
         public async Task UpdateAsync(Contact contact)
         {
-            await _contactUnitOfWork.ContactRepository.UpdateAsync(contact);
+            var isExists = await _contactUnitOfWork.ContactRepository.IsExistsAsync(x => x.Email == contact.Email && x.Id != contact.Id);
+            if (isExists)
+                throw new DuplicationException(nameof(contact.Email));
+
+            var updateEntity = await GetByIdAsync(contact.Id);
+            updateEntity.Email = contact.Email;
+            updateEntity.Created = contact.Created;
+            updateEntity.CreatedBy = contact.CreatedBy;
+            await _contactUnitOfWork.ContactRepository.UpdateAsync(updateEntity);
             await _contactUnitOfWork.SaveChangesAsync();
         }
-        public async Task<IList<(int Value, string Text,int Count)>> GetAllGroupsAsync(Guid? userId)
+        public async Task<IList<(int Value, string Text, int Count)>> GetAllGroupsAsync(Guid? userId)
         {
-            return (await _groupUnitOfWork.GroupRepository.GetAsync(x => new { Value = x.Id, Text = x.Name , Count = x.ContactGroups.Count() },
+            return (await _groupUnitOfWork.GroupRepository.GetAsync(x => new { Value = x.Id, Text = x.Name, Count = x.ContactGroups.Count },
                                                    x => !x.IsDeleted && x.IsActive &&
-                                                   (!userId.HasValue || x.UserId == userId.Value), x => x.OrderBy(o => o.Name), null, true))
-                                                   .Select(x => (Value: x.Value, Text: x.Text , Count: x.Count)).ToList();
+                                                   (!userId.HasValue || x.UserId == userId.Value), x => x.OrderBy(o => o.Name), x => x.Include(i => i.ContactGroups), true))
+                                                   .Select(x => (Value: x.Value, Text: x.Text, Count: x.Count)).ToList();
         }
-        public async Task<IList<(int Value,string Text)>> GetAllContactValueMaps(Guid? userId)
+
+        public async Task<Group> GetGroupByIdAsync(int id)
+        {
+            var result = await _groupUnitOfWork.GroupRepository.GetByIdAsync(id);
+            return result;
+        }
+        public async Task DeleteContactGroupAsync(int id,int contactId)
+        {
+            var contactGroup = await _contactUnitOfWork.GroupContactRepository.GetFirstOrDefaultAsync(
+                x => x, x => x.GroupId == id && x.ContactId == contactId,
+                null, true);
+            if (contactGroup == null) throw new NotFoundException(nameof(ContactGroup), id);
+            await _contactUnitOfWork.GroupContactRepository.DeleteAsync(contactGroup.Id);
+            await _contactUnitOfWork.SaveChangesAsync();
+        }
+        public async Task UpdateRangeAsync(IList<ContactValueMap> contactValueMaps)
+        {
+            await _contactUnitOfWork.ContactValueMapRepository.UpdateRangeAsync(contactValueMaps);
+            await _contactUnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<ContactValueMap> GetContactValueMapByIdAsync(int id)
+        {
+            var result = await _contactUnitOfWork.ContactValueMapRepository.GetByIdAsync(id);
+
+                //x => x, x => x.Id == id,null,true);
+
+            return result;
+        }
+public async Task<IList<(int Value,string Text)>> GetAllContactValueMaps(Guid? userId)
         {
             return (await _contactUnitOfWork.FieldMapRepository.GetAsync(x => new { Value = x.Id, Text = x.DisplayName },
                                                    x => !x.IsDeleted && x.IsActive && 
-                                                   (!userId.HasValue || x.UserId == userId.Value) && x.IsStandard == true, null, null, true))
+                                                   (!userId.HasValue || x.UserId == userId.Value) && x.IsStandard == true && x.DisplayName != "Email", null, null, true))
                                                    .Select(x => (Value: x.Value, Text: x.Text)).ToList();
+        }
+
+        public async Task<IList<(int Id,int Value, string Text,string Input)>> GetAllContactValueMaps(Guid? userId,int contactId)
+        {
+            return (await _contactUnitOfWork.ContactValueMapRepository.GetAsync(x => new { Id = x.Id, Value = x.FieldMap.Id, Text = x.FieldMap.DisplayName, Input = x.Value },
+                                                   x => !x.IsDeleted && x.IsActive &&
+                                                   (!userId.HasValue || x.FieldMap.UserId == userId.Value) && x.FieldMap.IsStandard == true && x.FieldMap.DisplayName != "Email" && x.ContactId == contactId, null, null, true))
+                                                   .Select(x => (Id: x.Id, Value: x.Value, Text: x.Text, Input: x.Input)).ToList();
         }
 
         public async Task<IList<(int Value, string Text)>> GetAllContactValueMapsCustom(Guid? userId)
@@ -114,11 +161,18 @@ namespace EmailMarketing.Framework.Services.Contacts
                                                    (!userId.HasValue || x.UserId == userId.Value) && x.IsStandard == false, null, null, true))
                                                    .Select(x => (Value: x.Value, Text: x.Text)).ToList();
         }
+        public async Task<IList<(int Id, int Value, string Text,string Input)>> GetAllContactValueMapsCustom(Guid? userId, int contactId)
+        {
+            return (await _contactUnitOfWork.ContactValueMapRepository.GetAsync(x => new { Id = x.Id, Value = x.FieldMap.Id, Text = x.FieldMap.DisplayName , Input = x.Value },
+                                                   x => !x.IsDeleted && x.IsActive &&
+                                                   (!userId.HasValue || x.FieldMap.UserId == userId.Value) && x.FieldMap.IsStandard == false && x.ContactId == contactId, null, null, true))
+                                                   .Select(x => (Id: x.Id, Value: x.Value, Text: x.Text ,Input : x.Input)).ToList();
+        }
 
-        public async Task<int> GetIdByEmail(string email)
+        public async Task<Contact> GetIdByEmail(string email)
         {
             var contact = await _contactUnitOfWork.ContactRepository.GetFirstOrDefaultAsync(x => x, x => x.Email == email,null,true);
-            return (contact == null?-1:contact.Id);
+            return contact;
         }
         
         public void Dispose()
