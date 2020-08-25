@@ -75,11 +75,11 @@
                                     <div class="form-group row">
                                         <label asp-for="SendDateTime" class="col-sm-3 col-form-label"></label>
                                         <div class="col-sm-9">
-                                            <input asp-for="SendDateTime" class="form-control" />
+                                            <input asp-for="SendDateTime" class="form-control" id="sendDateTime" disabled />
                                             <span asp-validation-for="SendDateTime" class="text-danger"></span>
                                             <div class="dropdown-item form-check form-check-switchery ">
                                                 <label class="form-check-label">
-                                                    <input type="checkbox" class="form-input-switchery" checked data-fouc asp-for="SendNow">
+                                                    <input type="checkbox" class="form-input-switchery" id="check" checked data-fouc asp-for="SendNow">
                                                     <span class="font-weight-bold">Send Now?</span>
                                                 </label>
                                             </div>

@@ -89,6 +89,15 @@ $(function () {
         $(".selected_template").closest(".overlay").removeClass('overlay_opacity');
     });
 
+    $("#check").click(function () {
+        if ($(this).is(":checked")) {
+            $("#sendDateTime").attr("disabled", true);
+        }
+        else {
+            $("#sendDateTime").attr("disabled", false);
+        }
+    });
+
     //$(document).ready(function () {
     //    $('.editor_textarea').tinymce({
     //        //selector: '.editor_textarea',
