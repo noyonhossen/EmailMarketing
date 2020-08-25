@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
@@ -206,5 +207,43 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             await model.LoadByIdAsync(id);
             return View(model);
         }
+
+        
+        [HttpGet]
+        public async Task<IActionResult> Export()
+        {
+            var model = new ContactExportModel();
+            model.GroupSelectList = await model.GetAllGroupDetailsAsync();
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Export(
+            ContactExportModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (model.IsExportAll)
+                    {
+                        await model.ExportAllContact();
+                    }
+                    else
+                    {
+                        await model.ExportContactsGroupwise();
+                    }
+                    _logger.LogInformation("Succecssfully Added to DownloadQueue. Waiting to Complete to Export");
+                }
+                catch
+                {
+                    model.Response= new ResponseModel("Please provide Email", ResponseType.Failure);
+                }
+            }
+
+            model.GroupSelectList = await model.GetAllGroupDetailsAsync();
+            return View(model);
+        }
+
+
     }
 }

@@ -18,6 +18,9 @@ using System.Text;
 using System.Threading.Tasks;
 using EmailMarketing.Framework.UnitOfWorks.Groups;
 using EmailMarketing.Framework.UnitOfWorks.Campaigns;
+using EmailMarketing.Framework.Services.Campaigns;
+using EmailMarketing.Framework.Repositories.Campaigns;
+using EmailMarketing.Framework.Entities.Campaigns;
 
 namespace EmailMarketing.Framework
 {
@@ -39,8 +42,37 @@ namespace EmailMarketing.Framework
                    .WithParameter("migrationAssemblyName", _migrationAssemblyName)
                    .InstancePerLifetimeScope();
 
+            builder.RegisterType<CampaignReportExportUnitOfWork>().As<ICampaignReportExportUnitOfWork>()
+                   .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignReportExportService>().As<ICampaignReportExportService>()
+                   .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignReportExportRepository>().As<ICampaignReportExportRepository>()
+                   .InstancePerLifetimeScope();
+
+            builder.RegisterType<CampaignReportRepository>().As<ICampaignReportRepository>()
+                   .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignReportUnitOfWork>().As<ICampaignReportUnitOfWork>()
+                   .InstancePerLifetimeScope();
+
             builder.RegisterType<CampaignUnitOfWork>().As<ICampaignUnitOfWork>()
                    .InstancePerLifetimeScope();
+
+            builder.RegisterType<CampaignService>().As<ICampaignService>()
+                  .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignReportRepository>().As<ICampaignReportRepository>()
+                  .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignRepository>().As<ICampaignRepository>()
+                  .InstancePerLifetimeScope();
+
+            builder.RegisterType<CampaignRepository>().As<ICampaignRepository>()
+                   .InstancePerLifetimeScope();
+
+            builder.RegisterType<DownloadQueueRepository>().As<IDownloadQueueRepository>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<DownloadQueueSubEntityRepository>().As<IDownloadQueueSubEntityRepository>()
+                .InstancePerLifetimeScope();
+
             builder.RegisterType<SMTPRepository>().As<ISMTPRepository>()
                    .InstancePerLifetimeScope();
             builder.RegisterType<SMTPUnitOfWork>().As<ISMTPUnitOfWork>()
@@ -95,6 +127,32 @@ namespace EmailMarketing.Framework
                 .InstancePerLifetimeScope();
             builder.RegisterType<ContactRepository>().As<IContactRepository>()
                 .InstancePerLifetimeScope();
+
+
+            builder.RegisterType<DownloadQueueRepository>().As<IDownloadQueueRepository>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<DownloadQueueSubEntityRepository>().As<IDownloadQueueSubEntityRepository>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<ContactExportUnitOfWork>().As<IContactExportUnitOfWork>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<ContactExportService>().As<IContactExportService>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignRepository>().As<ICampaignRepository>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignUnitOfWork>().As<ICampaignUnitOfWork>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignService>().As<ICampaignService>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignReportService>().As<ICampaignReportService>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<EmailTemplateRepository>().As<IEmailTemplateRepository>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<EmailTemplateService>().As<IEmailTemplateService>()
+                .InstancePerLifetimeScope();
+            
+
 
             base.Load(builder);
         }

@@ -3,6 +3,7 @@
 using EmailMarketing.Common.Extensions;
 
 ﻿using EmailMarketing.Framework.Entities;
+using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.Entities.Contacts;
 using EmailMarketing.Framework.Entities.Groups;
 using EmailMarketing.Framework.Services.Groups;

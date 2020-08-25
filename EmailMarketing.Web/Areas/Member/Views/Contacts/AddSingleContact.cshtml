@@ -25,7 +25,6 @@
                         <div class="pl-5 pr-3">
                             <h4>Add Contact Details</h4>
                             @Html.AntiForgeryToken()
-                            @*<form id="form1" asp-area="Member" asp-controller="Contacts" asp-action="AddSingleContact" method="post">*@
                             <div class="form-group row">
                                 <label asp-for="Email" class="col-sm-3 col-form-label">Email Address *</label>
                                 <div class="col-sm-9">
@@ -43,7 +42,6 @@
                                 <div id="intro" class="collapse">
 
                                     @{
-                                        //var items = Model.ContactValueMaps;
                                         for (int i = 0; i < Model.ContactValueMaps.Count(); i++)
                                         {
                                             <div class="form-group row">
@@ -88,9 +86,12 @@
                                             </div>
                                         }*@
 
+                                                }
+                                            }
+                                        }
+
                                 </div>
                             </div>
-
 
                             <!-- Custom Fields -->
 
@@ -101,7 +102,6 @@
                             <div class="row-fluid summary">
                                 <div id="intro2" class="collapse">
                                     @{
-                                        //var items = Model.ContactValueMapsCustom;
                                         for (int i = 0; i < Model.ContactValueMapsCustom.Count(); i++)
                                         {
 
@@ -143,28 +143,30 @@
                                                 
 
                                             </div>
+
                                         }
                                     }
                                 </div>
                             </div>
-                            @* </form> *@
-
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <h3>Where you want to add this contract?</h3>
+
                         @*<form id="form2" asp-area="Member" asp-action="AddSingleContact" asp-controller="Contacts" method="post">*@
+
                         <!-- selected -->
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="checkAll">
                             <label class="form-check-label" for="checkAll">Select All Groups</label>
                         </div>
-                        @*<div asp-validation-summary="All" class="text-danger"></div>*@
+
                         <div class="bg-white">
                             <p class="p-2">
                                 <i class="icon-collaboration"></i>&nbsp;&nbsp; <span id="selected">No Group Selected</span>
                                 @*<span asp-validation-for="@Model.GroupSelectList"></span>*@
+
                             </p>
                         </div>
 
@@ -178,9 +180,11 @@
                                                 <input type="checkbox" class="form-check-input group-select" id="checkSingle[@i]" value="@Model.GroupSelectList[i].IsChecked.ToString().ToLower()" name="GroupSelectList[@i].IsChecked">
                                                 <input type="hidden" class="form-control" asp-for="@Model.GroupSelectList[i].Value">
                                                 <input type="hidden" class="form-control" asp-for="@Model.GroupSelectList[i].Text">
+
                                                 @*<input type="hidden" class="form-control" value="@Model.GroupSelectList[i].Count" name="GroupSelectList[@i].Count">
                                                     <input type="hidden" class="form-control" value="@Model.GroupSelectList[i].Input" name="GroupSelectList[@i].Input">
                                                     <input type="hidden" class="form-control" value="@Model.GroupSelectList[i].Text" name="GroupSelectList[@i].Text">*@
+
 
                                                 <label class="form-check-label" for="checkSingle[@i]">
                                                     @Model.GroupSelectList[i].Text
@@ -196,8 +200,6 @@
                             </ul>
                         </div>
                         <!-- /selected -->
-                        @*<button type="submit">Submit</button>*@
-                        @*</form>*@
 
                     </div>
 
@@ -218,8 +220,6 @@
 
     </div>
 </div>
-
-@*</div>*@
 
 
 <!-- /content area -->

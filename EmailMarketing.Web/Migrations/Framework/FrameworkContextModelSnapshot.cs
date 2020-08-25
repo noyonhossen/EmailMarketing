@@ -50,6 +50,9 @@ namespace EmailMarketing.Web.Migrations.Framework
                     b.Property<bool>("IsDraft")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsPersonalized")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsProcessing")
                         .HasColumnType("bit");
 
@@ -68,6 +71,9 @@ namespace EmailMarketing.Web.Migrations.Framework
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("SMTPConfigId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("SendDateTime")
                         .HasColumnType("datetime2");
 
@@ -80,6 +86,8 @@ namespace EmailMarketing.Web.Migrations.Framework
                     b.HasKey("Id");
 
                     b.HasIndex("EmailTemplateId");
+
+                    b.HasIndex("SMTPConfigId");
 
                     b.ToTable("Campaigns");
                 });
@@ -633,6 +641,12 @@ namespace EmailMarketing.Web.Migrations.Framework
                     b.HasOne("EmailMarketing.Framework.Entities.Campaigns.EmailTemplate", "EmailTemplate")
                         .WithMany()
                         .HasForeignKey("EmailTemplateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EmailMarketing.Framework.Entities.SMTP.SMTPConfig", "SMTPConfig")
+                        .WithMany()
+                        .HasForeignKey("SMTPConfigId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

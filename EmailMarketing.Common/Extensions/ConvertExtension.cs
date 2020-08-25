@@ -46,5 +46,21 @@ namespace EmailMarketing.Common.Extensions
             if (DateTime.TryParse(value.ToString(), out var newValue)) return newValue;
             else return null;
         }
+
+        public static string FormatStringFromDictionary(this string formatString, IDictionary<string, string> valueDict)
+        {
+            int i = 0;
+            StringBuilder newFormatString = new StringBuilder(formatString);
+            IDictionary<string, int> keyToInt = new Dictionary<string, int>();
+
+            foreach (var tuple in valueDict)
+            {
+                newFormatString = newFormatString.Replace("{" + tuple.Key + "}", "{" + i.ToString() + "}");
+                keyToInt.Add(tuple.Key, i);
+                i++;
+            }
+
+            return String.Format(newFormatString.ToString(), valueDict.OrderBy(x => keyToInt[x.Key]).Select(x => x.Value).ToArray());
+        }
     }
 }
