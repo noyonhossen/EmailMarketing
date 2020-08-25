@@ -8,20 +8,25 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
 {
+
     public class CampaignBaseModel : MemberBaseModel, IDisposable
     {
-        protected readonly ICampaignReportExportService _campaignService;
+        protected readonly ICampaignService _campaignService;
+        protected readonly ICampaignReportExportService _campaignREService;
         protected readonly ICurrentUserService _currentUserService;
-        public CampaignBaseModel(ICampaignReportExportService campaignService,
+        public CampaignBaseModel(ICampaignService campaignService, ICampaignReportExportService campaignREService,
+
             ICurrentUserService currentUserService)
         {
             _campaignService = campaignService;
+            _campaignREService = campaignREService;
             _currentUserService = currentUserService;
         }
 
         public CampaignBaseModel()
         {
-            _campaignService = Startup.AutofacContainer.Resolve<ICampaignReportExportService>();
+            _campaignService = Startup.AutofacContainer.Resolve<ICampaignService>();
+            _campaignREService = Startup.AutofacContainer.Resolve<ICampaignReportExportService>();
             _currentUserService = Startup.AutofacContainer.Resolve<ICurrentUserService>();
         }
         public void Dispose()

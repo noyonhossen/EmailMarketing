@@ -10,6 +10,6 @@ namespace EmailMarketing.Framework.UnitOfWorks.Campaigns
 {
     public interface ICampaignReportUnitOfWork : IUnitOfWork
     {
-        public ICampaingReportRepository CampaingReportRepository { get; set; }
+        public ICampaignReportRepository CampaingReportRepository { get; set; }
     }
 }

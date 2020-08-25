@@ -1,3 +1,4 @@
+
 ﻿using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.UnitOfWorks.Campaigns;
@@ -28,6 +29,49 @@ namespace EmailMarketing.Framework.Services.Campaigns
                                                    x => !x.IsDeleted && x.IsActive &&
                                                    (!userId.HasValue || x.UserId == userId.Value), x => x.OrderBy(o => o.Name), null, true))
                                                    .Select(x => (Value: x.Value, Text: x.Text, Count: x.Count)).ToList();
+        }
+        public async Task<(IList<Campaign> Items, int Total, int TotalFilter)> GetAllCampaignAsync(
+          Guid? userId,
+          string searchText,
+          string orderBy,
+          int pageIndex,
+          int pageSize)
+        {
+            var result = (await _campaignUnitOfWork.CampaignRepository.GetAsync(x => x,
+                                                  x => !x.IsDeleted && x.IsActive &&
+                                                  (!userId.HasValue || x.UserId == userId.Value) && x.Name.Contains(searchText),
+                                                  x => x.OrderBy(o => o.Name),
+                                                  x => x.Include(y => y.CampaignReports),
+                                                  pageIndex, pageSize,
+                                                  true));
+
+           
+
+            if (result.Items == null) throw new NotFoundException(nameof(CampaignReport), userId);
+
+            return (result.Items, result.Total, result.TotalFilter);
+
+        }
+        
+        public async Task<(IList<CampaignReport> Items, int Total, int TotalFilter)> GetAllCampaignReportAsync(
+          Guid? userId,
+          int campaignId,
+          string searchText,
+          string orderBy,
+          int pageIndex,
+          int pageSize)
+        {
+            var result = (await _campaignUnitOfWork.CampaignReportRepository.GetAsync(x => x,
+                                                   x => !x.IsDeleted && x.IsActive &&
+                                                   (!userId.HasValue || x.Campaign.UserId == userId.Value) && (x.CampaignId == campaignId) && x.Contact.Email.Contains(searchText),
+                                                   x => x.OrderBy(o => o.Contact.Email),
+                                                   x => x.Include(y => y.Contact).Include(y => y.Campaign), pageIndex, pageSize,
+                                                   true));
+            
+
+            if (result.Items == null) throw new NotFoundException(nameof(CampaignReport), userId);
+
+            return (result.Items, result.Total, result.TotalFilter);
         }
 
         public async Task<IList<EmailTemplate>> GetEmailTemplateByUserIdAsync(Guid? userId)
