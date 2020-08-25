@@ -19,9 +19,8 @@ using System.Threading.Tasks;
 using EmailMarketing.Framework.UnitOfWorks.Groups;
 using EmailMarketing.Framework.UnitOfWorks.Campaigns;
 using EmailMarketing.Framework.Services.Campaigns;
-using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.Repositories.Campaigns;
-
+using EmailMarketing.Framework.Entities.Campaigns;
 
 namespace EmailMarketing.Framework
 {
@@ -50,13 +49,21 @@ namespace EmailMarketing.Framework
             builder.RegisterType<CampaignReportExportRepository>().As<ICampaignReportExportRepository>()
                    .InstancePerLifetimeScope();
 
-            builder.RegisterType<CampaingReportRepository>().As<ICampaingReportRepository>()
+            builder.RegisterType<CampaignReportRepository>().As<ICampaignReportRepository>()
                    .InstancePerLifetimeScope();
             builder.RegisterType<CampaignReportUnitOfWork>().As<ICampaignReportUnitOfWork>()
                    .InstancePerLifetimeScope();
 
             builder.RegisterType<CampaignUnitOfWork>().As<ICampaignUnitOfWork>()
                    .InstancePerLifetimeScope();
+
+            builder.RegisterType<CampaignService>().As<ICampaignService>()
+                  .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignReportRepository>().As<ICampaignReportRepository>()
+                  .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignRepository>().As<ICampaignRepository>()
+                  .InstancePerLifetimeScope();
+
             builder.RegisterType<CampaignRepository>().As<ICampaignRepository>()
                    .InstancePerLifetimeScope();
 
@@ -121,6 +128,7 @@ namespace EmailMarketing.Framework
             builder.RegisterType<ContactRepository>().As<IContactRepository>()
                 .InstancePerLifetimeScope();
 
+
             builder.RegisterType<DownloadQueueRepository>().As<IDownloadQueueRepository>()
                 .InstancePerLifetimeScope();
 
@@ -136,11 +144,15 @@ namespace EmailMarketing.Framework
                 .InstancePerLifetimeScope();
             builder.RegisterType<CampaignService>().As<ICampaignService>()
                 .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignReportService>().As<ICampaignReportService>()
+                .InstancePerLifetimeScope();
 
             builder.RegisterType<EmailTemplateRepository>().As<IEmailTemplateRepository>()
                 .InstancePerLifetimeScope();
             builder.RegisterType<EmailTemplateService>().As<IEmailTemplateService>()
                 .InstancePerLifetimeScope();
+            
+
 
             base.Load(builder);
         }

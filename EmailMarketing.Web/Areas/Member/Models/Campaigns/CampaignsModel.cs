@@ -2,7 +2,6 @@
 using EmailMarketing.Common.Constants;
 using EmailMarketing.Common.Services;
 using EmailMarketing.Framework.Entities;
-using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.Services.Campaigns;
 using System;
@@ -15,14 +14,16 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
 {
     public class CampaignsModel : CampaignBaseModel
     {
+        public int CampaignId { get; set; }
+
         public int Id { get; set; }
         public bool IsExportAll { get; set; }
         public string SendEmailAddress { get; set; }
         public bool IsSendEmailNotifyForAll { get; set; }
         public bool IsSendEmailNotifyForCampaignwise { get; set; }
         public IList<object> CampaignSelectList { get; set; }
-        public CampaignsModel(ICampaignReportExportService campaignService,
-            ICurrentUserService currentUserService) : base(campaignService, currentUserService)
+        public CampaignsModel(ICampaignService campaignService, ICampaignReportExportService campaignREService,
+            ICurrentUserService currentUserService) : base(campaignService, campaignREService, currentUserService)
         {
 
         }
@@ -30,9 +31,68 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         {
 
         }
+         public async Task<object> GetAllCampaignsAsync(DataTablesAjaxRequestModel tableModel)
+        {
+           
+            var result = await _campaignService.GetAllCampaignAsync(
+                _currentUserService.UserId,
+                tableModel.SearchText,
+                tableModel.GetSortText(new string[] { "Name" }),
+                tableModel.PageIndex, tableModel.PageSize);
+
+            return new
+            {
+
+                recordsTotal = result.Total,
+                recordsFiltered = result.TotalFilter,
+                data = (from item in result.Items
+                        select new string[]
+                        {
+                            item.Name,
+                            item.IsProcessing ? "Yes" : "No",
+                            item.CampaignReports.Count().ToString(),
+                            item.SendDateTime.ToString(),
+                            item.SendEmailAddress.ToString(),
+                            item.Id.ToString()
+
+                        }).ToArray()
+            };
+        }
+
+        internal void SetCapaignId(int id)
+        {
+            this.CampaignId = id;
+        }
+
+        public async Task<object> GetCampaignReportByCampaignIdAsync(DataTablesAjaxRequestModel tableModel, int CampaignId)
+         {
+            
+            var result = await _campaignService.GetAllCampaignReportAsync(
+                _currentUserService.UserId,
+                CampaignId ,
+                tableModel.SearchText,
+                tableModel.GetSortText(new string[] { "CampaignName","Email" }),
+                tableModel.PageIndex, tableModel.PageSize);
+           
+            return new
+            {
+                recordsTotal = result.Total,
+                recordsFiltered = result.TotalFilter,
+                data = (from item in result.Items
+                        select new string[]
+                        {
+                            item.Contact.Email.ToString(),
+                            item.IsDelivered ? "Yes" : "No",
+                            item.IsSeen ? "Yes" : "No",
+                            item.SeenDateTime.ToString(),
+                            item.SendDateTime.ToString()
+
+                        }).ToArray()
+            };
+        }
         public async Task LoadAllCampaignSelectListAsync()
         { 
-            this.CampaignSelectList = await _campaignService.GetCampaignsForSelectAsync(_currentUserService.UserId);
+            this.CampaignSelectList = await _campaignREService.GetCampaignsForSelectAsync(_currentUserService.UserId);
         }
         public async Task ExportAllCampaign()
         {
@@ -51,7 +111,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 downloadQueue.DownloadQueueFor = DownloadQueueFor.CampaignAllReportExport;
                 downloadQueue.IsSendEmailNotify = IsSendEmailNotifyForAll;
                 downloadQueue.SendEmailAddress = SendEmailAddress;
-                await _campaignService.SaveDownloadQueueAsync(downloadQueue);
+                await _campaignREService.SaveDownloadQueueAsync(downloadQueue);
             }
         }
 
@@ -72,14 +132,15 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 downloadQueue.DownloadQueueFor = DownloadQueueFor.CampaignDetailsReportExport;
                 downloadQueue.IsSendEmailNotify = IsSendEmailNotifyForCampaignwise;
                 downloadQueue.SendEmailAddress = SendEmailAddress;
-                await _campaignService.SaveDownloadQueueAsync(downloadQueue);
+                await _campaignREService.SaveDownloadQueueAsync(downloadQueue);
 
                 var dowloadQueueSubEntity = new DownloadQueueSubEntity();
                 dowloadQueueSubEntity.DownloadQueueId = downloadQueue.Id;
                 dowloadQueueSubEntity.DownloadQueueSubEntityId = this.Id;
    
-                await _campaignService.AddDownloadQueueSubEntities(dowloadQueueSubEntity);
+                await _campaignREService.AddDownloadQueueSubEntities(dowloadQueueSubEntity);
             }
         }
     }
 }
+

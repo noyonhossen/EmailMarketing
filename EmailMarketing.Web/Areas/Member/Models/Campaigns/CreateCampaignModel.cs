@@ -33,6 +33,8 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         public bool SendNow { get; set; }
         [Display(Name = "Draft")]
         public bool IsDraft { get; set; }
+        [Display(Name = "Personalize")]
+        public bool isPersonalized { get; set; }
         public int? SelectedTemplateId { get; set; }
         [Display(Name = "Template Title")]
         public string EmailTemplateTitle { get; set; }
@@ -95,6 +97,8 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 IsSendEmailNotify = this.IsSendEmailNotify,
                 SendEmailAddress = this.SendEmailAddress,
                 SMTPConfigId = this.SMTPConfigId,
+                IsPersonalized = this.isPersonalized,
+                IsProcessing = true
             };
 
             

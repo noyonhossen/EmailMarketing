@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EmailMarketing.Web.Areas.Member.Models.Smtp;
 using EmailMarketing.Web.Areas.Member.Models.Contacts;
+using EmailMarketing.Web.Areas.Member.Models.Campaigns;
 
 namespace EmailMarketing.Web
 {
@@ -33,6 +34,8 @@ namespace EmailMarketing.Web
             builder.RegisterType<AdminUsersModel>();
             builder.RegisterType<MemberUserModel>();
             builder.RegisterType<GroupModel>();
+            builder.RegisterType<CampaignsModel>();
+            builder.RegisterType<CampaignBaseModel>();
             builder.RegisterType<ContactsModel>();
             builder.RegisterType<FieldMapModel>();
             builder.RegisterType<SMTPModel>();
@@ -40,6 +43,7 @@ namespace EmailMarketing.Web
             builder.RegisterType<ContactUploadModel>();
 
             builder.RegisterType<MemberBaseModel>();
+            
             base.Load(builder);
         }
     }
