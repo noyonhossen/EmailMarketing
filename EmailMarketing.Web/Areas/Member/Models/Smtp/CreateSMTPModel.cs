@@ -22,6 +22,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
         public string SenderName { get; set; }
         [Required]
         [Display(Name = "Sender Email")]
+        [EmailAddress]
         public string SenderEmail { get; set; }
         [Required]
         [Display(Name = "User Name")]

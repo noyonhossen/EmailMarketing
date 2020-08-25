@@ -14,7 +14,6 @@ namespace EmailMarketing.Framework.Entities.Campaigns
         public string Name { get; set; }
         public string Description { get; set; }
         public string EmailSubject { get; set; }
-        //public string EmailBody { get; set; }
         public int EmailTemplateId { get; set; }
         public EmailTemplate EmailTemplate { get; set; }
         public DateTime SendDateTime { get; set; }
@@ -23,6 +22,9 @@ namespace EmailMarketing.Framework.Entities.Campaigns
         public bool IsDraft { get; set; }
         public bool IsProcessing { get; set; }
         public bool IsSucceed { get; set; }
+        public Guid SMTPConfigId { get; set; }
+        public SMTPConfig SMTPConfig { get; set; }
+        public bool IsPersonalized { get; set; }
 
         public IList<CampaignGroup> CampaignGroups { get; set; }
         public IList<CampaignReport> CampaignReports { get; set; }

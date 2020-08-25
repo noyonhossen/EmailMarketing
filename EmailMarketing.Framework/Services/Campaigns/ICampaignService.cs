@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
+
+
 namespace EmailMarketing.Framework.Services.Campaigns
 {
-    public interface ICampaignService
+    public interface ICampaignService : IDisposable
     {
-        Task<(IList<Campaign> Items, int Total, int TotalFilter)> GetAllCampaignAsync(
+     Task<(IList<Campaign> Items, int Total, int TotalFilter)> GetAllCampaignAsync(
         Guid? userId,
         string searchText,
         string orderBy,
@@ -21,6 +22,8 @@ namespace EmailMarketing.Framework.Services.Campaigns
         string orderBy,
         int pageIndex,
         int pageSize);
-       
-    }  
+        Task<IList<(int Value, string Text, int Count)>> GetAllGroupsAsync(Guid? userId);
+        Task<IList<EmailTemplate>> GetEmailTemplateByUserIdAsync(Guid? userId);
+        Task AddCampaign(Campaign campaign);
+    }
 }
