@@ -49,7 +49,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
         public async Task<IList<Campaign>> GetAllProcessingCampaign()
         {
             return (await _campaignUnitOfWork.CampaignRepository.GetAsync(x => x,
-                                                                          x => x.IsProcessing == true,
+                                                                          x => x.IsProcessing == true && x.SendDateTime <= DateTime.Now,
                                                                           null,
                                                                           null,
                                                                           true));
