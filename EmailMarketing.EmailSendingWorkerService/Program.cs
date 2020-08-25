@@ -66,7 +66,7 @@ namespace EmailMarketing.EmailSendingWorkerService
                 {
                     services.AddHostedService<Worker>();
                     services.Configure<WorkerSmtpSettings>(hostContext.Configuration.GetSection("SmtpSetting"));
-                    services.AddSingleton<IMailerService, WorkerMailerService>();
+                    services.AddSingleton<IWorkerMailerService, WorkerMailerService>();
                     services.AddSingleton<ICurrentUserService, WorkerCurrentUserService>();
                     services.AddSingleton<IDateTime, WorkerDateTimeService>();
                     services.AddHttpContextAccessor();

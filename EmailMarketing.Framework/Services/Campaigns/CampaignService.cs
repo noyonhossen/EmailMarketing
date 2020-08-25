@@ -89,5 +89,30 @@ namespace EmailMarketing.Framework.Services.Campaigns
             await _campaignUnitOfWork.CampaignRepository.AddAsync(campaign);
             await _campaignUnitOfWork.SaveChangesAsync();
         }
+
+        public async Task<IList<Campaign>> GetAllProcessingCampaign()
+        {
+            return (await _campaignUnitOfWork.CampaignRepository.GetAsync(x => x,
+                                                                          x => x.IsProcessing == true && x.SendDateTime <= DateTime.Now,
+                                                                          null,
+                                                                          null,
+                                                                          true));
+        }
+
+        public async Task<Campaign> GetAllEmailByCampaignId(int campaignId)
+        {
+            var result = await _campaignUnitOfWork.CampaignRepository.GetFirstOrDefaultAsync(x => x,
+                                                                                x => x.Id == campaignId,
+                                                                                x => x.Include(s => s.SMTPConfig)
+                                                                                        .Include(e => e.EmailTemplate)
+                                                                                        .Include(y => y.CampaignGroups)
+                                                                                            .ThenInclude(g => g.Group)
+                                                                                            .ThenInclude(z => z.ContactGroups)
+                                                                                            .ThenInclude(c => c.Contact)
+                                                                                            .ThenInclude(cv => cv.ContactValueMaps)
+                                                                                            .ThenInclude(fm => fm.FieldMap),
+                                                                                true);
+            return result;
+        }
     }
 }

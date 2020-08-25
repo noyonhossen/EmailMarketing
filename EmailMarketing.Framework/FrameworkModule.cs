@@ -144,11 +144,14 @@ namespace EmailMarketing.Framework
                 .InstancePerLifetimeScope();
             builder.RegisterType<CampaignService>().As<ICampaignService>()
                 .InstancePerLifetimeScope();
+            builder.RegisterType<CampaignReportService>().As<ICampaignReportService>()
+                .InstancePerLifetimeScope();
 
             builder.RegisterType<EmailTemplateRepository>().As<IEmailTemplateRepository>()
                 .InstancePerLifetimeScope();
             builder.RegisterType<EmailTemplateService>().As<IEmailTemplateService>()
                 .InstancePerLifetimeScope();
+            
 
 
             base.Load(builder);
