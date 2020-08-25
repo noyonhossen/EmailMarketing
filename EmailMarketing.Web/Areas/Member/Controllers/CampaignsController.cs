@@ -1,4 +1,7 @@
-﻿using System;
+
+using Microsoft.AspNetCore.Mvc;
+using Autofac;
+using EmailMarketing.Web.Areas.Member.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,10 +9,7 @@ using System.Net;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
 using EmailMarketing.Web.Areas.Member.Enums;
-
-using EmailMarketing.Web.Areas.Member.Models;
 using EmailMarketing.Web.Areas.Member.Models.Campaigns;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace EmailMarketing.Web.Areas.Member.Controllers
@@ -26,7 +26,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         }
         public IActionResult Index()
         {
-            var model = new CampaignsModel();
+            var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
             return View(model);
         }
         public async Task<IActionResult> AddCampaign()
@@ -69,7 +69,30 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             await model.LoadAllCampaignSelectListAsync();
             return View(model);
         }
+        public async Task<IActionResult> ViewCampaigns()
+        {
 
+            var tableModel = new DataTablesAjaxRequestModel(Request);
+            var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
+            var data = await model.GetAllCampaignsAsync(tableModel);
+            return Json(data);
+        }
+        public IActionResult ViewCampignWiseReport(int Id)
+        {
+            var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
+            model.SetCapaignId(Id);
+            return View(model);
+
+        }
+        public async Task<IActionResult> ViewDeleveryReport()
+        {
+            var campaignId = Convert.ToInt32(Request.Query["campaignId"]);
+            var tableModel = new DataTablesAjaxRequestModel(Request);
+            var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
+            var data = await model.GetCampaignReportByCampaignIdAsync(tableModel,campaignId);
+            return Json(data);
+        }
+       
         [HttpPost]
         public async Task<IActionResult> Export(
             CampaignsModel model)
