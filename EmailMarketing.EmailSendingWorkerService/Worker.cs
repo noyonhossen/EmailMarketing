@@ -113,7 +113,7 @@ namespace EmailMarketing.EmailSendingWorkerService
                             var emailSubject = "Campaign Sent Confirmation";
                             var demoEmailTemplatePartial = new DemoEmailTemplate("Shamim", totalSuccessCount, totalFailCount);
                             var body = demoEmailTemplatePartial.TransformText();
-                            await _confirmationMailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, body);
+                            await  _confirmationMailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, body);
                         }
                         
                     }

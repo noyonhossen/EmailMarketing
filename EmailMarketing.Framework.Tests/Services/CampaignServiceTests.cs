@@ -103,10 +103,11 @@ namespace EmailMarketing.Framework.Tests.Services
                 )).ReturnsAsync(campaign).Verifiable();
 
             //Act
-            _campaignService.GetAllEmailByCampaignId(campaign.Id);
+            var result = _campaignService.GetAllEmailByCampaignId(campaign.Id);
 
 
             //Assert
+            result.Result.ShouldBe(campaign);
             _campaignRepositoryMock.VerifyAll();
         }
 
@@ -135,9 +136,10 @@ namespace EmailMarketing.Framework.Tests.Services
                 )).ReturnsAsync(campaignList).Verifiable();
 
             //Act
-            _campaignService.GetAllProcessingCampaign();
+            var result = _campaignService.GetAllProcessingCampaign();
 
             //Assert
+            result.Result.ShouldBe(campaignList);
             _campaignRepositoryMock.VerifyAll();
         }
 
@@ -188,9 +190,10 @@ namespace EmailMarketing.Framework.Tests.Services
                 )).ReturnsAsync(emailTemplateList).Verifiable();
 
             //Act
-            _campaignService.GetEmailTemplateByUserIdAsync(emailTemplate.UserId);
+            var result = _campaignService.GetEmailTemplateByUserIdAsync(emailTemplate.UserId);
 
             //Assert
+            result.Result.ShouldBe(emailTemplateList);
             _emailTemplateRepositoryMock.VerifyAll();
         }
 
@@ -233,9 +236,10 @@ namespace EmailMarketing.Framework.Tests.Services
                 )).ReturnsAsync((campaignList, 1, 1)).Verifiable();
 
             //Act
-            _campaignService.GetAllCampaignAsync(userId, searchText, orderBy, pageIndex, pageSize);
+            var result = _campaignService.GetAllCampaignAsync(userId, searchText, orderBy, pageIndex, pageSize);
 
             //Assert
+            result.Result.ShouldBe((campaignList, 1, 1));
             _campaignRepositoryMock.VerifyAll();
         }
 
@@ -285,16 +289,16 @@ namespace EmailMarketing.Framework.Tests.Services
         {
             //Arrange
             var userId = Guid.NewGuid();
-            var searchText = "demo";
+            var searchText = "sam";
             var campaignId = 1;
             var orderBy = "asc";
             var pageIndex = 1;
             var pageSize = 10;
 
-            var capaignReportList = new List<CampaignReport>
+            var campaignReportList = new List<CampaignReport>
             {
                 new CampaignReport { Id = 1, CampaignId = 1, ContactId = 1 },
-                new CampaignReport { Id = 2, CampaignId = 2, ContactId = 3 }
+                new CampaignReport { Id = 2, CampaignId = 1, ContactId = 3 }
             };
 
 
@@ -325,13 +329,89 @@ namespace EmailMarketing.Framework.Tests.Services
                 It.IsAny<Func<IQueryable<CampaignReport>, IIncludableQueryable<CampaignReport, object>>>(),
                 pageIndex, pageSize,
                 true
-                )).ReturnsAsync((capaignReportList, 1, 1)).Verifiable();
+                )).ReturnsAsync((campaignReportList, 1, 2)).Verifiable();
 
             //Act
-            _campaignService.GetAllCampaignReportAsync(userId, campaignId, searchText, orderBy, pageIndex, pageSize);
+            var result = _campaignService.GetAllCampaignReportAsync(userId, campaignId, searchText, orderBy, pageIndex, pageSize);
+
+            //Assert
+            result.Result.ShouldBe((campaignReportList, 1, 2));
+            _campaignReportRepository.VerifyAll();
+        }
+
+        [Test]
+        public void GetAllCampaignReportAsync_CampaignReportDoesNotExists_ReturnNotFoundException()
+        {
+            //Arrange
+            var userId = Guid.NewGuid();
+            var searchText = "sam";
+            var campaignId = 1;
+            var orderBy = "asc";
+            var pageIndex = 1;
+            var pageSize = 10;
+
+            var campaignReport = new CampaignReport
+            {
+                Id = 1,
+                SendDateTime = DateTime.Now,
+                IsDeleted = false,
+                IsActive = true,
+                Contact = new Contact
+                {
+                    Email = "sam@gmail.com"
+                },
+                CampaignId = 1,
+                Campaign = new Campaign
+                {
+                    Id = 1,
+                    UserId = userId,
+
+                }
+            };
+
+            _campaignUnitOfWorkMock.Setup(x => x.CampaignReportRepository).Returns(_campaignReportRepository.Object);
+            _campaignReportRepository.Setup(x => x.GetAsync(
+                It.Is<Expression<Func<CampaignReport, CampaignReport>>>(y => y.Compile()(new CampaignReport()) is CampaignReport),
+                It.Is<Expression<Func<CampaignReport, bool>>>(y => y.Compile()(campaignReport)),
+                It.IsAny<Func<IQueryable<CampaignReport>, IOrderedQueryable<CampaignReport>>>(),
+                It.IsAny<Func<IQueryable<CampaignReport>, IIncludableQueryable<CampaignReport, object>>>(),
+                pageIndex, pageSize,
+                true
+                )).ReturnsAsync((null, 1, 1)).Verifiable();
+
+            //Act
+            Should.Throw<NotFoundException>(() =>
+                _campaignService.GetAllCampaignReportAsync(userId, campaignId, searchText, orderBy, pageIndex, pageSize)
+            );
+            
+
+            //Assert
+            _campaignReportRepository.VerifyAll();
+        }
+
+        [Test]
+        public void UpdateCampaignAsync_ValidCampaign_CampaignUpdated()
+        {
+            //Arrange
+            var campaign = new Campaign
+            {
+                Id = 1,
+                IsProcessing = true,
+                IsActive = true,
+                IsDeleted = false
+            };
+
+            _campaignUnitOfWorkMock.Setup(x => x.CampaignRepository).Returns(_campaignRepositoryMock.Object);
+            _campaignRepositoryMock.Setup(x => x.GetByIdAsync(campaign.Id)).ReturnsAsync(campaign).Verifiable();
+            _campaignRepositoryMock.Setup(x => x.UpdateAsync(It.Is<Campaign>(y => y.Id == campaign.Id))).Returns(Task.CompletedTask).Verifiable();
+            _campaignUnitOfWorkMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask).Verifiable();
+
+            //Act
+            _campaignService.UpdateCampaignAsync(campaign);
 
             //Assert
             _campaignRepositoryMock.VerifyAll();
+            _campaignUnitOfWorkMock.VerifyAll();
         }
 
         [Test]
@@ -350,6 +430,12 @@ namespace EmailMarketing.Framework.Tests.Services
             var list = new List<(int Value, string Text, int Count)>();
             list.Add((Value: 1, Text: "Samir", Count: 5));
 
+            var a = new List<object>
+            {
+               new { Value = 1, Text = "sam", Count = 2 },
+               new { Value = 2, Text = "shamim", Count = 3 }
+            };
+
             var groupList = new List<Group>
             {
                 new Group{ Id = 1, Name = "Friend", UserId = group.UserId }
@@ -357,18 +443,17 @@ namespace EmailMarketing.Framework.Tests.Services
 
             _groupUnitOfWorkMock.Setup(x => x.GroupRepository).Returns(_groupRepositoryMock.Object);
             _groupRepositoryMock.Setup(x => x.GetAsync(
-                It.IsAny<Expression<Func<Group, Group>>>(),
+                It.IsAny<Expression<Func<Group, object>>>(),
                 It.Is<Expression<Func<Group, bool>>>(y => y.Compile()(group)),
                 It.IsAny<Func<IQueryable<Group>, IOrderedQueryable<Group>>>(),
                 null, true
-                )).ReturnsAsync(groupList).Verifiable();
+                )).ReturnsAsync(a).Verifiable();
 
             //Assert
-            _campaignService.GetAllGroupsAsync(group.UserId);
+            var result = _campaignService.GetAllGroupsAsync(group.UserId);
 
             //Act
             _groupRepositoryMock.VerifyAll();
-            _groupUnitOfWorkMock.VerifyAll();
         }
 
     }

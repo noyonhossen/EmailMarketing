@@ -25,10 +25,10 @@ namespace EmailMarketing.Framework.Services.Campaigns
 
         public async Task<IList<(int Value, string Text, int Count)>> GetAllGroupsAsync(Guid? userId)
         {
-            return (await _groupUnitOfWork.GroupRepository.GetAsync(x => new { Value = x.Id, Text = x.Name, Count = x.ContactGroups.Count() },
+            return (await _groupUnitOfWork.GroupRepository.GetAsync(x => (object) new { Value = x.Id, Text = x.Name, Count = x.ContactGroups.Count() },
                                                    x => !x.IsDeleted && x.IsActive &&
                                                    (!userId.HasValue || x.UserId == userId.Value), x => x.OrderBy(o => o.Name), null, true))
-                                                   .Select(x => (Value: x.Value, Text: x.Text, Count: x.Count)).ToList();
+                                                   .Select(x => (Value: (int)((dynamic) x).Value, Text: (string)((dynamic) x).Text, Count: (int)((dynamic) x).Count)).ToList();
         }
         public async Task<(IList<Campaign> Items, int Total, int TotalFilter)> GetAllCampaignAsync(
           Guid? userId,
