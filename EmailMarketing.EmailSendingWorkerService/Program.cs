@@ -69,6 +69,7 @@ namespace EmailMarketing.EmailSendingWorkerService
                     services.AddSingleton<IWorkerMailerService, WorkerMailerService>();
                     services.AddSingleton<ICurrentUserService, WorkerCurrentUserService>();
                     services.AddSingleton<IDateTime, WorkerDateTimeService>();
+                    services.AddSingleton<IMailerService, ConfirmationMailerService>();
                     services.AddHttpContextAccessor();
                 });
     }

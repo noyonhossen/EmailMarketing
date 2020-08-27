@@ -114,5 +114,14 @@ namespace EmailMarketing.Framework.Services.Campaigns
                                                                                 true);
             return result;
         }
+
+        public async Task UpdateCampaignAsync(Campaign campaign)
+        {
+            var existingCampaign = await _campaignUnitOfWork.CampaignRepository.GetByIdAsync(campaign.Id);
+            existingCampaign.IsProcessing = false;
+
+            await _campaignUnitOfWork.CampaignRepository.UpdateAsync(existingCampaign);
+            await _campaignUnitOfWork.SaveChangesAsync();
+        }
     }
 }

@@ -35,16 +35,16 @@
 					</tr>
 					<tr>
 						<td>
-							<h2 style="font-family: system-ui;padding-top:25px;font-size:20px;">Upload Confirmation</h2>
+							<h2 style="font-family: system-ui;padding-top:25px;font-size:20px;">Campaign Sent Confirmation</h2>
 						</td>
 					</tr>
 					<tr>
 						<td>
 							<p style="padding:0px 100px;font-family:system-ui;text-align:left;font-weight:bold;font-size:15px;">
-								Dear Shamim,
+								Dear <#=Name#>,
 							</p>
 							<p style="padding:0px 100px 10px;font-family: system-ui;text-align:left;font-size:13px;">
-								Your file has been uploaded successfully. Below is the report of the uploaded file.
+								Your Campaign has been sent successfully. Below is the report of the Campaign sent information.
 							</p>
 						</td>
 					</tr>
@@ -54,7 +54,7 @@
                 <tr>
                   <td>
                     <p style="font-family: system-ui;text-align:left;font-size:13px;">
-                      Success Count
+                      Success Email Count
                     </p>
                   </td>
 									<td>
@@ -64,14 +64,14 @@
                   </td>
                   <td>
                     <p style="font-family: system-ui;text-align:left;font-size:13px;">
-                      15
+                      <#=TotalCount#>
                     </p>
                   </td>
                 </tr>
 								<tr>
                   <td>
                     <p style="font-family: system-ui;text-align:left;font-size:13px;margin-top:0;">
-                      Exists Count
+                      Failed Email Count
                     </p>
                   </td>
 									<td>
@@ -81,24 +81,7 @@
                   </td>
                   <td>
                     <p style="font-family: system-ui;text-align:left;font-size:13px;margin-top:0;">
-                      15
-                    </p>
-                  </td>
-                </tr>
-								<tr>
-                  <td>
-                    <p style="font-family: system-ui;text-align:left;font-size:13px;margin-top:0;">
-                      Invalid Count
-                    </p>
-                  </td>
-									<td>
-                    <p style="font-family: system-ui;text-align:left;font-size:13px;padding: 0 10px;margin-top:0;">
-                      :
-                    </p>
-                  </td>
-                  <td>
-                    <p style="font-family: system-ui;text-align:left;font-size:13px;margin-top:0;">
-                      15
+                      <#=TotalFailed#>
                     </p>
                   </td>
                 </tr>
