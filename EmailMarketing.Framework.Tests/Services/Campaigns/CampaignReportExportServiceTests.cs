@@ -59,7 +59,7 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
             _campaignReportUnitOfWorkMock.Reset();
         }
         [Test]
-        public void GetDownloadQueue_DownloadQueueInfo_ReturnDownloadQueueList()
+        public void GetDownloadQueue_DownloadQueueExists_ReturnDownloadQueueList()
         {
             //Arrange
             var downloadQueuesToMatch = new DownloadQueue
