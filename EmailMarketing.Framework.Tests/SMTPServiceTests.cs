@@ -48,7 +48,7 @@ namespace EmailMarketing.Framework.Tests
         }
 
         [Test]
-        public void GetByIdAsync_GroupId_ReturnsGroupObject()
+        public void GetByIdAsync_SmtpId_ReturnsSmtpObject()
         {
             //Arrange
             var group = new SMTPConfig
@@ -62,6 +62,27 @@ namespace EmailMarketing.Framework.Tests
                  Password = "12345",
                  EnableSSL = true
             };
+        
+        }
+        [Test]
+        public void GetAllAsync_SmtpLists_GetAllSMTP()
+        {
+            //Arrange
+            int total = 4, totalFilter = 3;
+            string searchText = "", orderBy = "Name";
+            int pageIndex = 1, pageSize = 10;
+
+            var smtpConfig = new List<SMTPConfig>
+            {
+                
+            };
+
+            var smtpConfigToMatch = new List<SMTPConfig>
+            {
+                
+            };
+                    
+
         
         }
 
