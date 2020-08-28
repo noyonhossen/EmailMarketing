@@ -1,4 +1,4 @@
-
+ 
 ﻿using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Common.Extensions;
 
@@ -67,7 +67,6 @@ namespace EmailMarketing.Framework.Services.Contacts
             return contact;
         }
 
-
         public async Task<int> GroupContactCountAsync(int id)
         {
             return await _contactUnitOfWork.GroupContactRepository.GetCountAsync();
@@ -104,10 +103,10 @@ namespace EmailMarketing.Framework.Services.Contacts
         }
         public async Task<IList<(int Value, string Text, int Count)>> GetAllGroupsAsync(Guid? userId)
         {
-            return (await _groupUnitOfWork.GroupRepository.GetAsync(x => new { Value = x.Id, Text = x.Name, Count = x.ContactGroups.Count },
+            return (await _groupUnitOfWork.GroupRepository.GetAsync(x => (object) new { Value = x.Id, Text = x.Name, Count = x.ContactGroups.Count },
                                                    x => !x.IsDeleted && x.IsActive &&
                                                    (!userId.HasValue || x.UserId == userId.Value), x => x.OrderBy(o => o.Name), x => x.Include(i => i.ContactGroups), true))
-                                                   .Select(x => (Value: x.Value, Text: x.Text, Count: x.Count)).ToList();
+                                                   .Select(x => (Value: (int)((dynamic)x).Value, Text: (string)((dynamic)x).Text, Count: (int)((dynamic)x).Count)).ToList();
         }
 
         public async Task<Group> GetGroupByIdAsync(int id)
@@ -133,9 +132,6 @@ namespace EmailMarketing.Framework.Services.Contacts
         public async Task<ContactValueMap> GetContactValueMapByIdAsync(int id)
         {
             var result = await _contactUnitOfWork.ContactValueMapRepository.GetByIdAsync(id);
-
-                //x => x, x => x.Id == id,null,true);
-
             return result;
         }
 public async Task<IList<(int Value,string Text)>> GetAllContactValueMaps(Guid? userId)
@@ -156,10 +152,10 @@ public async Task<IList<(int Value,string Text)>> GetAllContactValueMaps(Guid? u
 
         public async Task<IList<(int Value, string Text)>> GetAllContactValueMapsCustom(Guid? userId)
         {
-            return (await _contactUnitOfWork.FieldMapRepository.GetAsync(x => new { Value = x.Id, Text = x.DisplayName },
+            return (await _contactUnitOfWork.FieldMapRepository.GetAsync(x => (object) new { Value = x.Id, Text = x.DisplayName },
                                                    x => !x.IsDeleted && x.IsActive &&
                                                    (!userId.HasValue || x.UserId == userId.Value) && x.IsStandard == false, null, null, true))
-                                                   .Select(x => (Value: x.Value, Text: x.Text)).ToList();
+                                                   .Select(x => (Value: (int)((dynamic)x).Value, Text: (string)((dynamic)x).Text)).ToList();
         }
         public async Task<IList<(int Id, int Value, string Text,string Input)>> GetAllContactValueMapsCustom(Guid? userId, int contactId)
         {
