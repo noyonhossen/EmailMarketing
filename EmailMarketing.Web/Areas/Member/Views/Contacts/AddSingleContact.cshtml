@@ -3,6 +3,19 @@
     ViewData["Title"] = "AddSingleContact";
 }
 
+<div class="page-header">
+    <div class="page-header-content header-elements-md-inline">
+        <div class="page-title d-flex">
+            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Member" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+
+        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
+            <a asp-controller="Contacts" asp-action="Index" asp-area="Member" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list2"></i> <span class="font-weight-semibold">  Contact List</span></a>
+        </div>
+    </div>
+</div>
+
 <!-- Content area -->
 <div class="content">
 
@@ -152,7 +165,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <h3>Where you want to add this contract?</h3>
+                        <h3>Where do you want to add this contract?</h3>
 
                         @*<form id="form2" asp-area="Member" asp-action="AddSingleContact" asp-controller="Contacts" method="post">*@
 
