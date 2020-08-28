@@ -86,7 +86,6 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         public async Task SaveCampaignAsync()
         {
             
-            
             var campaign = new Campaign
             {
                 UserId = _currentUserService.UserId,
