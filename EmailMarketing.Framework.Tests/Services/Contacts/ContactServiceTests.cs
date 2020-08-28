@@ -285,30 +285,7 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
             var searchText = "team";
             var userId = Guid.NewGuid();
             var orderBy = "asc";
-            var contactList = new List<Contact>
-            {
-                new Contact
-                {
-                    Id = 1,
-                    Email = "teamA@gmail.com"
-                },
-                new Contact
-                {
-                    Id = 2,
-                    Email= "teamB@gmail.com"
-                },
-                new Contact
-                {
-                    Id = 3,
-                    Email = "teamC@gmail.com"
-                },
-                new Contact
-                {
-                    Id = 4,
-                    Email = "demo@gmail.com"
-                }
-            };
-
+            
             var contactListToReturn = new List<Contact>
             {
                 new Contact

@@ -133,33 +133,6 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
         public void GetDownloadQueueAsync_FieldValueIsProcessingIsTrue_ReturnsDownloadQueue()
         {
             //Arrange
-            var downloadQueues = new List<DownloadQueue>
-            {
-                new DownloadQueue
-            {
-                Id = 1,
-                FileUrl = "C:\\EmailMarketingTeamA",
-                DownloadQueueFor = DownloadQueueFor.ContactAllExport,
-                IsProcessing = true,
-                IsSucceed = true
-            },
-                new DownloadQueue
-            {
-                Id = 2,
-                FileUrl = "C:\\EmailMarketingTeamA",
-                DownloadQueueFor = DownloadQueueFor.ContactAllExport,
-                IsProcessing = true,
-                IsSucceed = true
-            },new DownloadQueue
-            {
-                Id = 3,
-                FileUrl = "C:\\EmailMarketingTeamA",
-                DownloadQueueFor = DownloadQueueFor.ContactAllExport,
-                IsProcessing = false,
-                IsSucceed = true
-            }
-            };
-
             var downloadQueuesToReturn = new List<DownloadQueue>
             {
                 new DownloadQueue
@@ -207,34 +180,36 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
         [Test]
         public void GetAllContactAsync_ForUserId_ReturnsAllAssociatedContacts()
         {
+            //Arrange
+            var userId = Guid.NewGuid();
             var contacts = new List<Contact>
             {
                 new Contact
                 {
                     Id = 1,
                     Email = "devskillTeamA@gmail.com",
-                    UserId = Guid.Empty,
+                    UserId = userId,
                     ContactUploadId = 1
                 },
                 new Contact
                 {
                     Id = 2,
                     Email = "devskillTeamB@gmail.com",
-                    UserId = Guid.Empty,
+                    UserId = userId,
                     ContactUploadId = 2
                 },
                 new Contact
                 {
                     Id = 3,
                     Email = "devskillTeamC@gmail.com",
-                    UserId = Guid.Empty,
+                    UserId = userId,
                     ContactUploadId = 3
                 },
                 new Contact
                 {
                     Id = 4,
                     Email = "devskillTeamNull@gmail.com",
-                    UserId = Guid.Empty,
+                    UserId = userId,
                     ContactUploadId = null
                 }
             };
@@ -242,14 +217,14 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
             _contactUnitOfWorkMock.Setup(x => x.ContactRepository).Returns(_contactRepositoryMock.Object);
             _contactRepositoryMock.Setup(x => x.GetAsync<Contact>(
                 It.Is<Expression<Func<Contact, Contact>>>(y => y.Compile()(new Contact()) is Contact),
-                It.Is<Expression<Func<Contact, bool>>>(y => y.Compile()(new Contact { UserId = Guid.Empty })),
+                It.Is<Expression<Func<Contact, bool>>>(y => y.Compile()(new Contact { UserId = userId })),
                 null,
                 It.IsAny<Func<IQueryable<Contact>, IIncludableQueryable<Contact, object>>>(),
                 true
                 )).ReturnsAsync(contacts).Verifiable();
 
             //Act
-            var returnedContact = _contactExportService.GetAllContactAsync(Guid.Empty);
+            var returnedContact = _contactExportService.GetAllContactAsync(userId);
             var result = returnedContact.Result;
 
             //Assert
@@ -260,35 +235,8 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
         [Test]
         public void GetAllContactGroupByUserIdAsync_ForUserIdAndGroupId_ReturnsUserContactsByGroup()
         {
-            var contactGroups = new List<ContactGroup>
-            {
-                new ContactGroup
-                {
-                    Id = 1,
-                    ContactId = 1,
-                    GroupId = 1,
-                },
-                new ContactGroup
-                {
-                    Id = 2,
-                    ContactId = 2,
-                    GroupId = 1
-                },
-                new ContactGroup
-                {
-                    Id = 3,
-                    ContactId = 3,
-                    GroupId = 2
-                },
-                new ContactGroup
-                {
-                    Id = 4,
-                    ContactId = 4,
-                    GroupId = 1
-                }
-            };
-
-            var contactGroupsToMatch = new List<ContactGroup>
+            //Arrange 
+            var contactGroupsToReturn = new List<ContactGroup>
             {
                  new ContactGroup
                 {
@@ -310,21 +258,22 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
                 }
             };
             int groupId = 1;
-            var newContactGroup = new ContactGroup { GroupId = 1 };
-            newContactGroup.Contact = new Contact();
-            newContactGroup.Contact.UserId = Guid.Empty;
+            var userId = Guid.NewGuid();
+            var contactGroupsToMatch = new ContactGroup { GroupId = 1 };
+            contactGroupsToMatch.Contact = new Contact();
+            contactGroupsToMatch.Contact.UserId = userId;
 
             _contactUnitOfWorkMock.Setup(x => x.GroupContactRepository).Returns(_groupContactRepositoryMock.Object);
             _groupContactRepositoryMock.Setup(x => x.GetAsync<ContactGroup>(
                 It.Is<Expression<Func<ContactGroup, ContactGroup>>>(y => y.Compile()(new ContactGroup()) is ContactGroup),
-                It.Is<Expression<Func<ContactGroup, bool>>>(y => y.Compile()(newContactGroup)),
+                It.Is<Expression<Func<ContactGroup, bool>>>(y => y.Compile()(contactGroupsToMatch)),
                 null,
                 It.IsAny<Func<IQueryable<ContactGroup>, IIncludableQueryable<ContactGroup, object>>>(),
                 true
-                )).ReturnsAsync(contactGroupsToMatch).Verifiable();
+                )).ReturnsAsync(contactGroupsToReturn).Verifiable();
 
             //Act
-            var returnedContact = _contactExportService.GetAllContactGroupByUserIdAsync(Guid.Empty, groupId);
+            var returnedContact = _contactExportService.GetAllContactGroupByUserIdAsync(userId, groupId);
 
             //Assert
             _groupContactRepositoryMock.Verify();
