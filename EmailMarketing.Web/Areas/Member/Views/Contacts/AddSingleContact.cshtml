@@ -39,7 +39,7 @@
                             <h4>Add Contact Details</h4>
                             @Html.AntiForgeryToken()
                             <div class="form-group row">
-                                <label asp-for="Email" class="col-sm-3 col-form-label">Email Address *</label>
+                                <label asp-for="Email" class="col-sm-3 col-form-label required">Email</label>
                                 <div class="col-sm-9">
                                     <input type="email" class="form-control" asp-for="Email">
                                     <span asp-validation-for="Email"></span>
@@ -99,9 +99,9 @@
                                             </div>
                                         }*@
 
-                                                }
+                                                @*}
                                             }
-                                        }
+                                        }*@
 
                                 </div>
                             </div>

@@ -19,8 +19,9 @@ namespace EmailMarketing.Framework.Services.Campaigns
 
         public async Task AddEmailTemplateAsync(EmailTemplate emailTemplate)
         {
-            var count = await _campaignUnitOfWork.EmailTemplateRepository.GetCountAsync(x => x.EmailTemplateBody == emailTemplate.EmailTemplateBody);
-            if (count > 0)
+            var isExists = await _campaignUnitOfWork.EmailTemplateRepository.IsExistsAsync(x => x.UserId == emailTemplate.UserId &&
+                                                                                                x.EmailTemplateBody == emailTemplate.EmailTemplateBody);
+            if (isExists)
             {
                 throw new DuplicationException("Template Already Exists");
             }

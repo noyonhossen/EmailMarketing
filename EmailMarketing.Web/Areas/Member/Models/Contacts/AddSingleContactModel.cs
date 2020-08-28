@@ -39,7 +39,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         }
         public async Task<IList<ContactValueTextModel>> GetAllContactValueMaps()
         {
-            return (await _contactService.GetAllContactValueMaps(_currentUserService.UserId))
+            return (await _contactService.GetAllContactValueMapsStandard())
                                            .Select(x => new ContactValueTextModel { Value = x.Value, Text = x.Text }).ToList();
         }
 

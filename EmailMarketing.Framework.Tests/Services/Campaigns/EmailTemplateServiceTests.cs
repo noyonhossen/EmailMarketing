@@ -15,7 +15,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.Framework.Tests.Services
+namespace EmailMarketing.Framework.Tests.Services.Campaigns
 {
     [ExcludeFromCodeCoverage]
     public class EmailTemplateServiceTests

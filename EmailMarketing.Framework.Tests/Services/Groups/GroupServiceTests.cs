@@ -19,7 +19,7 @@ using EmailMarketing.Framework.Entities.Groups;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Query;
 
-namespace EmailMarketing.Framework.Tests
+namespace EmailMarketing.Framework.Tests.Services.Groups
 {
     [ExcludeFromCodeCoverage]
     public class GroupServiceTests

@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using EmailMarketing.Common.Constants;
 using EmailMarketing.Common.Extensions;
 using EmailMarketing.Common.Services;
 using EmailMarketing.EmailSendingWorkerService.Services;
@@ -68,7 +69,7 @@ namespace EmailMarketing.EmailSendingWorkerService
                         foreach(var singleContact in contactList)
                         {
                             var fieldmapDict = singleContact.ContactValueMaps.ToList().ToDictionary(x => x.FieldMap.DisplayName, x => x.Value);
-                            fieldmapDict.Add("Email", singleContact.Email);
+                            fieldmapDict.Add(ConstantsValue.ContactFieldMapEmail, singleContact.Email);
 
                             var emailTemplate = result.EmailTemplate.EmailTemplateBody;
                             if(item.IsPersonalized)
@@ -76,7 +77,7 @@ namespace EmailMarketing.EmailSendingWorkerService
                                 emailTemplate = ConvertExtension.FormatStringFromDictionary(emailTemplate, fieldmapDict);
                             }
 
-                            var status = await _mailerService.SendBulkEmailAsync(singleContact.Email, "Bulk Mail", emailTemplate, result.SMTPConfig);
+                            var status = await _mailerService.SendBulkEmailAsync(singleContact.Email, item.EmailSubject, emailTemplate, result.SMTPConfig);
 
                             //Counting email success and failure
                             if(status)

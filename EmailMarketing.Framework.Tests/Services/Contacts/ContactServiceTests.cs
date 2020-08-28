@@ -1,7 +1,5 @@
-
 using EmailMarketing.Common.Exceptions;
 using Autofac.Extras.Moq;
-using DocumentFormat.OpenXml.Bibliography;
 using EmailMarketing.Framework.Entities.Groups;
 using EmailMarketing.Framework.Entities.Contacts;
 using EmailMarketing.Framework.Enums;
@@ -22,8 +20,6 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using EmailMarketing.Framework.Entities;
-using EmailMarketing.Common.Exceptions;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 
 
 namespace EmailMarketing.Framework.Tests.Services.Contacts
@@ -387,12 +383,13 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
         public void GetAllContactValueMapsCustom_ForUserId_ReturnsFieldMapList()
         {
             var userId = Guid.NewGuid();
-            var list = new List<Object>
+            var list = new List<ValueTuple<int, string>>
             {
-                new { Value = 1, Text = "Email"},
-                new { Value = 2, Text = "Address"},
-                new { Value = 3, Text = "Date of Birth"},
+                (1, "Email"),
+                (2, "Address"),
+                (3, "Date of Birth")
             };
+
             var fieldMapTemp = new FieldMap
             {
                 IsActive = true,
@@ -403,7 +400,7 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
 
             _contactUnitOfWorkMock.Setup(x => x.FieldMapRepository).Returns(_fieldMapRepositoryMock.Object);
             _fieldMapRepositoryMock.Setup(x => x.GetAsync(
-                It.IsAny<Expression<Func<FieldMap,Object>>>(),
+                It.IsAny<Expression<Func<FieldMap, ValueTuple<int, string>>>>(),
                 It.Is<Expression<Func<FieldMap, bool>>>(y => y.Compile()(fieldMapTemp)),
                 null,
                 null,

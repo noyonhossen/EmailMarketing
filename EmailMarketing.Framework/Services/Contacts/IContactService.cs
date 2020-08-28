@@ -27,7 +27,7 @@ namespace EmailMarketing.Framework.Services.Contacts
         Task<int> GroupContactCountAsync(int id);
         Task<IList<(int Value, string Text,int Count)>> GetAllGroupsAsync(Guid? userId);
         Task<Entities.Groups.Group> GetGroupByIdAsync(int id);
-        Task<IList<(int Value, string Text)>> GetAllContactValueMaps(Guid? userId);
+        Task<IList<(int Value, string Text)>> GetAllContactValueMapsStandard();
         Task AddContact(Contact contact);
         Task<IList<(int Value, string Text)>> GetAllContactValueMapsCustom(Guid? userId);
         Task AddContacValueMaps(IList<ContactValueMap> contactValueMap);

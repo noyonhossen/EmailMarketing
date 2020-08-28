@@ -10,5 +10,6 @@ namespace EmailMarketing.Framework.Entities.Campaigns
         public Guid UserId { get; set; }
         public string EmailTemplateName { get; set; }
         public string EmailTemplateBody { get; set; }
+        public bool IsPersonalized { get; set; }
     }
 }

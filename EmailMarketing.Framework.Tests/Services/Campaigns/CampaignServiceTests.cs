@@ -21,7 +21,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.Framework.Tests.Services
+namespace EmailMarketing.Framework.Tests.Services.Campaigns
 {
     [ExcludeFromCodeCoverage]
     public class CampaignServiceTests
@@ -430,10 +430,10 @@ namespace EmailMarketing.Framework.Tests.Services
             var list = new List<(int Value, string Text, int Count)>();
             list.Add((Value: 1, Text: "Samir", Count: 5));
 
-            var a = new List<object>
+            var a = new List<ValueTuple<int, string, int>>
             {
-               new { Value = 1, Text = "sam", Count = 2 },
-               new { Value = 2, Text = "shamim", Count = 3 }
+               (1, "sam", 2 ),
+               (2, "shamim", 3 )
             };
 
             var groupList = new List<Group>
@@ -443,7 +443,7 @@ namespace EmailMarketing.Framework.Tests.Services
 
             _groupUnitOfWorkMock.Setup(x => x.GroupRepository).Returns(_groupRepositoryMock.Object);
             _groupRepositoryMock.Setup(x => x.GetAsync(
-                It.IsAny<Expression<Func<Group, object>>>(),
+                It.IsAny<Expression<Func<Group, ValueTuple<int, string, int>>>>(),
                 It.Is<Expression<Func<Group, bool>>>(y => y.Compile()(group)),
                 It.IsAny<Func<IQueryable<Group>, IOrderedQueryable<Group>>>(),
                 null, true

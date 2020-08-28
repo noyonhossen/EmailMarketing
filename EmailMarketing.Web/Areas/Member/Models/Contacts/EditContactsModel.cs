@@ -64,18 +64,18 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
             this.ContactValueMapsCustomSelected = ContactValueMapsCustomSelected;
 
 
-            ContactValueMaps = (await _contactService.GetAllContactValueMaps(_currentUserService.UserId))
+            ContactValueMaps = (await _contactService.GetAllContactValueMapsStandard())
                                            .Select(x => new ContactValueTextModel { Value = x.Value, Text = x.Text }).ToList();
 
 
             var ContactValueMapsSelected = (await _contactService.GetAllContactValueMaps(_currentUserService.UserId, contact.Id))
                                             .Select(x => new ContactValueTextModel { Id = x.Id, Value = x.Value, Text = x.Text, Input = x.Input }).ToList();
 
-            var contactValueMapsSelected = ContactValueMapsSelected.Select(x => x.Value).ToList();
+            //var contactValueMapsSelected = ContactValueMapsSelected.Select(x => x.Value).ToList();
 
             foreach (var item in ContactValueMaps)
             {
-                if (contactValueMapsSelected.Contains(item.Value) == false)
+                if (!ContactValueMapsSelected.Any(x => x.Value.Equals(item.Value)))
                 {
                     ContactValueMapsSelected.Add(
                     new ContactValueTextModel

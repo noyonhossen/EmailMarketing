@@ -20,7 +20,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.Framework.Tests
+namespace EmailMarketing.Framework.Tests.Services.Contacts
 {
     [ExcludeFromCodeCoverage]
     public class ContactUploadServiceTests
