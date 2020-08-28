@@ -1,10 +1,20 @@
-﻿
-
-
-@model EmailMarketing.Web.Areas.Member.Models.Contacts.EditContactsModel
+﻿@model EmailMarketing.Web.Areas.Member.Models.Contacts.EditContactsModel
 @{
     ViewData["Title"] = "Edit Contact";
 }
+
+<div class="page-header">
+    <div class="page-header-content header-elements-md-inline">
+        <div class="page-title d-flex">
+            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Member" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+
+        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
+            <a asp-controller="Contacts" asp-action="Index" asp-area="Member" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list2"></i> <span class="font-weight-semibold">  Contact List</span></a>
+        </div>
+    </div>
+</div>
 
 <!-- Content area -->
 <div class="content">
@@ -12,7 +22,7 @@
     <div class="card">
         <div class="card-header">
             <div class="pl-5 pr-3">
-                <h4 class="card-title">Add Single Contact</h4>
+                <h3 class="card-title">Update Existing Contact</h3>
             </div>
         </div>
         <hr />
@@ -26,7 +36,7 @@
 
                     <div class="col-md-6">
                         <div class="pl-5 pr-3">
-                            <h4>Add Contact Details</h4>
+                            <h4>Edit Contact Details</h4>
                             @Html.AntiForgeryToken()
                             @*<form id="form1" asp-area="Member" asp-controller="Contacts" asp-action="AddSingleContact" method="post">*@
                             <div class="form-group row">
@@ -50,12 +60,12 @@
 
                                             <div class="form-group row">
                                                 <label asp-for="@Model.ContactValueMapsSelected[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMapsSelected[i].Text</label>
-                                               
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" value="@Model.ContactValueMapsSelected[i].Input" name="ContactValueMapsSelected[@i].Input">
-                                                <input type="hidden" class="form-control" value="@Model.ContactValueMapsSelected[i].Value" name="ContactValueMapsSelected[@i].Value">
-                                                <input type="hidden" class="form-control" value="@Model.ContactValueMapsSelected[i].Id" name="ContactValueMapsSelected[@i].Id">
-                                            </div>
+
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" value="@Model.ContactValueMapsSelected[i].Input" name="ContactValueMapsSelected[@i].Input">
+                                                    <input type="hidden" class="form-control" value="@Model.ContactValueMapsSelected[i].Value" name="ContactValueMapsSelected[@i].Value">
+                                                    <input type="hidden" class="form-control" value="@Model.ContactValueMapsSelected[i].Id" name="ContactValueMapsSelected[@i].Id">
+                                                </div>
 
                                             </div>
                                         }
@@ -76,7 +86,7 @@
                                     @{ for (int i = 0; i < Model.ContactValueMapsCustomSelected.Count(); i++)
                                         {
                                             <div class="form-group row">
-                                                <label asp-for="@Model.ContactValueMapsCustomSelected[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMapsCustomSelected[i].Text</label>                        
+                                                <label asp-for="@Model.ContactValueMapsCustomSelected[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMapsCustomSelected[i].Text</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" value="@Model.ContactValueMapsCustomSelected[i].Input" name="ContactValueMapsCustomSelected[@i].Input">
                                                     <input type="hidden" class="form-control" value="@Model.ContactValueMapsCustomSelected[i].Value" name="ContactValueMapsCustomSelected[@i].Value">
@@ -92,7 +102,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <h3>Where you want to add this contract?</h3>
+                        <h3>Where do you want to add this contract?</h3>
                         <!-- selected -->
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="checkAll">
@@ -114,7 +124,7 @@
                                                 <input type="checkbox" class="form-check-input group-select" id="checkSingle[@i]" value="@Model.GroupSelectList[i].IsChecked.ToString().ToLower()" checked="@Model.GroupSelectList[i].IsChecked" name="GroupSelectList[@i].IsChecked">
                                                 <input type="hidden" class="form-control" asp-for="@Model.GroupSelectList[i].Value">
                                                 <input type="hidden" class="form-control" asp-for="@Model.GroupSelectList[i].Text">
-                            
+
                                                 <label class="form-check-label" for="checkSingle[@i]">
                                                     @Model.GroupSelectList[i].Text
                                                     <span class="border p-1">
@@ -173,7 +183,7 @@
             function showChecked() {
                 var count = document.querySelectorAll('input.group-select:checked').length;
                 if (count == 1) selectedElm.innerHTML = "1 Group Selected";
-                else if (count > 1) selectedElm.innerHTML = count+" Groups Selected";
+                else if (count > 1) selectedElm.innerHTML = count + " Groups Selected";
                 else selectedElm.innerHTML = "No Group Selected";
             }
             document.querySelectorAll("input").forEach(i => {
