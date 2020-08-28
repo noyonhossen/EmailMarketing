@@ -1,4 +1,5 @@
-﻿
+
+using EmailMarketing.Common.Exceptions;
 using Autofac.Extras.Moq;
 using DocumentFormat.OpenXml.Bibliography;
 using EmailMarketing.Framework.Entities.Groups;
@@ -23,6 +24,7 @@ using System.Threading.Tasks;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Common.Exceptions;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+
 
 namespace EmailMarketing.Framework.Tests.Services.Contacts
 {
@@ -56,6 +58,9 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
         [SetUp]
         public void Setup()
         {
+            _contactRepositoryMock = _mock.Mock<IContactRepository>();
+            _fieldMapRepositoryMock = _mock.Mock<IFieldMapRepository>();
+            _contactUnitOfWorkMock = _mock.Mock<IContactUnitOfWork>();
             _groupRepositoryMock = _mock.Mock<IGroupRepository>();
             _groupContactRepositoryMock = _mock.Mock<IGroupContactRepository>();
             _contactRepositoryMock = _mock.Mock<IContactRepository>();
@@ -64,7 +69,7 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
 
             _groupUnitOfWorkMock = _mock.Mock<IGroupUnitOfWork>();
             _contactUnitOfWorkMock = _mock.Mock<IContactUnitOfWork>();
-
+          
             _contactService = _mock.Create<ContactService>();
         }
 
@@ -79,6 +84,104 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
 
             _groupUnitOfWorkMock.Reset();
             _contactUnitOfWorkMock.Reset();
+        }
+      
+        [Test]
+        public void GetByIdAsync_InValidId_ThrowException()
+        {
+            //Arrange
+            int id = 1;
+
+            Contact? contact = null;
+            var contactsToMatch = new Contact
+            {
+                Id = 1
+            };
+
+            _contactUnitOfWorkMock.Setup(x => x.ContactRepository)
+                .Returns(_contactRepositoryMock.Object);
+
+            _contactRepositoryMock.Setup(x => x.GetFirstOrDefaultAsync(
+                It.Is<Expression<Func<Contact, Contact>>>(y => y.Compile()(new Contact()) is Contact),
+                It.Is<Expression<Func<Contact, bool>>>(y => y.Compile()(contactsToMatch)),
+                It.IsAny<Func<IQueryable<Contact>, IIncludableQueryable<Contact, object>>>(),
+                true
+                )).ReturnsAsync(contact).Verifiable();
+
+            //Act
+            Should.Throw<NotFoundException>(() =>
+                _contactService.GetByIdAsync(id)
+            );
+
+            //Assert
+            _contactRepositoryMock.VerifyAll();
+        }
+      
+        [Test]
+        public void GetByIdAsync_ValidId_ReturnContact()
+        {
+            //Arrange
+            int id = 1;
+
+            var contact = new Contact
+            {
+                Id = 1,
+                Email = "teama@gmail.com"
+            };
+
+            var contactsToMatch = new Contact
+            {
+                Id = 1
+            };
+
+            _contactUnitOfWorkMock.Setup(x => x.ContactRepository)
+                .Returns(_contactRepositoryMock.Object);
+
+            _contactRepositoryMock.Setup(x => x.GetFirstOrDefaultAsync(
+                It.Is<Expression<Func<Contact, Contact>>>(y => y.Compile()(new Contact()) is Contact),
+                It.Is<Expression<Func<Contact, bool>>>(y => y.Compile()(contactsToMatch)),
+                It.IsAny<Func<IQueryable<Contact>, IIncludableQueryable<Contact, object>>>(),
+                true
+                )).ReturnsAsync(contact).Verifiable();
+
+            //Act
+
+            var result = _contactService.GetByIdAsync(id);
+            result.Result.ShouldBe(contact);
+
+            //Assert
+            _contactRepositoryMock.VerifyAll();
+        }
+      
+        [Test]
+        public void DeleteAsync_InValidId_ThrowException()
+        {
+            //Arrange
+            int id = 1;
+
+            Contact? contact = null;
+            var contactsToMatch = new Contact
+            {
+                Id = 1
+            };
+
+            _contactUnitOfWorkMock.Setup(x => x.ContactRepository)
+                .Returns(_contactRepositoryMock.Object);
+
+            _contactRepositoryMock.Setup(x => x.GetFirstOrDefaultAsync(
+                It.Is<Expression<Func<Contact, Contact>>>(y => y.Compile()(new Contact()) is Contact),
+                It.Is<Expression<Func<Contact, bool>>>(y => y.Compile()(contactsToMatch)),
+                It.IsAny<Func<IQueryable<Contact>, IIncludableQueryable<Contact, object>>>(),
+                true
+                )).ReturnsAsync(contact).Verifiable();
+
+            //Act
+            Should.Throw<NotFoundException>(() =>
+                _contactService.DeleteAsync(id)
+            );
+
+            //Assert
+            _contactRepositoryMock.VerifyAll();
         }
 
         [Test]
@@ -198,7 +301,45 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
             //Assert
             _contactRepositoryMock.VerifyAll();
         }
+      
+        [Test]
+        public void DeleteAsync_ValidId_ReturnContact()
+        {
+            //Arrange
+            int id = 1;
 
+            var contact = new Contact
+            {
+                Id = 1,
+                Email = "teama@gmail.com"
+            };
+            var contactsToMatch = new Contact
+            {
+                Id = 1
+            };
+
+            _contactUnitOfWorkMock.Setup(x => x.ContactRepository)
+                .Returns(_contactRepositoryMock.Object);
+
+            _contactRepositoryMock.Setup(x => x.GetFirstOrDefaultAsync(
+                It.Is<Expression<Func<Contact, Contact>>>(y => y.Compile()(new Contact()) is Contact),
+                It.Is<Expression<Func<Contact, bool>>>(y => y.Compile()(contactsToMatch)),
+                It.IsAny<Func<IQueryable<Contact>, IIncludableQueryable<Contact, object>>>(),
+                true
+                )).ReturnsAsync(contact).Verifiable();
+
+            _contactRepositoryMock.Setup(x => x.DeleteAsync(id)).Returns(Task.CompletedTask).Verifiable();
+            _contactUnitOfWorkMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask).Verifiable();
+
+            //Act
+            var result = _contactService.DeleteAsync(id);
+            result.Result.ShouldBe(contact);
+
+            //Assert
+            _contactUnitOfWorkMock.VerifyAll();
+            _contactRepositoryMock.VerifyAll();
+        }
+      
         [Test]
         public void UpdateAsync_ForValidContactId_UpdateContact()
         {
@@ -276,6 +417,40 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
             _fieldMapRepositoryMock.VerifyAll();
 
         }
+
+  
+        [Test]
+        public void GetIdByEmail_ValidEmail_ReturnContact()
+        {
+            //Arrange
+            string email = "n@gmail.com";
+            var contact = new Contact
+            {
+                Id = 1,
+                Email = "n@gmail.com",
+            };
+  
+            var contactToMatch = new Contact
+            {
+                Id = 1,
+                Email = "n@gmail.com",
+            };
+
+            _contactUnitOfWorkMock.Setup(x => x.ContactRepository).Returns(_contactRepositoryMock.Object);
+            _contactRepositoryMock.Setup(x => x.GetFirstOrDefaultAsync(
+                It.Is<Expression<Func<Contact, Contact>>>(y => y.Compile()(new Contact()) is Contact),
+                It.Is<Expression<Func<Contact, bool>>>(y => y.Compile()(contactToMatch)),
+                null, true
+                )).ReturnsAsync(contact).Verifiable();
+
+            //Act
+            var result = _contactService.GetIdByEmail(email);
+            result.Result.ShouldBe(contact);
+  
+            //Assert
+            _contactRepositoryMock.VerifyAll();
+        }
+
         [Test]
         public void GetAllContactAsync_ForUserId_ShowContactList()
         {
@@ -304,7 +479,6 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
                     Email = "teamC@gmail.com"
                 }
             };
-
             var contactToMatch = new Contact
             {
                 UserId = userId,
@@ -330,12 +504,12 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
             //Act
             var result = _contactService.GetAllContactAsync(userId, searchText, orderBy, pageIndex, pageSize);
             result.Result.ShouldBe((contactListToReturn, 4,3));
-
+  
             //Assert
             _contactRepositoryMock.VerifyAll();
         }
+
+
     }
 }
-
-
 
