@@ -27,5 +27,6 @@ namespace EmailMarketing.Framework.Services.Campaigns
         Task AddCampaign(Campaign campaign);
         Task<IList<Campaign>> GetAllProcessingCampaign();
         Task<Campaign> GetAllEmailByCampaignId(int campaignId);
+        Task UpdateCampaignAsync(Campaign campaign);
     }
 }

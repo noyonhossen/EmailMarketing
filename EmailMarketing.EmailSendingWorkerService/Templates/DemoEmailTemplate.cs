@@ -44,56 +44,89 @@ namespace EmailMarketing.EmailSendingWorkerService.Templates
                     "style=\"background-color:#3f72af;height:80px;font-size:50px;color:#fff;\"><img sty" +
                     "le=\"margin-top:10px;\" src=\"https://img.icons8.com/color/48/000000/secured-letter" +
                     ".png\"/></i></td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<h2 style=\"font-fami" +
-                    "ly: system-ui;padding-top:25px;font-size:20px;\">Upload Confirmation</h2>\r\n\t\t\t\t\t\t" +
-                    "</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<p style=\"padding:0px 100px;fon" +
-                    "t-family:system-ui;text-align:left;font-weight:bold;font-size:15px;\">\r\n\t\t\t\t\t\t\t\tD" +
-                    "ear Shamim,\r\n\t\t\t\t\t\t\t</p>\r\n\t\t\t\t\t\t\t<p style=\"padding:0px 100px 10px;font-family: s" +
-                    "ystem-ui;text-align:left;font-size:13px;\">\r\n\t\t\t\t\t\t\t\tYour file has been uploaded " +
-                    "successfully. Below is the report of the uploaded file.\r\n\t\t\t\t\t\t\t</p>\r\n\t\t\t\t\t\t</td" +
-                    ">\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n              <table style=\"text-align:cen" +
-                    "ter;background-color: #fff;margin:auto;\">\r\n                <tr>\r\n               " +
-                    "   <td>\r\n                    <p style=\"font-family: system-ui;text-align:left;fo" +
-                    "nt-size:13px;\">\r\n                      Success Count\r\n                    </p>\r\n" +
-                    "                  </td>\r\n\t\t\t\t\t\t\t\t\t<td>\r\n                    <p style=\"font-famil" +
-                    "y: system-ui;text-align:left;font-size:13px;padding: 0 10px;\">\r\n                " +
-                    "      :\r\n                    </p>\r\n                  </td>\r\n                  <t" +
-                    "d>\r\n                    <p style=\"font-family: system-ui;text-align:left;font-si" +
-                    "ze:13px;\">\r\n                      15\r\n                    </p>\r\n                " +
-                    "  </td>\r\n                </tr>\r\n\t\t\t\t\t\t\t\t<tr>\r\n                  <td>\r\n          " +
-                    "          <p style=\"font-family: system-ui;text-align:left;font-size:13px;margin" +
-                    "-top:0;\">\r\n                      Exists Count\r\n                    </p>\r\n       " +
-                    "           </td>\r\n\t\t\t\t\t\t\t\t\t<td>\r\n                    <p style=\"font-family: syst" +
-                    "em-ui;text-align:left;font-size:13px;padding: 0 10px;margin-top:0;\">\r\n          " +
-                    "            :\r\n                    </p>\r\n                  </td>\r\n              " +
-                    "    <td>\r\n                    <p style=\"font-family: system-ui;text-align:left;f" +
-                    "ont-size:13px;margin-top:0;\">\r\n                      15\r\n                    </p" +
-                    ">\r\n                  </td>\r\n                </tr>\r\n\t\t\t\t\t\t\t\t<tr>\r\n               " +
-                    "   <td>\r\n                    <p style=\"font-family: system-ui;text-align:left;fo" +
-                    "nt-size:13px;margin-top:0;\">\r\n                      Invalid Count\r\n             " +
-                    "       </p>\r\n                  </td>\r\n\t\t\t\t\t\t\t\t\t<td>\r\n                    <p styl" +
-                    "e=\"font-family: system-ui;text-align:left;font-size:13px;padding: 0 10px;margin-" +
-                    "top:0;\">\r\n                      :\r\n                    </p>\r\n                  <" +
-                    "/td>\r\n                  <td>\r\n                    <p style=\"font-family: system-" +
-                    "ui;text-align:left;font-size:13px;margin-top:0;\">\r\n                      15\r\n   " +
-                    "                 </p>\r\n                  </td>\r\n                </tr>\r\n         " +
-                    "     </table>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<p style=\"" +
-                    "padding:10px 100px 0px;font-family: system-ui;text-align:left;font-size:13px;\">\r" +
-                    "\n\t\t\t\t\t\t\t  All the best,<br /> Bulk Email System Team\r\n\t\t\t\t\t\t\t</p>\r\n\t\t\t\t\t\t</td>\r\n" +
-                    "\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>\r\n\t\t\t\t<table border=" +
-                    "\"0\" width=\"100%\" style=\"border-radius: 5px;text-align: center;margin-top:10px;\">" +
-                    "\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<h3 style=\"margin-top:10px;font-family: system-u" +
-                    "i;font-size:17px; \">Stay in touch</h3>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t" +
-                    "\t\t<td>\r\n\t\t\t\t\t\t\t<div style=\"margin-top:0px;\">\r\n\t\t\t\t\t\t\t\t<a href=\"#\" style=\"text-de" +
-                    "coration: none;\"><img src=\"https://img.icons8.com/color/35/000000/twitter-circle" +
-                    "d.png\"/></a>\r\n\t\t\t\t\t\t\t\t<a href=\"#\" style=\"text-decoration: none;\"><img src=\"https" +
-                    "://img.icons8.com/fluent/35/000000/facebook-new.png\"/></a>\r\n\t\t\t\t\t\t\t\t<a href=\"#\" " +
-                    "style=\"text-decoration: none;\"><img src=\"https://img.icons8.com/color/35/000000/" +
-                    "circled-envelope.png\"/></a>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n" +
-                    "\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<div style=\"margin-top: 10px;\">\r\n\t\t\t\t\t\t\t\t<span style=\"font-si" +
-                    "ze:12px;font-family: system-ui;font-size:11px;\">Bulk Email System</span><br>\r\n\t\t" +
-                    "\t\t\t\t\t\t<span style=\"font-size:12px;font-family: system-ui;font-size:11px;\">Copyri" +
-                    "ght © 2020 DevSkill Team A</span>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t<" +
-                    "/table>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t</table>\r\n</body>\r\n</html>\r\n");
+                    "ly: system-ui;padding-top:25px;font-size:20px;\">Campaign Sent Confirmation</h2>\r" +
+                    "\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<p style=\"padding:0px 10" +
+                    "0px;font-family:system-ui;text-align:left;font-weight:bold;font-size:15px;\">\r\n\t\t" +
+                    "\t\t\t\t\t\tDear ");
+            
+            #line 44 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.EmailSendingWorkerService\Templates\DemoEmailTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Name));
+            
+            #line default
+            #line hidden
+            this.Write(@",
+							</p>
+							<p style=""padding:0px 100px 10px;font-family: system-ui;text-align:left;font-size:13px;"">
+								Your Campaign has been sent successfully. Below is the report of the Campaign sent information.
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+              <table style=""text-align:center;background-color: #fff;margin:auto;"">
+                <tr>
+                  <td>
+                    <p style=""font-family: system-ui;text-align:left;font-size:13px;"">
+                      Success Email Count
+                    </p>
+                  </td>
+									<td>
+                    <p style=""font-family: system-ui;text-align:left;font-size:13px;padding: 0 10px;"">
+                      :
+                    </p>
+                  </td>
+                  <td>
+                    <p style=""font-family: system-ui;text-align:left;font-size:13px;"">
+                      ");
+            
+            #line 67 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.EmailSendingWorkerService\Templates\DemoEmailTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TotalCount));
+            
+            #line default
+            #line hidden
+            this.Write(@"
+                    </p>
+                  </td>
+                </tr>
+								<tr>
+                  <td>
+                    <p style=""font-family: system-ui;text-align:left;font-size:13px;margin-top:0;"">
+                      Failed Email Count
+                    </p>
+                  </td>
+									<td>
+                    <p style=""font-family: system-ui;text-align:left;font-size:13px;padding: 0 10px;margin-top:0;"">
+                      :
+                    </p>
+                  </td>
+                  <td>
+                    <p style=""font-family: system-ui;text-align:left;font-size:13px;margin-top:0;"">
+                      ");
+            
+            #line 84 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.EmailSendingWorkerService\Templates\DemoEmailTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TotalFailed));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n                    </p>\r\n                  </td>\r\n                </tr>\r\n     " +
+                    "         </table>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<p sty" +
+                    "le=\"padding:10px 100px 0px;font-family: system-ui;text-align:left;font-size:13px" +
+                    ";\">\r\n\t\t\t\t\t\t\t  All the best,<br /> Bulk Email System Team\r\n\t\t\t\t\t\t\t</p>\r\n\t\t\t\t\t\t</t" +
+                    "d>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>\r\n\t\t\t\t<table bor" +
+                    "der=\"0\" width=\"100%\" style=\"border-radius: 5px;text-align: center;margin-top:10p" +
+                    "x;\">\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<h3 style=\"margin-top:10px;font-family: syst" +
+                    "em-ui;font-size:17px; \">Stay in touch</h3>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n" +
+                    "\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<div style=\"margin-top:0px;\">\r\n\t\t\t\t\t\t\t\t<a href=\"#\" style=\"tex" +
+                    "t-decoration: none;\"><img src=\"https://img.icons8.com/color/35/000000/twitter-ci" +
+                    "rcled.png\"/></a>\r\n\t\t\t\t\t\t\t\t<a href=\"#\" style=\"text-decoration: none;\"><img src=\"h" +
+                    "ttps://img.icons8.com/fluent/35/000000/facebook-new.png\"/></a>\r\n\t\t\t\t\t\t\t\t<a href=" +
+                    "\"#\" style=\"text-decoration: none;\"><img src=\"https://img.icons8.com/color/35/000" +
+                    "000/circled-envelope.png\"/></a>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<t" +
+                    "r>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<div style=\"margin-top: 10px;\">\r\n\t\t\t\t\t\t\t\t<span style=\"fon" +
+                    "t-size:12px;font-family: system-ui;font-size:11px;\">Bulk Email System</span><br>" +
+                    "\r\n\t\t\t\t\t\t\t\t<span style=\"font-size:12px;font-family: system-ui;font-size:11px;\">Co" +
+                    "pyright © 2020 DevSkill Team A</span>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t" +
+                    "\t\t\t</table>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t</table>\r\n</body>\r\n</html>\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -109,7 +142,7 @@ namespace EmailMarketing.EmailSendingWorkerService.Templates
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;
-        //private global::System.CodeDom.Compiler.CompilerErrorCollection errorsField;
+        private global::System.CodeDom.Compiler.CompilerErrorCollection errorsField;
         private global::System.Collections.Generic.List<int> indentLengthsField;
         private string currentIndentField = "";
         private bool endsWithNewline;
@@ -137,17 +170,17 @@ namespace EmailMarketing.EmailSendingWorkerService.Templates
         /// <summary>
         /// The error collection for the generation process
         /// </summary>
-        //public System.CodeDom.Compiler.CompilerErrorCollection Errors
-        //{
-        //    get
-        //    {
-        //        if ((this.errorsField == null))
-        //        {
-        //            this.errorsField = new global::System.CodeDom.Compiler.CompilerErrorCollection();
-        //        }
-        //        return this.errorsField;
-        //    }
-        //}
+        public System.CodeDom.Compiler.CompilerErrorCollection Errors
+        {
+            get
+            {
+                if ((this.errorsField == null))
+                {
+                    this.errorsField = new global::System.CodeDom.Compiler.CompilerErrorCollection();
+                }
+                return this.errorsField;
+            }
+        }
         /// <summary>
         /// A list of the lengths of each indent that was added with PushIndent
         /// </summary>
@@ -256,22 +289,22 @@ namespace EmailMarketing.EmailSendingWorkerService.Templates
         /// <summary>
         /// Raise an error
         /// </summary>
-        //public void Error(string message)
-        //{
-        //    System.CodeDom.Compiler.CompilerError error = new global::System.CodeDom.Compiler.CompilerError();
-        //    error.ErrorText = message;
-        //    this.Errors.Add(error);
-        //}
+        public void Error(string message)
+        {
+            System.CodeDom.Compiler.CompilerError error = new global::System.CodeDom.Compiler.CompilerError();
+            error.ErrorText = message;
+            this.Errors.Add(error);
+        }
         /// <summary>
         /// Raise a warning
         /// </summary>
-        //public void Warning(string message)
-        //{
-        //    System.CodeDom.Compiler.CompilerError error = new global::System.CodeDom.Compiler.CompilerError();
-        //    error.ErrorText = message;
-        //    error.IsWarning = true;
-        //    this.Errors.Add(error);
-        //}
+        public void Warning(string message)
+        {
+            System.CodeDom.Compiler.CompilerError error = new global::System.CodeDom.Compiler.CompilerError();
+            error.ErrorText = message;
+            error.IsWarning = true;
+            this.Errors.Add(error);
+        }
         /// <summary>
         /// Increase the indent
         /// </summary>

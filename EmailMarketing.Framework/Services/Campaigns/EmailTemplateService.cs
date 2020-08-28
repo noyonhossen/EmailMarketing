@@ -22,7 +22,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
             var count = await _campaignUnitOfWork.EmailTemplateRepository.GetCountAsync(x => x.EmailTemplateBody == emailTemplate.EmailTemplateBody);
             if (count > 0)
             {
-                new DuplicationException("Template Already Exists");
+                throw new DuplicationException("Template Already Exists");
             }
 
             await _campaignUnitOfWork.EmailTemplateRepository.AddAsync(emailTemplate);

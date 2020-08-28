@@ -48,8 +48,9 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         public IList<CampaignGroup> CampaignGroups { get; set; }
         public IList<SMTPConfig> SMTPConfigList { get; set; }
 
-        public IDateTime _dateTime;
+        private IDateTime _dateTime;
         private ISMTPService _sMTPService;
+
         public CreateCampaignModel(ICampaignService campaignService,
             ICurrentUserService currentUserService,
             IEmailTemplateService emailTemplateService,
@@ -84,7 +85,6 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
 
         public async Task SaveCampaignAsync()
         {
-            
             
             var campaign = new Campaign
             {

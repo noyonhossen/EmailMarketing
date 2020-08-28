@@ -22,16 +22,19 @@ namespace EmailMarketing.EmailSendingWorkerService
         private readonly IWorkerMailerService _mailerService;
         private readonly ICampaignService _campaignService;
         private readonly ICampaignReportService _campaignReportService;
+        private readonly IMailerService _confirmationMailerService;
 
         public Worker(ILogger<Worker> logger, 
             IWorkerMailerService mailerService,
             ICampaignService campaignService,
-            ICampaignReportService campaignReportService)
+            ICampaignReportService campaignReportService,
+            IMailerService confirmationMailerService)
         {
             _logger = logger;
             _mailerService = mailerService;
             _campaignService = campaignService;
             _campaignReportService = campaignReportService;
+            _confirmationMailerService = confirmationMailerService;
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
@@ -46,6 +49,7 @@ namespace EmailMarketing.EmailSendingWorkerService
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
+                //Fetching campaignList based on isProcessing status
                 var campaignList = await _campaignService.GetAllProcessingCampaign();
 
                 try
@@ -54,8 +58,11 @@ namespace EmailMarketing.EmailSendingWorkerService
 
                     foreach(var item in campaignList)
                     {
+                        int totalSuccessCount = 0, totalFailCount = 0;
+                        //Fetching campaign with email list
                         var result = await _campaignService.GetAllEmailByCampaignId(item.Id);
 
+                        //Fetching contact list from result
                         var contactList = result.CampaignGroups.Select(x => x.Group).SelectMany(x => x.ContactGroups).Select(x => x.Contact).ToList();
 
                         foreach(var singleContact in contactList)
@@ -71,6 +78,17 @@ namespace EmailMarketing.EmailSendingWorkerService
 
                             var status = await _mailerService.SendBulkEmailAsync(singleContact.Email, "Bulk Mail", emailTemplate, result.SMTPConfig);
 
+                            //Counting email success and failure
+                            if(status)
+                            {
+                                totalSuccessCount++;
+                            }
+                            else
+                            {
+                                totalFailCount++;
+                            }
+                            
+                            //Adding value to campaignReport based on each mail sending status
                             var campaignReport = new CampaignReport
                             {
                                 CampaignId = result.Id,
@@ -84,7 +102,20 @@ namespace EmailMarketing.EmailSendingWorkerService
                             };
 
                             campaignReportList.Add(campaignReport);
-                        } 
+                        }
+
+                        //Upating Campaign isProcessing Status
+                        await _campaignService.UpdateCampaignAsync(item);
+
+                        //Sending email confirmation
+                        if(item.IsSendEmailNotify)
+                        {
+                            var emailSubject = "Campaign Sent Confirmation";
+                            var demoEmailTemplatePartial = new DemoEmailTemplate("Shamim", totalSuccessCount, totalFailCount);
+                            var body = demoEmailTemplatePartial.TransformText();
+                            await  _confirmationMailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, body);
+                        }
+                        
                     }
 
                     await _campaignReportService.AddCampaingReportAsync(campaignReportList);
