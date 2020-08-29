@@ -25,6 +25,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         {
 
         }
+
         public EditContactsModel() : base()
         {
 
@@ -32,25 +33,21 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 
         public async Task LoadContactByIdAsync(int id)
         {
-            var temp = new ContactValueTextModel();
             var contact = await _contactService.GetByIdAsync(id);
             this.Id = contact.Id;
-
             this.Email = contact.Email;
 
             ContactValueMapsCustom = (await _contactService.GetAllContactValueMapsCustom(_currentUserService.UserId))
                                           .Select(x => new ContactValueTextModel { Value = x.Value, Text = x.Text }).ToList();
 
-            var ContactValueMapsCustomSelected = (await _contactService.GetAllContactValueMapsCustom(_currentUserService.UserId, contact.Id))
+            var SelectedCustomFields = (await _contactService.GetAllContactValueMapsCustom(_currentUserService.UserId, contact.Id))
                                            .Select(x => new ContactValueTextModel { Id = x.Id, Value = x.Value, Text = x.Text, Input = x.Input }).ToList();
-
-            var contactValueMapsCustomSelected = ContactValueMapsCustomSelected.Select(x => x.Value).ToList();
 
             foreach (var item in ContactValueMapsCustom)
             {
-                if (contactValueMapsCustomSelected.Contains(item.Value) == false)
+                if (!SelectedCustomFields.Any(x => x.Value.Equals(item.Value)))
                 {
-                    ContactValueMapsCustomSelected.Add(
+                    SelectedCustomFields.Add(
                     new ContactValueTextModel
                     {
                         Id = item.Id,
@@ -61,23 +58,19 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                     });
                 }
             }
-            this.ContactValueMapsCustomSelected = ContactValueMapsCustomSelected;
-
-
+            this.ContactValueMapsCustomSelected = SelectedCustomFields;
+             
             ContactValueMaps = (await _contactService.GetAllContactValueMapsStandard())
                                            .Select(x => new ContactValueTextModel { Value = x.Value, Text = x.Text }).ToList();
 
-
-            var ContactValueMapsSelected = (await _contactService.GetAllContactValueMaps(_currentUserService.UserId, contact.Id))
+            var SelectedStandardFields = (await _contactService.GetAllSelectedContactValueMapsStandard(contact.Id))
                                             .Select(x => new ContactValueTextModel { Id = x.Id, Value = x.Value, Text = x.Text, Input = x.Input }).ToList();
 
-            //var contactValueMapsSelected = ContactValueMapsSelected.Select(x => x.Value).ToList();
-
-            foreach (var item in ContactValueMaps)
+             foreach (var item in ContactValueMaps)
             {
-                if (!ContactValueMapsSelected.Any(x => x.Value.Equals(item.Value)))
+                if (!SelectedStandardFields.Any(x => x.Value.Equals(item.Value)))
                 {
-                    ContactValueMapsSelected.Add(
+                    SelectedStandardFields.Add(
                     new ContactValueTextModel
                     {
                         Id = item.Id,
@@ -88,17 +81,17 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                     });
                 }
             }
-            this.ContactValueMapsSelected = ContactValueMapsSelected;
+            this.ContactValueMapsSelected = SelectedStandardFields;
 
-            var groups = (await _contactService.GetAllGroupsAsync(_currentUserService.UserId))
+
+            var allGroups = (await _contactService.GetAllGroupsAsync(_currentUserService.UserId))
                                           .Select(x => new ContactValueTextModel { Value = x.Value, Text = x.Text, Count = x.Count, IsChecked = false }).ToList();
 
             var isSelectedGroups = new HashSet<int>(contact.ContactGroups.Select(x => x.GroupId));
 
-
             List<ContactValueTextModel> GroupList = new List<ContactValueTextModel>();
 
-            foreach (var group in groups)
+            foreach (var group in allGroups)
             {
                 GroupList.Add(
                     new ContactValueTextModel
@@ -109,8 +102,8 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                         Value = group.Value
                     });
             }
-
             GroupSelectList = GroupList;
+
         }
 
         public async Task UpdateAsync()
@@ -119,110 +112,68 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 
             try
             {
-                var updateContact = new Contact
+                var updatedContact = new Contact
                 {
-                    Email = this.Email, 
+                    Email = this.Email,
                     Id = this.Id,
-                    UserId = _currentUserService.UserId,
-                    CreatedBy = _currentUserService.UserId,
-                    Created = DateTime.Now
+                    LastModified = DateTime.Now,
+                    LastModifiedBy = _currentUserService.UserId
                 };
-                await _contactService.UpdateAsync(updateContact);
 
+                updatedContact.ContactGroups = new List<ContactGroup>();
+                updatedContact.ContactValueMaps = new List<ContactValueMap>();
+
+             
                 var contactValueMaps = new List<ContactValueMap>();
-                var newcontactValueMaps = new List<ContactValueMap>();
-                foreach (var item in ContactValueMapsCustomSelected)
-                {
-                    var result = await _contactService.GetContactValueMapByIdAsync(item.Id);
-                    if (result == null)
-                    {
-                        var contactValueMap = new ContactValueMap();
-                        contactValueMap.Value = item.Input;
-                        contactValueMap.ContactId = this.Id;
-                        contactValueMap.FieldMapId = item.Value;
-                        newcontactValueMaps.Add(contactValueMap);
-                    }
-                    else
-                    {
-                        result.Value = item.Input;
-                        result.ContactId = this.Id;
-                        result.FieldMapId = item.Value;
-                        contactValueMaps.Add(result);
-                    }
-                }
-                //await _contactService.UpdateRangeAsync(contactValueMaps);
-                if (newcontactValueMaps.Count() > 0)
-                    await _contactService.AddContacValueMaps(newcontactValueMaps);
 
-                contactValueMaps.Clear();
-                newcontactValueMaps.Clear();
-
+                #region AddConatacValueMapsStandard
                 foreach (var item in ContactValueMapsSelected)
                 {
-                    var result = await _contactService.GetContactValueMapByIdAsync(item.Id);
-                    if (result == null)
-                    {
-                        var contactValueMap = new ContactValueMap();
-                        contactValueMap.Value = item.Input;
-                        contactValueMap.ContactId = this.Id;
-                        contactValueMap.FieldMapId = item.Value;
-                        newcontactValueMaps.Add(contactValueMap);
-                    }
-                    else
-                    {
-                        result.Value = item.Input;
-                        result.ContactId = this.Id;
-                        result.FieldMapId = item.Value;
-                        contactValueMaps.Add(result);
-                    }
+                    if (string.IsNullOrWhiteSpace(item.Input)) continue;
+
+                    var contactValueMap = new ContactValueMap();
+                    contactValueMap.ContactId = this.Id;
+                    contactValueMap.Value = item.Input;
+                    contactValueMap.FieldMapId = (int)item.Value;
+                    //contactValueMaps.Add(contactValueMap);
+                    updatedContact.ContactValueMaps.Add(contactValueMap);
                 }
-                //await _contactService.UpdateRangeAsync(contactValueMaps);
-                if(newcontactValueMaps.Count()>0)
-                    await _contactService.AddContacValueMaps(newcontactValueMaps);
+                #endregion
 
+                #region AddContactValueMapsCustom
+                foreach (var item in ContactValueMapsCustomSelected)
+                {
+                    if (string.IsNullOrWhiteSpace(item.Input)) continue;
 
-                var contactgroups = (await _contactService.GetAllGroupsAsync(_currentUserService.UserId))
-                                              .Select(x => new ContactValueTextModel { Value = x.Value, Text = x.Text, Count = x.Count, IsChecked = false }).ToList();
-
-
-                var contact = await _contactService.GetByIdAsync(this.Id);
-                var contactGroups = new HashSet<int>
-                    (contact.ContactGroups.Select(x => x.GroupId));
-
-                var items = new List<int>();
-
+                    var contactValueMap = new ContactValueMap();
+                    contactValueMap.ContactId = this.Id;
+                    contactValueMap.Value = item.Input;
+                    contactValueMap.FieldMapId = (int)item.Value; 
+                    //contactValueMaps.Add(contactValueMap);
+                    updatedContact.ContactValueMaps.Add(contactValueMap);
+                }
+                #endregion
+                
+                var groupList = new List<ContactGroup>();
                 foreach (var item in GroupSelectList)
                 {
-                    if (item.IsChecked)
+                    if(item.IsChecked)
                     {
-                        items.Add(item.Value);
+                        var contactGroup = new ContactGroup();
+                        contactGroup.ContactId = this.Id;
+                        contactGroup.GroupId = item.Value;
+                        //groupList.Add(contactGroup);
+                        updatedContact.ContactGroups.Add(contactGroup);
                     }
                 }
-
-                foreach (var group in GroupSelectList)
-                {
-                    if (items.Contains(group.Value))
-                    {
-                        if (!contactGroups.Contains(group.Value))
-                        {
-                            await _contactService.AddContactGroups(new List<ContactGroup> {
-                            new ContactGroup { ContactId = this.Id, GroupId = group.Value }
-                        });
-                        }
-                    }
-                    else
-                    {
-                        if (contactGroups.Contains(group.Value))
-                        {
-                            await _contactService.DeleteContactGroupAsync(group.Value, contact.Id);
-                        }
-                    }
-                }
+              
+                await _contactService.UpdateAsync(updatedContact);
 
             }
+        
             catch (Exception ex)
             {
-                throw new Exception("Failed to update Email");
+                throw;
             }
 
         }

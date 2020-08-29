@@ -19,7 +19,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         public string Email { get; set; }
         public bool IsContactExist { get; set; }
         public IList<ContactValueTextModel> GroupSelectList { get; set; }
-        public IList<ContactValueTextModel> ContactValueMaps { get; set; }
+        public IList<ContactValueTextModel> ContactValueMapsStandard { get; set; }
         public IList<ContactValueTextModel> ContactValueMapsCustom { get; set; }
 
         public AddSingleContactModel(IContactService contactService,
@@ -32,26 +32,21 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 
         }
 
-        public async Task<IList<ContactValueTextModel>> GetAllGroupForSelectAsync()
+        public async Task LoadContactInformationAsync()
         {
-            return (await _contactService.GetAllGroupsAsync(_currentUserService.UserId))
+            GroupSelectList = (await _contactService.GetAllGroupsAsync(_currentUserService.UserId))
                                            .Select(x => new ContactValueTextModel { Value = x.Value, Text = x.Text, Count = x.Count, IsChecked = false }).ToList();
-        }
-        public async Task<IList<ContactValueTextModel>> GetAllContactValueMaps()
-        {
-            return (await _contactService.GetAllContactValueMapsStandard())
+            
+            ContactValueMapsStandard = (await _contactService.GetAllContactValueMapsStandard())
+                                           .Select(x => new ContactValueTextModel { Value = x.Value, Text = x.Text }).ToList();
+            
+            ContactValueMapsCustom = (await _contactService.GetAllContactValueMapsCustom(_currentUserService.UserId))
                                            .Select(x => new ContactValueTextModel { Value = x.Value, Text = x.Text }).ToList();
         }
-
-        public async Task<IList<ContactValueTextModel>> GetAllContactValueMapsCustom()
+        
+        public async Task<bool> IsContactExistAsync()
         {
-            return (await _contactService.GetAllContactValueMapsCustom(_currentUserService.UserId))
-                                           .Select(x => new ContactValueTextModel { Value = x.Value, Text = x.Text }).ToList();
-        }
-
-        public async Task<Contact> IsContactExistAsync()
-        {
-            var existingContact = await _contactService.GetIdByEmail(Email);
+            var existingContact = await _contactService.IsContactExist(Email, _currentUserService.UserId);
             IsContactExist = true;
             return existingContact;
         }
@@ -59,59 +54,63 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         public async Task SaveContactAsync()
         {
             if (!this.GroupSelectList.Any(x => x.IsChecked)) throw new Exception("Please select at least one group.");
-            else
-            {
+            
                 try
                 {
                     var newContact = new Contact();
+                    newContact.ContactValueMaps = new List<ContactValueMap>();
+                    newContact.ContactGroups = new List<ContactGroup>();
                     newContact.CreatedBy = _currentUserService.UserId;
                     newContact.Created = DateTime.Now;
                     newContact.Email = this.Email;
                     newContact.UserId = _currentUserService.UserId;
 
-                    await _contactService.AddContact(newContact);
-
-                    var contactValueMaps = new List<ContactValueMap>();
-                    foreach (var item in ContactValueMaps)
+                    #region AddConatacValueMapsStandard
+                    foreach (var item in ContactValueMapsStandard)
                     {
+                        if (string.IsNullOrWhiteSpace(item.Input)) continue;
+
                         var contactValueMap = new ContactValueMap();
-                        contactValueMap.ContactId = newContact.Id;
                         contactValueMap.Value = item.Input;
                         contactValueMap.FieldMapId = (int)item.Value;
-                        contactValueMaps.Add(contactValueMap);
-                    }
-                    await _contactService.AddContacValueMaps(contactValueMaps);
+                        newContact.ContactValueMaps.Add(contactValueMap);
 
-                    var contactValueMapCustoms = new List<ContactValueMap>();
+                    }
+                    #endregion
+
+                    #region AddContactValueMapsCustom
                     foreach (var item in ContactValueMapsCustom)
                     {
+                        if (string.IsNullOrWhiteSpace(item.Input)) continue;
+
                         var contactValueMap = new ContactValueMap();
-                        contactValueMap.ContactId = newContact.Id;
                         contactValueMap.Value = item.Input;
                         contactValueMap.FieldMapId = (int)item.Value;
-                        contactValueMapCustoms.Add(contactValueMap);
-                    }
-                    await _contactService.AddContacValueMaps(contactValueMapCustoms);
+                        newContact.ContactValueMaps.Add(contactValueMap);
 
-                    var contactGroups = new List<ContactGroup>();
+                    }
+                    #endregion
+
+                    #region AddContactGroup
                     foreach (var item in GroupSelectList)
                     {
                         if (item.IsChecked)
                         {
                             var newContactGroup = new ContactGroup();
-                            newContactGroup.ContactId = newContact.Id;
                             newContactGroup.GroupId = (int)item.Value;
-                            contactGroups.Add(newContactGroup);
+                            newContact.ContactGroups.Add(newContactGroup);
                         }
                     }
-                    await _contactService.AddContactGroups(contactGroups);
+                    #endregion
+
+                    await _contactService.AddContact(newContact);
 
                 }
                 catch (Exception ex)
                 {
                     throw new Exception("Failed to Add Contact.");
                 }
-            }
+            
         }
 
     }
