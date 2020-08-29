@@ -85,6 +85,11 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
 
         public async Task SaveCampaignAsync()
         {
+
+            if (!this.GroupSelectList.Any(x => x.IsChecked))
+            {
+                throw new Exception("Please select at least one group.");
+            }
             
             var campaign = new Campaign
             {
@@ -116,10 +121,12 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 
             }
 
-            
+            var hasTemplateAssign = false;
             if(this.SelectedTemplateId.HasValue && this.SelectedTemplateId.Value != 0)
             {
                 campaign.EmailTemplateId = this.SelectedTemplateId.Value;
+                campaign.IsPersonalized = EmailTemplateList.FirstOrDefault(x => x.Id == this.SelectedTemplateId.Value).IsPersonalized;
+                hasTemplateAssign = true;
             }
             else if (!string.IsNullOrWhiteSpace(this.EmailTemplateBody))
             {
@@ -127,12 +134,22 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 {
                     EmailTemplateName = this.EmailTemplateTitle,
                     EmailTemplateBody = this.EmailTemplateBody,
+                    IsPersonalized = this.isPersonalized,
                     UserId = _currentUserService.UserId
                 };
                 campaign.EmailTemplate = emailTemplate;
+                hasTemplateAssign = true;
+            }
+            if(hasTemplateAssign)
+            {
+                await _campaignService.AddCampaign(campaign);
+            }
+            else
+            {
+                throw new Exception("You must select one Template or Create a new Template.");
             }
 
-            await _campaignService.AddCampaign(campaign);
+            
 
         }
     }

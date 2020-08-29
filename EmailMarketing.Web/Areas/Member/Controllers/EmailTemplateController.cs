@@ -35,7 +35,8 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddEmailTemplateAsync([Bind(nameof(CreateEmailTemplateModel.EmailTemplateBody),
-            nameof(CreateEmailTemplateModel.EmailTemplateName))] CreateEmailTemplateModel model)
+            nameof(CreateEmailTemplateModel.EmailTemplateName),
+            nameof(CreateEmailTemplateModel.IsPersonalized))] CreateEmailTemplateModel model)
         {
             if (ModelState.IsValid)
             {
