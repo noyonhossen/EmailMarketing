@@ -37,7 +37,7 @@
                         <fieldset class="mb-3">
 
                             @Html.AntiForgeryToken()
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div asp-validation-summary="All" class="text-danger"></div>
 
                             <div class="row">
                                 <div class="col-md-10 p-2">
@@ -49,9 +49,23 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
+                                        <label class="col-form-label col-lg-2" asp-for="IsPersonalized"></label>
+                                        <div class="col-sm-9">
+                                            <div class="dropdown-item form-check form-check-switchery ">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-input-switchery" data-fouc asp-for="IsPersonalized">
+                                                    <span class="font-weight-bold">Want to personalize email body?</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <label class="col-form-label col-lg-2 required" asp-for="EmailTemplateBody"></label>
                                         <div class="col-lg-10">
                                             <textarea asp-for="EmailTemplateBody" class="form-control"></textarea>
+                                            <div>
+                                                <span><span class="text-danger">Important Note:</span> If you want to personalize email body.Then use curly brace {} and inside curly brace write Field Name. Example: {Field_Name} like this.</span>
+                                            </div>
                                             <span asp-validation-for="EmailTemplateBody" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -82,8 +96,6 @@
     <partial name="~/Views/Bundle/_FormInputScriptsPartial.cshtml" />
     <partial name="~/Views/Bundle/_DateTimePickerScriptsPartial.cshtml" />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
 
     <script src="https://cdn.tiny.cloud/1/plj32oi7siumt37tnxcbarowphfd2zt66talpivgjvpt70i5/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 

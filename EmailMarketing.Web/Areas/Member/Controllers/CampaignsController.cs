@@ -50,7 +50,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                     await model.SaveCampaignAsync();
                     _logger.LogInformation("Campaing added Successfully");
                     model.Response = new Models.ResponseModel("Campaign Added Successfully!!", Enums.ResponseType.Success);
-                    return RedirectToAction("AddCampaign");
+                    return RedirectToAction("Index");
                 }
                 catch(Exception ex)
                 {

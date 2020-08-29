@@ -37,7 +37,9 @@
 
                     <div class="card-body">
                         <form asp-area="Member" asp-controller="Campaigns" asp-action="AddCampaign" method="post">
+                            <div asp-validation-summary="All" class="text-danger"></div>
                             <div class="row">
+                                
                                 <div class="col-6 ml-2">
                                     <div class="form-group row">
                                         <label asp-for="Name" class="col-sm-3 col-form-label required"></label>
@@ -70,6 +72,7 @@
                                                     <option value="@Model.SMTPConfigList[i].Id">@Model.SMTPConfigList[i].SenderEmail</option>
                                                 }
                                             </select>
+                                            <span asp-validation-for="SMTPConfigId" class="text-danger">Smtp Config is required</span>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -188,6 +191,7 @@
 
                                                                     <div class="overlay">
                                                                         <input type="radio" name="SelectedTemplateId" value="@Model.EmailTemplateList[j].Id" class="mr-2 mt-2 selected_template" />
+                                                                        <input type="hidden" class="form-control" asp-for="@Model.EmailTemplateList[j].IsPersonalized" />
                                                                         <a class="mr-2 mt-2 selected_template_preview text-info" data-toggle="modal" data-target="#templatebody">
                                                                             <i class="fa fa-2x fa-eye"></i>
                                                                         </a>

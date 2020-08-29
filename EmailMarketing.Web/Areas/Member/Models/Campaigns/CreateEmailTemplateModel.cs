@@ -20,6 +20,9 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         [Display(Name = "Email Body")]
         public string EmailTemplateBody { get; set; }
 
+        [Display(Name = "Email Personalize")]
+        public bool IsPersonalized { get; set; }
+
         public CreateEmailTemplateModel(ICampaignService campaignService, 
             ICurrentUserService currentUserService,
             IEmailTemplateService emailTemplateService) 
@@ -38,7 +41,8 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
             {
                 UserId = _currentUserService.UserId,
                 EmailTemplateName = this.EmailTemplateName,
-                EmailTemplateBody = this.EmailTemplateBody
+                EmailTemplateBody = this.EmailTemplateBody,
+                IsPersonalized = this.IsPersonalized
             };
 
             await _emailTemplateService.AddEmailTemplateAsync(emailTempalte);

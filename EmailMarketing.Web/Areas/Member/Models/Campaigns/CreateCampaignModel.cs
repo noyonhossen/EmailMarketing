@@ -120,6 +120,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
             if(this.SelectedTemplateId.HasValue && this.SelectedTemplateId.Value != 0)
             {
                 campaign.EmailTemplateId = this.SelectedTemplateId.Value;
+                campaign.IsPersonalized = EmailTemplateList[SelectedTemplateId.Value - 1].IsPersonalized;
             }
             else if (!string.IsNullOrWhiteSpace(this.EmailTemplateBody))
             {
@@ -127,6 +128,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 {
                     EmailTemplateName = this.EmailTemplateTitle,
                     EmailTemplateBody = this.EmailTemplateBody,
+                    IsPersonalized = this.isPersonalized,
                     UserId = _currentUserService.UserId
                 };
                 campaign.EmailTemplate = emailTemplate;
