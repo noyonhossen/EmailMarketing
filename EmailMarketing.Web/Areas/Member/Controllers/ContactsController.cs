@@ -93,9 +93,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         public async Task<IActionResult> AddSingleContact()
         {
             var model = new AddSingleContactModel();
-            model.GroupSelectList = await model.GetAllGroupForSelectAsync();
-            model.ContactValueMaps = await model.GetAllContactValueMaps();
-            model.ContactValueMapsCustom = await model.GetAllContactValueMapsCustom();
+            await model.LoadContactInformationAsync();
             return View(model);
         }
 
@@ -107,10 +105,9 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                 try
                 {
                     var existingContact = await model.IsContactExistAsync();
-                    if (existingContact != null)
+                    if (existingContact == true)
                     {
-                        model.Response = new ResponseModel("Contact already exist. You can update the existing contact.", ResponseType.Failure);
-                        return RedirectToAction("EditContact", new { id = existingContact.Id });
+                        model.Response = new ResponseModel("Contact already exist. You can update the existing contact.", ResponseType.Failure);                
                     }
                     else
                     {
@@ -129,10 +126,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                 }
             }
 
-            model.GroupSelectList = await model.GetAllGroupForSelectAsync();
-            model.ContactValueMaps = await model.GetAllContactValueMaps();
-            model.ContactValueMapsCustom = await model.GetAllContactValueMapsCustom();
-
+            await model.LoadContactInformationAsync();
             return View(model);
         }
 
@@ -154,6 +148,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                 {
                     await model.UpdateAsync();
                     _logger.LogInformation("Contact Successfully Updated.");
+                    model.Response = new ResponseModel("Contact Updated",ResponseType.Success);
                     return RedirectToAction("Index");
                 }
                  catch (DuplicationException ex)
@@ -162,7 +157,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel("Contact edit failured.", ResponseType.Failure);
+                    model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
                 }
             }
             await model.LoadContactByIdAsync(model.Id);
