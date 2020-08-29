@@ -1,0 +1,104 @@
+﻿@model EmailTemplateModel
+@{
+    ViewData["Title"] = "ViewEmailTemplates";
+}
+@section Styles
+{
+    <link href="~/memberTheme/css/email_template.css" rel="stylesheet" />
+}
+<!-- Page header -->
+<div class="page-header">
+    <div class="page-header-content header-elements-md-inline">
+        <div class="page-title d-flex">
+            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Member" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+
+        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
+            <a asp-controller="EmailTemplate" asp-action="AddEmailTemplate" asp-area="Member" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-plus-circle2 mr-2"></i> <span class="font-weight-semibold">Create Template</span></a>
+        </div>
+    </div>
+</div>
+<!-- /page header -->
+<!-- Main content -->
+<div class="content-wrapper">
+    <!-- Content area -->
+    <div class="content pt-0">
+        <div class="row">
+            <div class="preview">
+                <div class="form-group row">
+                    <table class="table table-borderless">
+                        @{
+                            var index = 0;
+                            var count = Model.EmailTemplateList.Count();
+
+                            @for (int j = 0; j < count; j += 3)
+                            {
+                                <tr class="card_tr">
+                                    @for (int k = 0; k < 3; k++)
+                                    {
+                                        index = j + k;
+                                        @if (index >= count)
+                                        {
+                                            break;
+                                        }
+                                        <td>
+                                            <div class="card custom_template_card">
+                                                <div class="card-body custom_card_body">
+                                                    <div class="template_body">
+                                                        @Html.Raw(Model.EmailTemplateList[index].EmailTemplateBody)
+                                                    </div>
+                                                    <span class="d-none template_title">@Model.EmailTemplateList[index].EmailTemplateName</span>
+
+                                                    <div class="overlay">
+                                                        <a class="mr-2 mt-2 selected_template_preview text-info" data-toggle="modal" data-target="#templatebody">
+                                                            <i class="fa fa-2x fa-eye"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="overlay_title text-center">
+                                                        <div class="text-center">
+                                                            <p class="text-white text-center mt-1">@Model.EmailTemplateList[index].EmailTemplateName</p>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- /Content area -->
+</div>
+<!-- /Main content -->
+<!-- Template Modal -->
+<div class="modal fade" id="templatebody" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Template Modal -->
+
+@section Scripts
+{
+    <script src="~/js/project/email-template.js"></script>
+}
