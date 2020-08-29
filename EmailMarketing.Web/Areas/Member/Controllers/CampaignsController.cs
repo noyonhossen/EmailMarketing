@@ -54,7 +54,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                 }
                 catch(Exception ex)
                 {
-                    model.Response = new ResponseModel("Failed to Add Campaign!!", Enums.ResponseType.Failure);
+                    model.Response = new ResponseModel(ex.Message, Enums.ResponseType.Failure);
                     _logger.LogError(ex.Message);
                 }
             }

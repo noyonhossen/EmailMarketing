@@ -192,6 +192,7 @@
                                                                     <div class="overlay">
                                                                         <input type="radio" name="SelectedTemplateId" value="@Model.EmailTemplateList[j].Id" class="mr-2 mt-2 selected_template" />
                                                                         <input type="hidden" class="form-control" asp-for="@Model.EmailTemplateList[j].IsPersonalized" />
+                                                                        <input type="hidden" class="form-control" asp-for="@Model.EmailTemplateList[j].Id" />
                                                                         <a class="mr-2 mt-2 selected_template_preview text-info" data-toggle="modal" data-target="#templatebody">
                                                                             <i class="fa fa-2x fa-eye"></i>
                                                                         </a>
