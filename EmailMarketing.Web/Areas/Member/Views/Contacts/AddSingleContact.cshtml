@@ -55,13 +55,14 @@
                                 <div id="intro" class="collapse">
 
                                     @{
-                                        for (int i = 0; i < Model.ContactValueMaps.Count(); i++)
+                                        for (int i = 0; i < Model.ContactValueMapsStandard.Count(); i++)
                                         {
                                             <div class="form-group row">
-                                                <label asp-for="@Model.ContactValueMaps[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMaps[i].Text</label>
+                                                <label asp-for="@Model.ContactValueMapsStandard[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMapsStandard[i].Text</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" value="@Model.ContactValueMaps[i].Input" name="ContactValueMaps[@i].Input">
-                                                    <input type="hidden" class="form-control" value="@Model.ContactValueMaps[i].Value" name="ContactValueMaps[@i].Value">
+                                                    <input type="text" class="form-control" value="@Model.ContactValueMapsStandard[i].Input" name="ContactValueMapsStandard[@i].Input">
+                                                    <input type="hidden" class="form-control" value="@Model.ContactValueMapsStandard[i].Value" name="ContactValueMapsStandard[@i].Value">
+                                                    <input type="hidden" class="form-control" value="@Model.ContactValueMapsStandard[i].Text" name="ContactValueMapsStandard[@i].Text">
                                                 </div>
                                             </div>
                                         }
