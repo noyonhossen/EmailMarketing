@@ -23,6 +23,13 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
             _currentUserService = currentUserService;
         }
 
+        public CampaignBaseModel(ICampaignService campaignService,
+            ICurrentUserService currentUserService)
+        {
+            _campaignService = campaignService;
+            _currentUserService = currentUserService;
+        }
+
         public CampaignBaseModel()
         {
             _campaignService = Startup.AutofacContainer.Resolve<ICampaignService>();

@@ -25,6 +25,13 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             return View();
         }
 
+        public async Task<IActionResult> ViewEmailTemplates()
+        {
+            var model = new EmailTemplateModel();
+            model.EmailTemplateList = await model.GetTemplateByUserIDAsync();
+            return View(model);
+        }
+
         [HttpGet]
         public IActionResult AddEmailTemplate()
         {
