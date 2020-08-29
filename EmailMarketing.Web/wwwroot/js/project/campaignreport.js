@@ -11,7 +11,7 @@ function loadDatatable(url) {
         columnDefs: [{
             orderable: false,
             width: 100,
-            targets: [5]
+            targets: [8]
         }],
         dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
         language: {
@@ -53,20 +53,38 @@ function loadDatatable(url) {
                     var lbl = data == "Yes" ? "badge-success" : "badge-danger";
                     return '<span class="badge  ' + lbl + '">' + data + '</span>';
                 }
-            }
-            ,
+            },
             {
                 "targets": [3],
                 'sortable': true,
                 'searchable': false,
                 "orderData": [3]
-            }
-            ,
+            },
             {
                 "targets": [4],
                 'sortable': true,
                 'searchable': false,
                 "orderData": [4]
+            },
+            {
+                "targets": [5],
+                'sortable': true,
+                'searchable': false,
+                "orderData": [5]
+            }
+            ,
+            {
+                "targets": [6],
+                'sortable': true,
+                'searchable': false,
+                "orderData": [6]
+            }
+            ,
+            {
+                "targets": [7],
+                'sortable': true,
+                'searchable': false,
+                "orderData": [7]
                
             }
         ]

@@ -81,9 +81,12 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 data = (from item in result.Items
                         select new string[]
                         {
-                            item.Contact.Email.ToString(),
+                            item.Campaign.Name,
                             item.IsDelivered ? "Yes" : "No",
                             item.IsSeen ? "Yes" : "No",
+                            item.Contact.Email.ToString(),
+                            item.SMTPConfig.SenderName,
+                            item.SMTPConfig.SenderEmail,
                             item.SeenDateTime.ToString(),
                             item.SendDateTime.ToString()
 
