@@ -40,7 +40,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
                                                   x => !x.IsDeleted && x.IsActive &&
                                                   (!userId.HasValue || x.UserId == userId.Value) && x.Name.Contains(searchText),
                                                   x => x.OrderBy(o => o.Name),
-                                                  x => x.Include(y => y.CampaignReports),
+                                                  x => x.Include(y => y.CampaignReports).Include(y => y.SMTPConfig),
                                                   pageIndex, pageSize,
                                                   true));
 
@@ -51,7 +51,17 @@ namespace EmailMarketing.Framework.Services.Campaigns
             return (result.Items, result.Total, result.TotalFilter);
 
         }
-        
+        public async Task<Campaign> GetCampaignByIdAsync(Guid? userId,int campaignId)
+        {
+            var result = await _campaignUnitOfWork.CampaignRepository.GetFirstOrDefaultAsync(
+                x => x, x => !x.IsDeleted && x.IsActive &&
+                (!userId.HasValue || x.UserId == userId.Value) && (x.Id == campaignId),
+                  x => x.Include(y => y.SMTPConfig), true);
+
+            if (result == null) throw new NotFoundException(nameof(Campaign), campaignId);
+
+            return result;
+        }
         public async Task<(IList<CampaignReport> Items, int Total, int TotalFilter)> GetAllCampaignReportAsync(
           Guid? userId,
           int campaignId,
@@ -64,7 +74,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
                                                    x => !x.IsDeleted && x.IsActive &&
                                                    (!userId.HasValue || x.Campaign.UserId == userId.Value) && (x.CampaignId == campaignId) && x.Contact.Email.Contains(searchText),
                                                    x => x.OrderBy(o => o.Contact.Email),
-                                                   x => x.Include(y => y.Contact).Include(y => y.Campaign), pageIndex, pageSize,
+                                                   x => x.Include(y => y.Contact).Include(y => y.Campaign).Include(y => y.SMTPConfig), pageIndex, pageSize,
                                                    true));
             
 

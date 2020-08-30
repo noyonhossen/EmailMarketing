@@ -16,6 +16,36 @@
             </div>*@
     </div>
 </div>
+<div class="row">
+    <div class="col-6">
+        <table class="table table-borderless" >
+
+            <tr>
+                <td class="col-4 float-left"><h7>Campaign Name : </h7></td>            
+                    <td class="col-8 float-left"><h7>@Model.CampaignName</h7></td>              
+            </tr>
+            <tr>
+                <td class="col-4 float-left"><h7>Sender Email:  </h7></td>              
+                    <td class="col-8 float-left"><h7>@Model.SenderEmail</h7></td>                
+            </tr>
+
+        </table>
+    </div>
+
+    <div class="col-6">
+        <table class="table table-borderless">
+            <tr>
+                <td class="col-4 float-left"><h7>Sender Name: </h7></td>            
+                    <td class="col-8 float-left"><h7>@Model.SenderName</h7></td>                
+            </tr>
+            <tr>
+                <td class="col-4 float-left"><h7>Email Subject: </h7></td>
+                    <td class="col-8 float-left"><h7>@Model.EmailSubject</h7></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
 <!-- /page header -->
 <!-- Content area -->
 <div class="content pt-0">
@@ -39,12 +69,11 @@
         <table class="table" id="campaign-table">
             <thead>
                 <tr>
-                    <th>Email</th>
+                    <th>Contact Email</th>
                     <th>Delivered</th>
                     <th>Seen</th>
                     <th>Seen Date Time</th>
                     <th>Send Date Time</th>
-                  
                 </tr>
             </thead>
             <tbody></tbody>

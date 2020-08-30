@@ -1,5 +1,4 @@
-﻿
-function loadDatatable(url) {
+﻿function loadDatatable(url) {
 
     if (!$().DataTable) {
         console.warn('Warning - datatables.min.js is not loaded.');
@@ -67,7 +66,7 @@ function loadDatatable(url) {
                 'sortable': true,
                 'searchable': false,
                 "orderData": [4]
-               
+
             }
         ]
     });
