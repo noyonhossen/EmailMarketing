@@ -37,7 +37,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var model = new ResourcesModel();
             return View(model);
         }
-        public IActionResult CreateCSVFile()
+        public IActionResult CreateXlsxFile()
         {
             var model = new ResourcesModel();
             return View(model);

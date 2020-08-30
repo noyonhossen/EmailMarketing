@@ -6,11 +6,9 @@
 <div class="page-header">
     <div class="page-header-content header-elements-md-inline">
         <div class="page-title d-flex">
-            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Member" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
-            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+            <h4>Edit Contact</h4>
         </div>
-
-        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
+        <div class="header-elements d-none text-center text-md-left mb-md-0">
             <a asp-controller="Contacts" asp-action="Index" asp-area="Member" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list2"></i> <span class="font-weight-semibold">  Contact List</span></a>
         </div>
     </div>
@@ -18,35 +16,25 @@
 
 <!-- Content area -->
 <div class="content">
-
     <div class="card">
-        <div class="card-header">
-            <div class="pl-5 pr-3">
-                <h3 class="card-title">Update Existing Contact</h3>
-            </div>
-        </div>
-        <hr />
         <!-- navigation -->
         <!-- /navigation -->
         <partial name="_ActionMessage" model="@Model.Response" />
         <div class="card-body">
             <form id="addContactForm" asp-area="Member" asp-controller="Contacts" asp-action="EditContact" method="post">
                 <div class="row">
-
-
                     <div class="col-md-6">
                         <div class="pl-5 pr-3">
                             <h4>Edit Contact Details</h4>
                             @Html.AntiForgeryToken()
                             @*<form id="form1" asp-area="Member" asp-controller="Contacts" asp-action="AddSingleContact" method="post">*@
                             <div class="form-group row">
-                                <label asp-for="Email" class="col-sm-3 col-form-label">Email Address *</label>
+                                <label asp-for="Email" class="col-sm-3 col-form-label">Email *</label>
                                 <div class="col-sm-9">
                                     <input type="email" class="form-control" asp-for="Email">
                                     <span asp-validation-for="Email"></span>
                                 </div>
                             </div>
-
                             <!-- Standard Fields -->
                             <div class="row-fluid summary pb-4">
                                 <span>Standard Fields</span>
@@ -73,10 +61,7 @@
 
                                 </div>
                             </div>
-
-
                             <!-- Custom Fields -->
-
                             <div class="row-fluid summary pb-4">
                                 <span>Custom Fields</span>
                                 <a class="btn border border-primary float-right" data-toggle="collapse" data-target="#intro2" id="showHideCustom">Show</a>
@@ -100,7 +85,6 @@
 
                         </div>
                     </div>
-
                     <div class="col-md-6">
                         <h3>Where do you want to add this contract?</h3>
                         <!-- selected -->
@@ -113,7 +97,6 @@
                                 <i class="icon-collaboration"></i>&nbsp;&nbsp; <span id="selected">No Group Selected</span>
                             </p>
                         </div>
-
                         <div class="bg-white">
                             <ul class="list-group">
                                 @{
@@ -139,26 +122,21 @@
                             </ul>
                         </div>
                     </div>
-
-
                 </div>
-                <div class="d-flex justify-content-end">
-                    <button id="btnsubmit" class="btn btn-primary"><i class="icon-file-check2"></i> Save</button>
+                <div class="pt-2">
+                    <div class="d-flex justify-content-between">
+                        <a asp-controller="Contacts" asp-action="Index" asp-area="Member" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
+                        <button id="btnsubmit" class="btn btn-primary"><i class="icon-file-check2"></i> Save</button>
+                    </div>
                 </div>
             </form>
-
         </div>
-
-
     </div>
 </div>
 
-
 @section Scripts{
     <script>
-
         $(function () {
-
             $('#checkAll').click(function (event) {
                 if (this.checked) {
                     // Iterate each checkbox
@@ -189,9 +167,6 @@
             document.querySelectorAll("input").forEach(i => {
                 i.onclick = () => showChecked();
             });
-
-
         });
-
     </script>
 }

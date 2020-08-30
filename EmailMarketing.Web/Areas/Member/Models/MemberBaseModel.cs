@@ -76,13 +76,9 @@ namespace EmailMarketing.Web.Areas.Member.Models
                             Children = new List<MenuChildItem>
                             {
                                 new MenuChildItem () { Controller = "Groups", Action = "Index", Area="Member", Title = "View Groups",
-                                    Icon = "icon-collaboration", IsActive = false },
-                                new MenuChildItem () { Controller = "Groups", Action = "Add", Area="Member", Title = "Add Group",
-                                    Icon = "icon-plus-circle2", IsActive = false },
-                             
+                                    Icon = "icon-collaboration", IsActive = false }
                             }
                         }
-
                     },
                     {
                         new MenuItem
@@ -91,22 +87,20 @@ namespace EmailMarketing.Web.Areas.Member.Models
                             Icon = "icon-users4",
                             Children = new List<MenuChildItem>
                             {
-                                new MenuChildItem () { Controller = "Contacts", Action = "Index", Area="Member", Title = "Contacts",
+                                new MenuChildItem () { Controller = "Contacts", Action = "Index", Area="Member", Title = "View Contacts",
                                     Icon = "icon-users4", IsActive = false },
                                 new MenuChildItem () { Controller = "ContactUpload", Action = "Index", Area="Member", Title = "Manage Uploads",
                                     Icon = "icon-file-text3", IsActive = false },
-                                new MenuChildItem () { Controller = "ContactUpload", Action = "UploadContact", Area="Member", Title = "Upload/Add Contacts",
+                                new MenuChildItem () { Controller = "ContactUpload", Action = "UploadContact", Area="Member", Title = "Upload Contacts",
                                     Icon = "icon-file-upload2", IsActive = false },
-                                new MenuChildItem () { Controller = "Contacts", Action = "AddSingleContact", Area="Member", Title = "Add Single Contact",
+                                new MenuChildItem () { Controller = "Contacts", Action = "AddSingleContact", Area="Member", Title = "Add Contact",
                                     Icon = "icon-plus-circle2", IsActive = false },
-                                new MenuChildItem () { Controller = "Contacts", Action = "CustomFields", Area="Member", Title = "Custom Fields",
+                                new MenuChildItem () { Controller = "Contacts", Action = "CustomFields", Area="Member", Title = "View Custom Fields",
                                     Icon = "icon-list3", IsActive = false },
                                 new MenuChildItem () { Controller = "Contacts", Action = "Export", Area="Member", Title = "Export Contacts",
                                     Icon = "icon-file-download2", IsActive = false }
-
                             }
                         }
-
                     },
                     {
                         new MenuItem
@@ -124,11 +118,24 @@ namespace EmailMarketing.Web.Areas.Member.Models
                                 new MenuChildItem () { Controller = "EmailTemplate", Action = "ViewEmailTemplates", Area="Member", Title = "View Templates",
                                     Icon = "icon-stack4", IsActive = false },
                                 new MenuChildItem () { Controller = "EmailTemplate", Action = "AddEmailTemplate", Area="Member", Title = "Create Template",
-                                    Icon = "icon-plus-circle2", IsActive = false },
-
+                                    Icon = "icon-plus-circle2", IsActive = false }
                             }
                         }
 
+                    },
+                    {
+                        new MenuItem
+                        {
+                            Title = "SMTP",
+                            Icon = "icon-mail-read",
+                            Children = new List<MenuChildItem>
+                            {
+                                new MenuChildItem () { Controller = "SMTP", Action = "Index", Area="Member", Title = "View SMTP List",
+                                    Icon = "icon-mail-read", IsActive = false },
+                                new MenuChildItem () { Controller = "SMTP", Action = "Add", Area="Member", Title = "Add New SMTP",
+                                    Icon = "icon-plus-circle2", IsActive = false }
+                            }
+                        }
                     }
                 }
             };
