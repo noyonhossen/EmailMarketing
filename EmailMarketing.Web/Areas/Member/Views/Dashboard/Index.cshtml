@@ -1,6 +1,9 @@
-﻿
+﻿@using EmailMarketing.Membership.Extensions
 @{
     ViewData["Title"] = "Index";
+}
+@{
+    var fullName = User.Identity.FullName();
 }
 
 <!-- Main content -->
@@ -8,7 +11,7 @@
     <!-- Content area -->
     <div class="content">
         <div class="user_welcome">
-            <span class="user_welcome_title">Welcome back, Team A!</span>
+            <span class="user_welcome_title">Welcome back, @fullName</span>
             <p class="user_welcome_subtitle text-muted">Let's quick Start</p>
         </div>
         <div class="content-main">
@@ -22,7 +25,7 @@
                                     <i class="icon-book icon-2x text-primary border-primary border-3 rounded-round p-3 mb-3"></i>
                                     <h5 class="card-title">View Reports</h5>
                                     <p class="mb-3">You can see your contracts which you added previously.</p>
-                                    <a asp-controller="Campaigns" asp-action="ViewReport" asp-area="Member"  class="btn bg-success-400"><i class="icon-eye"></i> View Reports</a>
+                                    <a asp-controller="Campaigns" asp-action="ViewReport" asp-area="Member" class="btn bg-success-400"><i class="icon-eye"></i> View Reports</a>
                                 </div>
                             </div>
 
@@ -128,10 +131,8 @@
 
                                 <div class="mb-3">
                                     <h5 class="font-weight-semibold mb-0 mt-1">
-                                        DevSkill Team A
+                                        @fullName
                                     </h5>
-
-                                    <span class="d-block">Head of UX</span>
                                     <span class="d-block py-3">29 days left in your trial.</span>
                                 </div>
 
