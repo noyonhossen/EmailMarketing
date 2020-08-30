@@ -2,6 +2,7 @@
 using EmailMarketing.Common.Constants;
 using EmailMarketing.Common.Services;
 using EmailMarketing.Framework.Entities;
+using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.Services.Campaigns;
 using System;
@@ -15,7 +16,10 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
     public class CampaignsModel : CampaignBaseModel
     {
         public int CampaignId { get; set; }
-
+        public string CampaignName { get; set; }
+        public string SenderEmail { get; set; }
+        public string SenderName { get; set; }
+        public string EmailSubject { get; set; }
         public int Id { get; set; }
         public bool IsExportAll { get; set; }
         public string SendEmailAddress { get; set; }
@@ -31,7 +35,19 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         {
 
         }
-         public async Task<object> GetAllCampaignsAsync(DataTablesAjaxRequestModel tableModel)
+
+        public async Task GetCampaignData(int campaignId)
+        {
+
+            var result = await _campaignService.GetCampaignByIdAsync(_currentUserService.UserId, campaignId);
+            this.CampaignName = result.Name;
+            this.SenderEmail = result.SMTPConfig.SenderEmail;
+            this.SenderName = result.SMTPConfig.SenderName;
+            this.EmailSubject = result.EmailSubject;
+            //return result;
+        }
+        
+        public async Task<object> GetAllCampaignsAsync(DataTablesAjaxRequestModel tableModel)
         {
            
             var result = await _campaignService.GetAllCampaignAsync(
@@ -39,7 +55,8 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 tableModel.SearchText,
                 tableModel.GetSortText(new string[] { "Name" }),
                 tableModel.PageIndex, tableModel.PageSize);
-
+           
+            
             return new
             {
 
@@ -59,11 +76,12 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
             };
         }
 
-        internal void SetCapaignId(int id)
+        internal async Task SetCapaignId(int id)
         {
             this.CampaignId = id;
+           
         }
-
+       
         public async Task<object> GetCampaignReportByCampaignIdAsync(DataTablesAjaxRequestModel tableModel, int CampaignId)
          {
             
@@ -73,6 +91,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 tableModel.SearchText,
                 tableModel.GetSortText(new string[] { "CampaignName","Email" }),
                 tableModel.PageIndex, tableModel.PageSize);
+
            
             return new
             {
@@ -81,12 +100,9 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 data = (from item in result.Items
                         select new string[]
                         {
-                            item.Campaign.Name,
+                            item.Contact.Email.ToString(),
                             item.IsDelivered ? "Yes" : "No",
                             item.IsSeen ? "Yes" : "No",
-                            item.Contact.Email.ToString(),
-                            item.SMTPConfig.SenderName,
-                            item.SMTPConfig.SenderEmail,
                             item.SeenDateTime.ToString(),
                             item.SendDateTime.ToString()
 

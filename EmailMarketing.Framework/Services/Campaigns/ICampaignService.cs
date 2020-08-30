@@ -1,4 +1,5 @@
 ﻿using EmailMarketing.Framework.Entities.Campaigns;
+using EmailMarketing.Framework.Entities.Contacts;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -28,5 +29,6 @@ namespace EmailMarketing.Framework.Services.Campaigns
         Task<IList<Campaign>> GetAllProcessingCampaign();
         Task<Campaign> GetAllEmailByCampaignId(int campaignId);
         Task UpdateCampaignAsync(Campaign campaign);
+        Task<Campaign> GetCampaignByIdAsync(Guid? userId, int campaignId);
     }
 }

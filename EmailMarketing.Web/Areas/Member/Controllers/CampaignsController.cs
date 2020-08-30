@@ -63,7 +63,6 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             model.SMTPConfigList = await model.GetAllSMTPConfigByUserIdAsync();
             return View(model);
         }
-
         public async Task<IActionResult> ViewReport()
         {
             var model = new CampaignsModel();
@@ -75,13 +74,15 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
 
             var tableModel = new DataTablesAjaxRequestModel(Request);
             var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
+            
             var data = await model.GetAllCampaignsAsync(tableModel);
             return Json(data);
         }
-        public IActionResult ViewCampignWiseReport(int Id)
+        public async Task<IActionResult> ViewCampignWiseReport(int Id)
         {
             var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
-            model.SetCapaignId(Id);
+            await model.GetCampaignData(Id);
+            await model.SetCapaignId(Id);
             return View(model);
 
         }
@@ -90,6 +91,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var campaignId = Convert.ToInt32(Request.Query["campaignId"]);
             var tableModel = new DataTablesAjaxRequestModel(Request);
             var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
+           
             var data = await model.GetCampaignReportByCampaignIdAsync(tableModel,campaignId);
             return Json(data);
         }
