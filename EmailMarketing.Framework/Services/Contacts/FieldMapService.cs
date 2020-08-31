@@ -21,7 +21,7 @@ namespace EmailMarketing.Framework.Services.Contacts
 
         public async Task AddAsync(FieldMap entity)
         {
-            var isExists = await _fieldMapUnitOfWork.FieldMapRepository.IsExistsAsync(x => x.DisplayName == entity.DisplayName && x.Id != entity.Id);
+            var isExists = await _fieldMapUnitOfWork.FieldMapRepository.IsExistsAsync(x => x.DisplayName == entity.DisplayName && (!x.UserId.HasValue || x.UserId == entity.UserId.Value));
             if (isExists)
                 throw new DuplicationException(nameof(entity.DisplayName));
 
@@ -61,7 +61,7 @@ namespace EmailMarketing.Framework.Services.Contacts
 
         public async Task UpdateAsync(FieldMap entity)
         {
-            var isExists = await _fieldMapUnitOfWork.FieldMapRepository.IsExistsAsync(x => x.DisplayName == entity.DisplayName && x.Id != entity.Id);
+            var isExists = await _fieldMapUnitOfWork.FieldMapRepository.IsExistsAsync(x => x.DisplayName == entity.DisplayName && x.Id != entity.Id && x.UserId == entity.UserId);
             if (isExists)
                 throw new DuplicationException(nameof(entity.DisplayName));
 

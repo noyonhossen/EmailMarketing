@@ -63,14 +63,30 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
 
             if (ModelState.IsValid)
             {
-                if (model.Id.HasValue && model.Id != 0) await model.UpdateFieldMapAsync();
-                else await model.AddFieldMapAsync();
+                try
+                {
+                    if (model.Id.HasValue && model.Id != 0)
+                    {
+                        await model.UpdateFieldMapAsync();
+                        _logger.LogInformation("Updated custom field.");
+                    }
+                    else
+                    {
+                        await model.AddFieldMapAsync();
+                        _logger.LogInformation("Added new custom field.");
+                    }
+                    
+                    TempData["SuccessNotify"] = "Field has been successfully saved";
+                    return RedirectToAction("CustomFields");
 
-                TempData["SuccessNotify"] = "Field has been successfully saved";
-                return RedirectToAction("CustomFields");
+                }
+                catch
+                {
+
+                    TempData["ErrorNotify"] = "Field Already Exist.";
+                    _logger.LogError("Field Already Exist.");
+                }
             }
-
-            TempData["ErrorNotify"] = "Field could not be saved";
             return RedirectToAction("CustomFields");
         }
 
