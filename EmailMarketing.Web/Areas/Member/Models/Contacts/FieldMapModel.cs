@@ -42,16 +42,17 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                         select new string[]
                         {
                             item.DisplayName,
+                            item.IsActive ? "Yes" : "No",
                             item.Id.ToString()
                         }).ToArray()
 
             };
         }
 
-        public async Task<string> DeleteFieldMapAsync(int id)
+        public async Task<FieldMap> ActivateFieldMapAsync(int id)
         {
-            var name = await _fieldMapService.DeleteAsync(id);
-            return name.DisplayName;
+            var customFieldMap = await _fieldMapService.ActivateUpdateAsync(id);
+            return customFieldMap;
         }
 
         public async Task AddFieldMapAsync()
