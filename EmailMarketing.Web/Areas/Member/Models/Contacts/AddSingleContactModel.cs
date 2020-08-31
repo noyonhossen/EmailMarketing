@@ -53,7 +53,8 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 
         public async Task SaveContactAsync()
         {
-            if (!this.GroupSelectList.Any(x => x.IsChecked)) throw new Exception("Please select at least one group.");
+            if (this.GroupSelectList == null) throw new Exception("Please add atleast one group to add contact.");
+            else if (!this.GroupSelectList.Any(x => x.IsChecked)) throw new Exception("Please select at least one group.");
             
                 try
                 {
@@ -65,7 +66,10 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                     newContact.Email = this.Email;
                     newContact.UserId = _currentUserService.UserId;
 
-                    #region AddConatacValueMapsStandard
+
+                #region Add Standard ContactValueMaps
+                if (ContactValueMapsStandard.Any())
+                {
                     foreach (var item in ContactValueMapsStandard)
                     {
                         if (string.IsNullOrWhiteSpace(item.Input)) continue;
@@ -76,9 +80,13 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                         newContact.ContactValueMaps.Add(contactValueMap);
 
                     }
-                    #endregion
+                }
+                #endregion
 
-                    #region AddContactValueMapsCustom
+                #region Add Custom ContactValueMaps
+
+                if (ContactValueMapsCustom != null)
+                {
                     foreach (var item in ContactValueMapsCustom)
                     {
                         if (string.IsNullOrWhiteSpace(item.Input)) continue;
@@ -87,11 +95,12 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                         contactValueMap.Value = item.Input;
                         contactValueMap.FieldMapId = (int)item.Value;
                         newContact.ContactValueMaps.Add(contactValueMap);
-
                     }
-                    #endregion
+                }
+                #endregion
 
-                    #region AddContactGroup
+                #region Add Contact Group
+                
                     foreach (var item in GroupSelectList)
                     {
                         if (item.IsChecked)
@@ -101,10 +110,11 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                             newContact.ContactGroups.Add(newContactGroup);
                         }
                     }
+                
                     #endregion
 
                     await _contactService.AddContact(newContact);
-
+                
                 }
                 catch (Exception ex)
                 {

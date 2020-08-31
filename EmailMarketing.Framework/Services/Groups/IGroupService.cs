@@ -10,6 +10,7 @@ namespace EmailMarketing.Framework.Services.Groups
     public interface IGroupService:IDisposable
     {
         Task<(IList<Group> Items, int Total, int TotalFilter)> GetAllAsync(
+            Guid? userId,
             string searchText,
             string orderBy,
             int pageIndex,

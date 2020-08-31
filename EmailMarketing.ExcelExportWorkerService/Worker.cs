@@ -62,7 +62,7 @@ namespace EmailMarketing.ExcelExportWorkerService
                             await _contactExportService.ExcelExportForGroupwiseContactsAsync(item);
                         }
 
-                        importResult.IsProcessing = false;
+                        importResult.IsProcessing = false; 
                         importResult.IsSucceed = true;
                         //importResult.FileUrl = Path.Combine(item.FileUrl, item.FileName);
                         await _contactExportService.UpdateDownloadQueueAsync(importResult);

@@ -27,15 +27,15 @@ namespace EmailMarketing.Framework.Services.Groups
 
         }
         public async Task<(IList<Group> Items, int Total, int TotalFilter)> GetAllAsync(
-            string searchText, string orderBy, int pageIndex, int pageSize)
+            Guid? userId,string searchText, string orderBy, int pageIndex, int pageSize)
         {
             var columnsMap = new Dictionary<string, Expression<Func<Group, object>>>()
             {
-                ["name"] = v => v.Name
+                ["Name"] = v => v.Name
             };
             
             var result = await _groupUnitOfWork.GroupRepository.GetAsync<Group>(
-                x => x, x => x.Name.Contains(searchText),
+                x => x, x => ((x.Name.Contains(searchText)) && (!userId.HasValue || x.UserId == userId.Value)),
                 x => x.ApplyOrdering(columnsMap, orderBy), null,
                 pageIndex, pageSize, true);
 
