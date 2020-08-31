@@ -7,12 +7,11 @@
 <div class="page-header">
     <div class="page-header-content header-elements-md-inline">
         <div class="page-title d-flex">
-            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Member" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
-            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+            <h4>Add Template</h4>
         </div>
 
         <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="EmailTemplate" asp-action="ViewEmailTemplates" asp-area="Member" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-stack4 mr-2"></i> <span class="font-weight-semibold">Template List</span></a>
+            <a asp-controller="EmailTemplate" asp-action="ViewEmailTemplates" asp-area="Member" class="btn bg-primary"><i class="icon-stack4 mr-2"></i> <span class="font-weight-semibold">Template List</span></a>
         </div>
     </div>
 </div>
@@ -21,14 +20,6 @@
 <div class="content pt-0">
 
     <div class="card">
-        <div class="card-header header-elements-inline">
-            <h5 class="card-title text-primary">Add Template</h5>
-            <div class="header-elements">
-            </div>
-        </div>
-
-        <hr class="mt-0" />
-
         <div class="card-body">
             <partial name="_ActionMessage" model="@Model.Response" />
             <div class="">

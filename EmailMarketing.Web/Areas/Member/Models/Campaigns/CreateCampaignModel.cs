@@ -41,7 +41,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         [Display(Name = "Email Body")]
         public string EmailTemplateBody { get; set; }
         [Required]
-        [Display(Name = "SMTP Configuration")]
+        [Display(Name = "Select SMTP")]
         public Guid SMTPConfigId { get; set; }
         public IList<EmailTemplate> EmailTemplateList { get; set; }
         public IList<CampaignValueTextModel> GroupSelectList { get; set; }

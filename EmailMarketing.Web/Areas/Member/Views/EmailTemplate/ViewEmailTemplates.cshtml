@@ -27,50 +27,50 @@
         <div class="row">
             <div class="preview">
                 <div class="form-group row">
-                    <table class="table table-borderless">
-                        @{
-                            var index = 0;
-                            var count = Model.EmailTemplateList.Count();
-
+                    @{
+                        var index = 0;
+                        var count = Model.EmailTemplateList.Count();
+                        @if (count == 0)
+                        {
+                            <div class="m-auto"><h3>No Template Available</h3></div>
+                        }
+                        <div class="row px-2">
                             @for (int j = 0; j < count; j += 3)
                             {
-                                <tr class="card_tr">
-                                    @for (int k = 0; k < 3; k++)
+                                @for (int k = 0; k < 3; k++)
+                                {
+                                    index = j + k;
+                                    @if (index >= count)
                                     {
-                                        index = j + k;
-                                        @if (index >= count)
-                                        {
-                                            break;
-                                        }
-                                        <td>
-                                            <div class="card custom_template_card">
-                                                <div class="card-body custom_card_body">
-                                                    <div class="template_body">
-                                                        @Html.Raw(Model.EmailTemplateList[index].EmailTemplateBody)
-                                                    </div>
-                                                    <span class="d-none template_title">@Model.EmailTemplateList[index].EmailTemplateName</span>
-
-                                                    <div class="overlay">
-                                                        <a class="mr-2 mt-2 selected_template_preview text-info" data-toggle="modal" data-target="#templatebody">
-                                                            <i class="fa fa-2x fa-eye"></i>
-                                                        </a>
-                                                    </div>
-                                                    <div class="overlay_title text-center">
-                                                        <div class="text-center">
-                                                            <p class="text-white text-center mt-1">@Model.EmailTemplateList[index].EmailTemplateName</p>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </td>
+                                        break;
                                     }
-                                </tr>
-                            }
-                        }
-                    </table>
-                </div>
+                                    <div class="col-4">
+                                        <div class="card custom_template_card card-box-shadow">
+                                            <div class="card-body custom_card_body">
+                                                <div class="template_body">
+                                                    @Html.Raw(Model.EmailTemplateList[index].EmailTemplateBody)
+                                                </div>
+                                                <span class="d-none template_title">@Model.EmailTemplateList[index].EmailTemplateName</span>
 
+                                                <div class="overlay">
+                                                    <a class="mr-2 mt-2 selected_template_preview text-info" data-toggle="modal" data-target="#templatebody">
+                                                        <i class="fa fa-2x fa-eye" data-toggle="tooltip" data-placement="top" title="View"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="overlay_title text-center">
+                                                    <div class="text-center">
+                                                        <p class="text-white text-center mt-1">@Model.EmailTemplateList[index].EmailTemplateName</p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
