@@ -48,25 +48,45 @@ function loadDatatable(url,ReportUrl) {
                 "targets": [2],
                 'sortable': true,
                 'searchable': false,
-                "orderData": [2]
-            }
-            ,
+                "orderData": [2],
+                "render": function (data, type, row, meta) {
+                    var lbl = data == "Yes" ? "badge-success" : "badge-danger";
+                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
+                }
+            },
             {
                 "targets": [3],
                 'sortable': true,
                 'searchable': false,
-                "orderData": [3]
-            }
-            ,
+                "orderData": [3],
+                "render": function (data, type, row, meta) {
+                    var lbl = data == "Yes" ? "badge-success" : "badge-danger";
+                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
+                }
+            },
             {
                 "targets": [4],
                 'sortable': true,
                 'searchable': false,
                 "orderData": [4]
+            }
+            ,
+            {
+                "targets": [5],
+                'sortable': true,
+                'searchable': false,
+                "orderData": [5]
+            }
+            ,
+            {
+                "targets": [6],
+                'sortable': true,
+                'searchable': false,
+                "orderData": [6]
                
             },
             {
-                "targets": [5],
+                "targets": [7],
                 'sortable': false,
                 'searchable': false,
                 "width": "15%",

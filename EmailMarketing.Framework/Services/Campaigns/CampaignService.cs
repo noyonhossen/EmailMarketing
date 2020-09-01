@@ -128,6 +128,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
         {
             var existingCampaign = await _campaignUnitOfWork.CampaignRepository.GetByIdAsync(campaign.Id);
             existingCampaign.IsProcessing = false;
+            existingCampaign.IsSucceed = true;
 
             await _campaignUnitOfWork.CampaignRepository.UpdateAsync(existingCampaign);
             await _campaignUnitOfWork.SaveChangesAsync();

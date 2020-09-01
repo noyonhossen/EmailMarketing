@@ -66,7 +66,9 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                         select new string[]
                         {
                             item.Name,
+                            item.IsDraft ? "Yes" : "No",
                             item.IsProcessing ? "Yes" : "No",
+                            item.IsSucceed ? "Yes" : "No",
                             item.CampaignReports.Count().ToString(),
                             item.SendDateTime.ToString(),
                             item.SendEmailAddress.ToString(),
