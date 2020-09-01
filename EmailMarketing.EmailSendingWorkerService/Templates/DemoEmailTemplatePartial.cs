@@ -7,8 +7,8 @@ namespace EmailMarketing.EmailSendingWorkerService.Templates
     public partial class DemoEmailTemplate
     {
         public string Name { get; private set; }
-        public int TotalCount { get; set; }
-        public int TotalFailed { get; set; }
+        public int TotalCount { get; private set; }
+        public int TotalFailed { get; private set; }
 
         public DemoEmailTemplate(string name, int totalCount, int totalFailed)
         {

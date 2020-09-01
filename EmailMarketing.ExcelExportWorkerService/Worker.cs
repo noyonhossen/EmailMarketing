@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Office.CustomUI;
 using EmailMarketing.Common.Services;
+using EmailMarketing.ExcelExportWorkerService.Templates;
 using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.Services.Contacts;
 using Microsoft.Extensions.Hosting;
@@ -18,15 +19,13 @@ namespace EmailMarketing.ExcelExportWorkerService
     {
         private readonly ILogger<Worker> _logger;
         private readonly IContactExportService _contactExportService;
-        private readonly ICurrentUserService _currentUserService;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IMailerService _mailerService;
 
-        public Worker(IHostingEnvironment hostingEnvironment, ILogger<Worker> logger, IContactExportService contactExportService, ICurrentUserService currentUserService)
+        public Worker(ILogger<Worker> logger, IContactExportService contactExportService, IMailerService mailerService)
         {
             _logger = logger;
             _contactExportService = contactExportService;
-            _currentUserService = currentUserService;
-            _hostingEnvironment = hostingEnvironment;
+            _mailerService = mailerService;
         }
         public override Task StartAsync(CancellationToken cancellationToken)
         {
@@ -66,7 +65,19 @@ namespace EmailMarketing.ExcelExportWorkerService
                         importResult.IsSucceed = true;
                         //importResult.FileUrl = Path.Combine(item.FileUrl, item.FileName);
                         await _contactExportService.UpdateDownloadQueueAsync(importResult);
+                        
+                        //Sending Email
+                        if(item.IsSendEmailNotify)
+                        {
+                            var url = Path.Combine(item.FileName, item.FileName);
+                            var emailSubject = "Contact Export Confirmation";
+                            var excelExportConfirmationTemplate = new ExcelExportConfirmationTemplate("Shamim", url);
+                            var emailBody = excelExportConfirmationTemplate.TransformText();
+
+                            await _mailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, emailBody);
+                        }
                     }
+
                 }
                 catch (Exception ex)
                 {
