@@ -55,6 +55,8 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 tableModel.SearchText,
                 tableModel.GetSortText(new string[] { "Name" }),
                 tableModel.PageIndex, tableModel.PageSize);
+
+            var groupList = result.Items.SelectMany(x => x.CampaignGroups).Select(y => y.Group.Name).ToList();
            
             
             return new
@@ -66,6 +68,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                         select new string[]
                         {
                             item.Name,
+                            string.Join(', ', groupList),
                             item.IsDraft ? "Yes" : "No",
                             item.IsProcessing ? "Yes" : "No",
                             item.IsSucceed ? "Yes" : "No",

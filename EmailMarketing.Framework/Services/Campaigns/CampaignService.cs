@@ -40,7 +40,8 @@ namespace EmailMarketing.Framework.Services.Campaigns
                                                   x => !x.IsDeleted && x.IsActive &&
                                                   (!userId.HasValue || x.UserId == userId.Value) && x.Name.Contains(searchText),
                                                   x => x.OrderBy(o => o.Name),
-                                                  x => x.Include(y => y.CampaignReports).Include(y => y.SMTPConfig),
+                                                  x => x.Include(y => y.CampaignReports).Include(y => y.SMTPConfig)
+                                                        .Include(y => y.CampaignGroups).ThenInclude(z => z.Group),
                                                   pageIndex, pageSize,
                                                   true));
 

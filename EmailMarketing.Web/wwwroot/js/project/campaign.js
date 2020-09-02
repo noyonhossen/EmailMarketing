@@ -38,11 +38,7 @@ function loadDatatable(url,ReportUrl) {
                 "targets": [1],
                 'sortable': true,
                 'searchable': false,
-                "orderData": [1],
-                "render": function (data, type, row, meta) {
-                    var lbl = data == "Yes" ? "badge-success" : "badge-danger";
-                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
-                }
+                "orderData": [1]
             },
             {
                 "targets": [2],
@@ -68,9 +64,12 @@ function loadDatatable(url,ReportUrl) {
                 "targets": [4],
                 'sortable': true,
                 'searchable': false,
-                "orderData": [4]
-            }
-            ,
+                "orderData": [4],
+                "render": function (data, type, row, meta) {
+                    var lbl = data == "Yes" ? "badge-success" : "badge-danger";
+                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
+                }
+            },
             {
                 "targets": [5],
                 'sortable': true,
@@ -83,10 +82,17 @@ function loadDatatable(url,ReportUrl) {
                 'sortable': true,
                 'searchable': false,
                 "orderData": [6]
+            }
+            ,
+            {
+                "targets": [7],
+                'sortable': true,
+                'searchable': false,
+                "orderData": [7]
                
             },
             {
-                "targets": [7],
+                "targets": [8],
                 'sortable': false,
                 'searchable': false,
                 "width": "15%",
