@@ -61,7 +61,6 @@ namespace EmailMarketing.ExcelWorkerService
                                 await _mailerService.SendEmailAsync(item.SendEmailAddress, "Upload Failed", emailBody);
                             }
                         }
-
                     }
                     _logger.LogInformation("item values is done showing");
                 }

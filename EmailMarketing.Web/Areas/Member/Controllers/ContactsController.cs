@@ -244,11 +244,11 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                         await model.ExportContactsGroupwise();
                     }
                     _logger.LogInformation("Succecssfully Added to DownloadQueue. Waiting to Complete to Export");
-                    model.Response = new ResponseModel("Successfully added to queue. Please wait a while to complete te task.", ResponseType.Success); 
+                    model.Response = new ResponseModel("Successfully added to queue. Please wait a while to complete the task.", ResponseType.Success); 
                 }
-                catch
+                catch(Exception ex)
                 {
-                    model.Response = new ResponseModel("Please provide Email", ResponseType.Failure);
+                    model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
                 }
             }
 

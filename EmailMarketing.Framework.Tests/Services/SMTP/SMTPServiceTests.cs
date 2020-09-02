@@ -86,6 +86,7 @@ namespace EmailMarketing.Framework.Tests.Services.SMTP
         public void GetAllAsync_SmtpConfigExists_ReturnSMTPLists()
         {
             //Arrange
+            var userId = Guid.NewGuid();
             string searchText = "", orderBy = "Name asc";
             int pageIndex = 1, pageSize = 10;
 
@@ -118,7 +119,7 @@ namespace EmailMarketing.Framework.Tests.Services.SMTP
 
 
             //Act
-            var result = _smtpService.GetAllAsync(searchText, orderBy, pageIndex, pageSize);
+            var result = _smtpService.GetAllAsync(userId,searchText, orderBy, pageIndex, pageSize);
 
 
             //Assert

@@ -42,10 +42,12 @@ namespace EmailMarketing.Framework.Services.Contacts
             {
                 ["Email"] = v => v.Email
             };
+
             var result = await _contactUnitOfWork.ContactRepository.GetAsync<Entities.Contacts.Contact>(
                 x => x, x => (!userId.HasValue || x.UserId == userId.Value) && (x.Email.Contains(searchText)),
                 x => x.ApplyOrdering(columnsMap, orderBy), x => x.Include(i => i.ContactGroups).ThenInclude(i => i.Group),
                 pageIndex, pageSize, true);
+
             return (result.Items, result.Total, result.TotalFilter);
         }
         public async Task<Contact> GetByIdAsync(int id)

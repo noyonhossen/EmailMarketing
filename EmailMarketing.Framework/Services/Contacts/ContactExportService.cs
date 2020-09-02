@@ -140,7 +140,7 @@ namespace EmailMarketing.Framework.Services.Contacts
                 worksheet.Columns("1", columnCount.ToString()).AdjustToContents();
 
                 var memory = new MemoryStream();
-                using (var stream = new FileStream(Path.Combine(downloadQueue.FileUrl, downloadQueue.FileName), FileMode.Create))
+                using (var stream = new FileStream(downloadQueue.FileUrl , FileMode.Create))
                 {
                     workbook.SaveAs(stream);
                 }

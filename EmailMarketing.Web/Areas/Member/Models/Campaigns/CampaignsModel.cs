@@ -69,7 +69,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                             item.IsProcessing ? "Yes" : "No",
                             item.CampaignReports.Count().ToString(),
                             item.SendDateTime.ToString(),
-                            item.SendEmailAddress.ToString(),
+                            item.SendEmailAddress == null?"No Email Address":item.SendEmailAddress.ToString(),
                             item.Id.ToString()
 
                         }).ToArray()

@@ -10,6 +10,7 @@ namespace EmailMarketing.Framework.Services.SMTP
     public interface ISMTPService:IDisposable
     {
         Task<(IList<SMTPConfig> Items, int Total, int TotalFilter)> GetAllAsync(
+            Guid? userId,
             string searchText,
             string orderBy,
             int pageIndex,

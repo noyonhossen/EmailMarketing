@@ -1,4 +1,5 @@
-﻿
+﻿import { turn } from "core-js/fn/array";
+
 function loadDatatable(url, editUrl, contactDetailsUrl) {
 
     if (!$().DataTable) {
@@ -37,7 +38,7 @@ function loadDatatable(url, editUrl, contactDetailsUrl) {
             {
                 "targets": [1],
                 'sortable': true,
-                'searchable': false,
+                'searchable': true,
                 "orderData": [1]
             },
             {

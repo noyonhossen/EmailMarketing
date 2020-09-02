@@ -27,7 +27,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
             var result = await _contactService.GetAllContactAsync(
                 _currentUserService.UserId,
                 tableModel.SearchText,
-                tableModel.GetSortText(new string[] { "Email" }),
+                tableModel.GetSortText(new string[] {"Email"}),
                 tableModel.PageIndex, tableModel.PageSize);
 
            

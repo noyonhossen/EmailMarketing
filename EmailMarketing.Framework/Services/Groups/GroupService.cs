@@ -39,6 +39,8 @@ namespace EmailMarketing.Framework.Services.Groups
                 x => x.ApplyOrdering(columnsMap, orderBy), null,
                 pageIndex, pageSize, true);
 
+            result.Total = await _groupUnitOfWork.GroupRepository.GetCountAsync(x => x.UserId == userId);
+
             return (result.Items, result.Total, result.TotalFilter);
         }
 
@@ -49,7 +51,7 @@ namespace EmailMarketing.Framework.Services.Groups
 
         public async Task AddAsync(Group entity)
         {
-            var isExists = await _groupUnitOfWork.GroupRepository.IsExistsAsync(x => x.Name == entity.Name && x.Id != entity.Id);
+            var isExists = await _groupUnitOfWork.GroupRepository.IsExistsAsync(x => x.Name == entity.Name && x.UserId == entity.UserId);
             if (isExists)
                 throw new DuplicationException(nameof(entity.Name));
 
@@ -59,7 +61,7 @@ namespace EmailMarketing.Framework.Services.Groups
 
         public async Task UpdateAsync(Group entity)
         {
-            var isExists = await _groupUnitOfWork.GroupRepository.IsExistsAsync(x => x.Name == entity.Name && x.Id != entity.Id);
+            var isExists = await _groupUnitOfWork.GroupRepository.IsExistsAsync(x => x.Name == entity.Name && x.Id != entity.Id && x.UserId == entity.UserId);
             if (isExists)
                 throw new DuplicationException(nameof(entity.Name));
 

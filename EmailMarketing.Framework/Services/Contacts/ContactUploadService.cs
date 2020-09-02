@@ -225,8 +225,8 @@ namespace EmailMarketing.Framework.Services.Contacts
         {
             var columnsMap = new Dictionary<string, Expression<Func<ContactUpload, object>>>()
             {
-                ["created"] = v => v.Created,
-                ["fileName"] = v => v.FileName
+                ["FileName"] = v => v.FileName,
+                ["Created"] = v => v.Created
             };
 
             var result = await _contactUploadUnitOfWork.ContactUploadRepository.GetAsync(x => x, 

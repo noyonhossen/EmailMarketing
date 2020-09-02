@@ -80,6 +80,7 @@ namespace EmailMarketing.Framework.Tests.Services.Groups
         public void GetAllAsync_GroupLists_GetAllGroup()
         {
             //Arrange
+            var userId = Guid.NewGuid();
             int total = 4, totalFilter = 3;
             string searchText = "", orderBy = "Name";
             int pageIndex = 1, pageSize = 10;
@@ -112,7 +113,7 @@ namespace EmailMarketing.Framework.Tests.Services.Groups
 
 
             //Act
-            _groupService.GetAllAsync(searchText, orderBy, pageIndex, pageSize);
+            _groupService.GetAllAsync(userId,searchText, orderBy, pageIndex, pageSize);
 
 
             //Assert

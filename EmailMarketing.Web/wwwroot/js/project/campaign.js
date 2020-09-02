@@ -31,7 +31,7 @@ function loadDatatable(url,ReportUrl) {
             {
                 "targets": [0],
                 'sortable': true,
-                'searchable': false,
+                'searchable': true,
                 "orderData": [0]
             },
             {

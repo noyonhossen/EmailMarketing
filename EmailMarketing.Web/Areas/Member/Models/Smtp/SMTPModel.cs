@@ -19,18 +19,19 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
 
         public async Task<object> GetAllAsync(DataTablesAjaxRequestModel tableModel)
         {
+            var userId = _currentUserService.UserId;
             var result = await _smtpService.GetAllAsync(
+                userId,
                 tableModel.SearchText,
                 tableModel.GetSortText(new string[] { "Server","Port","SenderName","SenderEmail","UserName","EnableSSL" }),
                 tableModel.PageIndex, tableModel.PageSize);
-            var userId = _currentUserService.UserId;
+
             return new
             {
                 recordsTotal = result.Total,
                 recordsFiltered = result.TotalFilter,
 
                 data = (from item in result.Items
-                        where (item.UserId == userId)
                         select new string[]
                         {
                                     item.Server,

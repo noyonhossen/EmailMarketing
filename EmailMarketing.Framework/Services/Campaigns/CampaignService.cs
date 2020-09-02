@@ -1,5 +1,6 @@
 
 ﻿using EmailMarketing.Common.Exceptions;
+using EmailMarketing.Common.Extensions;
 using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.UnitOfWorks.Campaigns;
 using EmailMarketing.Framework.UnitOfWorks.Groups;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,10 +38,14 @@ namespace EmailMarketing.Framework.Services.Campaigns
           int pageIndex,
           int pageSize)
         {
+            var columnsMap = new Dictionary<string, Expression<Func<Campaign, object>>>()
+            {
+                ["Name"] = v => v.Name
+            };
             var result = (await _campaignUnitOfWork.CampaignRepository.GetAsync(x => x,
                                                   x => !x.IsDeleted && x.IsActive &&
                                                   (!userId.HasValue || x.UserId == userId.Value) && x.Name.Contains(searchText),
-                                                  x => x.OrderBy(o => o.Name),
+                                                  x => x.ApplyOrdering(columnsMap,orderBy),
                                                   x => x.Include(y => y.CampaignReports).Include(y => y.SMTPConfig),
                                                   pageIndex, pageSize,
                                                   true));

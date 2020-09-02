@@ -45,27 +45,32 @@ namespace EmailMarketing.ExcelExportWorkerService
 
                     foreach (var item in result)
                     {
-                        //To create directory if not exist
-                        if (Directory.Exists(item.FileUrl) == false)
+                        //var importResult = await _contactExportService.GetDownloadQueueByIdAsync(item.Id);
+                        try
                         {
-                            DirectoryInfo directory = Directory.CreateDirectory(item.FileUrl);
-                        }
-                        
-                        var importResult = await _contactExportService.GetDownloadQueueByIdAsync(item.Id);
-                        if (item.DownloadQueueFor == DownloadQueueFor.ContactAllExport)
-                        {
-                            await _contactExportService.ExcelExportForAllContactsAsync(item);
-                        }
+                            if (item.DownloadQueueFor == DownloadQueueFor.ContactAllExport)
+                            {
+                                await _contactExportService.ExcelExportForAllContactsAsync(item);
+                            }
 
-                        else if (item.DownloadQueueFor == DownloadQueueFor.ContactGroupWiseExport)
-                        {
-                            await _contactExportService.ExcelExportForGroupwiseContactsAsync(item);
-                        }
+                            else if (item.DownloadQueueFor == DownloadQueueFor.ContactGroupWiseExport)
+                            {
+                                await _contactExportService.ExcelExportForGroupwiseContactsAsync(item);
+                            }
 
-                        importResult.IsProcessing = false; 
-                        importResult.IsSucceed = true;
-                        //importResult.FileUrl = Path.Combine(item.FileUrl, item.FileName);
-                        await _contactExportService.UpdateDownloadQueueAsync(importResult);
+                            item.IsProcessing = false;
+                            item.IsSucceed = true;
+                            item.LastModified = DateTime.Now;
+                            item.LastModifiedBy = item.UserId;
+                            await _contactExportService.UpdateDownloadQueueAsync(item);
+                            _logger.LogInformation($"Successfully Exported. FileUrl: {item.FileUrl}");
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError($"Failed to Export Contact: Error: {ex.Message}");
+                            continue;
+                            //throw new Exception($"Failed to export contact.{item.FileUrl}");
+                        }
                     }
                 }
                 catch (Exception ex)

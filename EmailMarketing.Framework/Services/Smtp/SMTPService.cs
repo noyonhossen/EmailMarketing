@@ -23,21 +23,21 @@ namespace EmailMarketing.Framework.Services.SMTP
         }
 
         public async Task<(IList<SMTPConfig> Items, int Total, int TotalFilter)> GetAllAsync(
-            string searchText, string orderBy, int pageIndex, int pageSize)
+            Guid? userId,string searchText, string orderBy, int pageIndex, int pageSize)
         {
             var columnsMap = new Dictionary<string, Expression<Func<SMTPConfig, object>>>()
             {
-                ["server"] = v => v.Server,
-                ["port"] = v => v.Port,
-                ["senderName"] = v => v.SenderName,
-                ["senderEmail"] = v => v.SenderEmail,
-                ["userName"] = v => v.UserName,
-                ["password"] = v => v.Password,
-                ["enableSSL"] = v => v.EnableSSL
+                ["Server"] = v => v.Server,
+                ["Port"] = v => v.Port,
+                ["SenderName"] = v => v.SenderName,
+                ["SenderEmail"] = v => v.SenderEmail,
+                ["UserName"] = v => v.UserName,
+                ["Password"] = v => v.Password,
+                ["EnableSSL"] = v => v.EnableSSL
             };
 
             var result = await _smtpUnitOfWork.SMTPRepository.GetAsync<SMTPConfig>(
-                x => x, x => x.Server.Contains(searchText),
+                x => x, x => x.Server.Contains(searchText) && (!userId.HasValue || x.UserId == userId.Value),
                 x => x.ApplyOrdering(columnsMap, orderBy), null,
                 pageIndex, pageSize, true);
 

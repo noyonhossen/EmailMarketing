@@ -4,6 +4,7 @@ using EmailMarketing.Framework.Entities.Groups;
 using EmailMarketing.Framework.Services.Contacts;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 {
     public class EditContactsModel : ContactsBaseModel
     {
+        [Required]
         public string Email { get; set; }
         public int Id { get; set; }
         public List<ContactValueTextModel> GroupSelectList { get; set; }
