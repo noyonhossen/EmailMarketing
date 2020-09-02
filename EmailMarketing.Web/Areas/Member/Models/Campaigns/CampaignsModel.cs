@@ -68,7 +68,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                         select new string[]
                         {
                             item.Name,
-                            string.Join(', ', groupList),
+                            string.Join(", ", groupList),
                             item.IsDraft ? "Yes" : "No",
                             item.IsProcessing ? "Yes" : "No",
                             item.IsSucceed ? "Yes" : "No",

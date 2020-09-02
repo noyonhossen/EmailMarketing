@@ -1,4 +1,6 @@
-﻿using EmailMarketing.Common.Services;
+﻿using EmailMarketing.Common.Constants;
+using EmailMarketing.Common.Extensions;
+using EmailMarketing.Common.Services;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.SMTP;
 using EmailMarketing.Framework.Services.SMTP;
@@ -47,6 +49,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
 
         public async Task AddAsync()
         {
+            this.Password = this.Password.ToEncryptString(ConstantsValue.EncryptDecryptKey);
 
             var entity = new SMTPConfig
             {
