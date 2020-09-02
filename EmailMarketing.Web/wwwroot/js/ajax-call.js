@@ -16,7 +16,10 @@ function ajaxCall(url, paramData, callback, method, obj) {
             }    
             else if (callback == 'renderGetAllGroupsForUploadContact') {
                 renderGetAllGroupsForUploadContact(response);
-            }    
+            }  
+            else if (callback == 'renderSmtpTest') {
+                renderSmtpTest(response);
+            }  
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert(textStatus + "! please try again");

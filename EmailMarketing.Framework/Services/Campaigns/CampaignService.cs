@@ -86,7 +86,8 @@ namespace EmailMarketing.Framework.Services.Campaigns
 
         public async Task<IList<EmailTemplate>> GetEmailTemplateByUserIdAsync(Guid? userId)
         {
-            return (await _campaignUnitOfWork.EmailTemplateRepository.GetAsync(x => x, x => x.UserId == userId, null, null, true));
+            return (await _campaignUnitOfWork.EmailTemplateRepository.GetAsync(x => x, x => !x.IsDeleted && x.IsActive &&
+                                                                                x.UserId == userId, null, null, true));
         }
 
         public void Dispose()

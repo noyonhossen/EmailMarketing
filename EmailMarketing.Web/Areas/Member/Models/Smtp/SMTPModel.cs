@@ -1,6 +1,8 @@
 ﻿using EmailMarketing.Common.Services;
+using EmailMarketing.Framework.Entities.SMTP;
 using EmailMarketing.Framework.Services.SMTP;
 using EmailMarketing.Membership.Services;
+using EmailMarketing.Web.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
     public class SMTPModel:SMTPBaseModel
     {
         public SMTPModel(ISMTPService smtpService, IApplicationUserService applicationUserService,
-            ICurrentUserService currentUserService):base(smtpService, applicationUserService, currentUserService)
+            ICurrentUserService currentUserService, ISmtpTestService smtpTestService):base(smtpService, applicationUserService, currentUserService, smtpTestService)
         {
         }
 
@@ -39,6 +41,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
                                     item.SenderEmail,
                                     item.UserName,
                                     item.EnableSSL.ToString(),
+                                    item.IsActive ? "Yes" : "No",
                                     item.Id.ToString()
                         }
                         ).ToArray()
@@ -46,10 +49,10 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
             };
         }
 
-        public async Task<string> DeleteAsync(Guid id)
+        public async Task<SMTPConfig> ActivateSmtpAsync(Guid id)
         {
-            var group = await _smtpService.DeleteAsync(id);
-            return group.Server;
+            var smtp = await _smtpService.ActivateSmtpAsync(id);
+            return smtp;
         }
     }
 }

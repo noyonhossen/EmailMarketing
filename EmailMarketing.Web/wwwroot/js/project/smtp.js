@@ -37,34 +37,44 @@
                 "targets": [1],
                 'sortable': true,
                 'searchable': true,
-                "orderData": [0]
+                "orderData": [1]
             },
             {
                 "targets": [2],
                 'sortable': true,
                 'searchable': true,
-                "orderData": [0]
+                "orderData": [2]
             },
             {
                 "targets": [3],
                 'sortable': true,
                 'searchable': true,
-                "orderData": [0]
+                "orderData": [3]
             },
             {
                 "targets": [4],
                 'sortable': true,
                 'searchable': true,
-                "orderData": [0]
+                "orderData": [4]
             },
             {
                 "targets": [5],
                 'sortable': true,
                 'searchable': true,
-                "orderData": [0]
+                "orderData": [5]
             },
             {
                 "targets": [6],
+                'sortable': false,
+                'searchable': false,
+                "orderData": [6],
+                "render": function (data, type, row, meta) {
+                    var lbl = data == "No" ? "badge-danger" : "badge-success";
+                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
+                }
+            },
+            {
+                "targets": [7],
                 'sortable': false,
                 'searchable': false,
                 "width": "15%",
@@ -73,10 +83,10 @@
                     var editButton = '<a class="text-primary" href="' + editUrl + '/' + data + '" title="Edit">' +
                         '<i class="icon-pencil7"></i></a>';
 
-                    var deleteButton = '<a class="text-danger show-bs-modal" data-id="' + data + '" href="#" title="Delete">' +
-                        '<i class="icon-trash"></i></a>';
+                    var activeButton = '<a class="text-danger" data-toggle="modal" data-target="#modal-active" data-id="' + data + '" data-title="' + row[6] + '" href="#" title="Active/InActive">' +
+                        '<i class="icon-user-block"></i></a>';
 
-                    return editButton + ' ' + deleteButton;
+                    return editButton + ' ' + activeButton;
                 }
             }
         ]

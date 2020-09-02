@@ -63,6 +63,25 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> TestSmtp(CreateSMTPModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    var result = await model.SmtpTest();
+                    return Json(result);
+                }
+                catch(Exception ex)
+                {
+                    return Json(false);
+                }
+            }
+            return Json("failed");
+            
+        }
+
         public async Task<IActionResult> Edit(Guid id)
         {
             var model = new EditSMTPModel();
@@ -104,21 +123,19 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> ActivateSmtp(Guid id)
         {
-            if (ModelState.IsValid)
+            var model = new SMTPModel();
+            try
             {
-                var model = new SMTPModel();
-                try
-                {
-                    var title = await model.DeleteAsync(id);
-                    model.Response = new ResponseModel($"Smtp {title} successfully deleted.", ResponseType.Success);
-                    return RedirectToAction("Index");
-                }
-                catch (Exception ex)
-                {
-                    model.Response = new ResponseModel("SMTP delete failured.", ResponseType.Failure);
-                }
+                var smtp = await model.ActivateSmtpAsync(id);
+                model.Response = new ResponseModel($"{smtp.Server} successfully { (smtp.IsActive == true ? "Activated" : "Deactivated")}.", ResponseType.Success);
+                _logger.LogInformation("Custome Field Map Active Status updated");
+            }
+            catch (Exception ex)
+            {
+                model.Response = new ResponseModel("Active/InActive Operation failured.", ResponseType.Failure);
+                _logger.LogError(ex.Message);
             }
             return RedirectToAction("Index");
         }
@@ -130,5 +147,6 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var data = await model.GetAllAsync(tableModel);
             return Json(data);
         }
+
     }
 }
