@@ -124,5 +124,23 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             }
             return View(model);
         }
+
+        [AllowAnonymous]
+        public async Task<string> GetEmailOpenTrackingImageAsync(int campaignId, int contactId, string email)
+        {
+            var url = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), Url.Content("~/images/tracker.gif"));
+            //var url = "data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+            try
+            {
+                var model = new EmailTrackerModel();
+                await model.EmailOpenTracking(campaignId, contactId, email);
+                _logger.LogInformation("Successful email open tracking - campaginId - {0}, contactId - {1}, email - {2}", campaignId, contactId, email);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Failed email open tracking - campaginId - {0}, contactId - {1}, email - {2} \n Error: {3}", campaignId, contactId, email, ex);
+            }
+            return url;
+        }
     }
 }

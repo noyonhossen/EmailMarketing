@@ -6,6 +6,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using EmailMarketing.Common.Constants;
 using EmailMarketing.Common.Services;
+using EmailMarketing.EmailSendingWorkerService.Core;
 using EmailMarketing.EmailSendingWorkerService.Entities;
 using EmailMarketing.EmailSendingWorkerService.Services;
 using EmailMarketing.Framework;
@@ -66,6 +67,7 @@ namespace EmailMarketing.EmailSendingWorkerService
                 {
                     services.AddHostedService<Worker>();
                     services.Configure<WorkerSmtpSettings>(hostContext.Configuration.GetSection("SmtpSetting"));
+                    services.Configure<WorkerSettings>(hostContext.Configuration.GetSection("WorkerSettings"));
                     services.AddSingleton<IWorkerMailerService, WorkerMailerService>();
                     services.AddSingleton<ICurrentUserService, WorkerCurrentUserService>();
                     services.AddSingleton<IDateTime, WorkerDateTimeService>();

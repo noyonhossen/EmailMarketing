@@ -8,30 +8,35 @@ using System.Threading.Tasks;
 using EmailMarketing.Common.Constants;
 using EmailMarketing.Common.Extensions;
 using EmailMarketing.Common.Services;
+using EmailMarketing.EmailSendingWorkerService.Core;
 using EmailMarketing.EmailSendingWorkerService.Services;
 using EmailMarketing.EmailSendingWorkerService.Templates;
 using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.Services.Campaigns;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace EmailMarketing.EmailSendingWorkerService
 {
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
+        private readonly WorkerSettings _workerSettings;
         private readonly IWorkerMailerService _mailerService;
         private readonly ICampaignService _campaignService;
         private readonly ICampaignReportService _campaignReportService;
         private readonly IMailerService _confirmationMailerService;
 
-        public Worker(ILogger<Worker> logger, 
+        public Worker(ILogger<Worker> logger,
+            IOptions<WorkerSettings> workerSettingsOptions,
             IWorkerMailerService mailerService,
             ICampaignService campaignService,
             ICampaignReportService campaignReportService,
             IMailerService confirmationMailerService)
         {
             _logger = logger;
+            _workerSettings = workerSettingsOptions.Value;
             _mailerService = mailerService;
             _campaignService = campaignService;
             _campaignReportService = campaignReportService;
@@ -76,6 +81,11 @@ namespace EmailMarketing.EmailSendingWorkerService
                             {
                                 emailTemplate = ConvertExtension.FormatStringFromDictionary(emailTemplate, fieldmapDict);
                             }
+
+                            #region mail open tracker
+                            var imageHtml = $"<img src='{_workerSettings.EmailOpenTrackingUrl}?campaignId={result.Id}&contactId={singleContact.Id}&email={singleContact.Email}' width='1' height='1' />";
+                            emailTemplate += imageHtml;
+                            #endregion
 
                             var status = await _mailerService.SendBulkEmailAsync(singleContact.Email, item.EmailSubject, emailTemplate, result.SMTPConfig);
 
