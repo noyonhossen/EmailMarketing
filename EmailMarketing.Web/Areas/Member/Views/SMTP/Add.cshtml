@@ -1,49 +1,26 @@
 ﻿@model EmailMarketing.Web.Areas.Member.Models.Smtp.CreateSMTPModel
+
 @{
     ViewData["Title"] = "Add SMTP";
 }
-<!-- Page header -->
-<div class="page-header">
-    <div class="page-header-content header-elements-md-inline">
-        <div class="page-title d-flex">
-            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Member" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
-            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-        </div>
 
-        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="SMTP" asp-action="Index" asp-area="Member" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">SMTP List</span></a>
-        </div>
+
+<div class="content">
+    <div class="pb-3">
+        <h4 class="d-inline">Add SMTP</h4>
+        <a asp-controller="SMTP" asp-action="Index" asp-area="Member" class="btn bg-primary float-right"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">SMTP List</span></a>
     </div>
-</div>
-<!-- /page header -->
-
-<div class="content pt-0">
-
     <div class="card">
-        <div class="card-header header-elements-inline">
-            <h5 class="card-title text-primary">Add SMTP</h5>
-            <div class="header-elements">
-                <div class="list-icons">
-                    <a class="list-icons-item" data-action="collapse"></a>
-                    <a class="list-icons-item" data-action="reload"></a>
-                    <a class="list-icons-item" data-action="remove"></a>
-                </div>
-            </div>
-        </div>
-
         <div class="card-body">
             <partial name="_ActionMessage" model="@Model.Response" />
             <div class="">
                 <form asp-action="Add" asp-controller="SMTP" asp-area="Member" method="post">
                     <div class="">
                         <fieldset class="mb-3">
-
                             @Html.AntiForgeryToken()
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
                             <div class="row">
                                 <div class="col-md-6 border-right p-2">
-
                                     <div class="form-group row">
                                         <label class="col-form-label col-lg-4 required" asp-for="Server"></label>
                                         <div class="col-lg-8">
@@ -72,7 +49,6 @@
                                             <span asp-validation-for="SenderEmail" class="text-danger"></span>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="col-md-6 border-left p-2">
 
@@ -86,7 +62,9 @@
                                     <div class="form-group row">
                                         <label class="col-form-label col-lg-4 required" asp-for="Password"></label>
                                         <div class="col-lg-8">
+
                                             <input type="password" id="password" class="form-control" asp-for="Password">
+
                                             <span asp-validation-for="Password" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -97,13 +75,8 @@
                                             <span asp-validation-for="EnableSSL" class="text-danger"></span>
                                         </div>
                                     </div>
-
-
-
                                 </div>
-
                             </div>
-
                         </fieldset>
                     </div>
                     <div class="">
@@ -117,13 +90,10 @@
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
-
 </div>
 <!-- /Content area -->
-
 
 @section Scripts {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />

@@ -1,7 +1,11 @@
-﻿.preview {
-    height: 500px;
+﻿#template_prview{
+    box-sizing:border-box;
+}
+.preview {
+    height: 600px;
     width: 100%;
     overflow-y: scroll;
+    overflow-x: hidden;
     border: 1px solid #f3f3f3;
 }
 
@@ -9,9 +13,9 @@
     padding-bottom: 0;
 }
 
-.custom_template_card{
+.custom_template_card {
     overflow: hidden;
-    width: 200px;
+    width: 230px;
     height: 200px;
 }
 
@@ -32,7 +36,7 @@
     opacity: 0.5;
 }
 
-.overlay_opacity{
+.overlay_opacity {
     opacity: 1;
 }
 
@@ -41,3 +45,6 @@
     opacity: 0.5;
 }
 
+#remove_all{
+    cursor:pointer;
+}

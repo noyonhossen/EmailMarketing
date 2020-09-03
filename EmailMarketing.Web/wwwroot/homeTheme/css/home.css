@@ -235,3 +235,15 @@ body {
 #myBtn:hover {
     background-color: #ffc226;
 }
+
+.register-card{
+    width:500px !important;
+}
+
+.login-img {
+    height: 550px;
+}
+
+.login-card {
+    width: 500px !important;
+}
