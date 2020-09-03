@@ -29,11 +29,14 @@ namespace EmailMarketing.Framework.Services.Contacts
             await _fieldMapUnitOfWork.SaveChangesAsync();
         }
 
-        public async Task<FieldMap> DeleteAsync(int id)
+        public async Task<FieldMap> ActivateUpdateAsync(int id)
         {
             var fieldMap = await GetByIdAsync(id);
             if (fieldMap == null) throw new NotFoundException(nameof(FieldMap), id);
-            await _fieldMapUnitOfWork.FieldMapRepository.DeleteAsync(id);
+
+            fieldMap.IsActive = !fieldMap.IsActive;
+
+            await _fieldMapUnitOfWork.FieldMapRepository.UpdateAsync(fieldMap);
             await _fieldMapUnitOfWork.SaveChangesAsync();
             return fieldMap;
         }

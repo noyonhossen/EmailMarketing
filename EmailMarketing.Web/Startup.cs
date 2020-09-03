@@ -112,6 +112,7 @@ namespace EmailMarketing.Web
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddScoped<IApplicationUserService, ApplicationUserService>();
+            services.AddSingleton<ISmtpTestService, SmtpTestService>();
             services.AddTransient<IFileStorage, FileStorage>();
 
             services.AddHttpContextAccessor();

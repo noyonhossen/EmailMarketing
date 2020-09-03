@@ -78,10 +78,11 @@ namespace EmailMarketing.Framework.Services.SMTP
             await _smtpUnitOfWork.SaveChangesAsync();
         }
 
-        public async Task<SMTPConfig> DeleteAsync(Guid id)
+        public async Task<SMTPConfig> ActivateSmtpAsync(Guid id)
         {
             var smtp = await GetByIdAsync(id);
-            await _smtpUnitOfWork.SMTPRepository.DeleteAsync(id);
+            smtp.IsActive = !smtp.IsActive;
+            await _smtpUnitOfWork.SMTPRepository.UpdateAsync(smtp);
             await _smtpUnitOfWork.SaveChangesAsync();
             return smtp;
         }
@@ -93,7 +94,9 @@ namespace EmailMarketing.Framework.Services.SMTP
 
         public async Task<IList<SMTPConfig>> GetAllSMTPConfig(Guid? userId)
         {
-            return await _smtpUnitOfWork.SMTPRepository.GetAsync(x => x, x => x.UserId == userId, null, null, true);
+            return await _smtpUnitOfWork.SMTPRepository.GetAsync(x => x, x => !x.IsDeleted && x.IsActive &&
+                                                                                x.UserId == userId, null, null, true);
         }
+
     }
 }

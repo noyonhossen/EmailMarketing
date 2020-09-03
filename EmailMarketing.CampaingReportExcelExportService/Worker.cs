@@ -5,8 +5,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
+using EmailMarketing.CampaingReportExcelExportService.Templates;
 using EmailMarketing.Common.Services;
-using EmailMarketing.ExcelWorkerService.Templates;
 using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.Services.Campaigns;
 using Microsoft.Extensions.Hosting;
@@ -17,13 +17,13 @@ namespace EmailMarketing.CampaingReportExcelExportService
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
-        private readonly IMailerService _mailerService;
+        private readonly IExportMailerService _exportMailerService;
         private readonly ICampaignReportExportService _campaignReportExportService;
 
-        public Worker(ILogger<Worker> logger, ICampaignReportExportService campaignReportExportService, IMailerService mailerService)
+        public Worker(ILogger<Worker> logger, ICampaignReportExportService campaignReportExportService, IExportMailerService exportMailerService)
         {
             _logger = logger;
-            _mailerService = mailerService;
+            _exportMailerService = exportMailerService;
             _campaignReportExportService = campaignReportExportService;
         }
 
@@ -62,7 +62,21 @@ namespace EmailMarketing.CampaingReportExcelExportService
                         }
                         importResult.IsProcessing = false;
                         importResult.IsSucceed = true;
+                        importResult.LastModified = DateTime.Now;
+                        importResult.LastModifiedBy = item.UserId;
                         await _campaignReportExportService.UpdateDownloadQueueAync(importResult);
+
+                        //Sending Email
+                        if (item.IsSendEmailNotify)
+                        {
+                            var url = Path.Combine(item.FileUrl, item.FileName);
+
+                            var emailSubject = "Contact Export Confirmation";
+                            var campReportExportTemplate = new CampReportExportTemplate("Sir");
+                            var emailBody = campReportExportTemplate.TransformText();
+
+                            await _exportMailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, emailBody, url);
+                        }
                     }
                 }
                 catch (Exception ex)

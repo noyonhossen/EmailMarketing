@@ -40,7 +40,8 @@ namespace EmailMarketing.Framework.Services.Campaigns
                                                   x => !x.IsDeleted && x.IsActive &&
                                                   (!userId.HasValue || x.UserId == userId.Value) && x.Name.Contains(searchText),
                                                   x => x.OrderBy(o => o.Name),
-                                                  x => x.Include(y => y.CampaignReports).Include(y => y.SMTPConfig),
+                                                  x => x.Include(y => y.CampaignReports).Include(y => y.SMTPConfig)
+                                                        .Include(y => y.CampaignGroups).ThenInclude(z => z.Group),
                                                   pageIndex, pageSize,
                                                   true));
 
@@ -85,7 +86,8 @@ namespace EmailMarketing.Framework.Services.Campaigns
 
         public async Task<IList<EmailTemplate>> GetEmailTemplateByUserIdAsync(Guid? userId)
         {
-            return (await _campaignUnitOfWork.EmailTemplateRepository.GetAsync(x => x, x => x.UserId == userId, null, null, true));
+            return (await _campaignUnitOfWork.EmailTemplateRepository.GetAsync(x => x, x => !x.IsDeleted && x.IsActive &&
+                                                                                x.UserId == userId, null, null, true));
         }
 
         public void Dispose()
@@ -102,7 +104,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
         public async Task<IList<Campaign>> GetAllProcessingCampaign()
         {
             return (await _campaignUnitOfWork.CampaignRepository.GetAsync(x => x,
-                                                                          x => x.IsProcessing == true && x.SendDateTime <= DateTime.Now,
+                                                                          x => !x.IsDeleted && x.IsActive && x.IsProcessing == true && x.SendDateTime <= DateTime.Now,
                                                                           null,
                                                                           null,
                                                                           true));
@@ -128,9 +130,23 @@ namespace EmailMarketing.Framework.Services.Campaigns
         {
             var existingCampaign = await _campaignUnitOfWork.CampaignRepository.GetByIdAsync(campaign.Id);
             existingCampaign.IsProcessing = false;
+            existingCampaign.IsSucceed = true;
+            existingCampaign.LastModified = DateTime.Now;
+            existingCampaign.LastModifiedBy = campaign.UserId;
 
             await _campaignUnitOfWork.CampaignRepository.UpdateAsync(existingCampaign);
             await _campaignUnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<Campaign> ActivateCampaignAsync(int id)
+        {
+            var existingCampaign = await _campaignUnitOfWork.CampaignRepository.GetByIdAsync(id);
+            existingCampaign.IsDraft = !existingCampaign.IsDraft;
+            existingCampaign.IsProcessing = !existingCampaign.IsDraft;
+
+            await _campaignUnitOfWork.CampaignRepository.UpdateAsync(existingCampaign);
+            await _campaignUnitOfWork.SaveChangesAsync();
+            return existingCampaign;
         }
     }
 }

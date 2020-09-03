@@ -75,11 +75,21 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteFieldMap(int id)
+        public async Task<IActionResult> ActivateFieldMap(int id)
         {
             var model = new FieldMapModel();
-            await model.DeleteFieldMapAsync(id);
-            return Json(true);
+            try
+            {
+                var customFieldMap = await model.ActivateFieldMapAsync(id);
+                model.Response = new ResponseModel($"{customFieldMap.DisplayName} successfully { (customFieldMap.IsActive == true ? "Activated" : "Deactivated")}.", ResponseType.Success);
+                _logger.LogInformation("Custome Field Map Active Status updated");
+            }
+            catch (Exception ex)
+            {
+                model.Response = new ResponseModel("Active/InActive Operation failured.", ResponseType.Failure);
+                _logger.LogError(ex.Message);
+            }
+            return RedirectToAction("CustomFields");
         }
         public async Task<IActionResult> GetAllFieldMap()
         {

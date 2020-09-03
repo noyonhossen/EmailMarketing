@@ -17,6 +17,6 @@ namespace EmailMarketing.Framework.Services.Contacts
         Task AddAsync(FieldMap entity);
         Task<FieldMap> GetByIdAsync(int id);
         Task UpdateAsync(FieldMap entity);
-        Task<FieldMap> DeleteAsync(int id);
+        Task<FieldMap> ActivateUpdateAsync(int id);
     }
 }

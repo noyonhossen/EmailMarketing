@@ -1,4 +1,5 @@
 ﻿using EmailMarketing.Common.Services;
+using EmailMarketing.ExcelExportWorkerService.Entities;
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
@@ -8,11 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EmailMarketing.ExcelWorkerService.Entities;
 
-namespace EmailMarketing.ExcelWorkerService.Services
+namespace EmailMarketing.ExcelExportWorkerService.Services
 {
-    public class WorkerMailerService : IMailerService
+    public class WorkerMailerService : IExportMailerService
     {
         private readonly WorkerSmtpSettings _workerSmtpSettings;
 
@@ -21,7 +21,7 @@ namespace EmailMarketing.ExcelWorkerService.Services
             _workerSmtpSettings = smtpSettings.Value;
         }
         
-        public async Task SendEmailAsync(string email, string subject, string body)
+        public async Task SendEmailAsync(string email, string subject, string body, string url)
         {
             try
             {
@@ -32,26 +32,21 @@ namespace EmailMarketing.ExcelWorkerService.Services
                 {
                     toList.Add(MailboxAddress.Parse(item.Trim()));
                 }
-                //messgae.To.Add(MailboxAddress.Parse(email));
                 messgae.To.AddRange(toList);
                 messgae.Subject = subject;
-                messgae.Body = new TextPart("html")
-                {
-                    Text = body
-                };
 
+                var builder = new BodyBuilder();
+                builder.HtmlBody = body;
+
+                builder.Attachments.Add(url);
+
+                messgae.Body = builder.ToMessageBody();
+                
+                
                 using (var client = new SmtpClient())
                 {
                     client.ServerCertificateValidationCallback = (s, c, h, e) => true;
 
-                    //if(_env.IsDevelopment())
-                    //{
-                    //    await client.ConnectAsync(_workerSmtpSettings.Server, _workerSmtpSettings.Port, true);
-                    //}
-                    //else
-                    //{
-                    //    await client.ConnectAsync(_workerSmtpSettings.Server);
-                    //}
                     await client.ConnectAsync(_workerSmtpSettings.Server, _workerSmtpSettings.Port, true);
 
                     await client.AuthenticateAsync(_workerSmtpSettings.UserName, _workerSmtpSettings.Password);
@@ -64,6 +59,5 @@ namespace EmailMarketing.ExcelWorkerService.Services
                 throw new InvalidOperationException(e.Message);
             }
         }
-
     }
 }

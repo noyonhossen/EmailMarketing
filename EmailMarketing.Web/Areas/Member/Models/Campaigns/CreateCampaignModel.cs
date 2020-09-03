@@ -90,7 +90,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
             {
                 throw new Exception("Please select at least one group.");
             }
-            
+
             var campaign = new Campaign
             {
                 UserId = _currentUserService.UserId,
@@ -103,7 +103,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 SendEmailAddress = this.SendEmailAddress,
                 SMTPConfigId = this.SMTPConfigId,
                 IsPersonalized = this.isPersonalized,
-                IsProcessing = true
+                IsProcessing = this.IsDraft ? false : true,
             };
 
             

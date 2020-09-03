@@ -38,35 +38,61 @@ function loadDatatable(url,ReportUrl) {
                 "targets": [1],
                 'sortable': true,
                 'searchable': false,
-                "orderData": [1],
+                "orderData": [1]
+            },
+            {
+                "targets": [2],
+                'sortable': true,
+                'searchable': false,
+                "orderData": [2],
                 "render": function (data, type, row, meta) {
                     var lbl = data == "Yes" ? "badge-success" : "badge-danger";
                     return '<span class="badge  ' + lbl + '">' + data + '</span>';
                 }
             },
             {
-                "targets": [2],
-                'sortable': true,
-                'searchable': false,
-                "orderData": [2]
-            }
-            ,
-            {
                 "targets": [3],
                 'sortable': true,
                 'searchable': false,
-                "orderData": [3]
-            }
-            ,
+                "orderData": [3],
+                "render": function (data, type, row, meta) {
+                    var lbl = data == "Yes" ? "badge-success" : "badge-danger";
+                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
+                }
+            },
             {
                 "targets": [4],
                 'sortable': true,
                 'searchable': false,
-                "orderData": [4]
-               
+                "orderData": [4],
+                "render": function (data, type, row, meta) {
+                    var lbl = data == "Yes" ? "badge-success" : "badge-danger";
+                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
+                }
             },
             {
                 "targets": [5],
+                'sortable': true,
+                'searchable': false,
+                "orderData": [5]
+            }
+            ,
+            {
+                "targets": [6],
+                'sortable': true,
+                'searchable': false,
+                "orderData": [6]
+            }
+            ,
+            {
+                "targets": [7],
+                'sortable': true,
+                'searchable': false,
+                "orderData": [7]
+               
+            },
+            {
+                "targets": [8],
                 'sortable': false,
                 'searchable': false,
                 "width": "15%",
@@ -75,7 +101,10 @@ function loadDatatable(url,ReportUrl) {
                     var reportButton = '<a class="text-primary" href="' + ReportUrl + '/' + data + '" title="Details">' +
                         '<i class="icon-info22"></i></a>';
 
-                    return reportButton;
+                    var draftButton = '<a class="text-danger" data-toggle="modal" data-target="#modal-activeDraft" data-id="' + data + '" data-title="' + row[2] + '" href="#" title="Active/InActive">' +
+                        '<i class="icon-file-locked"></i></a>';
+
+                    return reportButton + ' ' + draftButton;
                 }
             }
          
