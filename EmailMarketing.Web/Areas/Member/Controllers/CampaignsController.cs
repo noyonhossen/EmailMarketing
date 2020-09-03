@@ -123,5 +123,23 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             }
             return RedirectToAction("ViewReport");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ActivateCampaign(int id)
+        {
+            var model = new CampaignsModel();
+            try
+            {
+                var result = await model.ActivateCampaign(id);
+                model.Response = new ResponseModel($"{result.Name} Successfully { (result.IsDraft == true ? "Activeted" : "Deactivated") }", ResponseType.Success);
+                _logger.LogInformation($"Campaign - {result.Name} - Active Status updated");
+            }
+            catch(Exception ex)
+            {
+                model.Response = new ResponseModel("Active/InActive Operation failured.", ResponseType.Failure);
+                _logger.LogError(ex.Message);
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

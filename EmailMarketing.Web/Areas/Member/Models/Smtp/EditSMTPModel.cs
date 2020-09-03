@@ -3,6 +3,7 @@ using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.SMTP;
 using EmailMarketing.Framework.Services.SMTP;
 using EmailMarketing.Membership.Services;
+using EmailMarketing.Web.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -34,7 +35,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
         public bool EnableSSL { get; set; }
 
         public EditSMTPModel(ISMTPService smtpService, IApplicationUserService applicationUserService,
-           ICurrentUserService currentUserService) : base(smtpService, applicationUserService, currentUserService)
+           ICurrentUserService currentUserService, ISmtpTestService smtpTestService) : base(smtpService, applicationUserService, currentUserService, smtpTestService)
         {
 
         }

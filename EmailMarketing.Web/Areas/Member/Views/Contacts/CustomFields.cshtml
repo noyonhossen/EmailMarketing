@@ -23,6 +23,7 @@
                     <thead>
                         <tr>
                             <th>Fields</th>
+                            <th>Active</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -52,6 +53,31 @@
 </div>
 <!-- Add or Edit Modal -->
 
+<!-- Active/InActive Field modal -->
+<div id="modal-activeField" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title"><span id="activeFieldTitle">Activate Field</span></h6>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure want to <span id="activeFieldSure">Activate Field</span>?</p>
+                <form id="activeFieldForm" action="@Url.Action("ActivateFieldMap", "Contacts", new { Area = "Member" })" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="activeFieldId" value="" name="id" />
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                <button type="button" id="activeButton" class="btn bg-danger">Yes, <span id="activeFieldButton">Activate</span>!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
     <partial name="~/Views/Bundle/_FormInputScriptsPartial.cshtml" />
@@ -64,13 +90,29 @@
         $(function () {
             var url = '@Url.Action("GetAllFieldMap", "Contacts", new { Area = "Member" })';
             loadDatatable(url);
+
+            //Activate Custom Field
+            $('#modal-activeField').on('show.bs.modal', function (e) {
+                var id = $(e.relatedTarget).attr('data-id');
+                var title = $(e.relatedTarget).attr('data-title');
+                var modal = $("#modal-activeField");
+                $("#activeFieldId").val(id);
+                $("#activeFieldTitle").text(title == 'Yes' ? 'Deactivate Field' : 'Activate Field');
+                $("#activeFieldSure").text(title == 'Yes' ? 'Deactivate Field' : 'Activate Field');
+                $("#activeFieldButton").text(title == 'Yes' ? 'Deactivate' : 'Activate');
+                console.log(title);
+                modal.modal('show');
+            })
+            $("#activeButton").click(function () {
+                $("#activeFieldForm").submit();
+            });
         });
 
-        function delete_Data(id) {
+        @*function delete_Data(id) {
             var url = '@Url.Action("DeleteFieldMap", "Contacts", new { Area = "Member" })';
             var paramData = { id: id };
             delete_confirm(url, paramData);
-        }
+        }*@
 
         function add_edit_Data(id) {
             if (id !== null && id !== '') {

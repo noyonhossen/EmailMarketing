@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace EmailMarketing.ExcelWorkerService.Templates
+namespace EmailMarketing.ExcelExportWorkerService.Templates
 {
     using System.Linq;
     using System.Text;
@@ -18,9 +18,9 @@ namespace EmailMarketing.ExcelWorkerService.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadConfirmationEmailTemplate.tt"
+    #line 1 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelExportWorkerService\Templates\ExcelExportConfirmationTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
-    public partial class FileUploadConfirmationEmailTemplate : FileUploadConfirmationEmailTemplateBase
+    public partial class ExcelExportConfirmationTemplate : ExcelExportConfirmationTemplateBase
     {
 #line hidden
         /// <summary>
@@ -28,158 +28,72 @@ namespace EmailMarketing.ExcelWorkerService.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("<!DOCTYPE html>\r\n<html>\r\n<head>\r\n\t<link rel=\"stylesheet\" type=\"text/css\" href=\"ht" +
-                    "tps://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css\">\r\n</h" +
-                    "ead>\r\n<body style=\"background-color: #c9d6df;margin: 0px;\">\r\n\t<table border=\"0\" " +
-                    "width=\"40%\" style=\"margin:auto;padding:30px;background-color: #F3F3F3;border:1px" +
-                    " solid #3f72af;\">\r\n\t\t<tr>\r\n\t\t\t<td>\r\n\t\t\t\t<table border=\"0\" width=\"100%\">\r\n\t\t\t\t\t<t" +
-                    "r>\r\n\t\t\t\t\t\t<td style=\"width:40px;\">\r\n\t\t\t\t\t\t\t<img src=\"https://img.icons8.com/colo" +
-                    "r/48/000000/filled-sent.png\"/>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<h1 style=\"font-" +
-                    "family: system-ui;font-size:25px;\">Bulk Email System</h1>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<t" +
-                    "d>\r\n\t\t\t\t\t\t\t<p style=\"font-family: system-ui;text-align: right;font-size:13px;\"><" +
-                    "a href=\"https://nicesnippets.com/\" target=\"_blank\" style=\"text-decoration: none;" +
-                    "\">View In Website</a></p>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</td>\r\n\t\t</" +
-                    "tr>\r\n\t\t<tr>\r\n\t\t\t<td>\r\n\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" styl" +
-                    "e=\"text-align:center;width:100%;background-color: #fff;\">\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td " +
-                    "style=\"background-color:#3f72af;height:80px;font-size:50px;color:#fff;\"><img sty" +
-                    "le=\"margin-top:10px;\" src=\"https://img.icons8.com/color/48/000000/secured-letter" +
-                    ".png\"/></i></td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<h2 style=\"font-fami" +
-                    "ly: system-ui;padding-top:25px;font-size:20px;\">Upload Confirmation</h2>\r\n\t\t\t\t\t\t" +
-                    "</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<p style=\"padding:0px 100px;fon" +
-                    "t-family:system-ui;text-align:left;font-weight:bold;font-size:15px;\">\r\n\t\t\t\t\t\t\t\tD" +
-                    "ear ");
+            this.Write("\r\n<!DOCTYPE html>\r\n<html>\r\n<head>\r\n    <link rel=\"stylesheet\" type=\"text/css\" hre" +
+                    "f=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css\">" +
+                    "\r\n</head>\r\n<body style=\"background-color: #c9d6df;margin: 0px;\">\r\n    <table bor" +
+                    "der=\"0\" width=\"750px\" style=\"margin:auto;padding:30px;background-color: #F3F3F3;" +
+                    "border:1px solid #3f72af;\">\r\n        <tr>\r\n            <td>\r\n                <ta" +
+                    "ble border=\"0\" width=\"100%\">\r\n                    <tr>\r\n                        " +
+                    "<td style=\"width:30px;\">\r\n                            <img src=\"https://img.icon" +
+                    "s8.com/color/48/000000/filled-sent.png\" />\r\n                        </td>\r\n     " +
+                    "                   <td>\r\n                            <h1 style=\"font-family: sys" +
+                    "tem-ui;font-size:25px;\">MailTo</h1>\r\n                        </td>\r\n            " +
+                    "            <td>\r\n                            <p style=\"font-family: system-ui;t" +
+                    "ext-align: right;font-size:13px;\"><a href=\"https://nicesnippets.com/\" target=\"_b" +
+                    "lank\" style=\"text-decoration: none;\">View In Website</a></p>\r\n                  " +
+                    "      </td>\r\n                    </tr>\r\n                </table>\r\n            </" +
+                    "td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <table borde" +
+                    "r=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"text-align:center;width:100%;backgr" +
+                    "ound-color: #fff;\">\r\n                    <tr>\r\n                        <td style" +
+                    "=\"background-color:#3f72af;height:80px;font-size:50px;color:#fff;\"><img style=\"m" +
+                    "argin-top:10px;\" src=\"https://img.icons8.com/color/48/000000/secured-letter.png\"" +
+                    " /></i></td>\r\n                    </tr>\r\n                    <tr>\r\n             " +
+                    "           <td>\r\n                            <h2 style=\"font-family: system-ui;p" +
+                    "adding-top:25px;font-size:20px;\">Contact Export Confirmation</h2>\r\n             " +
+                    "           </td>\r\n                    </tr>\r\n                    <tr>\r\n         " +
+                    "               <td>\r\n                            <p style=\"padding:0px 100px;fon" +
+                    "t-family:system-ui;text-align:left;font-weight:bold;font-size:15px;\">\r\n         " +
+                    "                       Dear ");
             
-            #line 44 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadConfirmationEmailTemplate.tt"
+            #line 45 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelExportWorkerService\Templates\ExcelExportConfirmationTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Name));
             
             #line default
             #line hidden
-            this.Write(@",
-							</p>
-							<p style=""padding:0px 100px 10px;font-family: system-ui;text-align:left;font-size:13px;"">
-								Your file has been uploaded successfully. Below is the report of the uploaded file.
-							</p>
-						</td>
-					</tr>
-					<tr>
-						<td>
-              <table style=""text-align:center;background-color: #fff;margin:auto;"">
-                <tr>
-                  <td>
-                    <p style=""font-family: system-ui;text-align:left;font-size:13px;"">
-                      Success Count
-                    </p>
-                  </td>
-									<td>
-                    <p style=""font-family: system-ui;text-align:left;font-size:13px;padding: 0 10px;"">
-                      :
-                    </p>
-                  </td>
-                  <td>
-                    <p style=""font-family: system-ui;text-align:left;font-size:13px;"">
-                      ");
-            
-            #line 67 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadConfirmationEmailTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(SuccessCount));
-            
-            #line default
-            #line hidden
-            this.Write(@"
-                    </p>
-                  </td>
-                </tr>
-								<tr>
-                  <td>
-                    <p style=""font-family: system-ui;text-align:left;font-size:13px;margin-top:0;"">
-                      Exists Count
-                    </p>
-                  </td>
-									<td>
-                    <p style=""font-family: system-ui;text-align:left;font-size:13px;padding: 0 10px;margin-top:0;"">
-                      :
-                    </p>
-                  </td>
-                  <td>
-                    <p style=""font-family: system-ui;text-align:left;font-size:13px;margin-top:0;"">
-                      ");
-            
-            #line 84 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadConfirmationEmailTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(ExistsCount));
-            
-            #line default
-            #line hidden
-            this.Write(@"
-                    </p>
-                  </td>
-                </tr>
-								<tr>
-                  <td>
-                    <p style=""font-family: system-ui;text-align:left;font-size:13px;margin-top:0;"">
-                      Invalid Count
-                    </p>
-                  </td>
-									<td>
-                    <p style=""font-family: system-ui;text-align:left;font-size:13px;padding: 0 10px;margin-top:0;"">
-                      :
-                    </p>
-                  </td>
-                  <td>
-                    <p style=""font-family: system-ui;text-align:left;font-size:13px;margin-top:0;"">
-                      ");
-            
-            #line 101 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadConfirmationEmailTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(InvalidCount));
-            
-            #line default
-            #line hidden
-            this.Write(@"
-                    </p>
-                  </td>
-                </tr>
-              </table>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<p style=""padding:10px 100px 0px;font-family: system-ui;text-align:left;font-size:13px;"">
-							  All the best,<br /> Bulk Email System Team
-							</p>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<table border=""0"" width=""100%"" style=""border-radius: 5px;text-align: center;margin-top:10px;"">
-					<tr>
-						<td>
-							<h3 style=""margin-top:10px;font-family: system-ui;font-size:17px; "">Stay in touch</h3>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div style=""margin-top:0px;"">
-								<a href=""#"" style=""text-decoration: none;""><img src=""https://img.icons8.com/color/35/000000/twitter-circled.png""/></a>
-								<a href=""#"" style=""text-decoration: none;""><img src=""https://img.icons8.com/fluent/35/000000/facebook-new.png""/></a>
-								<a href=""#"" style=""text-decoration: none;""><img src=""https://img.icons8.com/color/35/000000/circled-envelope.png""/></a>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div style=""margin-top: 10px;"">
-								<span style=""font-size:12px;font-family: system-ui;font-size:11px;"">Bulk Email System</span><br>
-								<span style=""font-size:12px;font-family: system-ui;font-size:11px;"">Copyright © 2020 DevSkill Team A</span>
-							</div>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-</body>
-</html>");
+            this.Write(",\r\n                            </p>\r\n                            <p style=\"paddin" +
+                    "g:0px 100px;font-family: system-ui;text-align:left;font-size:13px;\">\r\n          " +
+                    "                      Your contacts have been exported successfully. We have att" +
+                    "ached the Excel file with this email. Please check your attached report below.\r\n" +
+                    "                            </p>\r\n                            <p style=\"padding:" +
+                    "0px 100px;font-family: system-ui;text-align:left;font-size:13px;\">\r\n            " +
+                    "                    If you face any problem, feel free to reply us. \r\n          " +
+                    "                  </p>\r\n                        </td>\r\n                    </tr>" +
+                    "\r\n                    <tr>\r\n                        <td>\r\n                      " +
+                    "      <p style=\"padding:0px 100px;font-family: system-ui;text-align:left;font-si" +
+                    "ze:13px;\">\r\n                                All the best,<br /> MailTo Team\r\n   " +
+                    "                         </p>\r\n                        </td>\r\n                  " +
+                    "  </tr>\r\n                </table>\r\n            </td>\r\n        </tr>\r\n        <tr" +
+                    ">\r\n            <td>\r\n                <table border=\"0\" width=\"100%\" style=\"borde" +
+                    "r-radius: 5px;text-align: center;margin-top:10px;\">\r\n                    <tr>\r\n " +
+                    "                       <td>\r\n                            <h3 style=\"margin-top:1" +
+                    "0px;font-family: system-ui;font-size:17px; \">Stay in touch</h3>\r\n               " +
+                    "         </td>\r\n                    </tr>\r\n                    <tr>\r\n           " +
+                    "             <td>\r\n                            <div style=\"margin-top:0px;\">\r\n  " +
+                    "                              <a href=\"#\" style=\"text-decoration: none;\"><img sr" +
+                    "c=\"https://img.icons8.com/color/35/000000/twitter-circled.png\" /></a>\r\n         " +
+                    "                       <a href=\"#\" style=\"text-decoration: none;\"><img src=\"http" +
+                    "s://img.icons8.com/fluent/35/000000/facebook-new.png\" /></a>\r\n                  " +
+                    "              <a href=\"#\" style=\"text-decoration: none;\"><img src=\"https://img.i" +
+                    "cons8.com/color/35/000000/circled-envelope.png\" /></a>\r\n                        " +
+                    "    </div>\r\n                        </td>\r\n                    </tr>\r\n          " +
+                    "          <tr>\r\n                        <td>\r\n                            <div s" +
+                    "tyle=\"margin-top: 10px;\">\r\n                                <span style=\"font-siz" +
+                    "e:12px;font-family: system-ui;font-size:11px;\">Bulk Email System</span><br>\r\n   " +
+                    "                             <span style=\"font-size:12px;font-family: system-ui;" +
+                    "font-size:11px;\">Copyright © 2020 DevSkill Team A</span>\r\n                      " +
+                    "      </div>\r\n                        </td>\r\n                    </tr>\r\n        " +
+                    "        </table>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</body>\r\n</htm" +
+                    "l>\r\n\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -191,11 +105,11 @@ namespace EmailMarketing.ExcelWorkerService.Templates
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
-    public class FileUploadConfirmationEmailTemplateBase
+    public class ExcelExportConfirmationTemplateBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;
-        //private global::System.CodeDom.Compiler.CompilerErrorCollection errorsField;
+        private global::System.CodeDom.Compiler.CompilerErrorCollection errorsField;
         private global::System.Collections.Generic.List<int> indentLengthsField;
         private string currentIndentField = "";
         private bool endsWithNewline;
@@ -223,17 +137,17 @@ namespace EmailMarketing.ExcelWorkerService.Templates
         /// <summary>
         /// The error collection for the generation process
         /// </summary>
-        //public System.CodeDom.Compiler.CompilerErrorCollection Errors
-        //{
-        //    get
-        //    {
-        //        if ((this.errorsField == null))
-        //        {
-        //            this.errorsField = new global::System.CodeDom.Compiler.CompilerErrorCollection();
-        //        }
-        //        return this.errorsField;
-        //    }
-        //}
+        public System.CodeDom.Compiler.CompilerErrorCollection Errors
+        {
+            get
+            {
+                if ((this.errorsField == null))
+                {
+                    this.errorsField = new global::System.CodeDom.Compiler.CompilerErrorCollection();
+                }
+                return this.errorsField;
+            }
+        }
         /// <summary>
         /// A list of the lengths of each indent that was added with PushIndent
         /// </summary>
@@ -342,22 +256,22 @@ namespace EmailMarketing.ExcelWorkerService.Templates
         /// <summary>
         /// Raise an error
         /// </summary>
-        //public void Error(string message)
-        //{
-        //    System.CodeDom.Compiler.CompilerError error = new global::System.CodeDom.Compiler.CompilerError();
-        //    error.ErrorText = message;
-        //    this.Errors.Add(error);
-        //}
+        public void Error(string message)
+        {
+            System.CodeDom.Compiler.CompilerError error = new global::System.CodeDom.Compiler.CompilerError();
+            error.ErrorText = message;
+            this.Errors.Add(error);
+        }
         /// <summary>
         /// Raise a warning
         /// </summary>
-        //public void Warning(string message)
-        //{
-        //    System.CodeDom.Compiler.CompilerError error = new global::System.CodeDom.Compiler.CompilerError();
-        //    error.ErrorText = message;
-        //    error.IsWarning = true;
-        //    this.Errors.Add(error);
-        //}
+        public void Warning(string message)
+        {
+            System.CodeDom.Compiler.CompilerError error = new global::System.CodeDom.Compiler.CompilerError();
+            error.ErrorText = message;
+            error.IsWarning = true;
+            this.Errors.Add(error);
+        }
         /// <summary>
         /// Increase the indent
         /// </summary>

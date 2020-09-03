@@ -42,7 +42,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                 try
                 {
                     await model.SaveContactsUploadAsync();
-                    model.Response = new ResponseModel("Contacts Upload successful.", ResponseType.Success);
+                    model.Response = new ResponseModel("Contacts Upload successful. Contacts are currently being processed! This could take a few minutes .In the meantime you can continue working in DevSkill Email marketting.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)

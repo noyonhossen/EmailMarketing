@@ -102,7 +102,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateInformation(
             [Bind(nameof(UpdateInformationModel.FullName),
-            nameof(UpdateInformationModel.UserName),
+            nameof(UpdateInformationModel.Email),
             nameof(UpdateInformationModel.PhoneNumber),
             nameof(UpdateInformationModel.DateOfBirth),
             nameof(UpdateInformationModel.Gender),

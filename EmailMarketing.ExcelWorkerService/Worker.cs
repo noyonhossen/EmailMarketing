@@ -49,14 +49,14 @@ namespace EmailMarketing.ExcelWorkerService
                         {
                             if(importResult.SucceedCount > 0)
                             {
-                                var fileUploadConfirmationEmailTemplate = new FileUploadConfirmationEmailTemplate("Shamim", importResult.SucceedCount, importResult.ExistCount, importResult.InvalidCount);
+                                var fileUploadConfirmationEmailTemplate = new FileUploadConfirmationEmailTemplate("Sir", importResult.SucceedCount, importResult.ExistCount, importResult.InvalidCount);
                                 var emailBody = fileUploadConfirmationEmailTemplate.TransformText();
 
                                 await _mailerService.SendEmailAsync(item.SendEmailAddress, "File Upload Confirmation", emailBody);
                             }
                             else
                             {
-                                var fileUploadFailedEmailTemplate = new FileUploadFailedEmailTemplate("Shamim");
+                                var fileUploadFailedEmailTemplate = new FileUploadFailedEmailTemplate("Sir");
                                 var emailBody = fileUploadFailedEmailTemplate.TransformText();
                                 await _mailerService.SendEmailAsync(item.SendEmailAddress, "Upload Failed", emailBody);
                             }

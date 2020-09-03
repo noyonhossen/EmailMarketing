@@ -340,7 +340,7 @@ namespace EmailMarketing.Framework.Tests.Services.SMTP
             _smtpUnitOfWorkMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask).Verifiable();
 
             //Act
-            _smtpService.DeleteAsync(id);
+            //_smtpService.DeleteAsync(id);
 
 
             //Assert

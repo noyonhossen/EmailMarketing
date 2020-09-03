@@ -64,5 +64,6 @@ namespace EmailMarketing.ExcelWorkerService.Services
                 throw new InvalidOperationException(e.Message);
             }
         }
+
     }
 }

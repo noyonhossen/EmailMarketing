@@ -45,7 +45,6 @@
     <Folder Include="Areas\Admin\Models\MemberUsers\" />
     <Folder Include="Areas\Member\Data\" />
     <Folder Include="Extensions\" />
-    <Folder Include="wwwroot\homeTheme\css\" />
     <Folder Include="wwwroot\homeTheme\js\" />
   </ItemGroup>
 

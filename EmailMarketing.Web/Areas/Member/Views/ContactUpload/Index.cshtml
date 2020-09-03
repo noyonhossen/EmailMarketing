@@ -2,37 +2,15 @@
     ViewData["Title"] = "Uploads";
 }
 
-<!-- Page header -->
-<div class="page-header">
-    <div class="page-header-content header-elements-md-inline">
-        <div class="page-title d-flex">
-            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Member" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
-            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-        </div>
-
-        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="ContactUpload" asp-action="UploadContact" asp-area="Member" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-file-upload2 mr-2"></i> <span class="font-weight-semibold">Upload Contacts</span></a>
-        </div>
-    </div>
-</div>
-<!-- /page header -->
 <!-- Content area -->
-<div class="content pt-0">
-
+<div class="content">
+    <div class="pb-3">
+        <h4 class="d-inline">Contact Upload list</h4>
+        <a asp-controller="ContactUpload" asp-action="UploadContact" asp-area="Member" class="btn bg-primary float-right"><i class="icon-file-upload2"></i> <span class="font-weight-semibold">Upload Contacts</span></a>
+    </div>
     <!-- Basic datatable -->
     <div class="card">
-        <div class="card-header header-elements-inline">
-            <h5 class="card-title">Contact Uploads</h5>
-            <div class="header-elements">
-                @*<div class="list-icons">
-                        <a class="list-icons-item" data-action="collapse"></a>
-                        <a class="list-icons-item" data-action="reload"></a>
-                        <a class="list-icons-item" data-action="remove"></a>
-                    </div>*@
-            </div>
-        </div>
-
-        <div class="card-body">
+        <div>
             <partial name="_ActionMessage" model="@Model.Response" />
         </div>
 

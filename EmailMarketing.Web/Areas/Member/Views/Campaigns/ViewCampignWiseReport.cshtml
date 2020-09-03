@@ -3,92 +3,81 @@
     ViewData["Title"] = "Index";
 }
 
-<!-- Page header -->
-<div class="page-header">
-    <div class="page-header-content header-elements-md-inline">
-        <div class="page-title d-flex">
-            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Member" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Member</span></a></h4>
-            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-        </div>
-
-        @*<div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-                <a asp-controller="Campaigns" asp-action="Add" asp-area="Member" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-plus-circle2 mr-2"></i> <span class="font-weight-semibold">New Expense</span></a>
-            </div>*@
-    </div>
-</div>
-<div class="row">
-    <div class="col-6">
-        <table class="table table-borderless" >
-
-            <tr>
-                <td class="col-4 float-left"><h7>Campaign Name : </h7></td>            
-                    <td class="col-8 float-left"><h7>@Model.CampaignName</h7></td>              
-            </tr>
-            <tr>
-                <td class="col-4 float-left"><h7>Sender Email:  </h7></td>              
-                    <td class="col-8 float-left"><h7>@Model.SenderEmail</h7></td>                
-            </tr>
-
-        </table>
-    </div>
-
-    <div class="col-6">
-        <table class="table table-borderless">
-            <tr>
-                <td class="col-4 float-left"><h7>Sender Name: </h7></td>            
-                    <td class="col-8 float-left"><h7>@Model.SenderName</h7></td>                
-            </tr>
-            <tr>
-                <td class="col-4 float-left"><h7>Email Subject: </h7></td>
-                    <td class="col-8 float-left"><h7>@Model.EmailSubject</h7></td>
-            </tr>
-        </table>
-    </div>
-</div>
-
-<!-- /page header -->
-<!-- Content area -->
-<div class="content pt-0">
-    <!-- Basic datatable -->
-    <div class="card">
-        <div class="card-header header-elements-inline">
-            <h5 class="card-title">Campaign Delevery Report</h5>
-            <div class="header-elements">
-                <div class="list-icons">
-                    <a class="list-icons-item" data-action="collapse"></a>
-                    <a class="list-icons-item" data-action="reload"></a>
-                    <a class="list-icons-item" data-action="remove"></a>
+<!-- Main content -->
+<div class="content-wrapper">
+    <!-- Content area -->
+    <div class="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="pb-3">
+                    <h4 class="d-inline">Campaign Delevery Report</h4>
+                    <a asp-area="Member" asp-controller="Campaigns" asp-action="Index" class="btn btn-primary float-right"> <i class="icon-list mr-2"></i> Campaign List</a>
                 </div>
             </div>
         </div>
-
-        <div class="card-body">
-            <partial name="_ActionMessage" model="@Model.Response" />
+        <div class="row">
+            <div class="col-12">
+                <!-- Basic datatable -->
+                <div class="card">
+                    <div class="card-body">
+                        <partial name="_ActionMessage" model="@Model.Response" />
+                    </div>
+                    <!-- Page header -->
+                    <div class="row">
+                        <div class="col-6">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td class="col-3 float-left"><h7>Campaign Name : </h7></td>
+                                    <td class="col-9 float-left"><h7>@Model.CampaignName</h7></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-3 float-left"><h7>Sender Email:  </h7></td>
+                                    <td class="col-9 float-left"><h7>@Model.SenderEmail</h7></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-6">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td class="col-3 float-left"><h7>Sender Name: </h7></td>
+                                    <td class="col-9 float-left"><h7>@Model.SenderName</h7></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-3 float-left"><h7>Email Subject: </h7></td>
+                                    <td class="col-9 float-left"><h7>@Model.EmailSubject</h7></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- /page header -->
+                    <hr />
+                    <input type="hidden" id="campaignId" value="@Model.CampaignId" />
+                    <table class="table" id="campaign-table">
+                        <thead>
+                            <tr>
+                                <th>Contact Email</th>
+                                <th>Delivered</th>
+                                <th>Seen</th>
+                                <th>Seen Date Time</th>
+                                <th>Send Date Time</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <!-- /basic datatable -->
+            </div>
         </div>
-        <input type="hidden" id="campaignId" value="@Model.CampaignId" />
-        <table class="table" id="campaign-table">
-            <thead>
-                <tr>
-                    <th>Contact Email</th>
-                    <th>Delivered</th>
-                    <th>Seen</th>
-                    <th>Seen Date Time</th>
-                    <th>Send Date Time</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
     </div>
-    <!-- /basic datatable -->
+    <!-- /content area -->
 </div>
-
+<!-- /main content -->
 
 @section Scripts {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
     <partial name="~/Views/Bundle/_DatatableScriptsPartial.cshtml" />
     <script src="~/js/ajax-call.js"></script>
     <script src="~/js/project/campaignreport.js"></script>
-
     <script>
         $(function () {
             var campaignId = $('#campaignId').val();
@@ -96,6 +85,4 @@
             loadDatatable(url);
         });
     </script>
-
-
 }

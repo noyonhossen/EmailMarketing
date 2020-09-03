@@ -54,8 +54,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 _currentUserService.UserId,
                 tableModel.SearchText,
                 tableModel.GetSortText(new string[] { "Name" }),
-                tableModel.PageIndex, tableModel.PageSize);
-           
+                tableModel.PageIndex, tableModel.PageSize);           
             
             return new
             {
@@ -66,10 +65,13 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                         select new string[]
                         {
                             item.Name,
+                            string.Join(", ", item.CampaignGroups.Select(x => x.Group.Name)),
+                            item.IsDraft ? "Yes" : "No",
+                            item.IsProcessing ? "Yes" : "No",
+                            item.IsSucceed ? "Yes" : "No",
                             item.CampaignReports.Count().ToString(),
                             item.SendDateTime.ToString(),
-                            item.SendEmailAddress == null?"No Email Address":item.SendEmailAddress.ToString(),
-                            item.IsProcessing ? "Processing" : "Finished",
+                            item.SendEmailAddress == null ? string.Empty : item.SendEmailAddress.ToString(),
                             item.Id.ToString()
 
                         }).ToArray()
@@ -133,6 +135,11 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 downloadQueue.SendEmailAddress = SendEmailAddress;
                 await _campaignREService.SaveDownloadQueueAsync(downloadQueue);
             }
+        }
+
+        public async Task<Campaign> ActivateCampaign(int id)
+        {
+            return await _campaignService.ActivateCampaignAsync(id);
         }
 
         public async Task ExportCampaignWise()

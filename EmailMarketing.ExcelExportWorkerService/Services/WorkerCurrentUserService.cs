@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System;
 using EmailMarketing.Common.Services;
 
-namespace EmailMarketing.ContactExportWorkerService.Services
+namespace EmailMarketing.ExcelExportWorkerService.Services
 {
     public class WorkerCurrentUserService : ICurrentUserService
     {
