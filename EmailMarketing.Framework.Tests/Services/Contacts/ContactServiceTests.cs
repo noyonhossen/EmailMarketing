@@ -721,6 +721,65 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
             _contactRepositoryMock.VerifyAll();
         }
         
+        [Test]
+        public void DeleteRangeAsync_ContactValueMapListNotNull_DeleteContactValueMapList()
+        {
+            //Arrange
+            var contactValueMapslist = new List<ContactValueMap>
+            {
+                new ContactValueMap { Value = "ABCDEF", ContactId = 1,FieldMapId = 1 },
+                new ContactValueMap { Value = "ALFOAO", ContactId = 2,FieldMapId = 2 },
+                new ContactValueMap { Value = "ELAGLA", ContactId = 3,FieldMapId = 3 },
+                new ContactValueMap { Value = "ALJOAJ", ContactId = 4,FieldMapId = 4 },
+            };
+
+            _contactUnitOfWorkMock.Setup(x => x.ContactValueMapRepository).Returns(_contactValueMapRepositoryMock.Object);
+
+            _contactValueMapRepositoryMock.Setup(x => x.DeleteRangeAsync(contactValueMapslist)).Returns(Task.CompletedTask).Verifiable();
+            _contactUnitOfWorkMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask).Verifiable();
+
+            //Act
+            _contactService.DeleteRangeAsync(contactValueMapslist);
+
+            //Assert
+            _contactValueMapRepositoryMock.VerifyAll();
+            _contactUnitOfWorkMock.VerifyAll();
+
+        }
+
+        [Test]
+        public void GetAllGroupsAsync_ValidUserId_GetGroupList()
+        {
+            //Arrange
+
+            var a = new List<ValueTuple<int, string, int>>
+            {
+               (1, "sam", 2 ),
+               (2, "shamim", 3 )
+            };
+            var group = new Group
+            {
+                Id = 1,
+                UserId = Guid.NewGuid(),
+                IsDeleted = false,
+                IsActive = true,
+
+            };
+
+            _groupUnitOfWorkMock.Setup(x => x.GroupRepository).Returns(_groupRepositoryMock.Object);
+            _groupRepositoryMock.Setup(x => x.GetAsync(
+                It.IsAny<Expression<Func<Group, ValueTuple<int, string, int>>>>(),
+                It.Is<Expression<Func<Group, bool>>>(y => y.Compile()(group)),
+                It.IsAny<Func<IQueryable<Group>, IOrderedQueryable<Group>>>(),
+                It.IsAny<Func<IQueryable<Group>, IIncludableQueryable<Group, object>>>(),true
+                )).ReturnsAsync(a).Verifiable();
+
+            //Assert
+            var result = _contactService.GetAllGroupsAsync(group.UserId);
+
+            //Act
+            _groupRepositoryMock.VerifyAll();
+        }
 
 
 
