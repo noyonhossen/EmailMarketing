@@ -53,7 +53,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 
         public async Task SaveContactAsync()
         {
-            if (this.GroupSelectList == null) throw new Exception("Please add atleast one group to add contact.");
+            if (this.GroupSelectList == null) throw new Exception("Please add/activate atleast one group to add contact.");
             else if (!this.GroupSelectList.Any(x => x.IsChecked)) throw new Exception("Please select at least one group.");
             
                 try
