@@ -14,27 +14,24 @@
         </div>
 
         <div class="card">
-            <div>
-
-            </div>
             <div class="card-body">
                 <div class="row pb-3">
                     <div class="col-md-6">
-                        <div class="pl-5 pr-3">
-                            <div class="p-3">
+                        <div class="pr-3">
+                            <div class="">
                                 <div class="row-fluid summary">
                                     <div class="form-group row">
                                         <div class="col-sm-3">
-                                            Email :
+                                            <h5>Email :</h5>
                                         </div>
                                         <div class="col-sm-9">
-                                            @Model.Email
+                                            <h6>@Model.Email</h6>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- Standard Fields -->
                                 <div class="row-fluid summary pb-4">
-                                    <h3 class="mb-0 pb-0">Standard Fields</h3>
+                                    <h5 class="mb-0 pb-0">Standard Fields</h5>
                                 </div>
                                 @foreach (var item in Model.ContactValueMaps.Where(x => x.IsStandard).SelectMany(x => x.Values).ToList())
                                 {
@@ -54,7 +51,7 @@
                                 <hr />
                                 <!-- Custom Fields -->
                                 <div class="row-fluid summary pb-4">
-                                    <h3 class="mb-0 pb-0">Custom Fields</h3>
+                                    <h5 class="mb-0 pb-0">Custom Fields</h5>
                                 </div>
 
                                 @foreach (var item in Model.ContactValueMaps.Where(x => !x.IsStandard).SelectMany(x => x.Values).ToList())
@@ -76,7 +73,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="p-3">
-                            <h3>Groups</h3>
+                            <h5>Groups</h5>
                             <span>@Model.Groups</span>
                         </div>
                     </div>

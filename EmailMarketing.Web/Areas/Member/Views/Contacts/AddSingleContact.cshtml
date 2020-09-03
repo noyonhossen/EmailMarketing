@@ -3,21 +3,14 @@
     ViewData["Title"] = "AddSingleContact";
 }
 
-<div class="page-header">
-    <div class="page-header-content header-elements-md-inline">
-        <div class="page-title d-flex">
-            <h4>Add Contact</h4>
-        </div>
 
-        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="Contacts" asp-action="Index" asp-area="Member" class="btn bg-primary"><i class="icon-list2"></i> <span class="font-weight-semibold">  Contact List</span></a>
-        </div>
-    </div>
-</div>
 
 <!-- Content area -->
 <div class="content">
-
+    <div class="pb-3">
+        <h4 class="d-inline">Add Contact</h4>
+        <a asp-controller="Contacts" asp-action="Index" asp-area="Member" class="btn bg-primary float-right"><i class="icon-list2"></i> <span class="font-weight-semibold">  Contact List</span></a>
+    </div>
     <div class="card">
         <!-- navigation -->
         <!-- /navigation -->
@@ -26,7 +19,7 @@
             <form id="addContactForm" asp-area="Member" asp-controller="Contacts" asp-action="AddSingleContact" method="post">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="pl-5 pr-3">
+                        <div class="pl-2 pr-3">
                             <h4>Provide Contact Details</h4>
                             @Html.AntiForgeryToken()
                             <div class="form-group row">

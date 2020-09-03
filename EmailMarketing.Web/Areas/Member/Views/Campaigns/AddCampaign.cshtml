@@ -9,22 +9,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 }
 
-<div class="page-header">
-    <div class="page-header-content header-elements-md-inline">
-        <div class="page-title d-flex">
-            <h4>Add Campaign</h4>
-        </div>
-
-        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="Campaigns" asp-action="Index" asp-area="Member" class="btn bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Campaign List</span></a>
-        </div>
-    </div>
-</div>
-
 <!-- Main content -->
 <div class="content-wrapper">
     <!-- Content area -->
-    <div class="content pt-0">
+    <div class="content">
+        <div class="pb-3">
+            <h4 class="d-inline">Add Campaign</h4>
+            <a asp-controller="Campaigns" asp-action="Index" asp-area="Member" class="btn bg-primary float-right"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Campaign List</span></a>
+        </div>
         <div class="row">
             <div class="col-12">
                 <partial name="_ActionMessage" model="@Model.Response" />
@@ -33,7 +25,7 @@
                         <form asp-area="Member" asp-controller="Campaigns" asp-action="AddCampaign" method="post">
                             <div asp-validation-summary="All" class="text-danger"></div>
                             <div class="row">
-                                
+
                                 <div class="col-6 ml-2">
                                     <div class="form-group row">
                                         <label asp-for="Name" class="col-sm-3 col-form-label required"></label>
@@ -177,7 +169,7 @@
                                                                     <span class="d-none template_title">@Model.EmailTemplateList[j].EmailTemplateName</span>
 
                                                                     <div class="overlay">
-                                                                        <input type="radio" name="SelectedTemplateId" value="@Model.EmailTemplateList[j].Id" class="mr-2 mt-2 selected_template" data-toggle="tooltip" data-placement="top" title="Select"/>
+                                                                        <input type="radio" name="SelectedTemplateId" value="@Model.EmailTemplateList[j].Id" class="mr-2 mt-2 selected_template" data-toggle="tooltip" data-placement="top" title="Select" />
                                                                         <input type="hidden" class="form-control" asp-for="@Model.EmailTemplateList[j].IsPersonalized" />
                                                                         <input type="hidden" class="form-control" asp-for="@Model.EmailTemplateList[j].Id" />
                                                                         <a class="mr-2 mt-2 selected_template_preview text-info" data-toggle="modal" data-target="#templatebody">

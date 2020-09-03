@@ -1,18 +1,11 @@
 ﻿@model EmailMarketing.Web.Areas.Member.Models.Smtp.EditSMTPModel
-<!-- Page header -->
-<div class="page-header">
-    <div class="page-header-content header-elements-md-inline">
-        <div class="page-title d-flex">
-            <h4>Edit SMTP</h4>
-        </div>
-        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="SMTP" asp-action="Index" asp-area="Member" class="btn bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">SMTP List</span></a>
-        </div>
-    </div>
-</div>
-<!-- /page header -->
+
 <!-- Content area -->
-<div class="content pt-0">
+<div class="content">
+    <div class="pb-3">
+        <h4 class="d-inline">Edit SMTP</h4>
+        <a asp-controller="SMTP" asp-action="Index" asp-area="Member" class="btn bg-primary float-right"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">SMTP List</span></a>
+    </div>
     <div class="card">
         <div class="card-body">
             <partial name="_ActionMessage" model="@Model.Response" />

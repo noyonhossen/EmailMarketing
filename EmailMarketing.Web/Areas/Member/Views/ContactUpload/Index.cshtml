@@ -2,21 +2,12 @@
     ViewData["Title"] = "Index";
 }
 
-<!-- Page header -->
-<div class="page-header">
-    <div class="page-header-content header-elements-md-inline">
-        <div class="page-title d-flex">
-            <h4>Contact Upload list</h4>
-        </div>
-        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="ContactUpload" asp-action="UploadContact" asp-area="Member" class="btn bg-primary"><i class="icon-file-upload2"></i> <span class="font-weight-semibold">Upload Contacts</span></a>
-        </div>
-    </div>
-</div>
-<!-- /page header -->
 <!-- Content area -->
-<div class="content pt-0">
-
+<div class="content">
+    <div class="pb-3">
+        <h4 class="d-inline">Contact Upload list</h4>
+        <a asp-controller="ContactUpload" asp-action="UploadContact" asp-area="Member" class="btn bg-primary float-right"><i class="icon-file-upload2"></i> <span class="font-weight-semibold">Upload Contacts</span></a>
+    </div>
     <!-- Basic datatable -->
     <div class="card">
         <div>

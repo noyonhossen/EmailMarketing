@@ -6,24 +6,15 @@
 {
     <link href="~/memberTheme/css/email_template.css" rel="stylesheet" />
 }
-<!-- Page header -->
-<div class="page-header">
-    <div class="page-header-content header-elements-md-inline">
-        <div class="page-title d-flex">
-            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Member" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
-            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-        </div>
 
-        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="EmailTemplate" asp-action="AddEmailTemplate" asp-area="Member" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-plus-circle2 mr-2"></i> <span class="font-weight-semibold">Create Template</span></a>
-        </div>
-    </div>
-</div>
-<!-- /page header -->
 <!-- Main content -->
 <div class="content-wrapper">
     <!-- Content area -->
-    <div class="content pt-0">
+    <div class="content">
+        <div class="pb-3">
+            <h4 class="d-inline"><a asp-controller="Dashboard" asp-action="Index" asp-area="Member" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
+            <a asp-controller="EmailTemplate" asp-action="AddEmailTemplate" asp-area="Member" class="btn bg-primary float-right"><i class="icon-plus-circle2 mr-2"></i> <span class="font-weight-semibold">Create Template</span></a>
+        </div>
         <div class="row">
             <div class="preview">
                 <div class="form-group row">

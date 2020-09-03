@@ -3,20 +3,12 @@
     ViewData["Title"] = "ViewReport";
 }
 
-<div class="page-header">
-    <div class="page-header-content header-elements-md-inline">
-        <div class="page-title d-flex">
-            <h4><a class="text-black-50" asp-area="Member" asp-controller="Dashboard" asp-action="Index"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
-            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-        </div>
-
-        <div class="header-elements d-none text-center text-md-left">
-            <a asp-controller="Campaigns" asp-action="Index" asp-area="Member" class="btn bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Campaign List</span></a>
-        </div>
-    </div>
-</div>
 <!-- Content area -->
 <div class="content">
+    <div class="pb-3">
+        <h4 class="d-inline"><a class="text-black-50" asp-area="Member" asp-controller="Dashboard" asp-action="Index"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
+        <a asp-controller="Campaigns" asp-action="Index" asp-area="Member" class="btn bg-primary float-right"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Campaign List</span></a>
+    </div>
     <div class="">
         <h1 class="text-center">Report</h1>
         <div class="row">

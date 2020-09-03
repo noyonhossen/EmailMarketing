@@ -3,20 +3,11 @@
     ViewData["Title"] = "Export";
 }
 
-    <div class="page-header">
-        <div class="page-header-content header-elements-md-inline">
-            <div class="page-title d-flex">
-                <h4><a class="text-black-50" asp-area="Member" asp-controller="Dashboard" asp-action="Index"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
-                <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-            </div>
-
-            <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-                <a asp-area="Member" asp-controller="Contacts" asp-action="Index" class="btn bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Contact List</span></a>
-            </div>
-        </div>
-    </div>
 <div class="content">
-    
+    <div class="pb-3">
+        <h4 class="d-inline"><a class="text-black-50" asp-area="Member" asp-controller="Dashboard" asp-action="Index"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
+        <a asp-area="Member" asp-controller="Contacts" asp-action="Index" class="btn bg-primary float-right"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Contact List</span></a>
+    </div>
     <div class="row">
 
         <div class="col-md-6 m-auto text-center">
