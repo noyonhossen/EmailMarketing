@@ -136,6 +136,11 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
             }
         }
 
+        public async Task<Campaign> ActivateCampaign(int id)
+        {
+            return await _campaignService.ActivateCampaignAsync(id);
+        }
+
         public async Task ExportCampaignWise()
         {
             if (IsSendEmailNotifyForCampaignwise == true && string.IsNullOrWhiteSpace(SendEmailAddress))

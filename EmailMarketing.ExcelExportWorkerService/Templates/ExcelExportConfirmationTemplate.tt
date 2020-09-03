@@ -19,7 +19,7 @@
                             <img src="https://img.icons8.com/color/48/000000/filled-sent.png" />
                         </td>
                         <td>
-                            <h1 style="font-family: system-ui;font-size:25px;">Bulk Email System</h1>
+                            <h1 style="font-family: system-ui;font-size:25px;">MailTo</h1>
                         </td>
                         <td>
                             <p style="font-family: system-ui;text-align: right;font-size:13px;"><a href="https://nicesnippets.com/" target="_blank" style="text-decoration: none;">View In Website</a></p>
@@ -58,7 +58,7 @@
                     <tr>
                         <td>
                             <p style="padding:0px 100px;font-family: system-ui;text-align:left;font-size:13px;">
-                                All the best,<br /> Bulk Email System Team
+                                All the best,<br /> MailTo Team
                             </p>
                         </td>
                     </tr>

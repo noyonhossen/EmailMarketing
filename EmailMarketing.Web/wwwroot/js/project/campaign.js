@@ -101,7 +101,10 @@ function loadDatatable(url,ReportUrl) {
                     var reportButton = '<a class="text-primary" href="' + ReportUrl + '/' + data + '" title="Details">' +
                         '<i class="icon-info22"></i></a>';
 
-                    return reportButton;
+                    var draftButton = '<a class="text-danger" data-toggle="modal" data-target="#modal-activeDraft" data-id="' + data + '" data-title="' + row[2] + '" href="#" title="Active/InActive">' +
+                        '<i class="icon-file-locked"></i></a>';
+
+                    return reportButton + ' ' + draftButton;
                 }
             }
          

@@ -1,6 +1,8 @@
 ﻿@model CampaignsModel
+@using EmailMarketing.Membership.Extensions
 @{
     ViewData["Title"] = "ViewReport";
+    var loggedInUserEmail = User.Identity.Email();
 }
 
 <!-- Main content -->
@@ -18,7 +20,7 @@
                             <div class="pb-3">
                                 <div class="dropdown-item form-check form-check-switchery ">
                                     <label class="form-check-label">
-                                        <input type="checkbox" id="email-checkbox-all-campaign" class="form-input-switchery" asp-for="IsSendEmailNotifyForAll">
+                                        <input type="checkbox" id="email-checkbox-all-campaign" class="form-input-switchery" checked asp-for="IsSendEmailNotifyForAll">
                                         <span class="font-weight-bold">Send file via email once export is complete</span>
                                     </label>
                                 </div>
@@ -27,7 +29,7 @@
                                 <div class="form-group row">
                                     <label for="inputEmail" class="col-md-3 col-form-label">Email</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" name="inputEmail-all-campaign" placeholder="Enter Email" asp-for="SendEmailAddress">
+                                        <input type="text" class="form-control" name="inputEmail-all-campaign" placeholder="Enter Email" asp-for="SendEmailAddress" value="@loggedInUserEmail">
                                     </div>
                                 </div>
                             </div>
@@ -44,7 +46,7 @@
                             <div class="pb-3">
                                 <div class="dropdown-item form-check form-check-switchery ">
                                     <label class="form-check-label">
-                                        <input type="checkbox" class="form-input-switchery" id="email-checkbox-campaign-wise" asp-for="IsSendEmailNotifyForCampaignwise">
+                                        <input type="checkbox" class="form-input-switchery" id="email-checkbox-campaign-wise" checked asp-for="IsSendEmailNotifyForCampaignwise">
                                         <span class="font-weight-bold">Send file via email once export is complete</span>
                                     </label>
                                 </div>
@@ -53,7 +55,7 @@
                                 <div class="form-group row">
                                     <label for="inputEmail" class="col-md-3 col-form-label">Email</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" name="inputEmail-campaign-wise" placeholder="Enter Email" asp-for="SendEmailAddress">
+                                        <input type="text" class="form-control" name="inputEmail-campaign-wise" placeholder="Enter Email" asp-for="SendEmailAddress" value="@loggedInUserEmail">
                                     </div>
                                 </div>
                             </div>

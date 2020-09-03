@@ -35,19 +35,19 @@ namespace EmailMarketing.EmailSendingWorkerService.Templates
                     " solid #3f72af;\">\r\n\t\t<tr>\r\n\t\t\t<td>\r\n\t\t\t\t<table border=\"0\" width=\"100%\">\r\n\t\t\t\t\t<t" +
                     "r>\r\n\t\t\t\t\t\t<td style=\"width:40px;\">\r\n\t\t\t\t\t\t\t<img src=\"https://img.icons8.com/colo" +
                     "r/48/000000/filled-sent.png\"/>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<h1 style=\"font-" +
-                    "family: system-ui;font-size:25px;\">Bulk Email System</h1>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<t" +
-                    "d>\r\n\t\t\t\t\t\t\t<p style=\"font-family: system-ui;text-align: right;font-size:13px;\"><" +
-                    "a href=\"https://nicesnippets.com/\" target=\"_blank\" style=\"text-decoration: none;" +
-                    "\">View In Website</a></p>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</td>\r\n\t\t</" +
-                    "tr>\r\n\t\t<tr>\r\n\t\t\t<td>\r\n\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" styl" +
-                    "e=\"text-align:center;width:100%;background-color: #fff;\">\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td " +
-                    "style=\"background-color:#3f72af;height:80px;font-size:50px;color:#fff;\"><img sty" +
-                    "le=\"margin-top:10px;\" src=\"https://img.icons8.com/color/48/000000/secured-letter" +
-                    ".png\"/></i></td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<h2 style=\"font-fami" +
-                    "ly: system-ui;padding-top:25px;font-size:20px;\">Campaign Sent Confirmation</h2>\r" +
-                    "\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<p style=\"padding:0px 10" +
-                    "0px;font-family:system-ui;text-align:left;font-weight:bold;font-size:15px;\">\r\n\t\t" +
-                    "\t\t\t\t\t\tDear ");
+                    "family: system-ui;font-size:25px;\">MailTo</h1>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t" +
+                    "<p style=\"font-family: system-ui;text-align: right;font-size:13px;\"><a href=\"htt" +
+                    "ps://nicesnippets.com/\" target=\"_blank\" style=\"text-decoration: none;\">View In W" +
+                    "ebsite</a></p>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t\t<tr>" +
+                    "\r\n\t\t\t<td>\r\n\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"text-ali" +
+                    "gn:center;width:100%;background-color: #fff;\">\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td style=\"back" +
+                    "ground-color:#3f72af;height:80px;font-size:50px;color:#fff;\"><img style=\"margin-" +
+                    "top:10px;\" src=\"https://img.icons8.com/color/48/000000/secured-letter.png\"/></i>" +
+                    "</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<h2 style=\"font-family: system-" +
+                    "ui;padding-top:25px;font-size:20px;\">Campaign Sent Confirmation</h2>\r\n\t\t\t\t\t\t</td" +
+                    ">\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<p style=\"padding:0px 100px;font-fa" +
+                    "mily:system-ui;text-align:left;font-weight:bold;font-size:15px;\">\r\n\t\t\t\t\t\t\t\tDear " +
+                    "");
             
             #line 44 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.EmailSendingWorkerService\Templates\DemoEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Name));
@@ -108,25 +108,55 @@ namespace EmailMarketing.EmailSendingWorkerService.Templates
             
             #line default
             #line hidden
-            this.Write("\r\n                    </p>\r\n                  </td>\r\n                </tr>\r\n     " +
-                    "         </table>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<p sty" +
-                    "le=\"padding:10px 100px 0px;font-family: system-ui;text-align:left;font-size:13px" +
-                    ";\">\r\n\t\t\t\t\t\t\t  All the best,<br /> Bulk Email System Team\r\n\t\t\t\t\t\t\t</p>\r\n\t\t\t\t\t\t</t" +
-                    "d>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>\r\n\t\t\t\t<table bor" +
-                    "der=\"0\" width=\"100%\" style=\"border-radius: 5px;text-align: center;margin-top:10p" +
-                    "x;\">\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<h3 style=\"margin-top:10px;font-family: syst" +
-                    "em-ui;font-size:17px; \">Stay in touch</h3>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n" +
-                    "\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<div style=\"margin-top:0px;\">\r\n\t\t\t\t\t\t\t\t<a href=\"#\" style=\"tex" +
-                    "t-decoration: none;\"><img src=\"https://img.icons8.com/color/35/000000/twitter-ci" +
-                    "rcled.png\"/></a>\r\n\t\t\t\t\t\t\t\t<a href=\"#\" style=\"text-decoration: none;\"><img src=\"h" +
-                    "ttps://img.icons8.com/fluent/35/000000/facebook-new.png\"/></a>\r\n\t\t\t\t\t\t\t\t<a href=" +
-                    "\"#\" style=\"text-decoration: none;\"><img src=\"https://img.icons8.com/color/35/000" +
-                    "000/circled-envelope.png\"/></a>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<t" +
-                    "r>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<div style=\"margin-top: 10px;\">\r\n\t\t\t\t\t\t\t\t<span style=\"fon" +
-                    "t-size:12px;font-family: system-ui;font-size:11px;\">Bulk Email System</span><br>" +
-                    "\r\n\t\t\t\t\t\t\t\t<span style=\"font-size:12px;font-family: system-ui;font-size:11px;\">Co" +
-                    "pyright © 2020 DevSkill Team A</span>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t" +
-                    "\t\t\t</table>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t</table>\r\n</body>\r\n</html>\r\n");
+            this.Write(@"
+                    </p>
+                  </td>
+                </tr>
+              </table>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p style=""padding:10px 100px 0px;font-family: system-ui;text-align:left;font-size:13px;"">
+							  All the best,<br /> MailTo Team
+							</p>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table border=""0"" width=""100%"" style=""border-radius: 5px;text-align: center;margin-top:10px;"">
+					<tr>
+						<td>
+							<h3 style=""margin-top:10px;font-family: system-ui;font-size:17px; "">Stay in touch</h3>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style=""margin-top:0px;"">
+								<a href=""#"" style=""text-decoration: none;""><img src=""https://img.icons8.com/color/35/000000/twitter-circled.png""/></a>
+								<a href=""#"" style=""text-decoration: none;""><img src=""https://img.icons8.com/fluent/35/000000/facebook-new.png""/></a>
+								<a href=""#"" style=""text-decoration: none;""><img src=""https://img.icons8.com/color/35/000000/circled-envelope.png""/></a>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style=""margin-top: 10px;"">
+								<span style=""font-size:12px;font-family: system-ui;font-size:11px;"">Bulk Email System</span><br>
+								<span style=""font-size:12px;font-family: system-ui;font-size:11px;"">Copyright © 2020 DevSkill Team A</span>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
+");
             return this.GenerationEnvironment.ToString();
         }
     }

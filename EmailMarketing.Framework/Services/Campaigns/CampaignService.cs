@@ -104,7 +104,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
         public async Task<IList<Campaign>> GetAllProcessingCampaign()
         {
             return (await _campaignUnitOfWork.CampaignRepository.GetAsync(x => x,
-                                                                          x => x.IsProcessing == true && x.SendDateTime <= DateTime.Now,
+                                                                          x => !x.IsDeleted && x.IsActive && x.IsProcessing == true && x.SendDateTime <= DateTime.Now,
                                                                           null,
                                                                           null,
                                                                           true));
@@ -134,6 +134,17 @@ namespace EmailMarketing.Framework.Services.Campaigns
 
             await _campaignUnitOfWork.CampaignRepository.UpdateAsync(existingCampaign);
             await _campaignUnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<Campaign> ActivateCampaignAsync(int id)
+        {
+            var existingCampaign = await _campaignUnitOfWork.CampaignRepository.GetByIdAsync(id);
+            existingCampaign.IsDraft = !existingCampaign.IsDraft;
+            existingCampaign.IsProcessing = !existingCampaign.IsDraft;
+
+            await _campaignUnitOfWork.CampaignRepository.UpdateAsync(existingCampaign);
+            await _campaignUnitOfWork.SaveChangesAsync();
+            return existingCampaign;
         }
     }
 }

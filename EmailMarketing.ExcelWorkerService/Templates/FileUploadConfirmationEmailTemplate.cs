@@ -35,19 +35,18 @@ namespace EmailMarketing.ExcelWorkerService.Templates
                     " solid #3f72af;\">\r\n\t\t<tr>\r\n\t\t\t<td>\r\n\t\t\t\t<table border=\"0\" width=\"100%\">\r\n\t\t\t\t\t<t" +
                     "r>\r\n\t\t\t\t\t\t<td style=\"width:40px;\">\r\n\t\t\t\t\t\t\t<img src=\"https://img.icons8.com/colo" +
                     "r/48/000000/filled-sent.png\"/>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<h1 style=\"font-" +
-                    "family: system-ui;font-size:25px;\">Bulk Email System</h1>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<t" +
-                    "d>\r\n\t\t\t\t\t\t\t<p style=\"font-family: system-ui;text-align: right;font-size:13px;\"><" +
-                    "a href=\"https://nicesnippets.com/\" target=\"_blank\" style=\"text-decoration: none;" +
-                    "\">View In Website</a></p>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</td>\r\n\t\t</" +
-                    "tr>\r\n\t\t<tr>\r\n\t\t\t<td>\r\n\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" styl" +
-                    "e=\"text-align:center;width:100%;background-color: #fff;\">\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td " +
-                    "style=\"background-color:#3f72af;height:80px;font-size:50px;color:#fff;\"><img sty" +
-                    "le=\"margin-top:10px;\" src=\"https://img.icons8.com/color/48/000000/secured-letter" +
-                    ".png\"/></i></td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<h2 style=\"font-fami" +
-                    "ly: system-ui;padding-top:25px;font-size:20px;\">Upload Confirmation</h2>\r\n\t\t\t\t\t\t" +
-                    "</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<p style=\"padding:0px 100px;fon" +
-                    "t-family:system-ui;text-align:left;font-weight:bold;font-size:15px;\">\r\n\t\t\t\t\t\t\t\tD" +
-                    "ear ");
+                    "family: system-ui;font-size:25px;\">MailTo</h1>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t" +
+                    "<p style=\"font-family: system-ui;text-align: right;font-size:13px;\"><a href=\"htt" +
+                    "ps://nicesnippets.com/\" target=\"_blank\" style=\"text-decoration: none;\">View In W" +
+                    "ebsite</a></p>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t\t<tr>" +
+                    "\r\n\t\t\t<td>\r\n\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"text-ali" +
+                    "gn:center;width:100%;background-color: #fff;\">\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td style=\"back" +
+                    "ground-color:#3f72af;height:80px;font-size:50px;color:#fff;\"><img style=\"margin-" +
+                    "top:10px;\" src=\"https://img.icons8.com/color/48/000000/secured-letter.png\"/></i>" +
+                    "</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<h2 style=\"font-family: system-" +
+                    "ui;padding-top:25px;font-size:20px;\">Upload Confirmation</h2>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t" +
+                    "\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<p style=\"padding:0px 100px;font-family:sy" +
+                    "stem-ui;text-align:left;font-weight:bold;font-size:15px;\">\r\n\t\t\t\t\t\t\t\tDear ");
             
             #line 44 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadConfirmationEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Name));
@@ -142,7 +141,7 @@ namespace EmailMarketing.ExcelWorkerService.Templates
 					<tr>
 						<td>
 							<p style=""padding:10px 100px 0px;font-family: system-ui;text-align:left;font-size:13px;"">
-							  All the best,<br /> Bulk Email System Team
+							  All the best,<br /> MailTo Team
 							</p>
 						</td>
 					</tr>
@@ -195,7 +194,7 @@ namespace EmailMarketing.ExcelWorkerService.Templates
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;
-        //private global::System.CodeDom.Compiler.CompilerErrorCollection errorsField;
+        private global::System.CodeDom.Compiler.CompilerErrorCollection errorsField;
         private global::System.Collections.Generic.List<int> indentLengthsField;
         private string currentIndentField = "";
         private bool endsWithNewline;
@@ -223,17 +222,17 @@ namespace EmailMarketing.ExcelWorkerService.Templates
         /// <summary>
         /// The error collection for the generation process
         /// </summary>
-        //public System.CodeDom.Compiler.CompilerErrorCollection Errors
-        //{
-        //    get
-        //    {
-        //        if ((this.errorsField == null))
-        //        {
-        //            this.errorsField = new global::System.CodeDom.Compiler.CompilerErrorCollection();
-        //        }
-        //        return this.errorsField;
-        //    }
-        //}
+        public System.CodeDom.Compiler.CompilerErrorCollection Errors
+        {
+            get
+            {
+                if ((this.errorsField == null))
+                {
+                    this.errorsField = new global::System.CodeDom.Compiler.CompilerErrorCollection();
+                }
+                return this.errorsField;
+            }
+        }
         /// <summary>
         /// A list of the lengths of each indent that was added with PushIndent
         /// </summary>
@@ -342,22 +341,22 @@ namespace EmailMarketing.ExcelWorkerService.Templates
         /// <summary>
         /// Raise an error
         /// </summary>
-        //public void Error(string message)
-        //{
-        //    System.CodeDom.Compiler.CompilerError error = new global::System.CodeDom.Compiler.CompilerError();
-        //    error.ErrorText = message;
-        //    this.Errors.Add(error);
-        //}
+        public void Error(string message)
+        {
+            System.CodeDom.Compiler.CompilerError error = new global::System.CodeDom.Compiler.CompilerError();
+            error.ErrorText = message;
+            this.Errors.Add(error);
+        }
         /// <summary>
         /// Raise a warning
         /// </summary>
-        //public void Warning(string message)
-        //{
-        //    System.CodeDom.Compiler.CompilerError error = new global::System.CodeDom.Compiler.CompilerError();
-        //    error.ErrorText = message;
-        //    error.IsWarning = true;
-        //    this.Errors.Add(error);
-        //}
+        public void Warning(string message)
+        {
+            System.CodeDom.Compiler.CompilerError error = new global::System.CodeDom.Compiler.CompilerError();
+            error.ErrorText = message;
+            error.IsWarning = true;
+            this.Errors.Add(error);
+        }
         /// <summary>
         /// Increase the indent
         /// </summary>

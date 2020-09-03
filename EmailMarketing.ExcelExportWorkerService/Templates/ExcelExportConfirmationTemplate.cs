@@ -37,23 +37,23 @@ namespace EmailMarketing.ExcelExportWorkerService.Templates
                     "<td style=\"width:40px;\">\r\n                            <img src=\"https://img.icon" +
                     "s8.com/color/48/000000/filled-sent.png\" />\r\n                        </td>\r\n     " +
                     "                   <td>\r\n                            <h1 style=\"font-family: sys" +
-                    "tem-ui;font-size:25px;\">Bulk Email System</h1>\r\n                        </td>\r\n " +
-                    "                       <td>\r\n                            <p style=\"font-family: " +
-                    "system-ui;text-align: right;font-size:13px;\"><a href=\"https://nicesnippets.com/\"" +
-                    " target=\"_blank\" style=\"text-decoration: none;\">View In Website</a></p>\r\n       " +
-                    "                 </td>\r\n                    </tr>\r\n                </table>\r\n   " +
-                    "         </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <" +
-                    "table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"text-align:center;width:" +
-                    "100%;background-color: #fff;\">\r\n                    <tr>\r\n                      " +
-                    "  <td style=\"background-color:#3f72af;height:80px;font-size:50px;color:#fff;\"><i" +
-                    "mg style=\"margin-top:10px;\" src=\"https://img.icons8.com/color/48/000000/secured-" +
-                    "letter.png\" /></i></td>\r\n                    </tr>\r\n                    <tr>\r\n  " +
-                    "                      <td>\r\n                            <h2 style=\"font-family: " +
-                    "system-ui;padding-top:25px;font-size:20px;\">Contact Export Confirmation</h2>\r\n  " +
-                    "                      </td>\r\n                    </tr>\r\n                    <tr>" +
-                    "\r\n                        <td>\r\n                            <p style=\"padding:0p" +
-                    "x 100px;font-family:system-ui;text-align:left;font-weight:bold;font-size:15px;\">" +
-                    "\r\n                                Dear ");
+                    "tem-ui;font-size:25px;\">MailTo</h1>\r\n                        </td>\r\n            " +
+                    "            <td>\r\n                            <p style=\"font-family: system-ui;t" +
+                    "ext-align: right;font-size:13px;\"><a href=\"https://nicesnippets.com/\" target=\"_b" +
+                    "lank\" style=\"text-decoration: none;\">View In Website</a></p>\r\n                  " +
+                    "      </td>\r\n                    </tr>\r\n                </table>\r\n            </" +
+                    "td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <table borde" +
+                    "r=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"text-align:center;width:100%;backgr" +
+                    "ound-color: #fff;\">\r\n                    <tr>\r\n                        <td style" +
+                    "=\"background-color:#3f72af;height:80px;font-size:50px;color:#fff;\"><img style=\"m" +
+                    "argin-top:10px;\" src=\"https://img.icons8.com/color/48/000000/secured-letter.png\"" +
+                    " /></i></td>\r\n                    </tr>\r\n                    <tr>\r\n             " +
+                    "           <td>\r\n                            <h2 style=\"font-family: system-ui;p" +
+                    "adding-top:25px;font-size:20px;\">Contact Export Confirmation</h2>\r\n             " +
+                    "           </td>\r\n                    </tr>\r\n                    <tr>\r\n         " +
+                    "               <td>\r\n                            <p style=\"padding:0px 100px;fon" +
+                    "t-family:system-ui;text-align:left;font-weight:bold;font-size:15px;\">\r\n         " +
+                    "                       Dear ");
             
             #line 45 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelExportWorkerService\Templates\ExcelExportConfirmationTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Name));
@@ -85,29 +85,29 @@ namespace EmailMarketing.ExcelExportWorkerService.Templates
                     "                    </tr>\r\n                    <tr>\r\n                        <td" +
                     ">\r\n                            <p style=\"padding:0px 100px;font-family: system-u" +
                     "i;text-align:left;font-size:13px;\">\r\n                                All the bes" +
-                    "t,<br /> Bulk Email System Team\r\n                            </p>\r\n             " +
-                    "           </td>\r\n                    </tr>\r\n                </table>\r\n         " +
-                    "   </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <table " +
-                    "border=\"0\" width=\"100%\" style=\"border-radius: 5px;text-align: center;margin-top:" +
-                    "10px;\">\r\n                    <tr>\r\n                        <td>\r\n               " +
-                    "             <h3 style=\"margin-top:10px;font-family: system-ui;font-size:17px; \"" +
-                    ">Stay in touch</h3>\r\n                        </td>\r\n                    </tr>\r\n " +
-                    "                   <tr>\r\n                        <td>\r\n                         " +
-                    "   <div style=\"margin-top:0px;\">\r\n                                <a href=\"#\" st" +
-                    "yle=\"text-decoration: none;\"><img src=\"https://img.icons8.com/color/35/000000/tw" +
-                    "itter-circled.png\" /></a>\r\n                                <a href=\"#\" style=\"te" +
-                    "xt-decoration: none;\"><img src=\"https://img.icons8.com/fluent/35/000000/facebook" +
-                    "-new.png\" /></a>\r\n                                <a href=\"#\" style=\"text-decora" +
-                    "tion: none;\"><img src=\"https://img.icons8.com/color/35/000000/circled-envelope.p" +
-                    "ng\" /></a>\r\n                            </div>\r\n                        </td>\r\n " +
-                    "                   </tr>\r\n                    <tr>\r\n                        <td>" +
-                    "\r\n                            <div style=\"margin-top: 10px;\">\r\n                 " +
-                    "               <span style=\"font-size:12px;font-family: system-ui;font-size:11px" +
-                    ";\">Bulk Email System</span><br>\r\n                                <span style=\"fo" +
-                    "nt-size:12px;font-family: system-ui;font-size:11px;\">Copyright © 2020 DevSkill T" +
-                    "eam A</span>\r\n                            </div>\r\n                        </td>\r" +
-                    "\n                    </tr>\r\n                </table>\r\n            </td>\r\n       " +
-                    " </tr>\r\n    </table>\r\n</body>\r\n</html>\r\n\r\n");
+                    "t,<br /> MailTo Team\r\n                            </p>\r\n                        " +
+                    "</td>\r\n                    </tr>\r\n                </table>\r\n            </td>\r\n " +
+                    "       </tr>\r\n        <tr>\r\n            <td>\r\n                <table border=\"0\" " +
+                    "width=\"100%\" style=\"border-radius: 5px;text-align: center;margin-top:10px;\">\r\n  " +
+                    "                  <tr>\r\n                        <td>\r\n                          " +
+                    "  <h3 style=\"margin-top:10px;font-family: system-ui;font-size:17px; \">Stay in to" +
+                    "uch</h3>\r\n                        </td>\r\n                    </tr>\r\n            " +
+                    "        <tr>\r\n                        <td>\r\n                            <div sty" +
+                    "le=\"margin-top:0px;\">\r\n                                <a href=\"#\" style=\"text-d" +
+                    "ecoration: none;\"><img src=\"https://img.icons8.com/color/35/000000/twitter-circl" +
+                    "ed.png\" /></a>\r\n                                <a href=\"#\" style=\"text-decorati" +
+                    "on: none;\"><img src=\"https://img.icons8.com/fluent/35/000000/facebook-new.png\" /" +
+                    "></a>\r\n                                <a href=\"#\" style=\"text-decoration: none;" +
+                    "\"><img src=\"https://img.icons8.com/color/35/000000/circled-envelope.png\" /></a>\r" +
+                    "\n                            </div>\r\n                        </td>\r\n            " +
+                    "        </tr>\r\n                    <tr>\r\n                        <td>\r\n         " +
+                    "                   <div style=\"margin-top: 10px;\">\r\n                            " +
+                    "    <span style=\"font-size:12px;font-family: system-ui;font-size:11px;\">Bulk Ema" +
+                    "il System</span><br>\r\n                                <span style=\"font-size:12p" +
+                    "x;font-family: system-ui;font-size:11px;\">Copyright © 2020 DevSkill Team A</span" +
+                    ">\r\n                            </div>\r\n                        </td>\r\n          " +
+                    "          </tr>\r\n                </table>\r\n            </td>\r\n        </tr>\r\n   " +
+                    " </table>\r\n</body>\r\n</html>\r\n\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
