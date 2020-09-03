@@ -53,7 +53,7 @@ namespace EmailMarketing.Framework.Services.SMTP
 
         public async Task AddAsync(SMTPConfig entity)
         {
-            var isExists = await _smtpUnitOfWork.SMTPRepository.IsExistsAsync(x => x.Server == entity.Server && x.Id != entity.Id);
+            var isExists = await _smtpUnitOfWork.SMTPRepository.IsExistsAsync(x => x.UserId == entity.UserId && x.SenderEmail == entity.SenderEmail && x.Id != entity.Id);
             if (isExists)
                 throw new DuplicationException(nameof(entity.Server));
 
@@ -63,7 +63,7 @@ namespace EmailMarketing.Framework.Services.SMTP
 
         public async Task UpdateAsync(SMTPConfig entity)
         {
-            var isExists = await _smtpUnitOfWork.SMTPRepository.IsExistsAsync(x => x.Server == entity.Server && x.Id != entity.Id);
+            var isExists = await _smtpUnitOfWork.SMTPRepository.IsExistsAsync(x => x.UserId == entity.UserId && x.SenderEmail == entity.SenderEmail && x.Id != entity.Id);
             if (isExists)
                 throw new DuplicationException(nameof(entity.Server));
 

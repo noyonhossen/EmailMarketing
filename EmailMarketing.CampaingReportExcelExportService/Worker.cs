@@ -45,40 +45,47 @@ namespace EmailMarketing.CampaingReportExcelExportService
 
                     foreach (var item in result)
                     {
-                        if (Directory.Exists(item.FileUrl) == false)
+                        try
                         {
-                            DirectoryInfo directory = Directory.CreateDirectory(item.FileUrl);
+                            if (Directory.Exists(item.FileUrl) == false)
+                            {
+                                DirectoryInfo directory = Directory.CreateDirectory(item.FileUrl);
+                            }
+
+                            var importResult = await _campaignReportExportService.GetDownloadQueueByIdAsync(item.Id);
+
+                            if (item.DownloadQueueFor == DownloadQueueFor.CampaignAllReportExport)
+                            {
+                                await _campaignReportExportService.ExcelExportForAllCampaignAsync(item);
+                            }
+                            else if (item.DownloadQueueFor == DownloadQueueFor.CampaignDetailsReportExport)
+                            {
+                                await _campaignReportExportService.ExcelExportForCampaignWiseAsync(item);
+                            }
+                            importResult.IsProcessing = false;
+                            importResult.IsSucceed = true;
+                            importResult.LastModified = DateTime.Now;
+                            importResult.LastModifiedBy = item.UserId;
+                            await _campaignReportExportService.UpdateDownloadQueueAync(importResult);
+
+                            _logger.LogInformation($"Successfully Exported. FileUrl: {item.FileUrl}+{item.FileName}");
+
+
+                            //Sending Email
+                            if (item.IsSendEmailNotify)
+                            {
+                                var url = Path.Combine(item.FileUrl, item.FileName);
+
+                                var emailSubject = "Contact Export Confirmation";
+                                var campReportExportTemplate = new CampReportExportTemplate("Sir");
+                                var emailBody = campReportExportTemplate.TransformText();
+
+                                await _exportMailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, emailBody, url);
+                            }
                         }
-
-                        var importResult = await _campaignReportExportService.GetDownloadQueueByIdAsync(item.Id);
-
-                        if (item.DownloadQueueFor == DownloadQueueFor.CampaignAllReportExport)
+                        catch (Exception ex)
                         {
-                            await _campaignReportExportService.ExcelExportForAllCampaignAsync(item);
-                        }
-                        else if (item.DownloadQueueFor == DownloadQueueFor.CampaignDetailsReportExport)
-                        {
-                            await _campaignReportExportService.ExcelExportForCampaignWiseAsync(item);
-                        }
-                        importResult.IsProcessing = false;
-                        importResult.IsSucceed = true;
-                        importResult.LastModified = DateTime.Now;
-                        importResult.LastModifiedBy = item.UserId;
-                        await _campaignReportExportService.UpdateDownloadQueueAync(importResult);
-
-                        _logger.LogInformation($"Successfully Exported. FileUrl: {item.FileUrl}+{item.FileName}");
-
-
-                        //Sending Email
-                        if (item.IsSendEmailNotify)
-                        {
-                            var url = Path.Combine(item.FileUrl, item.FileName);
-
-                            var emailSubject = "Contact Export Confirmation";
-                            var campReportExportTemplate = new CampReportExportTemplate("Sir");
-                            var emailBody = campReportExportTemplate.TransformText();
-
-                            await _exportMailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, emailBody, url);
+                            _logger.LogError($"Campaign export failed : {item.FileUrl} - {item.FileName}");
                         }
                     }
                 }

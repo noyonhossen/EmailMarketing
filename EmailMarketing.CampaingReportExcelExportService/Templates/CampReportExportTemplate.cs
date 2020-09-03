@@ -18,7 +18,7 @@ namespace EmailMarketing.CampaingReportExcelExportService.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
+    #line 1 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class CampReportExportTemplate : CampReportExportTemplateBase
     {
@@ -28,6 +28,7 @@ namespace EmailMarketing.CampaingReportExcelExportService.Templates
         /// </summary>
         public virtual string TransformText()
         {
+            this.Write("\r\n\r\n");
             this.Write("\r\n<!DOCTYPE html>\r\n<html>\r\n<head>\r\n    <link rel=\"stylesheet\" type=\"text/css\" hre" +
                     "f=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css\">" +
                     "\r\n</head>\r\n<body style=\"background-color: #c9d6df;margin: 0px;\">\r\n    <table bor" +
@@ -55,7 +56,7 @@ namespace EmailMarketing.CampaingReportExcelExportService.Templates
                     "00px;font-family:system-ui;text-align:left;font-weight:bold;font-size:15px;\">\r\n " +
                     "                               Dear ");
             
-            #line 45 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
+            #line 47 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Name));
             
             #line default

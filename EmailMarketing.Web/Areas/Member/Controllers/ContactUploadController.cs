@@ -42,7 +42,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                 try
                 {
                     await model.SaveContactsUploadAsync();
-                    model.Response = new ResponseModel("Contacts Upload successful. Contacts are currently being processed! This could take a few minutes .In the meantime you can continue working in DevSkill Email marketting.", ResponseType.Success);
+                    model.Response = new ResponseModel("Contacts Upload successful. Contacts are currently being processed! This could take a few minutes .In the meantime you can continue working in MailTo.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
@@ -64,7 +64,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             {
                 var result = await model.FinishUploadAsync(id);
                 model.Response = new ResponseModel($"{result.FileName} { (result.IsProcessing == true ? "successfully  Finished" : "in Processing")}.", ResponseType.Success);
-                _logger.LogInformation("ConatactUpload Processing Status updated");
+                _logger.LogInformation($"ConatactUpload - {result.FileName} - Processing Status updated");
             }
             catch (Exception ex)
             {

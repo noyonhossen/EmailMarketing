@@ -119,7 +119,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
                     worksheet.Cell(currentRow, 2).Value = report.IsDelivered == true ? "Yes" : "No";
                     worksheet.Cell(currentRow, 3).Value = report.IsSeen == true ? "Yes" : "No";
                     worksheet.Cell(currentRow, 4).Value = "" + report.SendDateTime.ToString();
-                    worksheet.Cell(currentRow, 5).Value = report.SeenDateTime.ToString();
+                    worksheet.Cell(currentRow, 5).Value = report.SeenDateTime == null ? "" : report.SeenDateTime.ToString();
                 }
                 worksheet.Columns("1", "5").AdjustToContents();
 
@@ -164,7 +164,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
                         worksheet.Cell(currentRow, 2).Value = report.IsDelivered == true ? "Yes" : "No";
                         worksheet.Cell(currentRow, 3).Value = report.IsSeen == true ? "Yes" : "No";
                         worksheet.Cell(currentRow, 4).Value = "" + report.SendDateTime.ToString();
-                        worksheet.Cell(currentRow, 5).Value = report.SeenDateTime.ToString();
+                        worksheet.Cell(currentRow, 5).Value = report.SeenDateTime == null ? "" : report.SeenDateTime.ToString();
                     }
                     worksheet.Columns("1", "5").AdjustToContents();
 

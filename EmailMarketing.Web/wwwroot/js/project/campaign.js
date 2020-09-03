@@ -56,7 +56,7 @@ function loadDatatable(url,ReportUrl) {
                 'searchable': false,
                 "orderData": [3],
                 "render": function (data, type, row, meta) {
-                    var lbl = data == "Yes" ? "badge-success" : "badge-danger";
+                    var lbl = data == "Finished" ? "badge-success" : "badge-warning";
                     return '<span class="badge  ' + lbl + '">' + data + '</span>';
                 }
             },
@@ -82,17 +82,9 @@ function loadDatatable(url,ReportUrl) {
                 'sortable': true,
                 'searchable': false,
                 "orderData": [6]
-            }
-            ,
-            {
-                "targets": [7],
-                'sortable': true,
-                'searchable': false,
-                "orderData": [7]
-               
             },
             {
-                "targets": [8],
+                "targets": [7],
                 'sortable': false,
                 'searchable': false,
                 "width": "15%",
@@ -101,8 +93,8 @@ function loadDatatable(url,ReportUrl) {
                     var reportButton = '<a class="text-primary" href="' + ReportUrl + '/' + data + '" title="Details">' +
                         '<i class="icon-info22"></i></a>';
 
-                    var draftButton = '<a class="text-danger" data-toggle="modal" data-target="#modal-activeDraft" data-id="' + data + '" data-title="' + row[2] + '" href="#" title="Active/InActive">' +
-                        '<i class="icon-file-locked"></i></a>';
+                    var draftButton = '<a class="text-danger" data-toggle="modal" data-target="#modal-activeDraft" data-id="' + data + '" data-title="' + row[3] + '" href="#" title="Finish/Process">' +
+                        '<i class="icon-blocked"></i></a>';
 
                     return reportButton + ' ' + draftButton;
                 }

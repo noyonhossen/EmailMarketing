@@ -1,6 +1,8 @@
 ﻿@model CreateCampaignModel
+@using EmailMarketing.Membership.Extensions
 @{
     ViewData["Title"] = "Add Campaign";
+    var loggedInUserEmail = User.Identity.Email();
 }
 
 @section Styles
@@ -99,7 +101,7 @@
                                     <div class="form-group row">
                                         <label asp-for="SendEmailAddress" class="col-sm-3 col-form-label"></label>
                                         <div class="col-sm-9">
-                                            <input asp-for="SendEmailAddress" class="form-control" />
+                                            <input asp-for="SendEmailAddress" class="form-control" value="@loggedInUserEmail" />
                                             <p class="pt-1">[You can send to multiple email by using comma between emails.]</p>
                                             <span asp-validation-for="SendEmailAddress" class="text-danger"></span>
                                         </div>

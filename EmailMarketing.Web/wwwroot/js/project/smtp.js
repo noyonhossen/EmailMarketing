@@ -84,7 +84,7 @@
                         '<i class="icon-pencil7"></i></a>';
 
                     var activeButton = '<a class="text-danger" data-toggle="modal" data-target="#modal-active" data-id="' + data + '" data-title="' + row[6] + '" href="#" title="Active/InActive">' +
-                        '<i class="icon-user-block"></i></a>';
+                        '<i class="icon-blocked"></i></a>';
 
                     return editButton + ' ' + activeButton;
                 }

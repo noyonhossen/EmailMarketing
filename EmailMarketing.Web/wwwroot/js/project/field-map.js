@@ -56,7 +56,7 @@ function loadDatatable(url) {
                         '<i class="icon-pencil7"></i></a>';
 
                     var deleteButton = '<a class="text-danger" data-toggle="modal" data-target="#modal-activeField" data-id="' + data + '" data-title="' + row[1] + '" href="#" title="Active/InActive">' +
-                        '<i class="icon-user-block"></i></a>';
+                        '<i class="icon-blocked"></i></a>';
 
                     return editButton + ' ' + deleteButton;
                 }

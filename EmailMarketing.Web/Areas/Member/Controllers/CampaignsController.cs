@@ -131,12 +131,12 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             try
             {
                 var result = await model.ActivateCampaign(id);
-                model.Response = new ResponseModel($"{result.Name} Successfully { (result.IsDraft == true ? "Activeted" : "Deactivated") }", ResponseType.Success);
-                _logger.LogInformation($"Campaign - {result.Name} - Active Status updated");
+                model.Response = new ResponseModel($"{result.Name} { (result.IsProcessing == true ? "successfully  Finished" : "in Processing") }", ResponseType.Success);
+                _logger.LogInformation($"Campaign - {result.Name} - Processing Status updated");
             }
             catch(Exception ex)
             {
-                model.Response = new ResponseModel("Active/InActive Operation failured.", ResponseType.Failure);
+                model.Response = new ResponseModel("Campaign Processing Status Operation failured.", ResponseType.Failure);
                 _logger.LogError(ex.Message);
             }
             return RedirectToAction("Index");

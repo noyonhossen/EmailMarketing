@@ -67,11 +67,10 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                             item.Name,
                             string.Join(", ", item.CampaignGroups.Select(x => x.Group.Name)),
                             item.IsDraft ? "Yes" : "No",
-                            item.IsProcessing ? "Yes" : "No",
+                            item.IsProcessing ? "Processing" : "Finished",
                             item.IsSucceed ? "Yes" : "No",
                             item.CampaignReports.Count().ToString(),
                             item.SendDateTime.ToString(),
-                            item.SendEmailAddress == null ? string.Empty : item.SendEmailAddress.ToString(),
                             item.Id.ToString()
 
                         }).ToArray()
@@ -105,7 +104,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                             item.Contact.Email.ToString(),
                             item.IsDelivered ? "Yes" : "No",
                             item.IsSeen ? "Yes" : "No",
-                            item.SeenDateTime.ToString(),
+                            item.SeenDateTime == null ? "" : item.SeenDateTime.ToString(),
                             item.SendDateTime.ToString()
 
                         }).ToArray()

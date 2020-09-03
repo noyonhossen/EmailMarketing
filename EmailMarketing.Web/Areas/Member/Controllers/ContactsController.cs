@@ -142,12 +142,12 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                         _logger.LogInformation("Single Contact Added Successfully");
                         model.Response = new ResponseModel(msg, ResponseType.Success);
                     }
-                    //return RedirectToAction("Index");
+                    return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
                     //var msg = "Failed to Add Contact";
-                    model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
+                    model.Response = new ResponseModel("Failed to Add Contact", ResponseType.Failure);
                     _logger.LogError(ex.Message);
                 }
             }
@@ -192,7 +192,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
+                    model.Response = new ResponseModel("Failed to update Contact", ResponseType.Failure);
                     _logger.LogError(ex.Message);
                 }
             }

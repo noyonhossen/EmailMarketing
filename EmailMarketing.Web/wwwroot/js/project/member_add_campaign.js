@@ -10,12 +10,12 @@ $(function () {
     $('#checkAll').click(function (event) {
         if (this.checked) {
             // Iterate each checkbox
-            $(':checkbox').each(function () {
+            $(':checkbox.group-select').each(function () {
                 this.checked = true;
                 $(this).val(this.checked);
             });
         } else {
-            $(':checkbox').each(function () {
+            $(':checkbox.group-select').each(function () {
                 this.checked = false;
                 $(this).val(this.checked);
             });

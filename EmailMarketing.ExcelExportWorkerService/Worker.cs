@@ -68,19 +68,22 @@ namespace EmailMarketing.ExcelExportWorkerService
                             //Sending Email
                             if (item.IsSendEmailNotify)
                             {
-                                var url = Path.Combine(item.FileUrl, item.FileName);
+                                //var url = Path.Combine(item.FileUrl, item.FileName);
+                                var url = item.FileUrl;
 
                                 var emailSubject = "Contact Export Confirmation";
                                 var excelExportConfirmationTemplate = new ExcelExportConfirmationTemplate("Sir", url);
                                 var emailBody = excelExportConfirmationTemplate.TransformText();
 
                                 await _exportMailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, emailBody, url);
+
+                                _logger.LogInformation($"Successfully Mail Send. FileUrl: {item.FileUrl}");
                             }
                         }
                         catch (Exception ex)
                         {
                             _logger.LogError($"Failed to Export Contact: Error: {ex.Message}");
-                            continue;
+                            //continue;
                             //throw new Exception($"Failed to export contact.{item.FileUrl}");
                         }
                     }

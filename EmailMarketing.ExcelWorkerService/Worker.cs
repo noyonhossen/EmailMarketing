@@ -42,24 +42,33 @@ namespace EmailMarketing.ExcelWorkerService
 
                     foreach (var item in result)
                     {
-                        _logger.LogInformation($"item values - file url is = {item.FileUrl}");
-                        var importResult = await _contactUploadService.ContactExcelImportAsync(item.Id);
-
-                        if(item.IsSendEmailNotify)
+                        try
                         {
-                            if(importResult.SucceedCount > 0)
-                            {
-                                var fileUploadConfirmationEmailTemplate = new FileUploadConfirmationEmailTemplate("Sir", importResult.SucceedCount, importResult.ExistCount, importResult.InvalidCount);
-                                var emailBody = fileUploadConfirmationEmailTemplate.TransformText();
+                            _logger.LogInformation($"item values - file url is = {item.FileUrl}");
+                            var importResult = await _contactUploadService.ContactExcelImportAsync(item.Id);
 
-                                await _mailerService.SendEmailAsync(item.SendEmailAddress, "File Upload Confirmation", emailBody);
-                            }
-                            else
+                            if(item.IsSendEmailNotify)
                             {
-                                var fileUploadFailedEmailTemplate = new FileUploadFailedEmailTemplate("Sir");
-                                var emailBody = fileUploadFailedEmailTemplate.TransformText();
-                                await _mailerService.SendEmailAsync(item.SendEmailAddress, "Upload Failed", emailBody);
+                                if(importResult.SucceedCount > 0)
+                                {
+                                    var fileUploadConfirmationEmailTemplate = new FileUploadConfirmationEmailTemplate("Sir", importResult.SucceedCount, importResult.ExistCount, importResult.InvalidCount);
+                                    var emailBody = fileUploadConfirmationEmailTemplate.TransformText();
+
+                                    await _mailerService.SendEmailAsync(item.SendEmailAddress, "File Upload Confirmation", emailBody);
+                                }
+                                else
+                                {
+                                    var fileUploadFailedEmailTemplate = new FileUploadFailedEmailTemplate("Sir");
+                                    var emailBody = fileUploadFailedEmailTemplate.TransformText();
+                                    await _mailerService.SendEmailAsync(item.SendEmailAddress, "Upload Failed", emailBody);
+                                }
                             }
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError($"Failed to Import Contact: Error: {ex.Message}");
+                            //continue;
+                            //throw new Exception($"Failed to Import contact.{item.FileUrl}");
                         }
                     }
                     _logger.LogInformation("item values is done showing");
