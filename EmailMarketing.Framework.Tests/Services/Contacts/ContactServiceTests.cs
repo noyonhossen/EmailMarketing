@@ -180,6 +180,31 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
             _contactRepositoryMock.VerifyAll();
         }
         [Test]
+        public void GroupContactCountAsync_ContactNotNull_CountContact()
+        {
+            //Arrange
+            int id = 1;
+          
+            var contact = new Contact
+            {
+                Id = 1,
+                Email = "teama@gmail.com"
+            };
+
+
+            _contactUnitOfWorkMock.Setup(x => x.ContactRepository).Returns(_contactRepositoryMock.Object);
+
+           // _contactRepositoryMock.Setup(x => x.GetCountAsync()).ReturnAsync(null).Verifiable();
+            _contactUnitOfWorkMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask).Verifiable();
+
+            //Act
+            _contactService.GroupContactCountAsync(contact.Id);
+
+            //Assert
+            _contactRepositoryMock.VerifyAll();
+            _contactUnitOfWorkMock.VerifyAll();
+        }
+        [Test]
         public void AddContact_ContactNotNull_AddContact()
         {
             //Arrange
@@ -204,7 +229,81 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
             _contactRepositoryMock.VerifyAll();
             _contactUnitOfWorkMock.VerifyAll();
         }
+        [Test]
+        public void AddContactValueMapsList_ContactValueMapsListNotNull_AddContactValueMapsList()
+        {
+            //Arrange
+            var contactValueMapslist = new List<ContactValueMap>
+            {
+                new ContactValueMap { Value = "ABCDEF", ContactId = 1,FieldMapId = 1 },
+                new ContactValueMap { Value = "ALFOAO", ContactId = 2,FieldMapId = 2 },
+                new ContactValueMap { Value = "ELAGLA", ContactId = 3,FieldMapId = 3 },
+                new ContactValueMap { Value = "ALJOAJ", ContactId = 4,FieldMapId = 4 },
+            };
 
+            _contactUnitOfWorkMock.Setup(x => x.ContactValueMapRepository).Returns(_contactValueMapRepositoryMock.Object);
+
+            _contactValueMapRepositoryMock.Setup(x => x.AddRangeAsync(contactValueMapslist)).Returns(Task.CompletedTask).Verifiable();
+            _contactUnitOfWorkMock .Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask).Verifiable();
+
+            //Act
+            _contactService.AddContacValueMaps(contactValueMapslist);
+
+            //Assert
+            _contactValueMapRepositoryMock.VerifyAll();
+            _contactUnitOfWorkMock.VerifyAll();
+        }
+        
+        [Test]
+        public void AddContactGroupList_AddContactGroupListNotNull_AddContactGroupList()
+        {
+            //Arrange
+            var contactGrouplist = new List<ContactGroup>
+            {
+                new ContactGroup { ContactId = 1,GroupId = 1 },
+                new ContactGroup { ContactId = 2,GroupId = 2 },
+                new ContactGroup { ContactId = 3,GroupId = 3 },
+                new ContactGroup { ContactId = 4,GroupId = 4 },
+            };
+
+            _contactUnitOfWorkMock.Setup(x => x.GroupContactRepository).Returns(_groupContactRepositoryMock.Object);
+
+            _groupContactRepositoryMock.Setup(x => x.AddRangeAsync(contactGrouplist)).Returns(Task.CompletedTask).Verifiable();
+            _contactUnitOfWorkMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask).Verifiable();
+
+            //Act
+            _contactService.AddContactGroups(contactGrouplist);
+
+            //Assert
+            _contactValueMapRepositoryMock.VerifyAll();
+            _contactUnitOfWorkMock.VerifyAll();
+        }
+
+        [Test]
+        public void GetGroupByIdAsync_ValidGroupId_GetContactObject()
+        {
+            //Arrange
+            int id = 1;
+
+        var contact = new Contact
+        {
+            Id = 1,
+            Email = "teama@gmail.com"
+        };
+
+        _contactUnitOfWorkMock.Setup(x => x.ContactRepository)
+                .Returns(_contactRepositoryMock.Object);
+
+        _contactRepositoryMock.Setup(x => x.AddAsync(contact)).Returns(Task.CompletedTask).Verifiable();
+        _contactUnitOfWorkMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask).Verifiable();
+
+        //Act
+        _contactService.AddContact(contact);
+
+            //Assert
+            _contactRepositoryMock.VerifyAll();
+            _contactUnitOfWorkMock.VerifyAll();
+        }
         [Test]
         public void GetContactValueMapByIdAsync_ForContactValueMapId_ReturnsContactValueMapObject()
         {
