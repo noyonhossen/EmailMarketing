@@ -127,7 +127,7 @@ namespace EmailMarketing.ExcelExportWorkerService
                                 var url = Path.Combine(item.FileUrl, item.FileName);
 
                                 var emailSubject = "Contact Export Confirmation";
-                                var excelExportConfirmationTemplate = new ExcelExportConfirmationTemplate("Shamim", url);
+                                var excelExportConfirmationTemplate = new ExcelExportConfirmationTemplate("Sir", url);
                                 var emailBody = excelExportConfirmationTemplate.TransformText();
 
                                 await _exportMailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, emailBody, url);

@@ -72,7 +72,7 @@ namespace EmailMarketing.CampaingReportExcelExportService
                             var url = Path.Combine(item.FileUrl, item.FileName);
 
                             var emailSubject = "Contact Export Confirmation";
-                            var campReportExportTemplate = new CampReportExportTemplate("Shamim");
+                            var campReportExportTemplate = new CampReportExportTemplate("Sir");
                             var emailBody = campReportExportTemplate.TransformText();
 
                             await _exportMailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, emailBody, url);
