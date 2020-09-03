@@ -170,7 +170,7 @@ namespace EmailMarketing.Framework.Services.Contacts
             var contactGroup = await _contactUnitOfWork.GroupContactRepository.GetAsync(
                 x => x, x => x.ContactId == contactId, null, null, true);
             if (contactGroup == null) throw new NotFoundException(nameof(ContactGroup), contactId);
-
+              
             await _contactUnitOfWork.GroupContactRepository.DeleteRangeAsync(contactGroup);
             await _contactUnitOfWork.SaveChangesAsync();
         }

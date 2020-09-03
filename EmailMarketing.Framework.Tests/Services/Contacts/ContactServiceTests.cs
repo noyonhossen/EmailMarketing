@@ -780,7 +780,85 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
             //Act
             _groupRepositoryMock.VerifyAll();
         }
+       
+        [Test]
+        public void DeleteContactGroupAsync_ValidContactGroupId_DeleteContact()
+        {
+            //Arrange
+            var contactGrouplist = new List<ContactGroup>
+            {
+                new ContactGroup { ContactId = 1,GroupId = 1 },
+                new ContactGroup { ContactId = 2,GroupId = 2 },
+                new ContactGroup { ContactId = 3,GroupId = 3 },
+                new ContactGroup { ContactId = 4,GroupId = 4 },
+            };
+            var contactGroup = new ContactGroup()
+            {
+                Id = 1,
+                GroupId = 2,
+                ContactId = 1
+            };
 
+            _contactUnitOfWorkMock.Setup(x => x.GroupContactRepository).Returns(_groupContactRepositoryMock.Object);
+      
+            _groupContactRepositoryMock.Setup(x => x.GetAsync(
+               It.Is<Expression<Func<ContactGroup, ContactGroup>>>(y => y.Compile()(new ContactGroup()) is ContactGroup),
+               It.Is<Expression<Func<ContactGroup, bool>>>(y => y.Compile()(contactGroup)),
+               null,
+               null,
+               true
+              )).ReturnsAsync(contactGrouplist).Verifiable();
+
+            _groupContactRepositoryMock.Setup(x => x.DeleteRangeAsync(contactGrouplist)).Returns(Task.CompletedTask).Verifiable();
+            _contactUnitOfWorkMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask).Verifiable();
+
+            //Act
+            _contactService.DeleteContactGroupAsync(contactGroup.Id);
+
+            //Assert
+            _groupContactRepositoryMock.VerifyAll();
+            _contactUnitOfWorkMock.VerifyAll();
+        
+        }
+        [Test]
+        public void DeleteContactGroupAsync_InValidContactGroupId_ThrowExceptions()
+        {
+            //Arrange
+            var contactGrouplist = new List<ContactGroup>
+            {
+                new ContactGroup { ContactId = 1,GroupId = 1 },
+                new ContactGroup { ContactId = 2,GroupId = 2 },
+                new ContactGroup { ContactId = 3,GroupId = 3 },
+                new ContactGroup { ContactId = 4,GroupId = 4 },
+            };
+            var contactGroup = new ContactGroup()
+            {
+                Id = 1,
+                GroupId = 2,
+                ContactId = 1
+            };
+            List<ContactGroup> contactGroups = new List<ContactGroup>();
+            contactGroups = null;
+
+            _contactUnitOfWorkMock.Setup(x => x.GroupContactRepository).Returns(_groupContactRepositoryMock.Object);
+
+            _groupContactRepositoryMock.Setup(x => x.GetAsync(
+               It.Is<Expression<Func<ContactGroup, ContactGroup>>>(y => y.Compile()(new ContactGroup()) is ContactGroup),
+               It.Is<Expression<Func<ContactGroup, bool>>>(y => y.Compile()(contactGroup)),
+               null,
+               null,
+               true
+              )).ReturnsAsync(contactGroups).Verifiable();
+
+            //Act
+            Should.Throw<NotFoundException>(() =>
+             _contactService.DeleteContactGroupAsync(contactGroup.Id)
+            );
+  
+            //Assert
+            _groupContactRepositoryMock.VerifyAll();
+
+        }
 
 
     }
