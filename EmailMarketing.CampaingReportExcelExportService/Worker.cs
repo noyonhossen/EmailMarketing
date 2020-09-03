@@ -63,6 +63,7 @@ namespace EmailMarketing.CampaingReportExcelExportService
                         importResult.IsProcessing = false;
                         importResult.IsSucceed = true;
                         await _campaignReportExportService.UpdateDownloadQueueAync(importResult);
+                        _logger.LogInformation($"Successfully Exported. FileUrl: {item.FileUrl}+{item.FileName}");
                     }
                 }
                 catch (Exception ex)

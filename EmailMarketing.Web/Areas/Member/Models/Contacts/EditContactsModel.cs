@@ -16,6 +16,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         [Required]
         public string Email { get; set; }
         public int Id { get; set; }
+        public bool IsContactExist { get; set; }
         public List<ContactValueTextModel> GroupSelectList { get; set; }
         public List<ContactValueTextModel> ContactValueMaps { get; set; }
         public List<ContactValueTextModel> ContactValueMapsSelected { get; set; }
@@ -32,7 +33,12 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         {
 
         }
-
+        public async Task<bool> IsContactExistAsync()
+        {
+            var existingContact = await _contactService.IsContactExist(Email, _currentUserService.UserId);
+            IsContactExist = true;
+            return existingContact;
+        }
         public async Task LoadContactByIdAsync(int id)
         {
             var contact = await _contactService.GetByIdAsync(id);
@@ -110,6 +116,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 
         public async Task UpdateAsync()
         {
+            if (await _contactService.IsContactExist(Email, _currentUserService.UserId)) throw new Exception("Email Already exist");
             if (!this.GroupSelectList.Any(x => x.IsChecked)) throw new Exception("Please select at least one group.");
 
             try

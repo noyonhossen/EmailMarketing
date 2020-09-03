@@ -2,6 +2,7 @@
 using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.Campaigns;
+using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.UnitOfWorks.Campaigns;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -31,7 +32,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
         {
             var result = await _campaignReportExportUnitOfWork.DownloadQueueRepository.GetAsync(
                 x => x,
-                x => x.IsProcessing == true && x.IsSucceed == false,
+                x => (x.IsProcessing == true || x.IsSucceed == false) && (x.DownloadQueueFor == DownloadQueueFor.CampaignAllReportExport || x.DownloadQueueFor == DownloadQueueFor.CampaignDetailsReportExport),
                 null,
                 x=> x.Include(y=> y.DownloadQueueSubEntities),
                 true);

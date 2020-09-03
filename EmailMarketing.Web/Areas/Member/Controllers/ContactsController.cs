@@ -162,18 +162,28 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             {
                 try
                 {
-                    await model.UpdateAsync();
-                    _logger.LogInformation("Contact Successfully Updated.");
-                    model.Response = new ResponseModel("Contact Updated",ResponseType.Success);
-                    return RedirectToAction("Index");
+                    var existingContact = await model.IsContactExistAsync();
+                    if (existingContact == true)
+                    {
+                        model.Response = new ResponseModel("Contact already exist. Please provide another email.", ResponseType.Failure);
+                    }
+                    else
+                    {
+                        await model.UpdateAsync();
+                        _logger.LogInformation("Contact Successfully Updated.");
+                        model.Response = new ResponseModel("Contact Updated", ResponseType.Success);
+                        return RedirectToAction("Index");
+                    }
                 }
                  catch (DuplicationException ex)
                 {
                     model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
+                    _logger.LogError(ex.Message);
                 }
                 catch (Exception ex)
                 {
                     model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
+                    _logger.LogError(ex.Message);
                 }
             }
             await model.LoadContactByIdAsync(model.Id);

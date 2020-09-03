@@ -1,6 +1,7 @@
 ﻿using ClosedXML.Excel;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.Contacts;
+using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.Repositories.Contacts;
 using EmailMarketing.Framework.UnitOfWorks.Contacts;
 using EmailMarketing.Framework.UnitOfWorks.Groups;
@@ -70,7 +71,12 @@ namespace EmailMarketing.Framework.Services.Contacts
         }
         public async Task<IList<DownloadQueue>> GetDownloadQueueAsync()
         {
-            var result = await _contactExportUnitOfWork.DownloadQueueRepository.GetAsync(x => x, x => (x.IsProcessing == true || x.IsSucceed == false), null, x => x.Include(x => x.DownloadQueueSubEntities), true);
+            var result = await _contactExportUnitOfWork.DownloadQueueRepository.GetAsync(
+                x => x, 
+                x => (x.IsProcessing == true || x.IsSucceed == false) && (x.DownloadQueueFor == DownloadQueueFor.ContactAllExport || x.DownloadQueueFor == DownloadQueueFor.ContactGroupWiseExport), 
+                null, 
+                x => x.Include(x => x.DownloadQueueSubEntities), 
+                true);
             return result;
         }
 
@@ -195,7 +201,7 @@ namespace EmailMarketing.Framework.Services.Contacts
                     worksheet.Columns("1", columnCount.ToString()).AdjustToContents();
 
                 }
-                using (var stream = new FileStream(Path.Combine(downloadQueue.FileUrl, downloadQueue.FileName), FileMode.Create))
+                using (var stream = new FileStream(downloadQueue.FileUrl, FileMode.Create))
                 {
                     workbook.SaveAs(stream);
                 }

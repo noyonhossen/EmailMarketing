@@ -66,10 +66,10 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                         select new string[]
                         {
                             item.Name,
-                            item.IsProcessing ? "Yes" : "No",
                             item.CampaignReports.Count().ToString(),
                             item.SendDateTime.ToString(),
                             item.SendEmailAddress == null?"No Email Address":item.SendEmailAddress.ToString(),
+                            item.IsProcessing ? "Processing" : "Finished",
                             item.Id.ToString()
 
                         }).ToArray()
@@ -127,6 +127,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 downloadQueue.IsProcessing = true;
                 downloadQueue.IsSucceed = false;
                 downloadQueue.UserId = _currentUserService.UserId;
+                downloadQueue.Created = DateTime.Now;
                 downloadQueue.DownloadQueueFor = DownloadQueueFor.CampaignAllReportExport;
                 downloadQueue.IsSendEmailNotify = IsSendEmailNotifyForAll;
                 downloadQueue.SendEmailAddress = SendEmailAddress;
@@ -148,6 +149,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 downloadQueue.IsProcessing = true;
                 downloadQueue.IsSucceed = false;
                 downloadQueue.UserId = _currentUserService.UserId;
+                downloadQueue.Created = DateTime.Now;
                 downloadQueue.DownloadQueueFor = DownloadQueueFor.CampaignDetailsReportExport;
                 downloadQueue.IsSendEmailNotify = IsSendEmailNotifyForCampaignwise;
                 downloadQueue.SendEmailAddress = SendEmailAddress;

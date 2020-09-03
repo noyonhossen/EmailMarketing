@@ -36,34 +36,33 @@ function loadDatatable(url,ReportUrl) {
             },
             {
                 "targets": [1],
-                'sortable': true,
+                'sortable': false,
                 'searchable': false,
                 "orderData": [1],
-                "render": function (data, type, row, meta) {
-                    var lbl = data == "Yes" ? "badge-success" : "badge-danger";
-                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
-                }
             },
             {
                 "targets": [2],
-                'sortable': true,
+                'sortable': false,
                 'searchable': false,
                 "orderData": [2]
             }
             ,
             {
                 "targets": [3],
-                'sortable': true,
+                'sortable': false,
                 'searchable': false,
                 "orderData": [3]
             }
             ,
             {
                 "targets": [4],
-                'sortable': true,
+                'sortable': false,
                 'searchable': false,
-                "orderData": [4]
-               
+                "orderData": [4],
+                "render": function (data, type, row, meta) {
+                    var lbl = data == "Finished" ? "badge-success" : "badge-warning";
+                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
+                }
             },
             {
                 "targets": [5],

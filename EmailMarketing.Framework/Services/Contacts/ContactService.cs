@@ -40,6 +40,7 @@ namespace EmailMarketing.Framework.Services.Contacts
         {
             var columnsMap = new Dictionary<string, Expression<Func<Entities.Contacts.Contact, object>>>()
             {
+                ["Group"] = v => v.Email,
                 ["Email"] = v => v.Email
             };
 

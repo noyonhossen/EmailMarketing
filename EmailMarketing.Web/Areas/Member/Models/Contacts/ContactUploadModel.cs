@@ -42,7 +42,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                         select new string[]
                         {
                                     item.FileName,
-                                    item.Created.ToString("dd-MM-yyyy"),
+                                    item.Created.ToString(),
                                     item.IsSendEmailNotify?"Yes":"No",
                                     item.IsUpdateExisting?"Yes":"No",
                                     item.IsProcessing?"Processing":"Finished",

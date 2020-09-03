@@ -113,6 +113,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                         await model.ExportCampaignWise();
                     }
                     _logger.LogInformation("Succecssfully Added to DownloadQueue. Waiting to Complete to Export");
+                    model.Response = new ResponseModel("Successfully added to queue. Please wait a while to process", ResponseType.Success);
                 }
                 catch
                 {
