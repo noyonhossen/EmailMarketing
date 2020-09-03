@@ -36,7 +36,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <h2 style="font-family: system-ui;padding-top:25px;font-size:20px;">Contact Export Confirmation</h2>
+                            <h2 style="font-family: system-ui;padding-top:25px;font-size:20px;">Campaign Report Export Confirmation</h2>
                         </td>
                     </tr>
                     <tr>
@@ -45,7 +45,7 @@
                                 Dear <#=Name#>,
                             </p>
                             <p style="padding:0px 100px;font-family: system-ui;text-align:left;font-size:13px;">
-                                Your contacts have been exported successfully. We have attached the Excel file with this email. Please check your attached report below.
+                                Your campaign reports have been exported successfully. We have attached the Excel file with this email. Please check your attached report below.
                             </p>
                             <p style="padding:0px 100px;font-family: system-ui;text-align:left;font-size:13px;">
                                 If you face any problem, feel free to reply us. 
@@ -93,4 +93,3 @@
     </table>
 </body>
 </html>
-

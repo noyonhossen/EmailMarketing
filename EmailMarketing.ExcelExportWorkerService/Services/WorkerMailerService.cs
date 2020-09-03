@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.ExcelExportWorkerService.Services
 {
-    public class WorkerMailerService : IMailerService
+    public class WorkerMailerService : IExportMailerService
     {
         private readonly WorkerSmtpSettings _workerSmtpSettings;
 
@@ -21,7 +21,7 @@ namespace EmailMarketing.ExcelExportWorkerService.Services
             _workerSmtpSettings = smtpSettings.Value;
         }
         
-        public async Task SendEmailAsync(string email, string subject, string body)
+        public async Task SendEmailAsync(string email, string subject, string body, string url)
         {
             try
             {
@@ -32,14 +32,17 @@ namespace EmailMarketing.ExcelExportWorkerService.Services
                 {
                     toList.Add(MailboxAddress.Parse(item.Trim()));
                 }
-                //messgae.To.Add(MailboxAddress.Parse(email));
                 messgae.To.AddRange(toList);
                 messgae.Subject = subject;
-                messgae.Body = new TextPart("html")
-                {
-                    Text = body
-                };
 
+                var builder = new BodyBuilder();
+                builder.HtmlBody = body;
+
+                builder.Attachments.Add(url);
+
+                messgae.Body = builder.ToMessageBody();
+                
+                
                 using (var client = new SmtpClient())
                 {
                     client.ServerCertificateValidationCallback = (s, c, h, e) => true;

@@ -71,7 +71,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                             item.IsSucceed ? "Yes" : "No",
                             item.CampaignReports.Count().ToString(),
                             item.SendDateTime.ToString(),
-                            item.SendEmailAddress.ToString(),
+                            item.SendEmailAddress == null ? string.Empty : item.SendEmailAddress.ToString(),
                             item.Id.ToString()
 
                         }).ToArray()

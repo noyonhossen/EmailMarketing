@@ -91,5 +91,6 @@ namespace EmailMarketing.EmailSendingWorkerService.Services
                 throw new InvalidOperationException(e.Message);
             }
         }
+
     }
 }

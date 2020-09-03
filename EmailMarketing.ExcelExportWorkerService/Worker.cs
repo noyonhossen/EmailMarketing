@@ -12,6 +12,7 @@ using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.Services.Contacts;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MimeKit;
 
 namespace EmailMarketing.ExcelExportWorkerService
 {
@@ -19,19 +20,75 @@ namespace EmailMarketing.ExcelExportWorkerService
     {
         private readonly ILogger<Worker> _logger;
         private readonly IContactExportService _contactExportService;
-        private readonly IMailerService _mailerService;
+        private readonly IExportMailerService _exportMailerService;
 
-        public Worker(ILogger<Worker> logger, IContactExportService contactExportService, IMailerService mailerService)
+        public Worker(ILogger<Worker> logger, IContactExportService contactExportService, IExportMailerService exportMailerService)
         {
             _logger = logger;
             _contactExportService = contactExportService;
-            _mailerService = mailerService;
+            _exportMailerService = exportMailerService;
         }
         public override Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Worker started at: {DateTime.Now}");
             return base.StartAsync(cancellationToken);
         }
+        //protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        //{
+        //    while (!stoppingToken.IsCancellationRequested)
+        //    {
+        //        _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+
+        //        try
+        //        {
+        //            var result = await _contactExportService.GetDownloadQueueAsync();
+
+        //            foreach (var item in result)
+        //            {
+        //                //To create directory if not exist
+        //                if (Directory.Exists(item.FileUrl) == false)
+        //                {
+        //                    DirectoryInfo directory = Directory.CreateDirectory(item.FileUrl);
+        //                }
+                        
+        //                var importResult = await _contactExportService.GetDownloadQueueByIdAsync(item.Id);
+        //                if (item.DownloadQueueFor == DownloadQueueFor.ContactAllExport)
+        //                {
+        //                    await _contactExportService.ExcelExportForAllContactsAsync(item);
+        //                }
+
+        //                else if (item.DownloadQueueFor == DownloadQueueFor.ContactGroupWiseExport)
+        //                {
+        //                    await _contactExportService.ExcelExportForGroupwiseContactsAsync(item);
+        //                }
+
+        //                importResult.IsProcessing = false;
+        //                importResult.IsSucceed = true;
+        //                //importResult.FileUrl = Path.Combine(item.FileUrl, item.FileName);
+        //                await _contactExportService.UpdateDownloadQueueAsync(importResult);
+                        
+        //                //Sending Email
+        //                if(item.IsSendEmailNotify)
+        //                {
+        //                    var url = Path.Combine(item.FileUrl, item.FileName);
+        //                    var emailSubject = "Contact Export Confirmation";
+        //                    var excelExportConfirmationTemplate = new ExcelExportConfirmationTemplate("Shamim", url);
+        //                    var emailBody = excelExportConfirmationTemplate.TransformText();
+
+        //                    await _mailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, emailBody);
+        //                }
+        //            }
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            _logger.LogError($"Error message : {ex.Message}");
+        //        }
+
+        //        await Task.Delay(120000, stoppingToken);
+        //    }
+        //}
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
@@ -44,40 +101,45 @@ namespace EmailMarketing.ExcelExportWorkerService
 
                     foreach (var item in result)
                     {
-                        //To create directory if not exist
-                        if (Directory.Exists(item.FileUrl) == false)
+                        //var importResult = await _contactExportService.GetDownloadQueueByIdAsync(item.Id);
+                        try
                         {
-                            DirectoryInfo directory = Directory.CreateDirectory(item.FileUrl);
-                        }
-                        
-                        var importResult = await _contactExportService.GetDownloadQueueByIdAsync(item.Id);
-                        if (item.DownloadQueueFor == DownloadQueueFor.ContactAllExport)
-                        {
-                            await _contactExportService.ExcelExportForAllContactsAsync(item);
-                        }
+                            if (item.DownloadQueueFor == DownloadQueueFor.ContactAllExport)
+                            {
+                                await _contactExportService.ExcelExportForAllContactsAsync(item);
+                            }
 
-                        else if (item.DownloadQueueFor == DownloadQueueFor.ContactGroupWiseExport)
-                        {
-                            await _contactExportService.ExcelExportForGroupwiseContactsAsync(item);
+                            else if (item.DownloadQueueFor == DownloadQueueFor.ContactGroupWiseExport)
+                            {
+                                await _contactExportService.ExcelExportForGroupwiseContactsAsync(item);
+                            }
+
+                            item.IsProcessing = false;
+                            item.IsSucceed = true;
+                            item.LastModified = DateTime.Now;
+                            item.LastModifiedBy = item.UserId;
+                            await _contactExportService.UpdateDownloadQueueAsync(item);
+                            _logger.LogInformation($"Successfully Exported. FileUrl: {item.FileUrl}");
+
+                            //Sending Email
+                            if (item.IsSendEmailNotify)
+                            {
+                                var url = Path.Combine(item.FileUrl, item.FileName);
+
+                                var emailSubject = "Contact Export Confirmation";
+                                var excelExportConfirmationTemplate = new ExcelExportConfirmationTemplate("Shamim", url);
+                                var emailBody = excelExportConfirmationTemplate.TransformText();
+
+                                await _exportMailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, emailBody, url);
+                            }
                         }
-
-                        importResult.IsProcessing = false;
-                        importResult.IsSucceed = true;
-                        //importResult.FileUrl = Path.Combine(item.FileUrl, item.FileName);
-                        await _contactExportService.UpdateDownloadQueueAsync(importResult);
-                        
-                        //Sending Email
-                        if(item.IsSendEmailNotify)
+                        catch (Exception ex)
                         {
-                            var url = Path.Combine(item.FileName, item.FileName);
-                            var emailSubject = "Contact Export Confirmation";
-                            var excelExportConfirmationTemplate = new ExcelExportConfirmationTemplate("Shamim", url);
-                            var emailBody = excelExportConfirmationTemplate.TransformText();
-
-                            await _mailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, emailBody);
+                            _logger.LogError($"Failed to Export Contact: Error: {ex.Message}");
+                            continue;
+                            //throw new Exception($"Failed to export contact.{item.FileUrl}");
                         }
                     }
-
                 }
                 catch (Exception ex)
                 {

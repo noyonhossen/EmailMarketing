@@ -66,7 +66,7 @@ namespace EmailMarketing.ExcelExportWorkerService
                 {
                     services.AddHostedService<Worker>();
                     services.Configure<WorkerSmtpSettings>(hostContext.Configuration.GetSection("SmtpSettings"));
-                    services.AddSingleton<IMailerService, WorkerMailerService>();
+                    services.AddSingleton<IExportMailerService, WorkerMailerService>();
                     services.AddSingleton<ICurrentUserService, WorkerCurrentUserService>();
                     //services.AddSingleton<IDateTime, WorkerDateTimeService>();
                     services.AddHttpContextAccessor();

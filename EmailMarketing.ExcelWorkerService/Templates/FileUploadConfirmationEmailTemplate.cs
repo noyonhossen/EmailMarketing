@@ -33,7 +33,7 @@ namespace EmailMarketing.ExcelWorkerService.Templates
                     "ead>\r\n<body style=\"background-color: #c9d6df;margin: 0px;\">\r\n\t<table border=\"0\" " +
                     "width=\"40%\" style=\"margin:auto;padding:30px;background-color: #F3F3F3;border:1px" +
                     " solid #3f72af;\">\r\n\t\t<tr>\r\n\t\t\t<td>\r\n\t\t\t\t<table border=\"0\" width=\"100%\">\r\n\t\t\t\t\t<t" +
-                    "r>\r\n\t\t\t\t\t\t<td style=\"width:40px;\">\r\n\t\t\t\t\t\t\t<img src=\"https://img.icons8.com/colo" +
+                    "r>\r\n\t\t\t\t\t\t<td style=\"width:30px;\">\r\n\t\t\t\t\t\t\t<img src=\"https://img.icons8.com/colo" +
                     "r/48/000000/filled-sent.png\"/>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<h1 style=\"font-" +
                     "family: system-ui;font-size:25px;\">MailTo</h1>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t" +
                     "<p style=\"font-family: system-ui;text-align: right;font-size:13px;\"><a href=\"htt" +
