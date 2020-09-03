@@ -3,20 +3,11 @@
     ViewData["Title"] = "Export";
 }
 
-    <div class="page-header">
-        <div class="page-header-content header-elements-md-inline">
-            <div class="page-title d-flex">
-                <h4><a class="text-black-50" href="/Member"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
-                <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-            </div>
-
-            <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-                <a class="btn btn-labeled btn-labeled-right bg-primary" href="/Member/Contacts"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Contact List</span></a>
-            </div>
-        </div>
-    </div>
 <div class="content">
-    
+    <div class="pb-3">
+        <h4 class="d-inline"><a class="text-black-50" asp-area="Member" asp-controller="Dashboard" asp-action="Index"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
+        <a asp-area="Member" asp-controller="Contacts" asp-action="Index" class="btn bg-primary float-right"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Contact List</span></a>
+    </div>
     <div class="row">
 
         <div class="col-md-6 m-auto text-center">
@@ -31,7 +22,7 @@
                     <div class="pb-3">
                         <div class="dropdown-item form-check form-check-switchery ">
                             <label class="form-check-label">
-                                <input type="checkbox" class="form-input-switchery" asp-for="IsSendEmailNotifyForAll">
+                                <input type="checkbox" class="form-input-switchery" asp-for="IsSendEmailNotifyForAll" checked>
                                 <span class="font-weight-bold">Send file via email once export is complete</span>
                             </label>
                         </div>
@@ -41,6 +32,7 @@
                             <label for="inputEmail" class="col-md-3 col-form-label">Email</label>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" id="inputEmail" placeholder="Enter Email" asp-for="SendEmailAddress">
+                                <p class="pt-1">[You can send to multiple email by comma separating email.]</p>
                             </div>
                         </div>
                     </div>
@@ -59,7 +51,7 @@
                         <div class="pb-3">
                             <div class="dropdown-item form-check form-check-switchery ">
                                 <label class="form-check-label">
-                                    <input type="checkbox" class="form-input-switchery" asp-for="IsSendEmailNotifyForGroupwise">
+                                    <input type="checkbox" class="form-input-switchery" asp-for="IsSendEmailNotifyForGroupwise" checked>
                                     <span class="font-weight-bold">Send file via email once export is complete</span>
                                 </label>
                             </div>
@@ -69,6 +61,7 @@
                                 <label for="inputEmail" class="col-md-3 col-form-label">Email</label>
                                 <div class="col-md-9">
                                     <input type="text" class="form-control" id="inputEmail" placeholder="Enter Email" asp-for="SendEmailAddress">
+                                    <p class="pt-1">[You can send to multiple email by comma separating email.]</p>
                                 </div>
                             </div>
                         </div>
@@ -77,12 +70,12 @@
                             
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="checkAll">
-                                <label class="form-check-label" for="checkAll">Select All Lists</label>
+                                <label class="form-check-label" for="checkAll">Select All Groups</label>
                             </div>
 
                             <div class="bg-white">
                                 <p class="p-2">
-                                    <i class="icon-collaboration"></i>&nbsp;&nbsp; <span id="selected">No</span> <span>List</span> Selected
+                                    <i class="icon-collaboration"></i>&nbsp;&nbsp; <span id="selected">No</span> <span>Group</span> Selected
                                     @*<span asp-validation-for="@Model.GroupSelectList"></span>*@
                                 </p>
                             </div>

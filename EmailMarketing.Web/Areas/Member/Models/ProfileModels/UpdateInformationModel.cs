@@ -31,21 +31,21 @@ namespace EmailMarketing.Web.Areas.Member.Models.ProfileModels
             {
                 //Id = user.Id;
                 FullName = user.FullName;
-                PhoneNumber = user.PhoneNumber;
-                Address = user.Address;
+                Email = user.Email;
                 DateOfBirth = user.DateOfBirth;
                 Gender = user.Gender;
-                UserName = user.UserName;
+                PhoneNumber = user.PhoneNumber;
+                Address = user.Address;
             }
         }
         internal void GetModelData(ApplicationUser user)
         {
             user.FullName = FullName;
-            user.UserName = UserName;
-            user.Address = Address;
+            user.Email = Email;
             user.DateOfBirth = DateOfBirth;
             user.Gender = Gender;
             user.PhoneNumber = PhoneNumber; 
+            user.Address = Address;
         }
         internal async Task UpdateMemberAsync()
         {

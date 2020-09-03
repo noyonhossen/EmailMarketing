@@ -3,40 +3,24 @@
     ViewData["Title"] = "AddSingleContact";
 }
 
-<div class="page-header">
-    <div class="page-header-content header-elements-md-inline">
-        <div class="page-title d-flex">
-            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Member" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
-            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-        </div>
 
-        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="Contacts" asp-action="Index" asp-area="Member" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list2"></i> <span class="font-weight-semibold">  Contact List</span></a>
-        </div>
-    </div>
-</div>
 
 <!-- Content area -->
 <div class="content">
-
+    <div class="pb-3">
+        <h4 class="d-inline">Add Contact</h4>
+        <a asp-controller="Contacts" asp-action="Index" asp-area="Member" class="btn bg-primary float-right"><i class="icon-list2"></i> <span class="font-weight-semibold">  Contact List</span></a>
+    </div>
     <div class="card">
-        <div class="card-header">
-            <div class="pl-5 pr-3">
-                <h4 class="card-title">Add Single Contact</h4>
-            </div>
-        </div>
-        <hr />
         <!-- navigation -->
         <!-- /navigation -->
         <partial name="_ActionMessage" model="@Model.Response" />
         <div class="card-body">
             <form id="addContactForm" asp-area="Member" asp-controller="Contacts" asp-action="AddSingleContact" method="post">
                 <div class="row">
-
-
                     <div class="col-md-6">
-                        <div class="pl-5 pr-3">
-                            <h4>Add Contact Details</h4>
+                        <div class="pl-2 pr-3">
+                            <h4>Provide Contact Details</h4>
                             @Html.AntiForgeryToken()
                             <div class="form-group row">
                                 <label asp-for="Email" class="col-sm-3 col-form-label required">Email</label>
@@ -71,38 +55,38 @@
 
 
                                     @*@if (Model.ContactValueMaps[i].Text.Contains("mail") == false)
-                                        {
-                                            <label asp-for="@Model.ContactValueMaps[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMaps[i].Text</label>
-                                            <div class="col-sm-9">
+                            {
+                                <label asp-for="@Model.ContactValueMaps[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMaps[i].Text</label>
+                                <div class="col-sm-9">
 
-                                                <input type="text" class="form-control" value="@Model.ContactValueMaps[i].Input" name="ContactValueMaps[@i].Input">
-                                                <input type="hidden" class="form-control" value="@Model.ContactValueMaps[i].Value" name="ContactValueMaps[@i].Value">
-                                            </div>
-                                        }
-                                        else if (@Model.ContactValueMaps[i].Text.Contains("Gender") || @Model.ContactValueMaps[i].Text.Contains("gender"))
-                                        {
-                                            <label asp-for="@Model.ContactValueMaps[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMaps[i].Text</label>
-                                            <div class="col-sm-9">
-                                                <select asp-for="@Model.ContactValueMaps[i].Input" class="form-control">
+                                    <input type="text" class="form-control" value="@Model.ContactValueMaps[i].Input" name="ContactValueMaps[@i].Input">
+                                    <input type="hidden" class="form-control" value="@Model.ContactValueMaps[i].Value" name="ContactValueMaps[@i].Value">
+                                </div>
+                            }
+                            else if (@Model.ContactValueMaps[i].Text.Contains("Gender") || @Model.ContactValueMaps[i].Text.Contains("gender"))
+                            {
+                                <label asp-for="@Model.ContactValueMaps[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMaps[i].Text</label>
+                                <div class="col-sm-9">
+                                    <select asp-for="@Model.ContactValueMaps[i].Input" class="form-control">
 
-                                                    <option value="">--- Select Gender ---</option>
-                                                    <option value="Male">Male</option>
-                                                    <option value="Female">Female</option>
+                                        <option value="">--- Select Gender ---</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
 
-                                                </select>
-                                            </div>
-                                        }
-                                        else if (@Model.ContactValueMaps[i].Text.Contains("Date") || @Model.ContactValueMaps[i].Text.Contains("DOB") || @Model.ContactValueMaps[i].Text.Contains("Birth"))
-                                        {
-                                            <label asp-for="@Model.ContactValueMaps[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMaps[i].Text</label>
-                                            <div class="col-sm-9">
-                                                <input type="date" class="form-control" asp-for="@Model.ContactValueMaps[i].Input">
-                                            </div>
-                                        }*@
+                                    </select>
+                                </div>
+                            }
+                            else if (@Model.ContactValueMaps[i].Text.Contains("Date") || @Model.ContactValueMaps[i].Text.Contains("DOB") || @Model.ContactValueMaps[i].Text.Contains("Birth"))
+                            {
+                                <label asp-for="@Model.ContactValueMaps[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMaps[i].Text</label>
+                                <div class="col-sm-9">
+                                    <input type="date" class="form-control" asp-for="@Model.ContactValueMaps[i].Input">
+                                </div>
+                            }*@
 
-                                                @*}
-                                            }
-                                        }*@
+                                    @*}
+                                }
+                            }*@
 
                                 </div>
                             </div>
@@ -125,36 +109,36 @@
 
 
                                                 @*@if (@Model.ContactValueMapsCustom[i].Text.Contains("date") || @Model.ContactValueMapsCustom[i].Text.Contains("Date") || @Model.ContactValueMapsCustom[i].Text.Contains("DOB") || @Model.ContactValueMapsCustom[i].Text.Contains("Birth"))
-                                                {
-                                                    <label asp-for="@Model.ContactValueMapsCustom[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMapsCustom[i].Text</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="date" class="form-control" value="@Model.ContactValueMapsCustom[i].Input" name="ContactValueMapsCustom[@i].Input">
-                                                        <input type="hidden" class="form-control" value="@Model.ContactValueMapsCustom[i].Value" name="ContactValueMapsCustom[@i].Value">
+                                        {
+                                            <label asp-for="@Model.ContactValueMapsCustom[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMapsCustom[i].Text</label>
+                                            <div class="col-sm-9">
+                                                <input type="date" class="form-control" value="@Model.ContactValueMapsCustom[i].Input" name="ContactValueMapsCustom[@i].Input">
+                                                <input type="hidden" class="form-control" value="@Model.ContactValueMapsCustom[i].Value" name="ContactValueMapsCustom[@i].Value">
 
-                                                    </div>
-                                                }
-                                                else if (@Model.ContactValueMapsCustom[i].Text.Contains("Gender") || @Model.ContactValueMapsCustom[i].Text.Contains("gender"))
-                                                {
-                                                    <label asp-for="@Model.ContactValueMapsCustom[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMapsCustom[i].Text</label>
-                                                    <div class="col-sm-9">
-                                                        <select asp-for="@Model.ContactValueMapsCustom[i].Input" class="form-control">
+                                            </div>
+                                        }
+                                        else if (@Model.ContactValueMapsCustom[i].Text.Contains("Gender") || @Model.ContactValueMapsCustom[i].Text.Contains("gender"))
+                                        {
+                                            <label asp-for="@Model.ContactValueMapsCustom[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMapsCustom[i].Text</label>
+                                            <div class="col-sm-9">
+                                                <select asp-for="@Model.ContactValueMapsCustom[i].Input" class="form-control">
 
-                                                            <option value="">--- Select Gender ---</option>
-                                                            <option value="Male">Male</option>
-                                                            <option value="Female">Female</option>
+                                                    <option value="">--- Select Gender ---</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
 
-                                                        </select>
-                                                    </div>
-                                                }*@
-                                               
+                                                </select>
+                                            </div>
+                                        }*@
 
-                                                    <label asp-for="@Model.ContactValueMapsCustom[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMapsCustom[i].Text</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control" value="@Model.ContactValueMapsCustom[i].Input" name="ContactValueMapsCustom[@i].Input">
-                                                        <input type="hidden" class="form-control" value="@Model.ContactValueMapsCustom[i].Value" name="ContactValueMapsCustom[@i].Value">
 
-                                                    </div>
-                                                
+                                                <label asp-for="@Model.ContactValueMapsCustom[i].Input" class="col-sm-3 col-form-label">@Model.ContactValueMapsCustom[i].Text</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" value="@Model.ContactValueMapsCustom[i].Input" name="ContactValueMapsCustom[@i].Input">
+                                                    <input type="hidden" class="form-control" value="@Model.ContactValueMapsCustom[i].Value" name="ContactValueMapsCustom[@i].Value">
+
+                                                </div>
+
 
                                             </div>
 
@@ -196,8 +180,8 @@
                                                 <input type="hidden" class="form-control" asp-for="@Model.GroupSelectList[i].Text">
 
                                                 @*<input type="hidden" class="form-control" value="@Model.GroupSelectList[i].Count" name="GroupSelectList[@i].Count">
-                                                    <input type="hidden" class="form-control" value="@Model.GroupSelectList[i].Input" name="GroupSelectList[@i].Input">
-                                                    <input type="hidden" class="form-control" value="@Model.GroupSelectList[i].Text" name="GroupSelectList[@i].Text">*@
+                                        <input type="hidden" class="form-control" value="@Model.GroupSelectList[i].Input" name="GroupSelectList[@i].Input">
+                                        <input type="hidden" class="form-control" value="@Model.GroupSelectList[i].Text" name="GroupSelectList[@i].Text">*@
 
 
                                                 <label class="form-check-label" for="checkSingle[@i]">
@@ -214,18 +198,13 @@
                             </ul>
                         </div>
                         <!-- /selected -->
-
                     </div>
-
-
-
-
-
                 </div>
-                <div class="d-flex justify-content-end">
-                    <button id="btnsubmit" class="btn btn-primary"><i class="icon-file-check2"></i> Save</button>
-                    @*<input id="sub" type="button" value="Save" class="btn btn-primary" onclick="submitForm()" />*@
-
+                <div class="pt-2">
+                    <div class="d-flex justify-content-between">
+                        <a asp-controller="Contacts" asp-action="Index" asp-area="Member" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
+                        <button id="btnsubmit" class="btn btn-primary"><i class="icon-file-check2"></i> Save</button>
+                    </div>
                 </div>
             </form>
 

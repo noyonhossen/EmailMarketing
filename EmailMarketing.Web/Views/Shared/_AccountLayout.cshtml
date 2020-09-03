@@ -17,10 +17,17 @@
     <link href="~/theme/assets/css/colors.min.css" rel="stylesheet" type="text/css">
     <!-- /global stylesheets -->
 
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/theme/global_assets/css/icons/fontawesome/styles.min.css" />
+    <link rel="stylesheet" href="~/homeTheme/css/home.css" />
+    @RenderSection("Styles", required: false)
 </head>
 
 <body>
 
+    <!-- Main navbar -->
+    <partial name="_NavBarPartial" />
+    <!-- /main navbar -->
     <!-- Page content -->
     <div class="page-content">
 
@@ -46,6 +53,8 @@
     <script src="~/theme/global_assets/js/demo_pages/login.js"></script>
     <!-- /theme JS files -->
 
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/homeTheme/js/home.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -9,37 +9,23 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 }
 
-<div class="page-header">
-    <div class="page-header-content header-elements-md-inline">
-        <div class="page-title d-flex">
-            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Member" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
-            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-        </div>
-
-        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="Campaigns" asp-action="Index" asp-area="Member" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Campaign List</span></a>
-        </div>
-    </div>
-</div>
-
 <!-- Main content -->
 <div class="content-wrapper">
     <!-- Content area -->
-    <div class="content pt-0">
+    <div class="content">
+        <div class="pb-3">
+            <h4 class="d-inline">Add Campaign</h4>
+            <a asp-controller="Campaigns" asp-action="Index" asp-area="Member" class="btn bg-primary float-right"><i class="icon-list mr-2"></i> <span class="font-weight-semibold">Campaign List</span></a>
+        </div>
         <div class="row">
             <div class="col-12">
                 <partial name="_ActionMessage" model="@Model.Response" />
                 <div class="card">
-                    <div class="card-header header-elements-inline">
-                        <h5 class="card-title text-primary">Add Campaign</h5>
-                    </div>
-                    <hr class="mt-0" />
-
                     <div class="card-body">
                         <form asp-area="Member" asp-controller="Campaigns" asp-action="AddCampaign" method="post">
                             <div asp-validation-summary="All" class="text-danger"></div>
                             <div class="row">
-                                
+
                                 <div class="col-6 ml-2">
                                     <div class="form-group row">
                                         <label asp-for="Name" class="col-sm-3 col-form-label required"></label>
@@ -66,7 +52,7 @@
                                         <label asp-for="SMTPConfigId" class="col-sm-3 col-form-label required"></label>
                                         <div class="col-sm-9">
                                             <select asp-for="SMTPConfigId" class="form-control">
-                                                <option value="">---Select Category---</option>
+                                                <option value="">---Select SMTP Server---</option>
                                                 @for (int i = 0; i < Model.SMTPConfigList.Count(); i++)
                                                 {
                                                     <option value="@Model.SMTPConfigList[i].Id">@Model.SMTPConfigList[i].SenderEmail</option>
@@ -104,7 +90,7 @@
                                         <div class="col-sm-9">
                                             <div class="dropdown-item form-check form-check-switchery ">
                                                 <label class="form-check-label">
-                                                    <input type="checkbox" class="form-input-switchery" data-fouc asp-for="IsSendEmailNotify">
+                                                    <input type="checkbox" class="form-input-switchery" data-fouc asp-for="IsSendEmailNotify" checked>
                                                     <span class="font-weight-bold">Want to be notify by email?</span>
                                                 </label>
                                             </div>
@@ -114,23 +100,23 @@
                                         <label asp-for="SendEmailAddress" class="col-sm-3 col-form-label"></label>
                                         <div class="col-sm-9">
                                             <input asp-for="SendEmailAddress" class="form-control" />
-                                            <span>[You can send to multiple email by using comma between emails.]</span>
+                                            <p class="pt-1">[You can send to multiple email by using comma between emails.]</p>
                                             <span asp-validation-for="SendEmailAddress" class="text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-4 ml-5">
-                                    <h3>Where you want to add this Campaign?</h3>
+                                    <h4>Where you want to add this Campaign?</h4>
                                     @Html.AntiForgeryToken()
                                     <!-- selected -->
                                     <div class="form-check">
                                         <input type="checkbox" class="form-check-input" id="checkAll">
-                                        <label class="form-check-label" for="checkAll">Select All Lists</label>
+                                        <label class="form-check-label" for="checkAll">Select All Groups</label>
                                     </div>
 
                                     <div class="bg-white">
                                         <p class="p-2">
-                                            <i class="icon-collaboration"></i>&nbsp;&nbsp; <span id="selected">No</span> <span>List</span> Selected
+                                            <i class="icon-collaboration"></i>&nbsp;&nbsp; <span id="selected">No</span> <span>Group</span> Selected
                                         </p>
                                     </div>
 
@@ -159,20 +145,13 @@
                                         </ul>
                                     </div>
                                     <!-- /selected -->
-
                                 </div>
-
                             </div>
-
                             <!--Template Preview-->
-                            <div class="row"></div>
-                            <div class="row">
-
-                            </div>
-                            <div class="row">
-                                <div class="col-2 mx-2">
+                            <div class="row" id="">
+                                <div class="col-3 ">
                                     <div class="form-group row mt-5">
-                                        <label class="col-sm-12 col-form-label">Select From Draft: <a id="remove_all">Remove All</a></label>
+                                        <label class="col-sm-12 col-form-label font-weight-bold">Select From Draft: <a id="remove_all" class="text-primary">Clear Selected</a> &nbsp;&nbsp;&nbsp; <span class="font-weight-normal">--- Or ---</span></label>
                                     </div>
                                     <div class="preview">
                                         <div class="form-group row">
@@ -182,7 +161,7 @@
                                                     <tr class="card_tr">
 
                                                         <td>
-                                                            <div class="card custom_template_card">
+                                                            <div class="card custom_template_card card-box-shadow">
                                                                 <div class="card-body custom_card_body">
                                                                     <div class="template_body">
                                                                         @Html.Raw(Model.EmailTemplateList[j].EmailTemplateBody)
@@ -190,14 +169,14 @@
                                                                     <span class="d-none template_title">@Model.EmailTemplateList[j].EmailTemplateName</span>
 
                                                                     <div class="overlay">
-                                                                        <input type="radio" name="SelectedTemplateId" value="@Model.EmailTemplateList[j].Id" class="mr-2 mt-2 selected_template" />
+                                                                        <input type="radio" name="SelectedTemplateId" value="@Model.EmailTemplateList[j].Id" class="mr-2 mt-2 selected_template" data-toggle="tooltip" data-placement="top" title="Select" />
                                                                         <input type="hidden" class="form-control" asp-for="@Model.EmailTemplateList[j].IsPersonalized" />
                                                                         <input type="hidden" class="form-control" asp-for="@Model.EmailTemplateList[j].Id" />
                                                                         <a class="mr-2 mt-2 selected_template_preview text-info" data-toggle="modal" data-target="#templatebody">
-                                                                            <i class="fa fa-2x fa-eye"></i>
+                                                                            <i class="fa fa-2x fa-eye" data-toggle="tooltip" data-placement="top" title="View"></i>
                                                                         </a>
                                                                         <a class="mr-2 mt-2 selected_template_copy text-info">
-                                                                            <i class="fa fa-2x fa-copy"></i>
+                                                                            <i class="fa fa-2x fa-copy" data-toggle="tooltip" data-placement="top" title="Copy"></i>
                                                                         </a>
                                                                         <p class="text-white text-center pt-1">@Model.EmailTemplateList[j].EmailTemplateName</p>
                                                                     </div>
@@ -212,10 +191,10 @@
 
                                     </div>
                                 </div>
-                                <div class="col-8 pl-5">
-                                    <div class="ml-lg-5">
+                                <div class="col-9 pl-3 pr-3">
+                                    <div class="">
                                         <div class="form-group row mt-5">
-                                            <label class="col-sm-12 col-form-label">Create New Template:</label>
+                                            <label class="col-sm-12 col-form-label font-weight-bold">Create New Template:</label>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-form-label col-lg-2" asp-for="EmailTemplateTitle"></label>
@@ -236,10 +215,13 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-form-label col-lg-2" asp-for="EmailTemplateBody"></label>
-                                            <div class="col-lg-10">
+                                            <div class="col-lg-2">
+                                                <label class="col-form-label" asp-for="EmailTemplateBody"></label>
+                                            </div>
+                                            <div class="col-lg-10"></div>
+                                            <div class="col-lg-12">
                                                 <textarea asp-for="EmailTemplateBody" class="form-control editor_textarea abcd"></textarea>
-                                                <div>
+                                                <div class="pt-2">
                                                     <span><span class="text-danger">Important Note:</span> If you want to personalize email body.Then use curly brace {} and inside curly brace write Field Name. Example: {Field_Name} like this.</span>
                                                 </div>
                                             </div>
