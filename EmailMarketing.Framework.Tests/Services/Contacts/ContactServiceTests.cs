@@ -179,6 +179,31 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
             //Assert
             _contactRepositoryMock.VerifyAll();
         }
+        [Test]
+        public void AddContact_ContactNotNull_AddContact()
+        {
+            //Arrange
+            int id = 1;
+
+            var contact = new Contact
+            {
+                Id = 1,
+                Email = "teama@gmail.com"
+            };
+
+            _contactUnitOfWorkMock.Setup(x => x.ContactRepository)
+                .Returns(_contactRepositoryMock.Object);
+
+            _contactRepositoryMock.Setup(x => x.AddAsync(contact)).Returns(Task.CompletedTask).Verifiable();
+            _contactUnitOfWorkMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask).Verifiable();
+
+            //Act
+            _contactService.AddContact(contact);
+
+            //Assert
+            _contactRepositoryMock.VerifyAll();
+            _contactUnitOfWorkMock.VerifyAll();
+        }
 
         [Test]
         public void GetContactValueMapByIdAsync_ForContactValueMapId_ReturnsContactValueMapObject()
