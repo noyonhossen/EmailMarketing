@@ -49,6 +49,9 @@ namespace EmailMarketing.Framework.Services.Contacts
                 x => x, x => !x.IsStandard && (!userId.HasValue || x.UserId == userId.Value) && (string.IsNullOrWhiteSpace(searchText) || x.DisplayName.Contains(searchText)),
                 x => x.ApplyOrdering(columnsMap, orderBy), null,
                 pageIndex, pageSize, true);
+
+            result.Total = await _fieldMapUnitOfWork.FieldMapRepository.GetCountAsync(x => x.UserId == userId);
+
             return (result.Items, result.Total, result.TotalFilter);
         }
 

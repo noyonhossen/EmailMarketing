@@ -48,6 +48,8 @@ namespace EmailMarketing.Framework.Services.Contacts
                 x => x.ApplyOrdering(columnsMap, orderBy), x => x.Include(i => i.ContactGroups).ThenInclude(i => i.Group),
                 pageIndex, pageSize, true);
 
+            result.Total = await _contactUnitOfWork.ContactRepository.GetCountAsync(x => x.UserId == userId);
+
             return (result.Items, result.Total, result.TotalFilter);
         }
         public async Task<Contact> GetByIdAsync(int id)
@@ -233,11 +235,14 @@ namespace EmailMarketing.Framework.Services.Contacts
             return result;
         }
 
+        public async Task<int> GetContactCountAsync(Guid? userId)
+        {
+            return await _contactUnitOfWork.ContactRepository.GetCountAsync(x => x.UserId == userId);
+        }
         public void Dispose()
         {
             _contactUnitOfWork.Dispose();
         }
 
-        
     }
 }

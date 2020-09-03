@@ -26,8 +26,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Groups
         public async Task<Group> ActivateGroupAsync(int id)
         {
             var result = await _groupService.GetByIdAsync(id);
-            result.IsActive = result.IsActive == true ? false : true;
-            await _groupService.UpdateAsync(result);
+            await _groupService.UpdateActiveStatusAsync(result);
             return result;
         }
         public async Task<object> GetAllAsync(DataTablesAjaxRequestModel tableModel)

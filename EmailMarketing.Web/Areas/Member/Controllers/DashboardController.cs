@@ -29,9 +29,10 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             _contactExcelService = contactExcelService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var model = new DashboardModel();
+            await model.LoadDashboardData();
             return View(model);
         }
 

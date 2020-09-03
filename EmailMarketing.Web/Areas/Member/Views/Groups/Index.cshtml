@@ -37,6 +37,7 @@
 
 </div>
 <!-- /content area -->
+
 <!-- Add or Edit Modal -->
 <div id="addOrEditModal" class="modal fade" tabindex="-1">
     <div class="modal-dialog modal-md">
@@ -127,7 +128,7 @@
             $("#activeFieldButton").text(title == 'Yes' ? 'Deactivate' : 'Activate');
             console.log(title);
             modal.modal('show');
-        })
+        });
         $("#activeButton").click(function () {
             $("#activeFieldForm").submit();
         });

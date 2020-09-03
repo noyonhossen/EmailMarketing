@@ -37,7 +37,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 
         public async Task ExportAllContact()
         {
-            if (IsSendEmailNotifyForAll == true && SendEmailAddress == null)
+            if (IsSendEmailNotifyForAll == true && string.IsNullOrWhiteSpace(SendEmailAddress))
             {
                 throw new Exception("Please Provide Email");
             }
@@ -73,7 +73,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         public async Task ExportContactsGroupwise()
         {
 
-            if (IsSendEmailNotifyForGroupwise == true && SendEmailAddress == null)
+            if (IsSendEmailNotifyForGroupwise == true && string.IsNullOrWhiteSpace(SendEmailAddress))
             {
                 throw new Exception("Please Provide Email");
             }

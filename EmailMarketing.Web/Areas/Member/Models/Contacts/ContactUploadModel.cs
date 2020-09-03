@@ -1,4 +1,5 @@
 ﻿using EmailMarketing.Common.Services;
+using EmailMarketing.Framework.Entities.Contacts;
 using EmailMarketing.Framework.Services.Contacts;
 using EmailMarketing.Membership.Services;
 using System;
@@ -42,16 +43,23 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                         {
                                     item.FileName,
                                     item.Created.ToString("dd-MM-yyyy"),
-                                    item.IsSendEmailNotify.ToString(),
-                                    item.IsUpdateExisting.ToString(),
-                                    item.IsProcessing.ToString(),
-                                    item.IsSucceed.ToString(),
+                                    item.IsSendEmailNotify?"Yes":"No",
+                                    item.IsUpdateExisting?"Yes":"No",
+                                    item.IsProcessing?"Processing":"Finished",
+                                    item.IsSucceed?"Yes":"No",
                                     item.SucceedEntryCount.ToString(),
                                     item.Id.ToString()
                         }
                         ).ToArray()
 
             };
+        }
+
+        public async Task<ContactUpload> FinishUploadAsync(int id)
+        {
+            var result = await _contactUploadService.GetByIdAsync(id);
+            await _contactUploadService.UpdateAsync(result);
+            return result;
         }
     }
 }

@@ -56,6 +56,25 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> FinishUpload(int id)
+        {
+            var model = new ContactUploadModel();
+            try
+            {
+                var result = await model.FinishUploadAsync(id);
+                model.Response = new ResponseModel($"{result.FileName} { (result.IsProcessing == true ? "successfully  Finished" : "in Processing")}.", ResponseType.Success);
+                _logger.LogInformation("ConatactUpload Processing Status updated");
+            }
+            catch (Exception ex)
+            {
+                model.Response = new ResponseModel("ConatactUpload Processing Status Operation failured.", ResponseType.Failure);
+                _logger.LogError(ex.Message);
+            }
+            return RedirectToAction("Index");
+        }
+
+
         #region json helper method
         public async Task<JsonResult> GetAllFieldMaps()
         {

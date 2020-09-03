@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Uploads";
 }
 
 <!-- Page header -->
@@ -41,8 +41,8 @@
                 <tr>
                     <th>File Name</th>
                     <th>Created</th>
-                    <th>Is Send Email</th>
-                    <th>Is Update Existing</th>
+                    <th>Notify By Email</th>
+                    <th>Update Existing Contacts</th>
                     <th>Is Processing</th>
                     <th>Is Succeed</th>
                     <th>Succeed Entry</th>
@@ -56,7 +56,7 @@
 </div>
 
 <!-- Danger modal -->
-<div id="modal-delete" class="modal fade" tabindex="-1">
+<!--<div id="modal-delete" class="modal fade" tabindex="-1">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
@@ -78,8 +78,33 @@
             </div>
         </div>
     </div>
+</div>-->
+
+
+<!-- Finsih/Process Contact Upload modal -->
+<div id="modal-activeField" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title"><span id="activeFieldTitle">Finish Upload</span></h6>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure want to <span id="activeFieldSure">Finish Upload</span>?</p>
+                <form id="activeFieldForm" action="@Url.Action("FinishUpload", "ContactUpload", new { Area = "Member" })" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="activeFieldId" value="" name="id" />
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                <button type="button" id="activeButton" class="btn bg-danger">Yes, <span id="activeFieldButton">Activate</span>!</button>
+            </div>
+        </div>
+    </div>
 </div>
-<!-- /default modal -->
 
 @section Scripts {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
@@ -90,20 +115,25 @@
     <script>
         $(function () {
             var url = '@Url.Action("GetContactUploads", "ContactUpload", new { Area = "Member" })';
-            var editUrl = '@Url.Action("Edit", "ContactUpload", new { Area = "Member" })';
-            loadDatatable(url, editUrl);
-
-            $('#contact-upload-table').on('click', '.show-bs-modal', function (event) {
-                var id = $(this).data("id");
-                var modal = $("#modal-delete");
-                modal.find('.modal-body p').text('Are you sure want to delete this record?')
-                $("#deleteId").val(id);
-                modal.modal('show');
-            });
-
-            $("#deleteButton").click(function () {
-                $("#deleteForm").submit();
-            });
+            loadDatatable(url);
         });
+           
+        //Activate Custom Field
+        $('#modal-activeField').on('show.bs.modal', function (e) {
+            var id = $(e.relatedTarget).attr('data-id');
+            var title = $(e.relatedTarget).attr('data-title');
+            var modal = $("#modal-activeField");
+            $("#activeFieldId").val(id);
+            $("#activeFieldTitle").text(title == 'Processing' ? 'Finish Upload' : 'Process Upload');
+            $("#activeFieldSure").text(title == 'Finished' ? 'Process Again' : 'Finish Upload');
+            $("#activeFieldButton").text(title == 'Finished' ? 'Process' : 'Finish');
+            console.log(title);
+            modal.modal('show');
+        });
+        $("#activeButton").click(function () {
+            $("#activeFieldForm").submit();
+        });
+
+
     </script>
 }

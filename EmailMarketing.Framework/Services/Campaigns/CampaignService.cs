@@ -50,9 +50,9 @@ namespace EmailMarketing.Framework.Services.Campaigns
                                                   pageIndex, pageSize,
                                                   true));
 
-           
-
             if (result.Items == null) throw new NotFoundException(nameof(CampaignReport), userId);
+
+            result.Total = await _campaignUnitOfWork.CampaignRepository.GetCountAsync(x => x.UserId == userId);
 
             return (result.Items, result.Total, result.TotalFilter);
 
@@ -137,6 +137,11 @@ namespace EmailMarketing.Framework.Services.Campaigns
 
             await _campaignUnitOfWork.CampaignRepository.UpdateAsync(existingCampaign);
             await _campaignUnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<int> GetCampaignCountAsync(Guid? userId)
+        {
+            return await _campaignUnitOfWork.CampaignRepository.GetCountAsync(x => x.UserId == userId);
         }
     }
 }

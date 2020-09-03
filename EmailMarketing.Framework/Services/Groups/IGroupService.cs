@@ -18,8 +18,10 @@ namespace EmailMarketing.Framework.Services.Groups
 
         Task<Group> GetByIdAsync(int id);
         Task AddAsync(Group entity);
+        Task UpdateActiveStatusAsync(Group entity);
         Task UpdateAsync(Group entity);
         Task<Group> DeleteAsync(int id); 
         Task<IList<(int Value, string Text, int ContactCount)>> GetAllGroupForSelectAsync(Guid? userId);
+        Task<int> GetGroupCountAsync(Guid? userId);
     }
 }

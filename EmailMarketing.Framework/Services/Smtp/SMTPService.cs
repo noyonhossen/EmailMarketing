@@ -41,6 +41,8 @@ namespace EmailMarketing.Framework.Services.SMTP
                 x => x.ApplyOrdering(columnsMap, orderBy), null,
                 pageIndex, pageSize, true);
 
+            result.Total = await _smtpUnitOfWork.SMTPRepository.GetCountAsync(x => x.UserId == userId);
+
             return (result.Items, result.Total, result.TotalFilter);
         }
 

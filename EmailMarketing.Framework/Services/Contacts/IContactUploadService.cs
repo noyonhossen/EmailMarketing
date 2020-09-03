@@ -18,5 +18,7 @@ namespace EmailMarketing.Framework.Services.Contacts
         Task<IList<ContactUpload>> GetUploadedContact();
         Task<(IList<ContactUpload> Items, int Total, int TotalFilter)> GetAllAsync(
            Guid? userId, string searchText, string orderBy, int pageIndex, int pageSize);
+        Task<ContactUpload> GetByIdAsync(int id);
+        Task UpdateAsync(ContactUpload entity);
     }
 }

@@ -59,6 +59,13 @@ namespace EmailMarketing.Framework.Services.Groups
             await _groupUnitOfWork.SaveChangesAsync();
         }
 
+        public async Task UpdateActiveStatusAsync(Group entity)
+        {
+            entity.IsActive = entity.IsActive == true ? false : true;
+
+            await _groupUnitOfWork.GroupRepository.UpdateAsync(entity);
+            await _groupUnitOfWork.SaveChangesAsync();
+        }
         public async Task UpdateAsync(Group entity)
         {
             var isExists = await _groupUnitOfWork.GroupRepository.IsExistsAsync(x => x.Name == entity.Name && x.Id != entity.Id && x.UserId == entity.UserId);
@@ -88,7 +95,10 @@ namespace EmailMarketing.Framework.Services.Groups
                                                     x => x.Include(i => i.ContactGroups), true))
                                                     .Select(x => (Value: x.Value, Text: x.Text, ContactCount: x.ContactCount)).ToList();
         }
-
+        public async Task<int> GetGroupCountAsync(Guid? userId)
+        {
+            return await _groupUnitOfWork.GroupRepository.GetCountAsync(x => x.UserId == userId);
+        }
         public void Dispose()
     {
             _groupUnitOfWork?.Dispose();
