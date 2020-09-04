@@ -1,6 +1,4 @@
-﻿
-
-<#@ template language="C#" #>
+﻿<#@ template language="C#" #>
 <#@ assembly name="System.Core" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
@@ -17,7 +15,7 @@
             <td>
                 <table border="0" width="100%">
                     <tr>
-                        <td style="width:30px;">
+                        <td style="width:40px;">
                             <img src="https://img.icons8.com/color/48/000000/filled-sent.png" />
                         </td>
                         <td>
@@ -38,7 +36,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <h2 style="font-family: system-ui;padding-top:25px;font-size:20px;">Campaign Report Export Confirmation</h2>
+                            <h2 style="font-family: system-ui;padding-top:25px;font-size:20px;">Email Confirmation</h2>
                         </td>
                     </tr>
                     <tr>
@@ -47,11 +45,13 @@
                                 Dear <#=ReceiverName#>,
                             </p>
                             <p style="padding:0px 100px;font-family: system-ui;text-align:left;font-size:13px;">
-                                Your campaign reports have been exported successfully. We have attached the Excel file with this email. Please check your attached report below.
+                                Please confirm your email address by clicking the link below. We may need to send you critical information about our service and it is important that we have an accurate email address.
                             </p>
-                            <p style="padding:0px 100px;font-family: system-ui;text-align:left;font-size:13px;">
-                                If you face any problem, feel free to reply us. 
-                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="<#=Url#>" style="font-size: 13px;border-radius:4px;padding:10px 10px;border: 0;color:#fff;background-color:#3f72af;font-family: system-ui;cursor:pointer;text-decoration:none;">Verify Email Address</a>
                         </td>
                     </tr>
                     <tr>
@@ -95,3 +95,4 @@
     </table>
 </body>
 </html>
+

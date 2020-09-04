@@ -28,28 +28,60 @@ namespace EmailMarketing.ExcelWorkerService.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("<!DOCTYPE html>\r\n<html>\r\n<head>\r\n\t<link rel=\"stylesheet\" type=\"text/css\" href=\"ht" +
-                    "tps://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css\">\r\n</h" +
-                    "ead>\r\n<body style=\"background-color: #c9d6df;margin: 0px;\">\r\n\t<table border=\"0\" " +
-                    "width=\"40%\" style=\"margin:auto;padding:30px;background-color: #F3F3F3;border:1px" +
-                    " solid #3f72af;\">\r\n\t\t<tr>\r\n\t\t\t<td>\r\n\t\t\t\t<table border=\"0\" width=\"100%\">\r\n\t\t\t\t\t<t" +
-                    "r>\r\n\t\t\t\t\t\t<td style=\"width:30px;\">\r\n\t\t\t\t\t\t\t<img src=\"https://img.icons8.com/colo" +
-                    "r/48/000000/filled-sent.png\"/>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<h1 style=\"font-" +
-                    "family: system-ui;font-size:25px;\">MailTo</h1>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t" +
-                    "<p style=\"font-family: system-ui;text-align: right;font-size:13px;\"><a href=\"htt" +
-                    "ps://nicesnippets.com/\" target=\"_blank\" style=\"text-decoration: none;\">View In W" +
-                    "ebsite</a></p>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t\t<tr>" +
-                    "\r\n\t\t\t<td>\r\n\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"text-ali" +
-                    "gn:center;width:100%;background-color: #fff;\">\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td style=\"back" +
-                    "ground-color:#3f72af;height:80px;font-size:50px;color:#fff;\"><img style=\"margin-" +
-                    "top:10px;\" src=\"https://img.icons8.com/color/48/000000/secured-letter.png\"/></i>" +
-                    "</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<h2 style=\"font-family: system-" +
-                    "ui;padding-top:25px;font-size:20px;\">Upload Confirmation</h2>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t" +
-                    "\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<p style=\"padding:0px 100px;font-family:sy" +
-                    "stem-ui;text-align:left;font-weight:bold;font-size:15px;\">\r\n\t\t\t\t\t\t\t\tDear ");
+            this.Write(@"<!DOCTYPE html>
+<html>
+<head>
+	<link rel=""stylesheet"" type=""text/css"" href=""https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"">
+</head>
+<body style=""background-color: #c9d6df;margin: 0px;"">
+	<table border=""0"" width=""40%"" style=""margin:auto;padding:30px;background-color: #F3F3F3;border:1px solid #3f72af;"">
+		<tr>
+			<td>
+				<table border=""0"" width=""100%"">
+					<tr>
+						<td style=""width:30px;"">
+							<img src=""https://img.icons8.com/color/48/000000/filled-sent.png""/>
+						</td>
+						<td>
+							<h1 style=""font-family: system-ui;font-size:25px;"">");
+            
+            #line 21 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadConfirmationEmailTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CompanyFullName));
+            
+            #line default
+            #line hidden
+            this.Write("</h1>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<p style=\"font-family: system-ui;text-alig" +
+                    "n: right;font-size:13px;\"><a href=\"");
+            
+            #line 24 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadConfirmationEmailTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CompanyUrl));
+            
+            #line default
+            #line hidden
+            this.Write(@""" target=""_blank"" style=""text-decoration: none;"">View In Website</a></p>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table border=""0"" cellpadding=""0"" cellspacing=""0"" style=""text-align:center;width:100%;background-color: #fff;"">
+					<tr>
+						<td style=""background-color:#3f72af;height:80px;font-size:50px;color:#fff;""><img style=""margin-top:10px;"" src=""https://img.icons8.com/color/48/000000/secured-letter.png""/></i></td>
+					</tr>
+					<tr>
+						<td>
+							<h2 style=""font-family: system-ui;padding-top:25px;font-size:20px;"">Upload Confirmation</h2>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p style=""padding:0px 100px;font-family:system-ui;text-align:left;font-weight:bold;font-size:15px;"">
+								Dear ");
             
             #line 44 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadConfirmationEmailTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Name));
+            this.Write(this.ToStringHelper.ToStringWithCulture(ReceiverName));
             
             #line default
             #line hidden
@@ -141,7 +173,14 @@ namespace EmailMarketing.ExcelWorkerService.Templates
 					<tr>
 						<td>
 							<p style=""padding:10px 100px 0px;font-family: system-ui;text-align:left;font-size:13px;"">
-							  All the best,<br /> MailTo Team
+							  All the best,<br /> ");
+            
+            #line 111 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadConfirmationEmailTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CompanyShortName));
+            
+            #line default
+            #line hidden
+            this.Write(@" Team
 							</p>
 						</td>
 					</tr>
@@ -168,17 +207,23 @@ namespace EmailMarketing.ExcelWorkerService.Templates
 					<tr>
 						<td>
 							<div style=""margin-top: 10px;"">
-								<span style=""font-size:12px;font-family: system-ui;font-size:11px;"">Bulk Email System</span><br>
-								<span style=""font-size:12px;font-family: system-ui;font-size:11px;"">Copyright © 2020 DevSkill Team A</span>
-							</div>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-</body>
-</html>");
+								<span style=""font-size:12px;font-family: system-ui;font-size:11px;"">");
+            
+            #line 138 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadConfirmationEmailTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CompanyFullName));
+            
+            #line default
+            #line hidden
+            this.Write("</span><br>\r\n\t\t\t\t\t\t\t\t<span style=\"font-size:12px;font-family: system-ui;font-size" +
+                    ":11px;\">Copyright © 2020 ");
+            
+            #line 139 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadConfirmationEmailTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CompanyShortName));
+            
+            #line default
+            #line hidden
+            this.Write("</span>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</td>\r\n\t\t</tr>\r" +
+                    "\n\t</table>\r\n</body>\r\n</html>");
             return this.GenerationEnvironment.ToString();
         }
     }

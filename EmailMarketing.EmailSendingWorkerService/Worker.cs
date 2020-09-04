@@ -119,20 +119,23 @@ namespace EmailMarketing.EmailSendingWorkerService
 
                             //Upating Campaign isProcessing Status
                             await _campaignService.UpdateCampaignAsync(item);
+                            _logger.LogInformation($"Campaign -- {item.Name} -- updated Successfully");
 
                             //Sending email confirmation
                             if (item.IsSendEmailNotify)
                             {
                                 var emailSubject = "Campaign Sent Confirmation";
-                                var demoEmailTemplatePartial = new DemoEmailTemplate("Sir", totalSuccessCount, totalFailCount);
+                                var demoEmailTemplatePartial = new DemoEmailTemplate("Sir", totalSuccessCount, totalFailCount,
+                                            _workerSettings.CompanyFullName, _workerSettings.CompanyShortName, _workerSettings.CompanyWebsiteUrl);
                                 var body = demoEmailTemplatePartial.TransformText();
                                 await _confirmationMailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, body);
+                                _logger.LogInformation($"Email Sending Cofirmation Email Send Successfully for campaign: {item.Name}");
                             }
 
                         }
                         catch (Exception ex)
                         {
-                            _logger.LogInformation($"Failed to send email for this campaign : {item.Name}");
+                            _logger.LogError(ex, $"Failed to send email for campaign : {item.Name} and Error Message: " + ex.Message);
                         }
 
                     }
@@ -141,7 +144,7 @@ namespace EmailMarketing.EmailSendingWorkerService
                 }
                 catch(Exception ex)
                 {
-                    _logger.LogInformation($"Error Message: {ex.Message}");
+                    _logger.LogError(ex, $"Error Message: {ex.Message}");
                 }
 
                 await Task.Delay(20000, stoppingToken);

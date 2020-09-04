@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace EmailMarketing.ExcelWorkerService.Templates
+namespace EmailMarketing.Membership.Templates
 {
     using System.Linq;
     using System.Text;
@@ -18,9 +18,9 @@ namespace EmailMarketing.ExcelWorkerService.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadFailedEmailTemplate.tt"
+    #line 1 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
-    public partial class FileUploadFailedEmailTemplate : FileUploadFailedEmailTemplateBase
+    public partial class AccountConfirmationEmailTemplate : AccountConfirmationEmailTemplateBase
     {
 #line hidden
         /// <summary>
@@ -28,129 +28,139 @@ namespace EmailMarketing.ExcelWorkerService.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write(@"<!DOCTYPE html>
+            this.Write(@"
+<!DOCTYPE html>
 <html>
 <head>
-	<link rel=""stylesheet"" type=""text/css"" href=""https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"">
+    <link rel=""stylesheet"" type=""text/css"" href=""https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"">
 </head>
 <body style=""background-color: #c9d6df;margin: 0px;"">
-	<table border=""0"" width=""40%"" style=""margin:auto;padding:30px;background-color: #F3F3F3;border:1px solid #3f72af;"">
-		<tr>
-			<td>
-				<table border=""0"" width=""100%"">
-					<tr>
-						<td style=""width:30px;"">
-							<img src=""https://img.icons8.com/color/48/000000/filled-sent.png""/>
-						</td>
-						<td>
-							<h1 style=""font-family: system-ui;font-size:25px;"">");
+    <table border=""0"" width=""750px"" style=""margin:auto;padding:30px;background-color: #F3F3F3;border:1px solid #3f72af;"">
+        <tr>
+            <td>
+                <table border=""0"" width=""100%"">
+                    <tr>
+                        <td style=""width:40px;"">
+                            <img src=""https://img.icons8.com/color/48/000000/filled-sent.png"" />
+                        </td>
+                        <td>
+                            <h1 style=""font-family: system-ui;font-size:25px;"">");
             
-            #line 21 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadFailedEmailTemplate.tt"
+            #line 22 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyFullName));
             
             #line default
             #line hidden
-            this.Write("</h1>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t<p style=\"font-family: system-ui;text-alig" +
-                    "n: right;font-size:13px;\"><a href=\"");
+            this.Write("</h1>\r\n                        </td>\r\n                        <td>\r\n             " +
+                    "               <p style=\"font-family: system-ui;text-align: right;font-size:13px" +
+                    ";\"><a href=\"");
             
-            #line 24 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadFailedEmailTemplate.tt"
+            #line 25 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyUrl));
             
             #line default
             #line hidden
             this.Write(@""" target=""_blank"" style=""text-decoration: none;"">View In Website</a></p>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<table border=""0"" cellpadding=""0"" cellspacing=""0"" style=""text-align:center;width:100%;background-color: #fff;"">
-					<tr>
-						<td style=""background-color:#3f72af;height:80px;font-size:50px;color:#fff;""><img style=""margin-top:10px;"" src=""https://img.icons8.com/color/48/000000/secured-letter.png""/></i></td>
-					</tr>
-					<tr>
-						<td>
-							<h2 style=""font-family: system-ui;padding-top:25px;font-size:20px;"">Upload Failed</h2>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<p style=""padding:0px 100px;font-family:system-ui;text-align:left;font-weight:bold;font-size:15px;"">
-								Dear ");
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table border=""0"" cellpadding=""0"" cellspacing=""0"" style=""text-align:center;width:100%;background-color: #fff;"">
+                    <tr>
+                        <td style=""background-color:#3f72af;height:80px;font-size:50px;color:#fff;""><img style=""margin-top:10px;"" src=""https://img.icons8.com/color/48/000000/secured-letter.png"" /></i></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h2 style=""font-family: system-ui;padding-top:25px;font-size:20px;"">Email Confirmation</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p style=""padding:0px 100px;font-family:system-ui;text-align:left;font-weight:bold;font-size:15px;"">
+                                Dear ");
             
-            #line 44 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadFailedEmailTemplate.tt"
+            #line 45 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ReceiverName));
             
             #line default
             #line hidden
             this.Write(@",
-							</p>
-							<p style=""padding:0px 100px 10px;font-family: system-ui;text-align:left;font-size:13px;"">
-								Your file upload has been failed. Please Try again later.
-							</p>
-						</td>
-					</tr>
-					<tr>
-						<td>
-
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<p style=""padding:10px 100px 0px;font-family: system-ui;text-align:left;font-size:13px;"">
-							  All the best,<br /> ");
+                            </p>
+                            <p style=""padding:0px 100px;font-family: system-ui;text-align:left;font-size:13px;"">
+                                Please confirm your email address by clicking the link below. We may need to send you critical information about our service and it is important that we have an accurate email address.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href=""");
             
-            #line 59 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadFailedEmailTemplate.tt"
+            #line 54 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Url));
+            
+            #line default
+            #line hidden
+            this.Write(@""" style=""font-size: 13px;border-radius:4px;padding:10px 10px;border: 0;color:#fff;background-color:#3f72af;font-family: system-ui;cursor:pointer;text-decoration:none;"">Verify Email Address</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p style=""padding:0px 100px;font-family: system-ui;text-align:left;font-size:13px;"">
+                                All the best,<br /> ");
+            
+            #line 60 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyShortName));
             
             #line default
             #line hidden
             this.Write(@" Team
-							</p>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<table border=""0"" width=""100%"" style=""border-radius: 5px;text-align: center;margin-top:10px;"">
-					<tr>
-						<td>
-							<h3 style=""margin-top:10px;font-family: system-ui;font-size:17px; "">Stay in touch</h3>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div style=""margin-top:0px;"">
-								<a href=""#"" style=""text-decoration: none;""><img src=""https://img.icons8.com/color/35/000000/twitter-circled.png""/></a>
-								<a href=""#"" style=""text-decoration: none;""><img src=""https://img.icons8.com/fluent/35/000000/facebook-new.png""/></a>
-								<a href=""#"" style=""text-decoration: none;""><img src=""https://img.icons8.com/color/35/000000/circled-envelope.png""/></a>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div style=""margin-top: 10px;"">
-								<span style=""font-size:12px;font-family: system-ui;font-size:11px;"">");
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table border=""0"" width=""100%"" style=""border-radius: 5px;text-align: center;margin-top:10px;"">
+                    <tr>
+                        <td>
+                            <h3 style=""margin-top:10px;font-family: system-ui;font-size:17px; "">Stay in touch</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style=""margin-top:0px;"">
+                                <a href=""#"" style=""text-decoration: none;""><img src=""https://img.icons8.com/color/35/000000/twitter-circled.png"" /></a>
+                                <a href=""#"" style=""text-decoration: none;""><img src=""https://img.icons8.com/fluent/35/000000/facebook-new.png"" /></a>
+                                <a href=""#"" style=""text-decoration: none;""><img src=""https://img.icons8.com/color/35/000000/circled-envelope.png"" /></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style=""margin-top: 10px;"">
+                                <span style=""font-size:12px;font-family: system-ui;font-size:11px;"">");
             
-            #line 86 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadFailedEmailTemplate.tt"
+            #line 87 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyFullName));
             
             #line default
             #line hidden
-            this.Write("</span><br>\r\n\t\t\t\t\t\t\t\t<span style=\"font-size:12px;font-family: system-ui;font-size" +
-                    ":11px;\">Copyright © 2020 ");
+            this.Write("</span><br>\r\n                                <span style=\"font-size:12px;font-fam" +
+                    "ily: system-ui;font-size:11px;\">Copyright © 2020 ");
             
-            #line 87 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.ExcelWorkerService\Templates\FileUploadFailedEmailTemplate.tt"
+            #line 88 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyShortName));
             
             #line default
             #line hidden
-            this.Write("</span>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</td>\r\n\t\t</tr>\r" +
-                    "\n\t</table>\r\n</body>\r\n</html>\r\n");
+            this.Write("</span>\r\n                            </div>\r\n                        </td>\r\n     " +
+                    "               </tr>\r\n                </table>\r\n            </td>\r\n        </tr>" +
+                    "\r\n    </table>\r\n</body>\r\n</html>\r\n\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -162,7 +172,7 @@ namespace EmailMarketing.ExcelWorkerService.Templates
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
-    public class FileUploadFailedEmailTemplateBase
+    public class AccountConfirmationEmailTemplateBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

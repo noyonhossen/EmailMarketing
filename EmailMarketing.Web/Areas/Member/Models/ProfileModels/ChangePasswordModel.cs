@@ -21,7 +21,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.ProfileModels
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm New Password")]
-        [Compare("NewPassword",ErrorMessage ="Do not match with new password")]
+        [Compare("NewPassword",ErrorMessage ="Did not match with new password")]
         public string ConfirmNewPassword { get; set; }
 
         public ChangePasswordModel() : base() { }
