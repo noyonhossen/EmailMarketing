@@ -72,6 +72,45 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
         }
 
         [Test]
+        public async Task GetCampaignByIdAsync_CampaignExists_ReturnList()
+        {
+            //Arrange
+            var campaignListById = new Campaign
+            {
+                 Id = 1, Name = "Demoname", EmailSubject = "Demo", SendDateTime = DateTime.Now, IsProcessing = true,
+                
+            };
+            var userId = Guid.NewGuid();
+            var campaignId = 1;
+            var campaignToMatch = new Campaign
+            {
+                Id = 1,
+                IsProcessing = true,
+                SendDateTime = DateTime.Now,
+                IsDeleted = false,
+                IsActive = true,
+                UserId = userId,
+                Name = "DemoCampaign"
+            };
+
+            _campaignUnitOfWorkMock.Setup(x => x.CampaignRepository).Returns(_campaignRepositoryMock.Object);
+            _campaignRepositoryMock.Setup(x => x.GetFirstOrDefaultAsync(
+                It.Is<Expression<Func<Campaign, Campaign>>>(y => y.Compile()(new Campaign()) is Campaign),
+                It.Is<Expression<Func<Campaign, bool>>>(y => y.Compile()(campaignToMatch)),
+                It.IsAny<Func<IQueryable<Campaign>, IIncludableQueryable<Campaign, object>>>(),
+                true
+                )).ReturnsAsync(campaignListById).Verifiable();
+
+            //Act
+            var result = await _campaignService.GetCampaignByIdAsync(userId, campaignId);
+
+            //Assert
+            result.ShouldBe(campaignListById);
+            _campaignRepositoryMock.VerifyAll();
+
+        }
+
+        [Test]
         public void GetAllEmailByCampaignId_ValidCampaignId_ReturnCampaign()
         {
             //Arrange

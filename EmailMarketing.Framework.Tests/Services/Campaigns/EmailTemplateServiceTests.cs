@@ -71,9 +71,9 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
             };
 
             _campaignUnitOfWorkMock.Setup(x => x.EmailTemplateRepository).Returns(_emailTemplateRepositoryMock.Object);
-            _emailTemplateRepositoryMock.Setup(x => x.GetCountAsync(
+            _emailTemplateRepositoryMock.Setup(x => x.IsExistsAsync(
                 It.Is<Expression<Func<EmailTemplate, bool>>>(y => y.Compile()(emailTemplate))
-                )).ReturnsAsync(1).Verifiable();
+                )).ReturnsAsync(true).Verifiable();
 
             //Act
             Should.Throw<DuplicationException>(() =>

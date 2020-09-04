@@ -2,13 +2,10 @@
 using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.Contacts;
-using EmailMarketing.Framework.Entities.Groups;
 using EmailMarketing.Framework.Repositories.Contacts;
-using EmailMarketing.Framework.Repositories.Groups;
 using EmailMarketing.Framework.Services.Contacts;
-using EmailMarketing.Framework.Services.Groups;
-using EmailMarketing.Framework.UnitOfWorks;
 using EmailMarketing.Framework.UnitOfWorks.Contacts;
+using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using NUnit.Framework;
 using Shouldly;
@@ -28,7 +25,7 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
         private AutoMock _mock;
         private Mock<IContactUploadRepository> _contactUploadRepositoryMock;
         private Mock<IContactRepository> _contactRepositoryMock;
-        private Mock<IContactUploadUnitOfWork> _contactExcelUnitOfWork;
+        private Mock<IContactUploadUnitOfWork> _contactUploadUnitOfWorkMock;
         private IContactUploadService _contactUploadService;
 
 
@@ -47,7 +44,7 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
         [SetUp]
         public void Setup()
         {
-            _contactExcelUnitOfWork = _mock.Mock<IContactUploadUnitOfWork>();
+            _contactUploadUnitOfWorkMock = _mock.Mock<IContactUploadUnitOfWork>();
             _contactUploadRepositoryMock = _mock.Mock<IContactUploadRepository>();
             _contactRepositoryMock = _mock.Mock<IContactRepository>();
             _contactUploadService = _mock.Create<ContactUploadService>();
@@ -56,13 +53,13 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
         [TearDown]
         public void Clean()
         {
-            _contactExcelUnitOfWork.Reset();
+            _contactUploadUnitOfWorkMock.Reset();
             _contactRepositoryMock.Reset();
             _contactUploadRepositoryMock.Reset();
         }
 
         [Test]
-        public async Task ContactExcelImportAsync_SearchByContactUploadId_ReturnContactUploadObject     ()
+        public async Task ContactExcelImportAsync_SearchByContactUploadId_ReturnContactUploadObject()
         {
             
             // Arrange
@@ -95,10 +92,10 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
                 Id = 2
             };
 
-            _contactExcelUnitOfWork.Setup(x => x.ContactRepository)
+            _contactUploadUnitOfWorkMock.Setup(x => x.ContactRepository)
                 .Returns(_contactRepositoryMock.Object);
 
-            _contactExcelUnitOfWork.Setup(x => x.ContactUploadRepository)
+            _contactUploadUnitOfWorkMock.Setup(x => x.ContactUploadRepository)
                 .Returns(_contactUploadRepositoryMock.Object);
 
             //_contactUploadRepositoryMock.Setup(x => x.GetFirstOrDefaultAsync(
@@ -115,62 +112,53 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
             //_groupRepositoryMock.VerifyAll();
         }
 
+        [Test]
         public void GetAllAsync_Test()
         {
             // Arrange
-            List<Group> group = new List<Group>()
+
+            int total = 4, totalFilter = 3;
+            string searchText = "", orderBy = "Name";
+            int pageIndex = 1, pageSize = 10;
+            Guid userId = Guid.NewGuid();
+
+            var contactUpload = new List<ContactUpload>
             {
-                new Group()
-                {
-                    Id = 1,
-                    UserId = Guid.NewGuid(),
-                    Name = "TeamA",
-                    Created = DateTime.Now,
-                    CreatedBy = null,
-                    IsActive = true,
-                    IsDeleted = false,
-                    LastModified = DateTime.Now,
-                    LastModifiedBy = null
-
-                },
-                new Group()
-                {
-                    Id = 1,
-                    UserId = Guid.NewGuid(),
-                    Name = "TeamB",
-                    Created = DateTime.Now,
-                    CreatedBy = null,
-                    IsActive = true,
-                    IsDeleted = false,
-                    LastModified = DateTime.Now,
-                    LastModifiedBy = null
-
-                },
-                new Group()
-                {
-                    Id = 1,
-                    UserId = Guid.NewGuid(),
-                    Name = "TeamB",
-                    Created = DateTime.Now,
-                    CreatedBy = null,
-                    IsActive = true,
-                    IsDeleted = false,
-                    LastModified = DateTime.Now,
-                    LastModifiedBy = null
-
-                }
-
+                new ContactUpload { Id = 1, FileName = "Friends" },
+                new ContactUpload {Id = 2, FileName = "Colleague"},
+                new ContactUpload {Id = 3, FileName = "Employee"},
+                new ContactUpload {Id = 4, FileName = "Managars"},
             };
 
-            //_groupUnitOfWorkMock.Setup(x => x.GroupRepository)
-            //    .Returns(_groupRepositoryMock.Object);
+            var contactUploadToMatch = new ContactUpload
+            {
+                Id = 1, FileName = "Friends" ,
+                UserId = userId
+            };
+            var columnsMap = new Dictionary<string, Expression<Func<Entities.Contacts.ContactUpload, object>>>()
+            {
+                ["created"] = v => v.Created,
+                ["fileName"] = v => v.FileName
+            };
 
-            //_groupRepositoryMock.Setup(x => x.GetAsync<Group>(
-            //    It.Is<Expression<Func<Group, bool>>>(y => y.Compile()(new List<Group>(() => group))))
-            //    .Returns((group,2,0)).Verifiable());
+            _contactUploadUnitOfWorkMock.Setup(x => x.ContactUploadRepository).Returns(_contactUploadRepositoryMock.Object);
 
-            // Act
+            _contactUploadRepositoryMock.Setup(x => x.GetAsync(
+                It.Is<Expression<Func<ContactUpload, ContactUpload>>>(y => y.Compile()(new ContactUpload()) is ContactUpload),
+                It.Is<Expression<Func<ContactUpload, bool>>>(y => y.Compile()(contactUploadToMatch)),
+                It.IsAny<Func<IQueryable<ContactUpload>, IOrderedQueryable<ContactUpload>>>(),
+                It.IsAny<Func<IQueryable<ContactUpload>, IIncludableQueryable<ContactUpload, object>>>(),
+                pageIndex, pageSize, true)).ReturnsAsync((contactUpload, total, totalFilter)).Verifiable();
 
+
+
+            //Act
+            _contactUploadService.GetAllAsync(userId, searchText, orderBy, pageIndex, pageSize);
+
+
+            //Assert
+            _contactUploadRepositoryMock.VerifyAll();
+            _contactUploadUnitOfWorkMock.VerifyAll();
 
         }
 

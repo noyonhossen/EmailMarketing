@@ -55,6 +55,7 @@ namespace EmailMarketing.Framework.Tests.Services.Groups
             _groupRepositoryMock.Reset();
             _groupUnitOfWorkMock.Reset();
         }
+        
 
         [Test]
         public void GetByIdAsync_GroupId_ReturnsGroupObject()
@@ -119,7 +120,50 @@ namespace EmailMarketing.Framework.Tests.Services.Groups
             _groupRepositoryMock.VerifyAll();
             _groupUnitOfWorkMock.VerifyAll();
         }
+        [Test]
+        public void GetAllGroupForSelectAsync_GroupList()
+        {
+            //Arrange
+            int Value = 1, ContactCount = 3;
+            //Guid userId = 1;
+            string Text = "", orderBy = "Name";
+            int pageIndex = 1, pageSize = 10;
 
+            var group = new List<Group>
+            {
+                new Group { Id = 1, Name = "Friends" },
+                new Group {Id = 2, Name = "Colleague"},
+                new Group {Id = 3, Name = "Employee"},
+                new Group {Id = 4, Name = "Managars"},
+            };
+
+            var groupToMatch = new List<Group>
+            {
+                new Group { Id = 1, Name = "Friends" },
+                new Group {Id = 2, Name = "Colleague"},
+                new Group {Id = 3, Name = "Employee"},
+                new Group {Id = 4, Name = "Managars"},
+            };
+
+            //_groupUnitOfWorkMock.Setup(x => x.GroupRepository).Returns(_groupRepositoryMock.Object);
+
+            //_groupRepositoryMock.Setup(x => x.GetAsync(
+            //    It.Is<Expression<Func<Group, Group>>>(y => y.Compile()(new Group()) is Group),
+            //    It.Is<Expression<Func<Group, bool>>>(y => y.Compile()(new Group() { Name = "Employee" })),
+            //    It.IsAny<Func<IQueryable<Group>, IOrderedQueryable<Group>>>(),
+            //    It.IsAny<Func<IQueryable<Group>, IIncludableQueryable<Group, object>>>();
+            //    //pageIndex, pageSize, true)).ReturnsAsync(group).Verifiable();
+
+
+
+            //Act
+            //_groupService.GetAllAsync(searchText, orderBy, pageIndex, pageSize);
+
+
+            //Assert
+           // _groupRepositoryMock.VerifyAll();
+           // _groupUnitOfWorkMock.VerifyAll();
+        }
         [Test]
         public void AddAsync_GroupAlreadyExists_ThrowsException()
         {

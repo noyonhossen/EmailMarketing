@@ -340,6 +340,7 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
         public void UpdateAsync_ForValidContactId_UpdateContact()
         {
             //Assign
+            Guid userId = Guid.NewGuid();
             var existingContact = new Contact
             {
                 Id = 1,
@@ -353,7 +354,9 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
             var contactToMatch = new Contact
             {
                 Id = 2,
-                Email = "teamA@gmail.com"
+                Email = "teamA@gmail.com",
+                UserId = userId
+                
             };
             _contactUnitOfWorkMock.Setup(x => x.ContactRepository).Returns(_contactRepositoryMock.Object);
 
