@@ -6,6 +6,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using EmailMarketing.Common.Constants;
 using EmailMarketing.Common.Services;
+using EmailMarketing.ExcelExportWorkerService.Core;
 using EmailMarketing.ExcelExportWorkerService.Entities;
 using EmailMarketing.ExcelExportWorkerService.Services;
 using EmailMarketing.Framework;
@@ -66,6 +67,7 @@ namespace EmailMarketing.ExcelExportWorkerService
                 {
                     services.AddHostedService<Worker>();
                     services.Configure<WorkerSmtpSettings>(hostContext.Configuration.GetSection("SmtpSettings"));
+                    services.Configure<WorkerSettings>(hostContext.Configuration.GetSection("WorkerSettings"));
                     services.AddSingleton<IExportMailerService, WorkerMailerService>();
                     services.AddSingleton<ICurrentUserService, WorkerCurrentUserService>();
                     //services.AddSingleton<IDateTime, WorkerDateTimeService>();

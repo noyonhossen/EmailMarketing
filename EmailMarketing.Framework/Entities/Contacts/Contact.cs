@@ -11,8 +11,6 @@ namespace EmailMarketing.Framework.Entities.Contacts
     {
         public string Email { get; set; }
         public Guid UserId { get; set; }
-        //public int GroupId { get; set; }
-        //public Group Group { get; set; }
         public int? ContactUploadId { get; set; }
         public ContactUpload ContactUpload { get; set; }
 

@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.EmailSendingWorkerService.Core
+namespace EmailMarketing.ExcelExportWorkerService.Core
 {
     public class WorkerSettings
     {
-        public string EmailOpenTrackingUrl { get; set; }
-        public string EmailSenderFileUrl { get; set; }
-        public string EmailSenderLogUrl { get; set; }
+        public string ContactExportFileUrl { get; set; }
+        public string ContactExportLogUrl { get; set; }
         public string CompanyFullName { get; set; }
         public string CompanyShortName { get; set; }
         public string CompanyWebsiteUrl { get; set; }
