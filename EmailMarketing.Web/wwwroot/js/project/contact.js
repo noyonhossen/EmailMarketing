@@ -1,5 +1,4 @@
-﻿
-function loadDatatable(url, editUrl, contactDetailsUrl) {
+﻿function loadDatatable(url, editUrl, contactDetailsUrl) {
 
     if (!$().DataTable) {
         console.warn('Warning - datatables.min.js is not loaded.');
@@ -26,7 +25,7 @@ function loadDatatable(url, editUrl, contactDetailsUrl) {
         "processing": true,
         "serverSide": true,
         "ajax": url,
-        "order": [[0, "asc"]],
+        "order": [[1, "asc"]],
         "columnDefs": [
             {
                 "targets": [0],
@@ -37,7 +36,7 @@ function loadDatatable(url, editUrl, contactDetailsUrl) {
             {
                 "targets": [1],
                 'sortable': true,
-                'searchable': false,
+                'searchable': true,
                 "orderData": [1]
             },
             {

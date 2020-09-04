@@ -113,6 +113,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                         await model.ExportCampaignWise();
                     }
                     _logger.LogInformation("Succecssfully Added to DownloadQueue. Waiting to Complete to Export");
+                    model.Response = new ResponseModel("Successfully added to queue. Please wait a while to process", ResponseType.Success);
                 }
                 catch
                 {
@@ -121,6 +122,24 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
 
             }
             return RedirectToAction("ViewReport");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ActivateCampaign(int id)
+        {
+            var model = new CampaignsModel();
+            try
+            {
+                var result = await model.ActivateCampaign(id);
+                model.Response = new ResponseModel($"{result.Name} { (result.IsProcessing == true ? "successfully  Finished" : "in Processing") }", ResponseType.Success);
+                _logger.LogInformation($"Campaign - {result.Name} - Processing Status updated");
+            }
+            catch(Exception ex)
+            {
+                model.Response = new ResponseModel("Campaign Processing Status Operation failured.", ResponseType.Failure);
+                _logger.LogError(ex.Message);
+            }
+            return RedirectToAction("Index");
         }
     }
 }

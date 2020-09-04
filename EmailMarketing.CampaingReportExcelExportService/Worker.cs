@@ -5,8 +5,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
+using EmailMarketing.CampaingReportExcelExportService.Templates;
 using EmailMarketing.Common.Services;
-using EmailMarketing.ExcelWorkerService.Templates;
 using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.Services.Campaigns;
 using Microsoft.Extensions.Hosting;
@@ -17,13 +17,13 @@ namespace EmailMarketing.CampaingReportExcelExportService
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
-        private readonly IMailerService _mailerService;
+        private readonly IExportMailerService _exportMailerService;
         private readonly ICampaignReportExportService _campaignReportExportService;
 
-        public Worker(ILogger<Worker> logger, ICampaignReportExportService campaignReportExportService, IMailerService mailerService)
+        public Worker(ILogger<Worker> logger, ICampaignReportExportService campaignReportExportService, IExportMailerService exportMailerService)
         {
             _logger = logger;
-            _mailerService = mailerService;
+            _exportMailerService = exportMailerService;
             _campaignReportExportService = campaignReportExportService;
         }
 
@@ -45,24 +45,48 @@ namespace EmailMarketing.CampaingReportExcelExportService
 
                     foreach (var item in result)
                     {
-                        if (Directory.Exists(item.FileUrl) == false)
+                        try
                         {
-                            DirectoryInfo directory = Directory.CreateDirectory(item.FileUrl);
-                        }
+                            if (Directory.Exists(item.FileUrl) == false)
+                            {
+                                DirectoryInfo directory = Directory.CreateDirectory(item.FileUrl);
+                            }
 
-                        var importResult = await _campaignReportExportService.GetDownloadQueueByIdAsync(item.Id);
+                            var importResult = await _campaignReportExportService.GetDownloadQueueByIdAsync(item.Id);
 
-                        if (item.DownloadQueueFor == DownloadQueueFor.CampaignAllReportExport)
-                        {
-                            await _campaignReportExportService.ExcelExportForAllCampaignAsync(item);
+                            if (item.DownloadQueueFor == DownloadQueueFor.CampaignAllReportExport)
+                            {
+                                await _campaignReportExportService.ExcelExportForAllCampaignAsync(item);
+                            }
+                            else if (item.DownloadQueueFor == DownloadQueueFor.CampaignDetailsReportExport)
+                            {
+                                await _campaignReportExportService.ExcelExportForCampaignWiseAsync(item);
+                            }
+                            importResult.IsProcessing = false;
+                            importResult.IsSucceed = true;
+                            importResult.LastModified = DateTime.Now;
+                            importResult.LastModifiedBy = item.UserId;
+                            await _campaignReportExportService.UpdateDownloadQueueAync(importResult);
+
+                            _logger.LogInformation($"Successfully Exported. FileUrl: {item.FileUrl}+{item.FileName}");
+
+
+                            //Sending Email
+                            if (item.IsSendEmailNotify)
+                            {
+                                var url = Path.Combine(item.FileUrl, item.FileName);
+
+                                var emailSubject = "Contact Export Confirmation";
+                                var campReportExportTemplate = new CampReportExportTemplate("Sir");
+                                var emailBody = campReportExportTemplate.TransformText();
+
+                                await _exportMailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, emailBody, url);
+                            }
                         }
-                        else if (item.DownloadQueueFor == DownloadQueueFor.CampaignDetailsReportExport)
+                        catch (Exception ex)
                         {
-                            await _campaignReportExportService.ExcelExportForCampaignWiseAsync(item);
+                            _logger.LogError($"Campaign export failed : {item.FileUrl} - {item.FileName}");
                         }
-                        importResult.IsProcessing = false;
-                        importResult.IsSucceed = true;
-                        await _campaignReportExportService.UpdateDownloadQueueAync(importResult);
                     }
                 }
                 catch (Exception ex)

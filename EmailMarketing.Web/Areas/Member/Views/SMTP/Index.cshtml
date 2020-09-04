@@ -1,41 +1,18 @@
 ﻿@{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "View SMTP";
 }
 
-<!-- Page header -->
-<div class="page-header">
-    <div class="page-header-content header-elements-md-inline">
-        <div class="page-title d-flex">
-            <h4><a asp-controller="Dashboard" asp-action="Index" asp-area="Member" class="text-black-50"><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Dashboard</span></a></h4>
-            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-        </div>
-
-        <div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
-            <a asp-controller="SMTP" asp-action="Add" asp-area="Member" class="btn btn-labeled btn-labeled-right bg-primary"><i class="icon-plus-circle2 mr-2"></i> <span class="font-weight-semibold">New SMTP Config</span></a>
-        </div>
-    </div>
-</div>
-<!-- /page header -->
 <!-- Content area -->
-<div class="content pt-0">
-
+<div class="content">
+    <div class="pb-3">
+        <h4 class="d-inline">SMTP List</h4>
+        <a asp-controller="SMTP" asp-action="Add" asp-area="Member" class="btn bg-primary float-right"><i class="icon-plus-circle2 mr-2"></i> <span class="font-weight-semibold">Add New SMTP</span></a>
+    </div>
     <!-- Basic datatable -->
     <div class="card">
-        <div class="card-header header-elements-inline">
-            <h5 class="card-title">SMTP</h5>
-            <div class="header-elements">
-                <div class="list-icons">
-                    <a class="list-icons-item" data-action="collapse"></a>
-                    <a class="list-icons-item" data-action="reload"></a>
-                    <a class="list-icons-item" data-action="remove"></a>
-                </div>
-            </div>
-        </div>
-
         <div class="card-body">
             <partial name="_ActionMessage" model="@Model.Response" />
         </div>
-
         <table class="table" id="group-table">
             <thead>
                 <tr>
@@ -45,6 +22,7 @@
                     <th>Sender Email</th>
                     <th>User Name</th>
                     <th>Enable SSL</th>
+                    <th>Active</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -54,26 +32,26 @@
     <!-- /basic datatable -->
 </div>
 
-<!-- Danger modal -->
-<div id="modal-delete" class="modal fade" tabindex="-1">
+<!-- Active/InActive SMTP Settings modal -->
+<div id="modal-active" class="modal fade" tabindex="-1">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title">Delete</h6>
+                <h6 class="modal-title"><span id="activeSmtpTitle">Activate SMTP Setting</span></h6>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
             <div class="modal-body">
-                <p>Are you sure want to delete?</p>
-                <form id="deleteForm" action="@Url.Action("Delete", "SMTP", new { Area = "Member" })" method="post">
+                <p>Are you sure want to <span id="activeSmtpSure">Activate SMTP Setting?</span>?</p>
+                <form id="activeSmtpForm" action="@Url.Action("ActivateSmtp", "SMTP", new { Area = "Member" })" method="post">
                     @Html.AntiForgeryToken()
-                    <input type="hidden" id="deleteId" value="" name="id" />
+                    <input type="hidden" id="activeSmtpId" value="" name="id" />
                 </form>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                <button type="button" id="deleteButton" class="btn bg-danger">Yes, Delete!</button>
+                <button type="button" id="activeButton" class="btn bg-danger">Yes, <span id="activeSmtpButton">Activate</span>!</button>
             </div>
         </div>
     </div>
@@ -92,16 +70,20 @@
             var editUrl = '@Url.Action("Edit", "SMTP", new { Area = "Member" })';
             loadDatatable(url, editUrl);
 
-            $('#group-table').on('click', '.show-bs-modal', function (event) {
-                var id = $(this).data("id");
-                var modal = $("#modal-delete");
-                modal.find('.modal-body p').text('Are you sure want to delete this record?')
-                $("#deleteId").val(id);
+            //Activate SMTP Settings
+            $('#modal-active').on('show.bs.modal', function (e) {
+                var id = $(e.relatedTarget).attr('data-id');
+                var title = $(e.relatedTarget).attr('data-title');
+                var modal = $("#modal-active");
+                $("#activeSmtpId").val(id);
+                $("#activeSmtpTitle").text(title == 'Yes' ? 'Deactivate SMTP Setting' : 'Activate SMTP Setting');
+                $("#activeSmtpSure").text(title == 'Yes' ? 'Deactivate SMTP Setting' : 'Activate SMTP Setting');
+                $("#activeSmtpButton").text(title == 'Yes' ? 'Deactivate' : 'Activate');
+                console.log(title);
                 modal.modal('show');
-            });
-
-            $("#deleteButton").click(function () {
-                $("#deleteForm").submit();
+            })
+            $("#activeButton").click(function () {
+                $("#activeSmtpForm").submit();
             });
         });
     </script>

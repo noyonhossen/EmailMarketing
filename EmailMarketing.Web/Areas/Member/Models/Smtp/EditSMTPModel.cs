@@ -1,8 +1,11 @@
-﻿using EmailMarketing.Common.Services;
+﻿using EmailMarketing.Common.Constants;
+using EmailMarketing.Common.Extensions;
+using EmailMarketing.Common.Services;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.SMTP;
 using EmailMarketing.Framework.Services.SMTP;
 using EmailMarketing.Membership.Services;
+using EmailMarketing.Web.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -34,7 +37,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
         public bool EnableSSL { get; set; }
 
         public EditSMTPModel(ISMTPService smtpService, IApplicationUserService applicationUserService,
-           ICurrentUserService currentUserService) : base(smtpService, applicationUserService, currentUserService)
+           ICurrentUserService currentUserService, ISmtpTestService smtpTestService) : base(smtpService, applicationUserService, currentUserService, smtpTestService)
         {
 
         }
@@ -53,12 +56,14 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
             this.SenderName = result.SenderName;
             this.SenderEmail = result.SenderEmail;
             this.UserName = result.UserName;
-            this.Password = result.Password;
+            //this.Password = result.Password;
             this.EnableSSL = result.EnableSSL;
         }
 
         public async Task UpdateAsync()
         {
+            this.Password = this.Password.ToEncryptString(ConstantsValue.EncryptDecryptKey);
+
             var entity = new SMTPConfig
             {
                 Id = this.Id,

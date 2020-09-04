@@ -54,8 +54,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 _currentUserService.UserId,
                 tableModel.SearchText,
                 tableModel.GetSortText(new string[] { "Name" }),
-                tableModel.PageIndex, tableModel.PageSize);
-           
+                tableModel.PageIndex, tableModel.PageSize);           
             
             return new
             {
@@ -66,10 +65,12 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                         select new string[]
                         {
                             item.Name,
-                            item.IsProcessing ? "Yes" : "No",
+                            string.Join(", ", item.CampaignGroups.Select(x => x.Group.Name)),
+                            item.IsDraft ? "Yes" : "No",
+                            item.IsProcessing ? "Processing" : "Finished",
+                            item.IsSucceed ? "Yes" : "No",
                             item.CampaignReports.Count().ToString(),
                             item.SendDateTime.ToString(),
-                            item.SendEmailAddress.ToString(),
                             item.Id.ToString()
 
                         }).ToArray()
@@ -103,7 +104,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                             item.Contact.Email.ToString(),
                             item.IsDelivered ? "Yes" : "No",
                             item.IsSeen ? "Yes" : "No",
-                            item.SeenDateTime.ToString(),
+                            item.SeenDateTime == null ? "" : item.SeenDateTime.ToString(),
                             item.SendDateTime.ToString()
 
                         }).ToArray()
@@ -127,11 +128,17 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 downloadQueue.IsProcessing = true;
                 downloadQueue.IsSucceed = false;
                 downloadQueue.UserId = _currentUserService.UserId;
+                downloadQueue.Created = DateTime.Now;
                 downloadQueue.DownloadQueueFor = DownloadQueueFor.CampaignAllReportExport;
                 downloadQueue.IsSendEmailNotify = IsSendEmailNotifyForAll;
                 downloadQueue.SendEmailAddress = SendEmailAddress;
                 await _campaignREService.SaveDownloadQueueAsync(downloadQueue);
             }
+        }
+
+        public async Task<Campaign> ActivateCampaign(int id)
+        {
+            return await _campaignService.ActivateCampaignAsync(id);
         }
 
         public async Task ExportCampaignWise()
@@ -148,6 +155,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
                 downloadQueue.IsProcessing = true;
                 downloadQueue.IsSucceed = false;
                 downloadQueue.UserId = _currentUserService.UserId;
+                downloadQueue.Created = DateTime.Now;
                 downloadQueue.DownloadQueueFor = DownloadQueueFor.CampaignDetailsReportExport;
                 downloadQueue.IsSendEmailNotify = IsSendEmailNotifyForCampaignwise;
                 downloadQueue.SendEmailAddress = SendEmailAddress;

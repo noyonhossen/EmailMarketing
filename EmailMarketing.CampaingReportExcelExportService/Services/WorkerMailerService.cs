@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.CampaingReportExcelExportService.Services
 {
-    public class WorkerMailerService : IMailerService
+    public class WorkerMailerService : IExportMailerService
     {
         private readonly WorkerSmtpSettings _workerSmtpSettings;
 
@@ -21,18 +21,28 @@ namespace EmailMarketing.CampaingReportExcelExportService.Services
             _workerSmtpSettings = smtpSettings.Value;
         }
 
-        public async Task SendEmailAsync(string email, string subject, string body)
+        public async Task SendEmailAsync(string email, string subject, string body, string url)
         {
             try
             {
                 var messgae = new MimeMessage();
                 messgae.From.Add(new MailboxAddress(_workerSmtpSettings.SenderName, _workerSmtpSettings.SenderEmail));
-                messgae.To.Add(MailboxAddress.Parse(email));
-                messgae.Subject = subject;
-                messgae.Body = new TextPart("html")
+                InternetAddressList toList = new InternetAddressList();
+                foreach (var item in email.Split(',').ToList())
                 {
-                    Text = body
-                };
+                    toList.Add(MailboxAddress.Parse(item.Trim()));
+                }
+
+                messgae.To.AddRange(toList);
+                messgae.Subject = subject;
+
+                var builder = new BodyBuilder();
+                builder.HtmlBody = body;
+
+                builder.Attachments.Add(url);
+
+                messgae.Body = builder.ToMessageBody();
+
 
                 using (var client = new SmtpClient())
                 {

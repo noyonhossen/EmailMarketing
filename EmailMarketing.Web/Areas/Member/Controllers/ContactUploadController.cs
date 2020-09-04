@@ -42,7 +42,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                 try
                 {
                     await model.SaveContactsUploadAsync();
-                    model.Response = new ResponseModel("Contacts Upload successful.", ResponseType.Success);
+                    model.Response = new ResponseModel("Contacts Upload successful. Contacts are currently being processed! This could take a few minutes .In the meantime you can continue working in MailTo.", ResponseType.Success);
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
@@ -55,6 +55,25 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> FinishUpload(int id)
+        {
+            var model = new ContactUploadModel();
+            try
+            {
+                var result = await model.FinishUploadAsync(id);
+                model.Response = new ResponseModel($"{result.FileName} { (result.IsProcessing == true ? "successfully  Finished" : "in Processing")}.", ResponseType.Success);
+                _logger.LogInformation($"ConatactUpload - {result.FileName} - Processing Status updated");
+            }
+            catch (Exception ex)
+            {
+                model.Response = new ResponseModel("ConatactUpload Processing Status Operation failured.", ResponseType.Failure);
+                _logger.LogError(ex.Message);
+            }
+            return RedirectToAction("Index");
+        }
+
 
         #region json helper method
         public async Task<JsonResult> GetAllFieldMaps()

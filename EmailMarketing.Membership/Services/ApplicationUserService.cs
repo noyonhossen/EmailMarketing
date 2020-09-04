@@ -590,6 +590,7 @@ namespace EmailMarketing.Membership.Services
                 }
             }
         }
+
     }
 
 }

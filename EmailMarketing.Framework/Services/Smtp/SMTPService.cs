@@ -23,23 +23,25 @@ namespace EmailMarketing.Framework.Services.SMTP
         }
 
         public async Task<(IList<SMTPConfig> Items, int Total, int TotalFilter)> GetAllAsync(
-            string searchText, string orderBy, int pageIndex, int pageSize)
+            Guid? userId,string searchText, string orderBy, int pageIndex, int pageSize)
         {
             var columnsMap = new Dictionary<string, Expression<Func<SMTPConfig, object>>>()
             {
-                ["server"] = v => v.Server,
-                ["port"] = v => v.Port,
-                ["senderName"] = v => v.SenderName,
-                ["senderEmail"] = v => v.SenderEmail,
-                ["userName"] = v => v.UserName,
-                ["password"] = v => v.Password,
-                ["enableSSL"] = v => v.EnableSSL
+                ["Server"] = v => v.Server,
+                ["Port"] = v => v.Port,
+                ["SenderName"] = v => v.SenderName,
+                ["SenderEmail"] = v => v.SenderEmail,
+                ["UserName"] = v => v.UserName,
+                ["Password"] = v => v.Password,
+                ["EnableSSL"] = v => v.EnableSSL
             };
 
             var result = await _smtpUnitOfWork.SMTPRepository.GetAsync<SMTPConfig>(
-                x => x, x => x.Server.Contains(searchText),
+                x => x, x => x.Server.Contains(searchText) && (!userId.HasValue || x.UserId == userId.Value),
                 x => x.ApplyOrdering(columnsMap, orderBy), null,
                 pageIndex, pageSize, true);
+
+            result.Total = await _smtpUnitOfWork.SMTPRepository.GetCountAsync(x => x.UserId == userId);
 
             return (result.Items, result.Total, result.TotalFilter);
         }
@@ -51,7 +53,7 @@ namespace EmailMarketing.Framework.Services.SMTP
 
         public async Task AddAsync(SMTPConfig entity)
         {
-            var isExists = await _smtpUnitOfWork.SMTPRepository.IsExistsAsync(x => x.Server == entity.Server && x.Id != entity.Id);
+            var isExists = await _smtpUnitOfWork.SMTPRepository.IsExistsAsync(x => x.UserId == entity.UserId && x.SenderEmail == entity.SenderEmail && x.Id != entity.Id);
             if (isExists)
                 throw new DuplicationException(nameof(entity.Server));
 
@@ -61,7 +63,7 @@ namespace EmailMarketing.Framework.Services.SMTP
 
         public async Task UpdateAsync(SMTPConfig entity)
         {
-            var isExists = await _smtpUnitOfWork.SMTPRepository.IsExistsAsync(x => x.Server == entity.Server && x.Id != entity.Id);
+            var isExists = await _smtpUnitOfWork.SMTPRepository.IsExistsAsync(x => x.UserId == entity.UserId && x.SenderEmail == entity.SenderEmail && x.Id != entity.Id);
             if (isExists)
                 throw new DuplicationException(nameof(entity.Server));
 
@@ -78,10 +80,11 @@ namespace EmailMarketing.Framework.Services.SMTP
             await _smtpUnitOfWork.SaveChangesAsync();
         }
 
-        public async Task<SMTPConfig> DeleteAsync(Guid id)
+        public async Task<SMTPConfig> ActivateSmtpAsync(Guid id)
         {
             var smtp = await GetByIdAsync(id);
-            await _smtpUnitOfWork.SMTPRepository.DeleteAsync(id);
+            smtp.IsActive = !smtp.IsActive;
+            await _smtpUnitOfWork.SMTPRepository.UpdateAsync(smtp);
             await _smtpUnitOfWork.SaveChangesAsync();
             return smtp;
         }
@@ -93,7 +96,9 @@ namespace EmailMarketing.Framework.Services.SMTP
 
         public async Task<IList<SMTPConfig>> GetAllSMTPConfig(Guid? userId)
         {
-            return await _smtpUnitOfWork.SMTPRepository.GetAsync(x => x, x => x.UserId == userId, null, null, true);
+            return await _smtpUnitOfWork.SMTPRepository.GetAsync(x => x, x => !x.IsDeleted && x.IsActive &&
+                                                                                x.UserId == userId, null, null, true);
         }
+
     }
 }

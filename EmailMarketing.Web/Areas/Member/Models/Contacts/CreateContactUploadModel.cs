@@ -47,6 +47,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 
         public async Task SaveContactsUploadAsync()
         {
+            if (ContactUploadGroups == null) throw new Exception("Please add/active atleast one group");
             if (!this.ContactUploadGroups.Any(x => x.IsChecked)) throw new Exception("Please select at least one group.");
             if (!(await this._contactUploadService.IsSelectedEmailFieldMap(this.ContactUploadFieldMaps.Select(x => int.Parse(x.Value)).ToList()))) throw new Exception("Please select at least email field map.");
 

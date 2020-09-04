@@ -1,4 +1,4 @@
-﻿function loadDatatable(url, editUrl) {
+﻿function loadDatatable(url) {
 
     if (!$().DataTable) {
         console.warn('Warning - datatables.min.js is not loaded.');
@@ -10,7 +10,7 @@
         columnDefs: [{
             orderable: false,
             width: 100,
-            targets: [1]
+            targets: [8]
         }],
         dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
         language: {
@@ -43,25 +43,41 @@
                 "targets": [2],
                 'sortable': false,
                 'searchable': false,
-                "orderData": [2]
+                "orderData": [2],
+                "render": function (data, type, row, meta) {
+                    var lbl = data == "No" ? "badge-danger" : "badge-success";
+                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
+                }
             },   
             {
                 "targets": [3],
                 'sortable': false,
                 'searchable': false,
-                "orderData": [3]
+                "orderData": [3],
+                "render": function (data, type, row, meta) {
+                    var lbl = data == "No" ? "badge-danger" : "badge-success";
+                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
+                }
             },    
             {
                 "targets": [4],
                 'sortable': false,
                 'searchable': false,
-                "orderData": [4]
+                "orderData": [4],
+                "render": function (data, type, row, meta) {
+                    var lbl = data == "Processing" ? "badge-warning" : "badge-success";
+                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
+                }
             },    
             {
                 "targets": [5],
                 'sortable': false,
                 'searchable': false,
-                "orderData": [5]
+                "orderData": [5],
+                "render": function (data, type, row, meta) {
+                    var lbl = data == "No" ? "badge-danger" : "badge-success";
+                    return '<span class="badge  ' + lbl + '">' + data + '</span>';
+                }
             },    
             {
                 "targets": [6],
@@ -76,13 +92,11 @@
                 "width": "15%",
                 "className": "text-center",
                 "render": function (data, type, row, meta) {
-                    var editButton = '<a class="text-primary" href="' + editUrl + '/'+ data +'" title="Edit">' +
-                        '<i class="icon-pencil7"></i></a>';
+                    
+                    var activeButton = '<a class="text-danger" data-toggle="modal" data-target="#modal-activeField" data-id="' + data + '" data-title="' + row[4] + '" href="#" title="Finish/Process">' +
+                        '<i class="icon-blocked"></i></a>';
 
-                    var deleteButton = '<a class="text-danger show-bs-modal" data-id="'+ data +'" href="#" title="Delete">' +
-                        '<i class="icon-trash"></i></a>';
-
-                    return editButton + ' ' + deleteButton;
+                    return  activeButton;
                 }
             }
         ]

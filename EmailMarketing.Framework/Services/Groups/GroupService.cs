@@ -27,17 +27,19 @@ namespace EmailMarketing.Framework.Services.Groups
 
         }
         public async Task<(IList<Group> Items, int Total, int TotalFilter)> GetAllAsync(
-            string searchText, string orderBy, int pageIndex, int pageSize)
+            Guid? userId,string searchText, string orderBy, int pageIndex, int pageSize)
         {
             var columnsMap = new Dictionary<string, Expression<Func<Group, object>>>()
             {
-                ["name"] = v => v.Name
+                ["Name"] = v => v.Name
             };
             
             var result = await _groupUnitOfWork.GroupRepository.GetAsync<Group>(
-                x => x, x => x.Name.Contains(searchText),
+                x => x, x => ((x.Name.Contains(searchText)) && (!userId.HasValue || x.UserId == userId.Value)),
                 x => x.ApplyOrdering(columnsMap, orderBy), null,
                 pageIndex, pageSize, true);
+
+            result.Total = await _groupUnitOfWork.GroupRepository.GetCountAsync(x => x.UserId == userId);
 
             return (result.Items, result.Total, result.TotalFilter);
         }
@@ -49,7 +51,7 @@ namespace EmailMarketing.Framework.Services.Groups
 
         public async Task AddAsync(Group entity)
         {
-            var isExists = await _groupUnitOfWork.GroupRepository.IsExistsAsync(x => x.Name == entity.Name && x.Id != entity.Id);
+            var isExists = await _groupUnitOfWork.GroupRepository.IsExistsAsync(x => x.Name == entity.Name && x.UserId == entity.UserId);
             if (isExists)
                 throw new DuplicationException(nameof(entity.Name));
 
@@ -57,9 +59,16 @@ namespace EmailMarketing.Framework.Services.Groups
             await _groupUnitOfWork.SaveChangesAsync();
         }
 
+        public async Task UpdateActiveStatusAsync(Group entity)
+        {
+            entity.IsActive = entity.IsActive == true ? false : true;
+
+            await _groupUnitOfWork.GroupRepository.UpdateAsync(entity);
+            await _groupUnitOfWork.SaveChangesAsync();
+        }
         public async Task UpdateAsync(Group entity)
         {
-            var isExists = await _groupUnitOfWork.GroupRepository.IsExistsAsync(x => x.Name == entity.Name && x.Id != entity.Id);
+            var isExists = await _groupUnitOfWork.GroupRepository.IsExistsAsync(x => x.Name == entity.Name && x.Id != entity.Id && x.UserId == entity.UserId);
             if (isExists)
                 throw new DuplicationException(nameof(entity.Name));
 
@@ -86,7 +95,10 @@ namespace EmailMarketing.Framework.Services.Groups
                                                     x => x.Include(i => i.ContactGroups), true))
                                                     .Select(x => (Value: x.Value, Text: x.Text, ContactCount: x.ContactCount)).ToList();
         }
-
+        public async Task<int> GetGroupCountAsync(Guid? userId)
+        {
+            return await _groupUnitOfWork.GroupRepository.GetCountAsync(x => x.UserId == userId);
+        }
         public void Dispose()
     {
             _groupUnitOfWork?.Dispose();

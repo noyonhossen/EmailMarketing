@@ -64,69 +64,77 @@ namespace EmailMarketing.EmailSendingWorkerService
 
                     foreach(var item in campaignList)
                     {
-                        int totalSuccessCount = 0, totalFailCount = 0;
-                        //Fetching campaign with email list
-                        var result = await _campaignService.GetAllEmailByCampaignId(item.Id);
-
-                        //Fetching contact list from result
-                        var contactList = result.CampaignGroups.Select(x => x.Group).SelectMany(x => x.ContactGroups).Select(x => x.Contact).ToList();
-
-                        foreach(var singleContact in contactList)
+                        try
                         {
-                            var fieldmapDict = singleContact.ContactValueMaps.ToList().ToDictionary(x => x.FieldMap.DisplayName, x => x.Value);
-                            fieldmapDict.Add(ConstantsValue.ContactFieldMapEmail, singleContact.Email);
+                            int totalSuccessCount = 0, totalFailCount = 0;
+                            //Fetching campaign with email list
+                            var result = await _campaignService.GetAllEmailByCampaignId(item.Id);
 
-                            var emailTemplate = result.EmailTemplate.EmailTemplateBody;
-                            if(item.IsPersonalized)
+                            //Fetching contact list from result
+                            var contactList = result.CampaignGroups.Select(x => x.Group).SelectMany(x => x.ContactGroups).Select(x => x.Contact).ToList();
+
+                            foreach (var singleContact in contactList)
                             {
-                                emailTemplate = ConvertExtension.FormatStringFromDictionary(emailTemplate, fieldmapDict);
+                                var fieldmapDict = singleContact.ContactValueMaps.ToList().ToDictionary(x => x.FieldMap.DisplayName, x => x.Value);
+                                fieldmapDict.Add(ConstantsValue.ContactFieldMapEmail, singleContact.Email);
+
+                                var emailTemplate = result.EmailTemplate.EmailTemplateBody;
+                                if (item.IsPersonalized)
+                                {
+                                    emailTemplate = ConvertExtension.FormatStringFromDictionary(emailTemplate, fieldmapDict);
+                                }
+                                
+                                #region mail open tracker
+                                var imageHtml = $"<img src='{_workerSettings.EmailOpenTrackingUrl}?campaignId={result.Id}&contactId={singleContact.Id}&email={singleContact.Email}' width='1' height='1' />";
+                                emailTemplate += imageHtml;
+                                #endregion
+
+                                var status = await _mailerService.SendBulkEmailAsync(singleContact.Email, item.EmailSubject, emailTemplate, result.SMTPConfig);
+
+                                //Counting email success and failure
+                                if (status)
+                                {
+                                    totalSuccessCount++;
+                                }
+                                else
+                                {
+                                    totalFailCount++;
+                                }
+
+                                //Adding value to campaignReport based on each mail sending status
+                                var campaignReport = new CampaignReport
+                                {
+                                    CampaignId = result.Id,
+                                    ContactId = singleContact.Id,
+                                    SMTPConfigId = result.SMTPConfigId,
+                                    IsDelivered = status,
+                                    IsSeen = false,
+                                    IsPersonalized = item.IsPersonalized,
+                                    SendDateTime = item.SendDateTime,
+                                    //SeenDateTime = DateTime.Now
+                                };
+
+                                campaignReportList.Add(campaignReport);
                             }
 
-                            #region mail open tracker
-                            var imageHtml = $"<img src='{_workerSettings.EmailOpenTrackingUrl}?campaignId={result.Id}&contactId={singleContact.Id}&email={singleContact.Email}' width='1' height='1' />";
-                            emailTemplate += imageHtml;
-                            #endregion
+                            //Upating Campaign isProcessing Status
+                            await _campaignService.UpdateCampaignAsync(item);
 
-                            var status = await _mailerService.SendBulkEmailAsync(singleContact.Email, item.EmailSubject, emailTemplate, result.SMTPConfig);
-
-                            //Counting email success and failure
-                            if(status)
+                            //Sending email confirmation
+                            if (item.IsSendEmailNotify)
                             {
-                                totalSuccessCount++;
+                                var emailSubject = "Campaign Sent Confirmation";
+                                var demoEmailTemplatePartial = new DemoEmailTemplate("Sir", totalSuccessCount, totalFailCount);
+                                var body = demoEmailTemplatePartial.TransformText();
+                                await _confirmationMailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, body);
                             }
-                            else
-                            {
-                                totalFailCount++;
-                            }
-                            
-                            //Adding value to campaignReport based on each mail sending status
-                            var campaignReport = new CampaignReport
-                            {
-                                CampaignId = result.Id,
-                                ContactId = singleContact.Id,
-                                SMTPConfigId = result.SMTPConfigId,
-                                IsDelivered = status,
-                                IsSeen = false,
-                                IsPersonalized = item.IsPersonalized,
-                                SendDateTime = item.SendDateTime,
-                                SeenDateTime = DateTime.Now
-                            };
 
-                            campaignReportList.Add(campaignReport);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogInformation($"Failed to send email for this campaign : {item.Name}");
                         }
 
-                        //Upating Campaign isProcessing Status
-                        await _campaignService.UpdateCampaignAsync(item);
-
-                        //Sending email confirmation
-                        if(item.IsSendEmailNotify)
-                        {
-                            var emailSubject = "Campaign Sent Confirmation";
-                            var demoEmailTemplatePartial = new DemoEmailTemplate("Shamim", totalSuccessCount, totalFailCount);
-                            var body = demoEmailTemplatePartial.TransformText();
-                            await  _confirmationMailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, body);
-                        }
-                        
                     }
 
                     await _campaignReportService.AddCampaingReportAsync(campaignReportList);

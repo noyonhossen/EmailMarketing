@@ -9,17 +9,10 @@
     <div class="content">
         <div class="col-md-12" data-select2-id="49">
 
-            <!-- Basic layout--> 
+            <!-- Basic layout-->
             <div class="card" data-select2-id="48">
                 <div class="card-header header-elements-inline">
                     <h5 class="card-title"><b>Profile Information</b></h5>
-                    <div class="header-elements">
-                        <div class="list-icons">
-                            <a class="list-icons-item" data-action="collapse"></a>
-                            <a class="list-icons-item" data-action="reload"></a>
-                            <a class="list-icons-item" data-action="remove"></a>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="card-body">
@@ -39,17 +32,6 @@
                                     }
                                 </tr>
                                 <tr>
-                                    <td class="col-4 float-left"><h5>User Name : </h5></td>
-                                    @if (@Model.UserName == null)
-                                    {
-                                        <td class="col-8 float-left"><h5>Not Set</h5></td>
-                                    }
-                                    else
-                                    {
-                                        <td class="col-8 float-left"><h5>@Model.UserName</h5></td>
-                                    }
-                                </tr>
-                                <tr>
                                     <td class="col-4 float-left"><h5>Email : </h5></td>
                                     @if (@Model.Email == null)
                                     {
@@ -60,19 +42,17 @@
                                         <td class="col-8 float-left"><h5>@Model.Email</h5></td>
                                     }
                                 </tr>
-
                                 <tr>
-                                    <td class="col-4 float-left"><h5>Phone Number : </h5></td>
-                                    @if (@Model.PhoneNumber == null)
+                                    <td class="col-4 float-left"><h5>Date of Birth : </h5></td>
+                                    @if (@Model.DateOfBirth == null)
                                     {
                                         <td class="col-8 float-left"><h5>Not Set</h5></td>
                                     }
                                     else
                                     {
-                                        <td class="col-8 float-left"><h5>@Model.PhoneNumber</h5></td>
+                                        <td class="col-8 float-left"><h5>@Model.DateOfBirth</h5></td>
                                     }
                                 </tr>
-
                             </table>
                         </div>
 
@@ -89,18 +69,18 @@
                                         <td class="col-8 float-left"><h5>@Model.Gender</h5></td>
                                     }
                                 </tr>
+                                
                                 <tr>
-                                    <td class="col-4 float-left"><h5>Date of Birth : </h5></td>
-                                    @if (@Model.DateOfBirth == null)
+                                    <td class="col-4 float-left"><h5>Phone Number : </h5></td>
+                                    @if (@Model.PhoneNumber == null)
                                     {
                                         <td class="col-8 float-left"><h5>Not Set</h5></td>
                                     }
                                     else
                                     {
-                                        <td class="col-8 float-left"><h5>@Model.DateOfBirth</h5></td>
+                                        <td class="col-8 float-left"><h5>@Model.PhoneNumber</h5></td>
                                     }
                                 </tr>
-
                                 <tr>
                                     <td class="col-4 float-left"><h5>Address : </h5></td>
                                     @if (@Model.Address == null)
@@ -120,51 +100,19 @@
                         </div>
                     </div>
 
-                    @*<div class="card-body" style="align-content:center;" data-select2-id="47">
-            <form method="get" data-select2-id="46">
 
-                    <div class="form-group row">
-                        <label class="col-md-4 col-form-label"><b>Full Name:</b></label>
-                        <div class="col-lg-3 col-form-label">
-                            <dd>@Html.DisplayFor(model => model.FullName)</dd>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-4 col-form-label"><b>Address:</b></label>
-                        <div class="col-lg-3 col-form-label">
-                            <dd>@Html.DisplayFor(model => model.Address)</dd>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-md-4 col-form-label"><b>Date of Birth:</b></label>
-                        <div class="col-lg-3 col-form-label">
-                            <dd>@Html.DisplayFor(model => model.DateOfBirth)</dd>
-                        </div>
-                    </div>
-
-
-
-                    <div class="text-md-center">
-                        <button type="edit" class="btn btn-primary" asp-area="Member" asp-action="UpdateInformation" asp-controller="Profile">Edit Profile <i class="icon-paperplane ml-2"></i></button>
-                    </div>
-            </form>
-        </div>*@
-
-
-                    <!--back & Edit Button-->
-                <div>
+                    <!--Back & Edit Button-->
                     <div>
+
                         <div class="d-flex justify-content-between">
-                            <a asp-area="" asp-controller="" asp-action="" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
+                            <a asp-area="Member" asp-controller="Dashboard" asp-action="Index" class="btn btn-light"><i class="icon-arrow-left52"></i> Back</a>
                             <a asp-area="Member" asp-controller="Profile" asp-action="UpdateInformation" class="btn btn-primary ml-2"><i class="icon-pencil7"></i> Edit</a>
                         </div>
                     </div>
-                </div>
 
                 </div>
-                </div>
             </div>
+        </div>
     </div>
 </div>
 

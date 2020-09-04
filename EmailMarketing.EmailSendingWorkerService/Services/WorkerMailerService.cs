@@ -10,6 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmailMarketing.EmailSendingWorkerService.Entities;
 using EmailMarketing.Framework.Entities.SMTP;
+using EmailMarketing.Common.Extensions;
+using EmailMarketing.Common.Constants;
 
 namespace EmailMarketing.EmailSendingWorkerService.Services
 {
@@ -41,7 +43,7 @@ namespace EmailMarketing.EmailSendingWorkerService.Services
 
                     await client.ConnectAsync(sMTPConfig.Server, sMTPConfig.Port, true);
 
-                    await client.AuthenticateAsync(sMTPConfig.UserName, sMTPConfig.Password);
+                    await client.AuthenticateAsync(sMTPConfig.UserName, sMTPConfig.Password.ToDecryptString(ConstantsValue.EncryptDecryptKey));
                     await client.SendAsync(messgae);
                     await client.DisconnectAsync(true);
                     return true;
@@ -89,5 +91,6 @@ namespace EmailMarketing.EmailSendingWorkerService.Services
                 throw new InvalidOperationException(e.Message);
             }
         }
+
     }
 }

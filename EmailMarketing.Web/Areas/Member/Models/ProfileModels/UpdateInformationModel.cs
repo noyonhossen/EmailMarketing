@@ -4,6 +4,7 @@ using EmailMarketing.Membership.Services;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,12 +13,17 @@ namespace EmailMarketing.Web.Areas.Member.Models.ProfileModels
 {
     public class UpdateInformationModel : MemberBaseModel
     {
+        [Display(Name = "Full Name")]
         public string FullName { get; set; }
-        public string UserName { get; set; }
+
+        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
+
+        [Display(Name = "Date of Birth")]
+        public DateTime? DateOfBirth { get; set; }
+        public string UserName { get; set; }
         public string Address { get; set; }
         public string Gender { get; set; }
-        public DateTime? DateOfBirth { get; set; }
         public string ImageUrl { get; set; }
         public string Email { get; set; }
 
@@ -31,21 +37,21 @@ namespace EmailMarketing.Web.Areas.Member.Models.ProfileModels
             {
                 //Id = user.Id;
                 FullName = user.FullName;
-                PhoneNumber = user.PhoneNumber;
-                Address = user.Address;
+                Email = user.Email;
                 DateOfBirth = user.DateOfBirth;
                 Gender = user.Gender;
-                UserName = user.UserName;
+                PhoneNumber = user.PhoneNumber;
+                Address = user.Address;
             }
         }
         internal void GetModelData(ApplicationUser user)
         {
             user.FullName = FullName;
-            user.UserName = UserName;
-            user.Address = Address;
+            user.Email = Email;
             user.DateOfBirth = DateOfBirth;
             user.Gender = Gender;
             user.PhoneNumber = PhoneNumber; 
+            user.Address = Address;
         }
         internal async Task UpdateMemberAsync()
         {

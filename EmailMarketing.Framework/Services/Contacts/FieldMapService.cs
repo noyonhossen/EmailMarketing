@@ -21,7 +21,7 @@ namespace EmailMarketing.Framework.Services.Contacts
 
         public async Task AddAsync(FieldMap entity)
         {
-            var isExists = await _fieldMapUnitOfWork.FieldMapRepository.IsExistsAsync(x => x.DisplayName == entity.DisplayName && x.Id != entity.Id);
+            var isExists = await _fieldMapUnitOfWork.FieldMapRepository.IsExistsAsync(x => x.DisplayName == entity.DisplayName && (!x.UserId.HasValue || x.UserId == entity.UserId.Value));
             if (isExists)
                 throw new DuplicationException(nameof(entity.DisplayName));
 
@@ -29,11 +29,14 @@ namespace EmailMarketing.Framework.Services.Contacts
             await _fieldMapUnitOfWork.SaveChangesAsync();
         }
 
-        public async Task<FieldMap> DeleteAsync(int id)
+        public async Task<FieldMap> ActivateUpdateAsync(int id)
         {
             var fieldMap = await GetByIdAsync(id);
             if (fieldMap == null) throw new NotFoundException(nameof(FieldMap), id);
-            await _fieldMapUnitOfWork.FieldMapRepository.DeleteAsync(id);
+
+            fieldMap.IsActive = !fieldMap.IsActive;
+
+            await _fieldMapUnitOfWork.FieldMapRepository.UpdateAsync(fieldMap);
             await _fieldMapUnitOfWork.SaveChangesAsync();
             return fieldMap;
         }
@@ -49,6 +52,9 @@ namespace EmailMarketing.Framework.Services.Contacts
                 x => x, x => !x.IsStandard && (!userId.HasValue || x.UserId == userId.Value) && (string.IsNullOrWhiteSpace(searchText) || x.DisplayName.Contains(searchText)),
                 x => x.ApplyOrdering(columnsMap, orderBy), null,
                 pageIndex, pageSize, true);
+
+            result.Total = await _fieldMapUnitOfWork.FieldMapRepository.GetCountAsync(x => x.UserId == userId);
+
             return (result.Items, result.Total, result.TotalFilter);
         }
 
@@ -61,7 +67,7 @@ namespace EmailMarketing.Framework.Services.Contacts
 
         public async Task UpdateAsync(FieldMap entity)
         {
-            var isExists = await _fieldMapUnitOfWork.FieldMapRepository.IsExistsAsync(x => x.DisplayName == entity.DisplayName && x.Id != entity.Id);
+            var isExists = await _fieldMapUnitOfWork.FieldMapRepository.IsExistsAsync(x => x.DisplayName == entity.DisplayName && x.Id != entity.Id && (!x.UserId.HasValue || x.UserId == entity.UserId));
             if (isExists)
                 throw new DuplicationException(nameof(entity.DisplayName));
 

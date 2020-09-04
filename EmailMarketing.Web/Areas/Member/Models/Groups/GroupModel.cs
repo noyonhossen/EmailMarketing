@@ -23,23 +23,30 @@ namespace EmailMarketing.Web.Areas.Member.Models.Groups
             ICurrentUserService currentUserService) : base(groupService, applicationUserService, currentUserService) { }
         public GroupModel() : base() { }
 
+        public async Task<Group> ActivateGroupAsync(int id)
+        {
+            var result = await _groupService.GetByIdAsync(id);
+            await _groupService.UpdateActiveStatusAsync(result);
+            return result;
+        }
         public async Task<object> GetAllAsync(DataTablesAjaxRequestModel tableModel)
         {
+            var userId = _currentUserService.UserId;
             var result = await _groupService.GetAllAsync(
+                userId,
                 tableModel.SearchText,
                 tableModel.GetSortText(new string[] { "Name" }),
                 tableModel.PageIndex, tableModel.PageSize);
-            var userId = _currentUserService.UserId;
             return new
             {
                 recordsTotal = result.Total,
                 recordsFiltered = result.TotalFilter,
 
                 data = (from item in result.Items
-                        where (item.UserId == userId)
                         select new string[]
                         {
                                     item.Name,
+                                    item.IsActive ? "Yes" : "No",
                                     item.Id.ToString()
                         }
                         ).ToArray()
@@ -60,11 +67,10 @@ namespace EmailMarketing.Web.Areas.Member.Models.Groups
             {
                 Name = this.Name,
                 UserId = _currentUserService.UserId
-
             };
             await _groupService.AddAsync(entity);
         }
-
+         
         public async Task LoadByIdAsync(int id)
         {
             var result = await _groupService.GetByIdAsync(id);
@@ -78,6 +84,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Groups
             {
                 Id = this.Id.Value,
                 Name = this.Name,
+                UserId = _currentUserService.UserId
             };
             await _groupService.UpdateAsync(entity);
         }

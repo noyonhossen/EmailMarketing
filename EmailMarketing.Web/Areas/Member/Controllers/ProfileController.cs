@@ -43,6 +43,14 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Index(ProfileInformationModel model)
+        {
+            await model.LoadInfo();
+            return View(model);
+        }
+
+
+        [HttpGet]
         public IActionResult ChangePassword()
         {
             var model = new ChangePasswordModel(); 
@@ -61,13 +69,13 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                     if (result == true)
                     {
                         _logger.LogInformation("Successfully Changed Password.");
+                        TempData["SuccessNotify"] = "Successfully Changed Password.";
                         return RedirectToAction("Index","Dashboard");
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
-                    model.Response = new ResponseModel("Failed to Change Password",ResponseType.Failure);
-                    //ModelState.AddModelError(string.Empty, "Failed to Change Password");
+                    model.Response = new ResponseModel(ex.Message,ResponseType.Failure);
                     _logger.LogInformation("Failed to Change Password.");
                 }
             }
@@ -77,14 +85,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         [HttpGet]
         public async Task<IActionResult> ChangePasswordConfirmation(ChangePasswordConfirmationModel model)
         {
-            return View(model);
             await _signInManager.SignOutAsync();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Profile(ProfileInformationModel model)
-        {
-            await model.LoadInfo();
             return View(model);
         }
 
@@ -101,7 +102,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateInformation(
             [Bind(nameof(UpdateInformationModel.FullName),
-            nameof(UpdateInformationModel.UserName),
+            nameof(UpdateInformationModel.Email),
             nameof(UpdateInformationModel.PhoneNumber),
             nameof(UpdateInformationModel.DateOfBirth),
             nameof(UpdateInformationModel.Gender),
@@ -114,11 +115,12 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                 {
                     await model.UpdateMemberAsync();
                     _logger.LogInformation("Member Information Updated Successfully");
-                    return RedirectToAction("Profile");
+                    TempData["SuccessNotify"] = "Successfully Updated Information.";
+                    return RedirectToAction("Index");
                 }
                 catch
                 {
-                    _logger.LogInformation("Cannot Update Memeber Information"); 
+                    _logger.LogInformation("Failed to Update Memeber Information"); 
                     model.Response = new ResponseModel("Failed to Update", ResponseType.Failure);
                 }
             }

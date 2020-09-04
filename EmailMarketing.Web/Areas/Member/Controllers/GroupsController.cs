@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using EmailMarketing.Common.Exceptions;
+using EmailMarketing.Membership.Constants;
 using EmailMarketing.Web.Areas.Member.Enums;
 using EmailMarketing.Web.Areas.Member.Models;
 using EmailMarketing.Web.Areas.Member.Models.Groups;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -27,6 +29,25 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ActivateGroup(int id)
+        {
+            var model = new GroupModel();
+            try
+            {
+                var group = await model.ActivateGroupAsync(id);
+                model.Response = new ResponseModel($"{group.Name} successfully { (group.IsActive == true ? "Activated" : "Deactivated")}.", ResponseType.Success);
+                _logger.LogInformation("Group Active Status updated");
+            }
+            catch (Exception ex)
+            {
+                model.Response = new ResponseModel("Active/InActive Operation failured.", ResponseType.Failure);
+                _logger.LogError(ex.Message);
+            }
+            return RedirectToAction("Index");
+        }
+        
+
         [HttpGet]
         public async Task<IActionResult> AddOrEdit(int? id)
         {
@@ -42,6 +63,8 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             return PartialView("_AddOrEdit", model);
         }
 
+        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddOrEdit(GroupModel model)
@@ -56,27 +79,29 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                     if (model.Id.HasValue && model.Id != 0)
                     {
                         await model.UpdateAsync();
-                        model.Response = new ResponseModel("Group Update successful.", ResponseType.Success);
-                        return RedirectToAction("Index");
+                        model.Response = new ResponseModel("Group Updated successfully.", ResponseType.Success);
+                        _logger.LogInformation($"Group: {model.Name} updated successfully.");
                     }
                         
                     else
                     {
                         await model.AddAsync();
                         model.Response = new ResponseModel("Group creation successful.", ResponseType.Success);
-                        return RedirectToAction("Index");
+                        _logger.LogInformation($"Group: {model.Name} added successfully.");
                     }
-                        
+
+                    return RedirectToAction("Index");
                 }
                 catch (DuplicationException ex)
                 {
                     model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
+                    _logger.LogError($"Group '{model.Name}' already exist.");
                 }
                 catch (Exception ex)
                 {
                     model.Response = new ResponseModel("Group creation failured.", ResponseType.Failure);
+                    _logger.LogError($"Failed to create Group '{model.Name}'");
                 }
-
                 return RedirectToAction("Index");
             }
 

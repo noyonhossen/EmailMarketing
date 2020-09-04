@@ -40,12 +40,17 @@ namespace EmailMarketing.Framework.Services.Contacts
         {
             var columnsMap = new Dictionary<string, Expression<Func<Entities.Contacts.Contact, object>>>()
             {
+                ["Group"] = v => v.Email,
                 ["Email"] = v => v.Email
             };
+
             var result = await _contactUnitOfWork.ContactRepository.GetAsync<Entities.Contacts.Contact>(
                 x => x, x => (!userId.HasValue || x.UserId == userId.Value) && (x.Email.Contains(searchText)),
                 x => x.ApplyOrdering(columnsMap, orderBy), x => x.Include(i => i.ContactGroups).ThenInclude(i => i.Group),
                 pageIndex, pageSize, true);
+
+            result.Total = await _contactUnitOfWork.ContactRepository.GetCountAsync(x => x.UserId == userId);
+
             return (result.Items, result.Total, result.TotalFilter);
         }
         public async Task<Contact> GetByIdAsync(int id)
@@ -91,9 +96,10 @@ namespace EmailMarketing.Framework.Services.Contacts
         }
         public async Task UpdateAsync(Contact contact)
         {
-            var isExists = await _contactUnitOfWork.ContactRepository.IsExistsAsync(x => x.Email == contact.Email && x.Id != contact.Id && x.UserId == contact.UserId);
-            if (isExists)
-                throw new DuplicationException(nameof(contact.Email));
+            //TODO: update failed when check isExists
+            //var isExists = await _contactUnitOfWork.ContactRepository.IsExistsAsync(x => x.Email == contact.Email && x.Id != contact.Id && x.UserId == contact.UserId);
+            //if (isExists)
+            //    throw new DuplicationException(nameof(contact.Email));
 
             var updateEntity = await _contactUnitOfWork.ContactRepository.GetFirstOrDefaultAsync(x => x, x => x.Id == contact.Id,
                 null, true);
@@ -216,8 +222,9 @@ namespace EmailMarketing.Framework.Services.Contacts
         }
         public async Task<bool> IsContactExist(string email,Guid? userId)
         {
-            var isContactExist = await _contactUnitOfWork.ContactRepository.IsExistsAsync(x => x.Email == email && (!userId.HasValue || x.UserId == userId.Value));
-            return isContactExist;
+            //TODO: update failed when check isExists
+            //var isContactExist = await _contactUnitOfWork.ContactRepository.IsExistsAsync(x => x.Email == email && (!userId.HasValue || x.UserId == userId.Value));
+            return false; // isContactExist;
         }
 
         public async Task<Contact> GetContactByIdAsync(int contactId)
@@ -231,11 +238,14 @@ namespace EmailMarketing.Framework.Services.Contacts
             return result;
         }
 
+        public async Task<int> GetContactCountAsync(Guid? userId)
+        {
+            return await _contactUnitOfWork.ContactRepository.GetCountAsync(x => x.UserId == userId);
+        }
         public void Dispose()
         {
             _contactUnitOfWork.Dispose();
         }
 
-        
     }
 }

@@ -30,5 +30,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
         Task<Campaign> GetAllEmailByCampaignId(int campaignId);
         Task UpdateCampaignAsync(Campaign campaign);
         Task<Campaign> GetCampaignByIdAsync(Guid? userId, int campaignId);
+        Task<int> GetCampaignCountAsync(Guid? userId);
+        Task<Campaign> ActivateCampaignAsync(int id);
     }
 }

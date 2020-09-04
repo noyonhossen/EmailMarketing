@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Services.Contacts;
 using EmailMarketing.Web.Areas.Member.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.Logging;
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
     [Area("Member")]
+    [Authorize]
     public class DashboardController : Controller
     {
         private readonly ILogger<DashboardController> _logger;
@@ -27,9 +29,10 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             _contactExcelService = contactExcelService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var model = new DashboardModel();
+            await model.LoadDashboardData();
             return View(model);
         }
 

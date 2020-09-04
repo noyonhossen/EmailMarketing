@@ -63,23 +63,49 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
 
             if (ModelState.IsValid)
             {
-                if (model.Id.HasValue && model.Id != 0) await model.UpdateFieldMapAsync();
-                else await model.AddFieldMapAsync();
+                try
+                {
+                    if (model.Id.HasValue && model.Id != 0)
+                    {
+                        await model.UpdateFieldMapAsync();
+                        _logger.LogInformation("Updated custom field.");
+                    }
+                    else
+                    {
+                        await model.AddFieldMapAsync();
+                        _logger.LogInformation("Added new custom field.");
+                    }
+                    
+                    TempData["SuccessNotify"] = "Field has been successfully saved";
+                    return RedirectToAction("CustomFields");
 
-                TempData["SuccessNotify"] = "Field has been successfully saved";
-                return RedirectToAction("CustomFields");
+                }
+                catch
+                {
+
+                    TempData["ErrorNotify"] = "Field Already Exist.";
+                    _logger.LogError("Field Already Exist.");
+                }
             }
-
-            TempData["ErrorNotify"] = "Field could not be saved";
             return RedirectToAction("CustomFields");
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteFieldMap(int id)
+        public async Task<IActionResult> ActivateFieldMap(int id)
         {
             var model = new FieldMapModel();
-            await model.DeleteFieldMapAsync(id);
-            return Json(true);
+            try
+            {
+                var customFieldMap = await model.ActivateFieldMapAsync(id);
+                model.Response = new ResponseModel($"{customFieldMap.DisplayName} successfully { (customFieldMap.IsActive == true ? "Activated" : "Deactivated")}.", ResponseType.Success);
+                _logger.LogInformation("Custome Field Map Active Status updated");
+            }
+            catch (Exception ex)
+            {
+                model.Response = new ResponseModel("Active/InActive Operation failured.", ResponseType.Failure);
+                _logger.LogError(ex.Message);
+            }
+            return RedirectToAction("CustomFields");
         }
         public async Task<IActionResult> GetAllFieldMap()
         {
@@ -116,12 +142,12 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                         _logger.LogInformation("Single Contact Added Successfully");
                         model.Response = new ResponseModel(msg, ResponseType.Success);
                     }
-                    //return RedirectToAction("Index");
+                    return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
                     //var msg = "Failed to Add Contact";
-                    model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
+                    model.Response = new ResponseModel("Failed to Add Contact", ResponseType.Failure);
                     _logger.LogError(ex.Message);
                 }
             }
@@ -146,18 +172,28 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             {
                 try
                 {
-                    await model.UpdateAsync();
-                    _logger.LogInformation("Contact Successfully Updated.");
-                    model.Response = new ResponseModel("Contact Updated",ResponseType.Success);
-                    return RedirectToAction("Index");
+                    var existingContact = await model.IsContactExistAsync();
+                    if (existingContact == true)
+                    {
+                        model.Response = new ResponseModel("Contact already exist. Please provide another email.", ResponseType.Failure);
+                    }
+                    else
+                    {
+                        await model.UpdateAsync();
+                        _logger.LogInformation("Contact Successfully Updated.");
+                        model.Response = new ResponseModel("Contact Updated", ResponseType.Success);
+                        return RedirectToAction("Index");
+                    }
                 }
                  catch (DuplicationException ex)
                 {
                     model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
+                    _logger.LogError(ex.Message);
                 }
                 catch (Exception ex)
                 {
-                    model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
+                    model.Response = new ResponseModel("Failed to update Contact", ResponseType.Failure);
+                    _logger.LogError(ex.Message);
                 }
             }
             await model.LoadContactByIdAsync(model.Id);
@@ -228,10 +264,11 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                         await model.ExportContactsGroupwise();
                     }
                     _logger.LogInformation("Succecssfully Added to DownloadQueue. Waiting to Complete to Export");
+                    model.Response = new ResponseModel("Successfully added to queue. Please wait a while to complete the task.", ResponseType.Success); 
                 }
-                catch
+                catch(Exception ex)
                 {
-                    model.Response= new ResponseModel("Please provide Email", ResponseType.Failure);
+                    model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
                 }
             }
 

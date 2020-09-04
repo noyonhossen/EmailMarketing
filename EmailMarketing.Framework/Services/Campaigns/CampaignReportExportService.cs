@@ -2,6 +2,7 @@
 using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.Campaigns;
+using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.UnitOfWorks.Campaigns;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -31,7 +32,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
         {
             var result = await _campaignReportExportUnitOfWork.DownloadQueueRepository.GetAsync(
                 x => x,
-                x => x.IsProcessing == true && x.IsSucceed == false,
+                x => (x.IsProcessing == true || x.IsSucceed == false) && (x.DownloadQueueFor == DownloadQueueFor.CampaignAllReportExport || x.DownloadQueueFor == DownloadQueueFor.CampaignDetailsReportExport),
                 null,
                 x=> x.Include(y=> y.DownloadQueueSubEntities),
                 true);
@@ -118,7 +119,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
                     worksheet.Cell(currentRow, 2).Value = report.IsDelivered == true ? "Yes" : "No";
                     worksheet.Cell(currentRow, 3).Value = report.IsSeen == true ? "Yes" : "No";
                     worksheet.Cell(currentRow, 4).Value = "" + report.SendDateTime.ToString();
-                    worksheet.Cell(currentRow, 5).Value = report.SeenDateTime.ToString();
+                    worksheet.Cell(currentRow, 5).Value = report.SeenDateTime == null ? "" : report.SeenDateTime.ToString();
                 }
                 worksheet.Columns("1", "5").AdjustToContents();
 
@@ -163,7 +164,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
                         worksheet.Cell(currentRow, 2).Value = report.IsDelivered == true ? "Yes" : "No";
                         worksheet.Cell(currentRow, 3).Value = report.IsSeen == true ? "Yes" : "No";
                         worksheet.Cell(currentRow, 4).Value = "" + report.SendDateTime.ToString();
-                        worksheet.Cell(currentRow, 5).Value = report.SeenDateTime.ToString();
+                        worksheet.Cell(currentRow, 5).Value = report.SeenDateTime == null ? "" : report.SeenDateTime.ToString();
                     }
                     worksheet.Columns("1", "5").AdjustToContents();
 

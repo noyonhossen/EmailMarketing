@@ -31,7 +31,6 @@ namespace EmailMarketing.Web.Areas.Member.Models.ProfileModels
             if (user != null)
             {
                 FullName = user.FullName;
-                UserName = user.UserName;
                 PhoneNumber = user.PhoneNumber;
                 Address = user.Address;
                 DateOfBirth = user.DateOfBirth;

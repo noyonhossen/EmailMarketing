@@ -6,6 +6,7 @@ using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.Contacts;
 using EmailMarketing.Framework.UnitOfWorks.Contacts;
 using ExcelDataReader;
+using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
@@ -225,8 +226,8 @@ namespace EmailMarketing.Framework.Services.Contacts
         {
             var columnsMap = new Dictionary<string, Expression<Func<ContactUpload, object>>>()
             {
-                ["created"] = v => v.Created,
-                ["fileName"] = v => v.FileName
+                ["FileName"] = v => v.FileName,
+                ["Created"] = v => v.Created
             };
 
             var result = await _contactUploadUnitOfWork.ContactUploadRepository.GetAsync(x => x, 
@@ -234,9 +235,23 @@ namespace EmailMarketing.Framework.Services.Contacts
                 x => x.ApplyOrdering(columnsMap, orderBy), null,
                 pageIndex, pageSize, true);
 
+            result.Total = await _contactUploadUnitOfWork.ContactUploadRepository.GetCountAsync(x => x.UserId == userId);
+
             return (result.Items, result.Total, result.TotalFilter);
         }
 
+        public async Task<ContactUpload> GetByIdAsync(int id)
+        {
+           return await _contactUploadUnitOfWork.ContactUploadRepository.GetByIdAsync(id);
+        }
+
+        public async Task UpdateAsync(ContactUpload entity)
+        {
+            entity.IsProcessing = entity.IsProcessing == true? false : true ;
+
+            await _contactUploadUnitOfWork.ContactUploadRepository.UpdateAsync(entity);
+            await _contactUploadUnitOfWork.SaveChangesAsync();
+        }
         public void Dispose()
         {
             _contactUploadUnitOfWork?.Dispose();
