@@ -18,7 +18,7 @@ namespace EmailMarketing.ExcelExportWorkerService.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.ExcelExportWorkerService\Templates\ExcelExportConfirmationTemplate.tt"
+    #line 1 "D:\Github\EmailMarketing\EmailMarketing.ExcelExportWorkerService\Templates\ExcelExportConfirmationTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class ExcelExportConfirmationTemplate : ExcelExportConfirmationTemplateBase
     {
@@ -56,7 +56,7 @@ namespace EmailMarketing.ExcelExportWorkerService.Templates
                     "t-family:system-ui;text-align:left;font-weight:bold;font-size:15px;\">\r\n         " +
                     "                       Dear ");
             
-            #line 47 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.ExcelExportWorkerService\Templates\ExcelExportConfirmationTemplate.tt"
+            #line 47 "D:\Github\EmailMarketing\EmailMarketing.ExcelExportWorkerService\Templates\ExcelExportConfirmationTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Name));
             
             #line default

@@ -41,9 +41,9 @@ namespace EmailMarketing.Web
             builder.RegisterType<SMTPModel>();
             builder.RegisterType<ChangeDefaultPasswordViewModel>();
             builder.RegisterType<ContactUploadModel>();
-
+            builder.RegisterType<ContactsBaseModel>();
             builder.RegisterType<MemberBaseModel>();
-            
+
             base.Load(builder);
         }
     }

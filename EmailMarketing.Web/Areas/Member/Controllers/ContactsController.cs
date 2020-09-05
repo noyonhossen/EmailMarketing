@@ -8,8 +8,10 @@ using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Web.Areas.Member.Enums;
 using EmailMarketing.Web.Areas.Member.Models;
 using EmailMarketing.Web.Areas.Member.Models.Contacts;
+using EmailMarketing.Web.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
@@ -17,10 +19,11 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
     public class ContactsController : Controller
     {
         private readonly ILogger<ContactsController> _logger;
-
-        public ContactsController(ILogger<ContactsController> logger)
+        protected readonly IOptions<AppSettings> _appSettings;
+        public ContactsController(ILogger<ContactsController> logger, IOptions<AppSettings> appSettings)
         {
             _logger = logger;
+            _appSettings = appSettings;
         }
 
         public async Task<IActionResult> Index()
@@ -255,6 +258,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             {
                 try
                 {
+                    model._appSettings = _appSettings.Value;
                     if (model.IsExportAll)
                     {
                         await model.ExportAllContact();
@@ -268,6 +272,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                 }
                 catch(Exception ex)
                 {
+                    _logger.LogError(ex, ex.Message);
                     model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
                 }
             }

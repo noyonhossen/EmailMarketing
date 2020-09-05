@@ -18,7 +18,7 @@ namespace EmailMarketing.CampaingReportExcelExportService.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
+    #line 1 "D:\Github\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class CampReportExportTemplate : CampReportExportTemplateBase
     {
@@ -56,7 +56,7 @@ namespace EmailMarketing.CampaingReportExcelExportService.Templates
                     "00px;font-family:system-ui;text-align:left;font-weight:bold;font-size:15px;\">\r\n " +
                     "                               Dear ");
             
-            #line 47 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
+            #line 47 "D:\Github\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Name));
             
             #line default

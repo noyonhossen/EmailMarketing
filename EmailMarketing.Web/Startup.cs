@@ -23,6 +23,7 @@ using EmailMarketing.Web.Areas.Admin.Models;
 using EmailMarketing.Web.Services;
 using EmailMarketing.Common.Services;
 using EmailMarketing.Membership.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace EmailMarketing.Web
 {
@@ -114,6 +115,7 @@ namespace EmailMarketing.Web
             services.AddScoped<IApplicationUserService, ApplicationUserService>();
             services.AddSingleton<ISmtpTestService, SmtpTestService>();
             services.AddTransient<IFileStorage, FileStorage>();
+            //services.AddSingleton<IOptions<AppSettings>, AppSettings>();
 
             services.AddHttpContextAccessor();
 

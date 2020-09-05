@@ -5,6 +5,7 @@ using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.Services.Campaigns;
+using EmailMarketing.Web.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,6 +27,8 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         public bool IsSendEmailNotifyForAll { get; set; }
         public bool IsSendEmailNotifyForCampaignwise { get; set; }
         public IList<object> CampaignSelectList { get; set; }
+
+        public AppSettings _appSettings;
         public CampaignsModel(ICampaignService campaignService, ICampaignReportExportService campaignREService,
             ICurrentUserService currentUserService) : base(campaignService, campaignREService, currentUserService)
         {
@@ -46,16 +49,16 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
             this.EmailSubject = result.EmailSubject;
             //return result;
         }
-        
+
         public async Task<object> GetAllCampaignsAsync(DataTablesAjaxRequestModel tableModel)
         {
-           
+
             var result = await _campaignService.GetAllCampaignAsync(
                 _currentUserService.UserId,
                 tableModel.SearchText,
                 tableModel.GetSortText(new string[] { "Name" }),
-                tableModel.PageIndex, tableModel.PageSize);           
-            
+                tableModel.PageIndex, tableModel.PageSize);
+
             return new
             {
 
@@ -80,20 +83,20 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         internal async Task SetCapaignId(int id)
         {
             this.CampaignId = id;
-           
+
         }
-       
+
         public async Task<object> GetCampaignReportByCampaignIdAsync(DataTablesAjaxRequestModel tableModel, int CampaignId)
-         {
-            
+        {
+
             var result = await _campaignService.GetAllCampaignReportAsync(
                 _currentUserService.UserId,
-                CampaignId ,
+                CampaignId,
                 tableModel.SearchText,
-                tableModel.GetSortText(new string[] { "CampaignName","Email" }),
+                tableModel.GetSortText(new string[] { "CampaignName", "Email" }),
                 tableModel.PageIndex, tableModel.PageSize);
 
-           
+
             return new
             {
                 recordsTotal = result.Total,
@@ -111,29 +114,42 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
             };
         }
         public async Task LoadAllCampaignSelectListAsync()
-        { 
-            this.CampaignSelectList = await _campaignREService.GetCampaignsForSelectAsync(_currentUserService.UserId);
+        {
+            this.CampaignSelectList = await _campaignReportExportService.GetCampaignsForSelectAsync(_currentUserService.UserId);
         }
         public async Task ExportAllCampaign()
         {
             if (IsSendEmailNotifyForAll == true && string.IsNullOrWhiteSpace(SendEmailAddress))
             {
-                throw new Exception();
+                throw new Exception("Please Provide Email");
             }
-            else
+            if (Directory.Exists(_appSettings.CampaignExportFileUrl) == false)
             {
+                DirectoryInfo directory = Directory.CreateDirectory(_appSettings.CampaignExportFileUrl);
+            }
+
+            try
+            {
+                var userId = _currentUserService.UserId;
+                var distinctiveFileName = Guid.NewGuid().ToString();
                 var downloadQueue = new DownloadQueue();
-                downloadQueue.FileName = Guid.NewGuid().ToString() + ".xlsx";
-                downloadQueue.FileUrl = ConstantsValue.AllCampaignReportExportFileUrl;
+                downloadQueue.FileName = "AllCampaignReport_" + DateTime.Now.ToString("dd-MM-yyyy") + ".xlsx";
+                downloadQueue.FileUrl = Path.Combine(_appSettings.CampaignExportFileUrl, distinctiveFileName) + Path.GetExtension(downloadQueue.FileName);
                 downloadQueue.IsProcessing = true;
                 downloadQueue.IsSucceed = false;
-                downloadQueue.UserId = _currentUserService.UserId;
+                downloadQueue.UserId = userId;
                 downloadQueue.Created = DateTime.Now;
+                downloadQueue.CreatedBy = userId;
                 downloadQueue.DownloadQueueFor = DownloadQueueFor.CampaignAllReportExport;
                 downloadQueue.IsSendEmailNotify = IsSendEmailNotifyForAll;
                 downloadQueue.SendEmailAddress = SendEmailAddress;
-                await _campaignREService.SaveDownloadQueueAsync(downloadQueue);
+                await _campaignReportExportService.SaveDownloadQueueAsync(downloadQueue);
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to export. Please try again");
+            }
+
         }
 
         public async Task<Campaign> ActivateCampaign(int id)
@@ -145,28 +161,41 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
         {
             if (IsSendEmailNotifyForCampaignwise == true && string.IsNullOrWhiteSpace(SendEmailAddress))
             {
-                throw new Exception();
+                throw new Exception("Please Provide Email");
             }
-            else
+            if (Directory.Exists(_appSettings.CampaignExportFileUrl) == false)
             {
+                DirectoryInfo directory = Directory.CreateDirectory(_appSettings.CampaignExportFileUrl);
+            }
+
+            try
+            {
+                var userId = _currentUserService.UserId;
+                var distinctiveFileName = Guid.NewGuid().ToString();
                 var downloadQueue = new DownloadQueue();
-                downloadQueue.FileName = Guid.NewGuid().ToString() + ".xlsx";
-                downloadQueue.FileUrl = ConstantsValue.CampaignwiseReportExportFileUrl;
+                downloadQueue.FileName = "CampaignwiseReport_" + DateTime.Now.ToString("dd-MM-yyyy") + ".xlsx";
+                downloadQueue.FileUrl = Path.Combine(_appSettings.CampaignExportFileUrl, distinctiveFileName) + Path.GetExtension(downloadQueue.FileName);
                 downloadQueue.IsProcessing = true;
                 downloadQueue.IsSucceed = false;
-                downloadQueue.UserId = _currentUserService.UserId;
+                downloadQueue.UserId = userId;
                 downloadQueue.Created = DateTime.Now;
+                downloadQueue.CreatedBy = userId;
                 downloadQueue.DownloadQueueFor = DownloadQueueFor.CampaignDetailsReportExport;
                 downloadQueue.IsSendEmailNotify = IsSendEmailNotifyForCampaignwise;
                 downloadQueue.SendEmailAddress = SendEmailAddress;
-                await _campaignREService.SaveDownloadQueueAsync(downloadQueue);
+                await _campaignReportExportService.SaveDownloadQueueAsync(downloadQueue);
 
                 var dowloadQueueSubEntity = new DownloadQueueSubEntity();
                 dowloadQueueSubEntity.DownloadQueueId = downloadQueue.Id;
                 dowloadQueueSubEntity.DownloadQueueSubEntityId = this.Id;
-   
-                await _campaignREService.AddDownloadQueueSubEntities(dowloadQueueSubEntity);
+
+                await _campaignReportExportService.AddDownloadQueueSubEntities(dowloadQueueSubEntity);
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to Export. Please try again.");
+            }
+
         }
     }
 }
