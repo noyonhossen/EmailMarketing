@@ -63,7 +63,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
             var result = await _campaignUnitOfWork.CampaignRepository.GetFirstOrDefaultAsync(
                 x => x, x => !x.IsDeleted && x.IsActive &&
                 (!userId.HasValue || x.UserId == userId.Value) && (x.Id == campaignId),
-                  x => x.Include(y => y.SMTPConfig), true);
+                  x => x.Include(y => y.SMTPConfig).Include(y=>y.EmailTemplate), true);
 
             if (result == null) throw new NotFoundException(nameof(Campaign), campaignId);
 

@@ -1,5 +1,4 @@
 ﻿
-
 @model DashboardModel
 ﻿@using EmailMarketing.Membership.Extensions
 
@@ -45,8 +44,8 @@
                                     <div class="card text-center card-box-shadow">
                                         <div class="card-body">
                                             <i class="icon-list2 icon-2x text-primary border-primary border-3 rounded-round p-3 mb-3"></i>
-                                            <h5 class="card-title">View Your Contracts</h5>
-                                            <p class="mb-3">View your contract List</p>
+                                            <h5 class="card-title">View Your contacts</h5>
+                                            <p class="mb-3">View your contact List</p>
                                             <a asp-controller="Contacts" asp-action="Index" asp-area="Member" class="btn bg-success-400"><i class="icon-eye"></i> View</a>
                                         </div>
                                     </div>
@@ -56,7 +55,7 @@
                                         <div class="card-body">
                                             <i class="icon-upload4 icon-2x text-primary border-primary border-3 rounded-round p-3 mb-3"></i>
                                             <h5 class="card-title">Upload/Add Contact</h5>
-                                            <p class="mb-3">Upload your contracts from exel sheet or add single contact</p>
+                                            <p class="mb-3">Upload your contacts from exel sheet or add single contact</p>
                                             <a asp-controller="ContactUpload" asp-action="UploadContact" asp-area="Member" class="btn bg-success-400"><i class="icon-upload4"></i> Upload Contacts</a>
                                             <a asp-controller="Contacts" asp-action="AddSingleContact" asp-area="Member" class="btn bg-success-400"><i class="icon-plus-circle2"></i> Add Contact</a>
                                         </div>
@@ -134,7 +133,7 @@
                             <div class="card card-body bg-lignt text-dark text-center user_free_trial card-box-shadow m-0 p-0 pt-3">
 
                                 <div class="d-inline-block mb-1">
-                                    <img src="~/memberTheme/images/dummy-profile.png" class="rounded-round" width="110" height="110" alt=""/>
+                                    <img src="~/memberTheme/images/dummy-profile.png" class="rounded-round" width="110" height="110" alt="" />
                                 </div>
 
                                 <div class="mb-3">
@@ -224,12 +223,12 @@
                                         </div>
 
                                         <div class="media-body">
-                                            <h4>Contact with MailTo support</h4>
+                                            <h4>Contact with @Configuration.GetSection("AppSettings")["CompanyFullName"] support</h4>
                                             <a href="#" class="font-weight-semibold text-default">
-                                                <span><i class="icon-phone-wave"></i> +8801717111111</span>
-                                            </a><br/>
+                                                <span><i class="icon-phone-wave"></i> @Configuration.GetSection("AppSettings")["CompanyPhoneNo"]</span>
+                                            </a><br />
                                             <a href="#" class="font-weight-semibold text-default">
-                                                <span><i class="icon-mail5"></i> mailto2020r@gmail.com</span>
+                                                <span><i class="icon-mail5"></i> @Configuration.GetSection("AppSettings")["CompanyEmail"]</span>
                                             </a>
 
                                         </div>

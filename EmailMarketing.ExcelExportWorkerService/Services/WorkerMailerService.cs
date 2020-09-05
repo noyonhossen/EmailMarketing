@@ -1,5 +1,5 @@
 ﻿using EmailMarketing.Common.Services;
-using EmailMarketing.ExcelExportWorkerService.Entities;
+using EmailMarketing.ExcelExportWorkerService.Core;
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;

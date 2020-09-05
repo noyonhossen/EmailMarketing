@@ -1,4 +1,5 @@
-﻿
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 <!-- Footer -->
 <div class="my-footer">
     <div class="container">
@@ -61,7 +62,7 @@
         </div>
         <hr class="bg-white">
         <div class="copyright text-center text-white">
-            Copyright &copy; 2020 MailTo
+            Copyright &copy; 2020 @Configuration.GetSection("AppSettings")["CompanyFullName"]
         </div>
     </div>
 </div>

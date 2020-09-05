@@ -7,7 +7,6 @@ using Autofac.Extensions.DependencyInjection;
 using EmailMarketing.Common.Constants;
 using EmailMarketing.Common.Services;
 using EmailMarketing.ExcelWorkerService.Core;
-using EmailMarketing.ExcelWorkerService.Entities;
 using EmailMarketing.ExcelWorkerService.Services;
 using EmailMarketing.Framework;
 using Microsoft.Extensions.Configuration;

@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Office.CustomUI;
 using EmailMarketing.Common.Services;
+using EmailMarketing.ExcelExportWorkerService.Core;
 using EmailMarketing.ExcelExportWorkerService.Templates;
 using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.Services.Contacts;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MimeKit;
 
 namespace EmailMarketing.ExcelExportWorkerService
@@ -21,12 +23,15 @@ namespace EmailMarketing.ExcelExportWorkerService
         private readonly ILogger<Worker> _logger;
         private readonly IContactExportService _contactExportService;
         private readonly IExportMailerService _exportMailerService;
+        private readonly WorkerSettings _workerSettings;
 
-        public Worker(ILogger<Worker> logger, IContactExportService contactExportService, IExportMailerService exportMailerService)
+        public Worker(ILogger<Worker> logger, IContactExportService contactExportService, 
+            IExportMailerService exportMailerService, IOptions<WorkerSettings> workerSettings)
         {
             _logger = logger;
             _contactExportService = contactExportService;
             _exportMailerService = exportMailerService;
+            _workerSettings = workerSettings.Value;
         }
         public override Task StartAsync(CancellationToken cancellationToken)
         {
@@ -46,7 +51,6 @@ namespace EmailMarketing.ExcelExportWorkerService
 
                     foreach (var item in result)
                     {
-                        //var importResult = await _contactExportService.GetDownloadQueueByIdAsync(item.Id);
                         try
                         {
                             if (item.DownloadQueueFor == DownloadQueueFor.ContactAllExport)
@@ -68,11 +72,11 @@ namespace EmailMarketing.ExcelExportWorkerService
                             //Sending Email
                             if (item.IsSendEmailNotify)
                             {
-                                //var url = Path.Combine(item.FileUrl, item.FileName);
                                 var url = item.FileUrl;
 
                                 var emailSubject = "Contact Export Confirmation";
-                                var excelExportConfirmationTemplate = new ExcelExportConfirmationTemplate("Sir", url);
+                                var excelExportConfirmationTemplate = new ExcelExportConfirmationTemplate("Sir",
+                                    _workerSettings.CompanyFullName, _workerSettings.CompanyShortName, _workerSettings.CompanyWebsiteUrl);
                                 var emailBody = excelExportConfirmationTemplate.TransformText();
 
                                 await _exportMailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, emailBody, url);
@@ -82,15 +86,13 @@ namespace EmailMarketing.ExcelExportWorkerService
                         }
                         catch (Exception ex)
                         {
-                            _logger.LogError($"Failed to Export Contact: Error: {ex.Message}");
-                            //continue;
-                            //throw new Exception($"Failed to export contact.{item.FileUrl}");
+                            _logger.LogError(ex, $"Failed to Export Contact. Error: {ex.Message}");
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Error message : {ex.Message}");
+                    _logger.LogError(ex, $"Error message : {ex.Message}");
                 }
 
                 await Task.Delay(120000, stoppingToken);

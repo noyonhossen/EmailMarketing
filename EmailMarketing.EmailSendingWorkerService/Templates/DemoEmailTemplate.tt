@@ -18,10 +18,10 @@
 							<img src="https://img.icons8.com/color/48/000000/filled-sent.png"/>
 						</td>
 						<td>
-							<h1 style="font-family: system-ui;font-size:25px;">MailTo</h1>
+							<h1 style="font-family: system-ui;font-size:25px;"><#=CompanyFullName#></h1>
 						</td>
 						<td>
-							<p style="font-family: system-ui;text-align: right;font-size:13px;"><a href="https://nicesnippets.com/" target="_blank" style="text-decoration: none;">View In Website</a></p>
+							<p style="font-family: system-ui;text-align: right;font-size:13px;"><a href="<#=CompanyUrl#>" target="_blank" style="text-decoration: none;">View In Website</a></p>
 						</td>
 					</tr>
 				</table>
@@ -41,7 +41,7 @@
 					<tr>
 						<td>
 							<p style="padding:0px 100px;font-family:system-ui;text-align:left;font-weight:bold;font-size:15px;">
-								Dear <#=Name#>,
+								Dear <#=ReceiverName#>,
 							</p>
 							<p style="padding:0px 100px 10px;font-family: system-ui;text-align:left;font-size:13px;">
 								Your Campaign has been sent successfully. Below is the report of the Campaign sent information.
@@ -118,8 +118,8 @@
 					<tr>
 						<td>
 							<div style="margin-top: 10px;">
-								<span style="font-size:12px;font-family: system-ui;font-size:11px;">Bulk Email System</span><br>
-								<span style="font-size:12px;font-family: system-ui;font-size:11px;">Copyright © 2020 DevSkill Team A</span>
+								<span style="font-size:12px;font-family: system-ui;font-size:11px;"><#=CompanyFullName#></span><br>
+								<span style="font-size:12px;font-family: system-ui;font-size:11px;">Copyright © 2020 <#=CompanyShortName#></span>
 							</div>
 						</td>
 					</tr>
