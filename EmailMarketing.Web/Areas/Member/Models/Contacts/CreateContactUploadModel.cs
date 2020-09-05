@@ -8,6 +8,7 @@ using EmailMarketing.Framework.Services.Groups;
 using EmailMarketing.Web.Core;
 using EmailMarketing.Web.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -31,18 +32,21 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 
         private readonly IFileStorage _fileStorage;
         private readonly IGroupService _groupService;
+        private readonly AppSettings _appSettings;
 
-        public CreateContactUploadModel(IContactUploadService contactUploadService, IGroupService groupService, IFileStorage fileStorage,
+        public CreateContactUploadModel(IContactUploadService contactUploadService, IGroupService groupService, IFileStorage fileStorage, IOptions<AppSettings> appSettings,
             ICurrentUserService currentUserService) : base(contactUploadService, currentUserService)
         {
             this._fileStorage = fileStorage;
             this._groupService = groupService;
+            this._appSettings = appSettings.Value;
         }
 
         public CreateContactUploadModel() : base()
         {
             this._fileStorage = Startup.AutofacContainer.Resolve<IFileStorage>();
             this._groupService = Startup.AutofacContainer.Resolve<IGroupService>();
+            this._appSettings = Startup.AutofacContainer.Resolve<IOptions<AppSettings>>().Value;
         }
 
         public async Task SaveContactsUploadAsync()
@@ -54,7 +58,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
             #region file save
             if (this.ContactFile == null || this.ContactFile.Length <= 0) throw new Exception("Please select a file");
 
-            var fileUrl = ConstantsValue.ContactFileSaveUrl;
+            var fileUrl = this._appSettings.ContactImportFileUrl;
             var url = await _fileStorage.StoreFileAsync(fileUrl, this.ContactFile);
             fileUrl = Path.Combine(fileUrl, url);
             var fileName = this.ContactFile.FileName;

@@ -21,12 +21,16 @@ namespace EmailMarketing.EmailSendingWorkerService
     {
         private static string _connectionString;
         private static string _migrationAssemblyName;
+        private IConfiguration _configuration;
         public static void Main(string[] args)
         {
-            _connectionString = new ConfigurationBuilder()
+            var _configuration = new ConfigurationBuilder()
                                 .AddJsonFile("appsettings.json", false)
-                                .Build()
-                                .GetConnectionString("DefaultConnection");
+                                .Build();
+            
+            var workerSettings = _configuration.GetSection("WorkerSettings").Get<WorkerSettings>();
+
+            _connectionString = _configuration.GetConnectionString("DefaultConnection");
 
             _migrationAssemblyName = typeof(Worker).Assembly.FullName;
 
@@ -34,7 +38,7 @@ namespace EmailMarketing.EmailSendingWorkerService
                         .MinimumLevel.Debug()
                         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                         .Enrich.FromLogContext()
-                        .WriteTo.File(ConstantsValue.WorkerEmailSendingLogFileSaveUrl, rollingInterval: RollingInterval.Day)
+                        .WriteTo.File(workerSettings.EmailSenderLogUrl, rollingInterval: RollingInterval.Day)
                         .CreateLogger();
 
             try

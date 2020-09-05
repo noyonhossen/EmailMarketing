@@ -18,7 +18,7 @@ namespace EmailMarketing.Membership.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.Membership\Templates\PasswordResetEmailTemplate.tt"
+    #line 1 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.Membership\Templates\PasswordResetEmailTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class PasswordResetEmailTemplate : PasswordResetEmailTemplateBase
     {
@@ -46,7 +46,7 @@ namespace EmailMarketing.Membership.Templates
                         <td>
                             <h1 style=""font-family: system-ui;font-size:25px;"">");
             
-            #line 22 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.Membership\Templates\PasswordResetEmailTemplate.tt"
+            #line 22 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.Membership\Templates\PasswordResetEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyFullName));
             
             #line default
@@ -55,7 +55,7 @@ namespace EmailMarketing.Membership.Templates
                     "               <p style=\"font-family: system-ui;text-align: right;font-size:13px" +
                     ";\"><a href=\"");
             
-            #line 25 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.Membership\Templates\PasswordResetEmailTemplate.tt"
+            #line 25 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.Membership\Templates\PasswordResetEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyUrl));
             
             #line default
@@ -82,7 +82,7 @@ namespace EmailMarketing.Membership.Templates
                             <p style=""padding:0px 100px;font-family:system-ui;text-align:left;font-weight:bold;font-size:15px;"">
                                 Dear ");
             
-            #line 45 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.Membership\Templates\PasswordResetEmailTemplate.tt"
+            #line 45 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.Membership\Templates\PasswordResetEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ReceiverName));
             
             #line default
@@ -98,7 +98,7 @@ namespace EmailMarketing.Membership.Templates
                         <td>
                             <a href=""");
             
-            #line 54 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.Membership\Templates\PasswordResetEmailTemplate.tt"
+            #line 54 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.Membership\Templates\PasswordResetEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Url));
             
             #line default
@@ -118,7 +118,7 @@ namespace EmailMarketing.Membership.Templates
                             <p style=""padding:0px 100px;font-family: system-ui;text-align:left;font-size:13px;"">
                                 Thanks,<br /> ");
             
-            #line 67 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.Membership\Templates\PasswordResetEmailTemplate.tt"
+            #line 67 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.Membership\Templates\PasswordResetEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyShortName));
             
             #line default
@@ -152,7 +152,7 @@ namespace EmailMarketing.Membership.Templates
                             <div style=""margin-top: 10px;"">
                                 <span style=""font-size:12px;font-family: system-ui;font-size:11px;"">");
             
-            #line 94 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.Membership\Templates\PasswordResetEmailTemplate.tt"
+            #line 94 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.Membership\Templates\PasswordResetEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyFullName));
             
             #line default
@@ -160,7 +160,7 @@ namespace EmailMarketing.Membership.Templates
             this.Write("</span><br>\r\n                                <span style=\"font-size:12px;font-fam" +
                     "ily: system-ui;font-size:11px;\">Copyright © 2020 ");
             
-            #line 95 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.Membership\Templates\PasswordResetEmailTemplate.tt"
+            #line 95 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.Membership\Templates\PasswordResetEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyShortName));
             
             #line default

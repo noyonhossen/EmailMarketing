@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EmailMarketing.Common\EmailMarketing.Common.csproj" />
     <ProjectReference Include="..\EmailMarketing.Framework\EmailMarketing.Framework.csproj" />
   </ItemGroup>
 

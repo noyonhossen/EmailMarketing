@@ -18,10 +18,12 @@ namespace EmailMarketing.EmailSendingWorkerService.Services
     public class WorkerMailerService : IWorkerMailerService, IMailerService
     {
         private readonly WorkerSmtpSettings _workerSmtpSettings;
+        private readonly WorkerSettings _workerSettings;
 
-        public WorkerMailerService(IOptions<WorkerSmtpSettings> smtpSettings)
+        public WorkerMailerService(IOptions<WorkerSmtpSettings> smtpSettings, IOptions<WorkerSettings> workerSettings)
         {
             _workerSmtpSettings = smtpSettings.Value;
+            _workerSettings = workerSettings.Value;
         }
 
         public async Task<bool> SendBulkEmailAsync(string email, string subject, string body, SMTPConfig sMTPConfig)
@@ -43,7 +45,7 @@ namespace EmailMarketing.EmailSendingWorkerService.Services
 
                     await client.ConnectAsync(sMTPConfig.Server, sMTPConfig.Port, true);
 
-                    await client.AuthenticateAsync(sMTPConfig.UserName, sMTPConfig.Password.ToDecryptString(ConstantsValue.EncryptDecryptKey));
+                    await client.AuthenticateAsync(sMTPConfig.UserName, sMTPConfig.Password.ToDecryptString(this._workerSettings.EncryptionDecryptionKey));
                     await client.SendAsync(messgae);
                     await client.DisconnectAsync(true);
                     return true;

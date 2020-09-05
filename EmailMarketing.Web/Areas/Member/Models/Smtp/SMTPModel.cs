@@ -2,7 +2,9 @@
 using EmailMarketing.Framework.Entities.SMTP;
 using EmailMarketing.Framework.Services.SMTP;
 using EmailMarketing.Membership.Services;
+using EmailMarketing.Web.Core;
 using EmailMarketing.Web.Services;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +15,8 @@ namespace EmailMarketing.Web.Areas.Member.Models.Smtp
     public class SMTPModel:SMTPBaseModel
     {
         public SMTPModel(ISMTPService smtpService, IApplicationUserService applicationUserService,
-            ICurrentUserService currentUserService, ISmtpTestService smtpTestService):base(smtpService, applicationUserService, currentUserService, smtpTestService)
+            ICurrentUserService currentUserService, ISmtpTestService smtpTestService, IOptions<AppSettings> appSettings) :
+                base(smtpService, applicationUserService, currentUserService, smtpTestService, appSettings)
         {
         }
 
