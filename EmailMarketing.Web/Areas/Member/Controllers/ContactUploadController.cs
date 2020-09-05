@@ -32,6 +32,13 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var model = new CreateContactUploadModel();
             return View(model);
         }
+        public async Task<IActionResult> ViewUploadContact(int id)
+        {
+            //var model = Startup.AutofacContainer.Resolve<ContactUploadModel>();
+            var model = new ViewContactUploadModel();
+            await model.GetContactUploadData(id);
+            return View(model);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

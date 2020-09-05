@@ -1,4 +1,4 @@
-﻿function loadDatatable(url) {
+﻿function loadDatatable(url, ReportUrl) {
 
     if (!$().DataTable) {
         console.warn('Warning - datatables.min.js is not loaded.');
@@ -92,11 +92,14 @@
                 "width": "15%",
                 "className": "text-center",
                 "render": function (data, type, row, meta) {
-                    
-                    var activeButton = '<a class="text-danger" data-toggle="modal" data-target="#modal-activeField" data-id="' + data + '" data-title="' + row[4] + '" href="#" title="Finish/Process">' +
-                        '<i class="icon-blocked"></i></a>';
 
-                    return  activeButton;
+                    var reportButton = '<a class="text-primary" href="' + ReportUrl + '/' + data + '" title="Details">' +
+                        '<i class="icon-info22"></i></a>';
+
+                    var activeButton = '<a class="text-danger" data-toggle="modal" data-target="#modal-activeField" data-id="' + data + '" data-title="' + row[4] + '" href="#" title="Finish/Process">' +
+                        '<i class="icon-blocked"></i></a>';                    
+
+                    return reportButton + ' ' + activeButton;
                 }
             }
         ]
