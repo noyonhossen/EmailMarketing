@@ -18,7 +18,7 @@ namespace EmailMarketing.CampaingReportExcelExportService.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
+    #line 1 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class CampReportExportTemplate : CampReportExportTemplateBase
     {
@@ -29,72 +29,130 @@ namespace EmailMarketing.CampaingReportExcelExportService.Templates
         public virtual string TransformText()
         {
             this.Write("\r\n\r\n");
-            this.Write("\r\n<!DOCTYPE html>\r\n<html>\r\n<head>\r\n    <link rel=\"stylesheet\" type=\"text/css\" hre" +
-                    "f=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css\">" +
-                    "\r\n</head>\r\n<body style=\"background-color: #c9d6df;margin: 0px;\">\r\n    <table bor" +
-                    "der=\"0\" width=\"750px\" style=\"margin:auto;padding:30px;background-color: #F3F3F3;" +
-                    "border:1px solid #3f72af;\">\r\n        <tr>\r\n            <td>\r\n                <ta" +
-                    "ble border=\"0\" width=\"100%\">\r\n                    <tr>\r\n                        " +
-                    "<td style=\"width:30px;\">\r\n                            <img src=\"https://img.icon" +
-                    "s8.com/color/48/000000/filled-sent.png\" />\r\n                        </td>\r\n     " +
-                    "                   <td>\r\n                            <h1 style=\"font-family: sys" +
-                    "tem-ui;font-size:25px;\">MailTo</h1>\r\n                        </td>\r\n            " +
-                    "            <td>\r\n                            <p style=\"font-family: system-ui;t" +
-                    "ext-align: right;font-size:13px;\"><a href=\"https://nicesnippets.com/\" target=\"_b" +
-                    "lank\" style=\"text-decoration: none;\">View In Website</a></p>\r\n                  " +
-                    "      </td>\r\n                    </tr>\r\n                </table>\r\n            </" +
-                    "td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <table borde" +
-                    "r=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"text-align:center;width:100%;backgr" +
-                    "ound-color: #fff;\">\r\n                    <tr>\r\n                        <td style" +
-                    "=\"background-color:#3f72af;height:80px;font-size:50px;color:#fff;\"><img style=\"m" +
-                    "argin-top:10px;\" src=\"https://img.icons8.com/color/48/000000/secured-letter.png\"" +
-                    " /></i></td>\r\n                    </tr>\r\n                    <tr>\r\n             " +
-                    "           <td>\r\n                            <h2 style=\"font-family: system-ui;p" +
-                    "adding-top:25px;font-size:20px;\">Campaign Report Export Confirmation</h2>\r\n     " +
-                    "                   </td>\r\n                    </tr>\r\n                    <tr>\r\n " +
-                    "                       <td>\r\n                            <p style=\"padding:0px 1" +
-                    "00px;font-family:system-ui;text-align:left;font-weight:bold;font-size:15px;\">\r\n " +
-                    "                               Dear ");
+            this.Write(@"
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel=""stylesheet"" type=""text/css"" href=""https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"">
+</head>
+<body style=""background-color: #c9d6df;margin: 0px;"">
+    <table border=""0"" width=""750px"" style=""margin:auto;padding:30px;background-color: #F3F3F3;border:1px solid #3f72af;"">
+        <tr>
+            <td>
+                <table border=""0"" width=""100%"">
+                    <tr>
+                        <td style=""width:30px;"">
+                            <img src=""https://img.icons8.com/color/48/000000/filled-sent.png"" />
+                        </td>
+                        <td>
+                            <h1 style=""font-family: system-ui;font-size:25px;"">");
             
-            #line 47 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Name));
+            #line 24 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CompanyFullName));
             
             #line default
             #line hidden
-            this.Write(",\r\n                            </p>\r\n                            <p style=\"paddin" +
-                    "g:0px 100px;font-family: system-ui;text-align:left;font-size:13px;\">\r\n          " +
-                    "                      Your campaign reports have been exported successfully. We " +
-                    "have attached the Excel file with this email. Please check your attached report " +
-                    "below.\r\n                            </p>\r\n                            <p style=\"" +
-                    "padding:0px 100px;font-family: system-ui;text-align:left;font-size:13px;\">\r\n    " +
-                    "                            If you face any problem, feel free to reply us. \r\n  " +
-                    "                          </p>\r\n                        </td>\r\n                 " +
-                    "   </tr>\r\n                    <tr>\r\n                        <td>\r\n              " +
-                    "              <p style=\"padding:0px 100px;font-family: system-ui;text-align:left" +
-                    ";font-size:13px;\">\r\n                                All the best,<br /> MailTo T" +
-                    "eam\r\n                            </p>\r\n                        </td>\r\n          " +
-                    "          </tr>\r\n                </table>\r\n            </td>\r\n        </tr>\r\n   " +
-                    "     <tr>\r\n            <td>\r\n                <table border=\"0\" width=\"100%\" styl" +
-                    "e=\"border-radius: 5px;text-align: center;margin-top:10px;\">\r\n                   " +
-                    " <tr>\r\n                        <td>\r\n                            <h3 style=\"marg" +
-                    "in-top:10px;font-family: system-ui;font-size:17px; \">Stay in touch</h3>\r\n       " +
-                    "                 </td>\r\n                    </tr>\r\n                    <tr>\r\n   " +
-                    "                     <td>\r\n                            <div style=\"margin-top:0p" +
-                    "x;\">\r\n                                <a href=\"#\" style=\"text-decoration: none;\"" +
-                    "><img src=\"https://img.icons8.com/color/35/000000/twitter-circled.png\" /></a>\r\n " +
-                    "                               <a href=\"#\" style=\"text-decoration: none;\"><img s" +
-                    "rc=\"https://img.icons8.com/fluent/35/000000/facebook-new.png\" /></a>\r\n          " +
-                    "                      <a href=\"#\" style=\"text-decoration: none;\"><img src=\"https" +
-                    "://img.icons8.com/color/35/000000/circled-envelope.png\" /></a>\r\n                " +
-                    "            </div>\r\n                        </td>\r\n                    </tr>\r\n  " +
-                    "                  <tr>\r\n                        <td>\r\n                          " +
-                    "  <div style=\"margin-top: 10px;\">\r\n                                <span style=\"" +
-                    "font-size:12px;font-family: system-ui;font-size:11px;\">Bulk Email System</span><" +
-                    "br>\r\n                                <span style=\"font-size:12px;font-family: sy" +
-                    "stem-ui;font-size:11px;\">Copyright © 2020 DevSkill Team A</span>\r\n              " +
-                    "              </div>\r\n                        </td>\r\n                    </tr>\r\n" +
-                    "                </table>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</body" +
-                    ">\r\n</html>\r\n");
+            this.Write("</h1>\r\n                        </td>\r\n                        <td>\r\n             " +
+                    "               <p style=\"font-family: system-ui;text-align: right;font-size:13px" +
+                    ";\"><a href=\"");
+            
+            #line 27 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CompanyUrl));
+            
+            #line default
+            #line hidden
+            this.Write(@""" target=""_blank"" style=""text-decoration: none;"">View In Website</a></p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table border=""0"" cellpadding=""0"" cellspacing=""0"" style=""text-align:center;width:100%;background-color: #fff;"">
+                    <tr>
+                        <td style=""background-color:#3f72af;height:80px;font-size:50px;color:#fff;""><img style=""margin-top:10px;"" src=""https://img.icons8.com/color/48/000000/secured-letter.png"" /></i></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h2 style=""font-family: system-ui;padding-top:25px;font-size:20px;"">Campaign Report Export Confirmation</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p style=""padding:0px 100px;font-family:system-ui;text-align:left;font-weight:bold;font-size:15px;"">
+                                Dear ");
+            
+            #line 47 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ReceiverName));
+            
+            #line default
+            #line hidden
+            this.Write(@",
+                            </p>
+                            <p style=""padding:0px 100px;font-family: system-ui;text-align:left;font-size:13px;"">
+                                Your campaign reports have been exported successfully. We have attached the Excel file with this email. Please check your attached report below.
+                            </p>
+                            <p style=""padding:0px 100px;font-family: system-ui;text-align:left;font-size:13px;"">
+                                If you face any problem, feel free to reply us. 
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p style=""padding:0px 100px;font-family: system-ui;text-align:left;font-size:13px;"">
+                                All the best,<br /> ");
+            
+            #line 60 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CompanyShortName));
+            
+            #line default
+            #line hidden
+            this.Write(@" Team
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table border=""0"" width=""100%"" style=""border-radius: 5px;text-align: center;margin-top:10px;"">
+                    <tr>
+                        <td>
+                            <h3 style=""margin-top:10px;font-family: system-ui;font-size:17px; "">Stay in touch</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style=""margin-top:0px;"">
+                                <a href=""#"" style=""text-decoration: none;""><img src=""https://img.icons8.com/color/35/000000/twitter-circled.png"" /></a>
+                                <a href=""#"" style=""text-decoration: none;""><img src=""https://img.icons8.com/fluent/35/000000/facebook-new.png"" /></a>
+                                <a href=""#"" style=""text-decoration: none;""><img src=""https://img.icons8.com/color/35/000000/circled-envelope.png"" /></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style=""margin-top: 10px;"">
+                                <span style=""font-size:12px;font-family: system-ui;font-size:11px;"">");
+            
+            #line 87 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CompanyFullName));
+            
+            #line default
+            #line hidden
+            this.Write("</span><br>\r\n                                <span style=\"font-size:12px;font-fam" +
+                    "ily: system-ui;font-size:11px;\">Copyright © 2020 ");
+            
+            #line 88 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CompanyShortName));
+            
+            #line default
+            #line hidden
+            this.Write("</span>\r\n                            </div>\r\n                        </td>\r\n     " +
+                    "               </tr>\r\n                </table>\r\n            </td>\r\n        </tr>" +
+                    "\r\n    </table>\r\n</body>\r\n</html>\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using EmailMarketing.CampaingReportExcelExportService.Core;
-using EmailMarketing.CampaingReportExcelExportService.Entities;
 using EmailMarketing.CampaingReportExcelExportService.Services;
 using EmailMarketing.Common.Constants;
 using EmailMarketing.Common.Services;

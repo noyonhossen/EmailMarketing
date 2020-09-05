@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EmailMarketing.EmailSendingWorkerService.Entities;
+using EmailMarketing.EmailSendingWorkerService.Core;
 using EmailMarketing.Framework.Entities.SMTP;
 using EmailMarketing.Common.Extensions;
 using EmailMarketing.Common.Constants;
@@ -49,9 +49,8 @@ namespace EmailMarketing.EmailSendingWorkerService.Services
                     return true;
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                //throw new InvalidOperationException(e.Message);
                 return false;
             }
         }

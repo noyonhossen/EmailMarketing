@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EmailMarketing.ExcelWorkerService.Entities;
+using EmailMarketing.ExcelWorkerService.Core;
 
 namespace EmailMarketing.ExcelWorkerService.Services
 {

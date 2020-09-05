@@ -1,4 +1,4 @@
-﻿using EmailMarketing.CampaingReportExcelExportService.Entities;
+﻿using EmailMarketing.CampaingReportExcelExportService.Core;
 using EmailMarketing.Common.Services;
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Hosting;
