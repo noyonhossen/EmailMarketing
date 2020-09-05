@@ -21,7 +21,7 @@ $(function () {
     $("#uploadFile").on('change', function (e) {
         var file = e.target.files[0];
         var isFileSelected = false;
-        var fileName = 'Recommended file formats: .csv, .xls, .xlsx';
+        var fileName = 'Recommended file formats: .xls, .xlsx';
         var exfileName = 'FileName.xlsx';
 
         if (file !== null && file !== undefined) {
