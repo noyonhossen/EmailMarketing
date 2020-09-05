@@ -12,6 +12,9 @@ using EmailMarketing.Web.Areas.Member.Enums;
 using EmailMarketing.Web.Areas.Member.Models.Campaigns;
 using Microsoft.Extensions.Logging;
 using System;
+using Microsoft.CodeAnalysis.Options;
+using EmailMarketing.Web.Core;
+using Microsoft.Extensions.Options;
 
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
@@ -20,10 +23,11 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
     {
 
         private readonly ILogger<CampaignsController> _logger;
-
-        public CampaignsController(ILogger<CampaignsController> logger)
+        private readonly IOptions<AppSettings> _appSettings;
+        public CampaignsController(ILogger<CampaignsController> logger, IOptions<AppSettings> appSettings)
         {
             _logger = logger;
+            _appSettings = appSettings;
         }
         public IActionResult Index()
         {
@@ -104,6 +108,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             {
                 try
                 {
+                    model._appSettings = _appSettings.Value;
                     if (model.IsExportAll)
                     {
                         await model.ExportAllCampaign();

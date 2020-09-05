@@ -124,7 +124,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
                 worksheet.Columns("1", "5").AdjustToContents();
 
                 var memory = new MemoryStream();
-                using (var stream = new FileStream(Path.Combine(downloadQueue.FileUrl, downloadQueue.FileName), FileMode.Append))
+                using (var stream = new FileStream(downloadQueue.FileUrl, FileMode.Create))
                 {
                     workbook.SaveAs(stream);
                 }
@@ -169,7 +169,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
                     worksheet.Columns("1", "5").AdjustToContents();
 
                     var memory = new MemoryStream();
-                    using (var stream = new FileStream(Path.Combine(downloadQueue.FileUrl, downloadQueue.FileName), FileMode.Append))
+                    using (var stream = new FileStream(downloadQueue.FileUrl, FileMode.Create))
                     {
                         workbook.SaveAs(stream);
                     }

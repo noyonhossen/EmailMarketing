@@ -52,11 +52,7 @@ namespace EmailMarketing.CampaingReportExcelExportService
                     {
                         try
                         {
-                            if (Directory.Exists(item.FileUrl) == false)
-                            {
-                                DirectoryInfo directory = Directory.CreateDirectory(item.FileUrl);
-                            }
-
+                            
                             var importResult = await _campaignReportExportService.GetDownloadQueueByIdAsync(item.Id);
 
                             if (item.DownloadQueueFor == DownloadQueueFor.CampaignAllReportExport)
@@ -81,9 +77,10 @@ namespace EmailMarketing.CampaingReportExcelExportService
                             {
                                 var url = item.FileUrl;
 
-                                var emailSubject = "Contact Export Confirmation";
+                                var emailSubject = "Campaign Export Confirmation";
                                 var campReportExportTemplate = new CampReportExportTemplate("Sir", _workerSettings.CompanyFullName,
                                                                     _workerSettings.CompanyShortName, _workerSettings.CompanyWebsiteUrl);
+
                                 var emailBody = campReportExportTemplate.TransformText();
 
                                 await _exportMailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, emailBody, url);
