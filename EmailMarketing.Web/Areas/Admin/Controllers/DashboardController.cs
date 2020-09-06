@@ -19,9 +19,10 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var model = new DashboardModel();
+            await model.LoadDashboardData();
             return View(model);
         }
 
