@@ -99,7 +99,7 @@ namespace EmailMarketing.Web.Areas.Member.Models
                                     Icon = "icon-list3", IsActive = false },
                                 new MenuChildItem () { Controller = "Contacts", Action = "Export", Area="Member", Title = "Export Contacts",
                                     Icon = "icon-file-download2", IsActive = false },
-                                new MenuChildItem () { Controller = "Contacts", Action = "ViewContactExportFiles", Area="Member", Title = "Contact Export Files",
+                                new MenuChildItem () { Controller = "Contacts", Action = "ViewContactExportFiles", Area="Member", Title = "View Exported Files",
                                     Icon = "icon-file-download2", IsActive = false }
                             }
                         }

@@ -46,9 +46,11 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
 
             var result = await _campaignService.GetCampaignByIdAsync(_currentUserService.UserId, campaignId);
             this.CampaignName = result.Name;
+            this.Description = result.Description;
             this.SenderEmail = result.SMTPConfig.SenderEmail;
             this.SenderName = result.SMTPConfig.SenderName;
             this.EmailSubject = result.EmailSubject;
+            this.EmailTemplate = result.EmailTemplate;
             //return result;
         }
 
