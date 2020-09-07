@@ -15,12 +15,14 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         protected readonly ICampaignService _campaignService;
         protected readonly IContactService _contactService;
         protected readonly IGroupService _groupService;
+        protected readonly ICampaignReportService _campaignReportService;
         public DashboardBaseModel(ICampaignService campaignService, IContactService contactService,
-            IGroupService groupUserService)
+            IGroupService groupUserService, ICampaignReportService campaignReportService)
         {
             _campaignService = campaignService;
             _contactService = contactService;
             _groupService = groupUserService;
+            _campaignReportService = campaignReportService;
         }
 
         public DashboardBaseModel(ICampaignService campaignService,
@@ -35,12 +37,14 @@ namespace EmailMarketing.Web.Areas.Admin.Models
             _campaignService = Startup.AutofacContainer.Resolve<ICampaignService>();
             _contactService = Startup.AutofacContainer.Resolve<IContactService>();
             _groupService = Startup.AutofacContainer.Resolve<IGroupService>();
+            _campaignReportService = Startup.AutofacContainer.Resolve<ICampaignReportService>();
         }
         public void Dispose()
         {
             _campaignService?.Dispose();
             _contactService?.Dispose();
             _groupService?.Dispose();
+            _campaignReportService.Dispose();
         }
     }
 }

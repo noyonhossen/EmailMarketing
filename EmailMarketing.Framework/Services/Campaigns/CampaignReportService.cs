@@ -38,7 +38,10 @@ namespace EmailMarketing.Framework.Services.Campaigns
             await _campaignReportUnitOfWork.CampaingReportRepository.UpdateAsync(campaignReport);
             await _campaignReportUnitOfWork.SaveChangesAsync();
         }
-
+        public async Task<int> GetDeleveredMailCountAsync()
+        {
+            return await _campaignReportUnitOfWork.CampaingReportRepository.GetCountAsync(x=>x.IsDelivered == true);
+        }
         public void Dispose()
         {
             _campaignReportUnitOfWork?.Dispose();

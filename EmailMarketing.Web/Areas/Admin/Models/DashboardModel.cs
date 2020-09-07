@@ -22,7 +22,7 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         public int TotalMailSent { get; set; }
 
         public DashboardModel(ICampaignService campaignService, IContactService contactService,
-            IGroupService groupUserService) : base(campaignService, contactService, groupUserService)
+            IGroupService groupUserService,ICampaignReportService campaignReportService) : base(campaignService, contactService, groupUserService , campaignReportService)
         {
 
         }
@@ -36,7 +36,7 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         {
             TotalUser = await _applicationuserService.GetAllMembersAsync();
             TotalContacts = await _contactService.GetContactCountAsync();
-            TotalMailSent = TotalContacts;
+            TotalMailSent = await _campaignReportService.GetDeleveredMailCountAsync();
             TotalGroups = await _groupService.GetGroupCountAsync();
             TotalCampaigns = await _campaignService.GetCampaignCountAsync();        
         }
