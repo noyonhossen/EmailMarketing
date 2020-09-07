@@ -46,7 +46,7 @@ namespace EmailMarketing.Web.Areas.Member.Models
             _httpContextAccessor = httpContextAccessor;
             SetupMenu();
         }
-      
+
         public MemberBaseModel(ICurrentUserService currentUserService, IApplicationUserService applicationuserService)
         {
             _applicationuserService = applicationuserService;
@@ -98,6 +98,8 @@ namespace EmailMarketing.Web.Areas.Member.Models
                                 new MenuChildItem () { Controller = "Contacts", Action = "CustomFields", Area="Member", Title = "View Custom Fields",
                                     Icon = "icon-list3", IsActive = false },
                                 new MenuChildItem () { Controller = "Contacts", Action = "Export", Area="Member", Title = "Export Contacts",
+                                    Icon = "icon-file-download2", IsActive = false },
+                                new MenuChildItem () { Controller = "Contacts", Action = "ViewContactExportFiles", Area="Member", Title = "View Exported Files",
                                     Icon = "icon-file-download2", IsActive = false }
                             }
                         }
@@ -118,7 +120,9 @@ namespace EmailMarketing.Web.Areas.Member.Models
                                 new MenuChildItem () { Controller = "EmailTemplate", Action = "ViewEmailTemplates", Area="Member", Title = "View Templates",
                                     Icon = "icon-stack4", IsActive = false },
                                 new MenuChildItem () { Controller = "EmailTemplate", Action = "AddEmailTemplate", Area="Member", Title = "Create Template",
-                                    Icon = "icon-plus-circle2", IsActive = false }
+                                    Icon = "icon-plus-circle2", IsActive = false },
+                                new MenuChildItem () { Controller = "Campaigns", Action = "ViewCampaignReports", Area="Member", Title = "View Camapaign Reports",
+                                    Icon = "icon-file-download2", IsActive = false }
                             }
                         }
 
