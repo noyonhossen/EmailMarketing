@@ -18,7 +18,7 @@ namespace EmailMarketing.Membership.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
+    #line 1 "H:\EmailMarketing\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class AccountConfirmationEmailTemplate : AccountConfirmationEmailTemplateBase
     {
@@ -46,7 +46,7 @@ namespace EmailMarketing.Membership.Templates
                         <td>
                             <h1 style=""font-family: system-ui;font-size:25px;"">");
             
-            #line 22 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
+            #line 22 "H:\EmailMarketing\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyFullName));
             
             #line default
@@ -55,7 +55,7 @@ namespace EmailMarketing.Membership.Templates
                     "               <p style=\"font-family: system-ui;text-align: right;font-size:13px" +
                     ";\"><a href=\"");
             
-            #line 25 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
+            #line 25 "H:\EmailMarketing\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyUrl));
             
             #line default
@@ -82,7 +82,7 @@ namespace EmailMarketing.Membership.Templates
                             <p style=""padding:0px 100px;font-family:system-ui;text-align:left;font-weight:bold;font-size:15px;"">
                                 Dear ");
             
-            #line 45 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
+            #line 45 "H:\EmailMarketing\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ReceiverName));
             
             #line default
@@ -98,7 +98,7 @@ namespace EmailMarketing.Membership.Templates
                         <td>
                             <a href=""");
             
-            #line 54 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
+            #line 54 "H:\EmailMarketing\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Url));
             
             #line default
@@ -111,7 +111,7 @@ namespace EmailMarketing.Membership.Templates
                             <p style=""padding:0px 100px;font-family: system-ui;text-align:left;font-size:13px;"">
                                 All the best,<br /> ");
             
-            #line 60 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
+            #line 60 "H:\EmailMarketing\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyShortName));
             
             #line default
@@ -145,7 +145,7 @@ namespace EmailMarketing.Membership.Templates
                             <div style=""margin-top: 10px;"">
                                 <span style=""font-size:12px;font-family: system-ui;font-size:11px;"">");
             
-            #line 87 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
+            #line 87 "H:\EmailMarketing\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyFullName));
             
             #line default
@@ -153,7 +153,7 @@ namespace EmailMarketing.Membership.Templates
             this.Write("</span><br>\r\n                                <span style=\"font-size:12px;font-fam" +
                     "ily: system-ui;font-size:11px;\">Copyright © 2020 ");
             
-            #line 88 "F:\DevSkill\EmailMarketing.dev\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
+            #line 88 "H:\EmailMarketing\EmailMarketing.Membership\Templates\AccountConfirmationEmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyShortName));
             
             #line default

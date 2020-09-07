@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
 using EmailMarketing.Web.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

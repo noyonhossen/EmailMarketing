@@ -242,6 +242,10 @@ namespace EmailMarketing.Framework.Services.Contacts
         {
             return await _contactUnitOfWork.ContactRepository.GetCountAsync(x => x.UserId == userId);
         }
+        public async Task<int> GetContactCountAsync()
+        {
+            return await _contactUnitOfWork.ContactRepository.GetCountAsync();
+        }
         public void Dispose()
         {
             _contactUnitOfWork.Dispose();

@@ -99,6 +99,10 @@ namespace EmailMarketing.Framework.Services.Groups
         {
             return await _groupUnitOfWork.GroupRepository.GetCountAsync(x => x.UserId == userId);
         }
+        public async Task<int> GetGroupCountAsync()
+        {
+            return await _groupUnitOfWork.GroupRepository.GetCountAsync();
+        }
         public void Dispose()
     {
             _groupUnitOfWork?.Dispose();

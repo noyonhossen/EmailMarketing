@@ -38,5 +38,6 @@ namespace EmailMarketing.Framework.Services.Contacts
         Task UpdateAsync(Contact contact);
         Task DeleteRangeAsync(IList<ContactValueMap> contact);
         Task<int> GetContactCountAsync(Guid? userId);
+        Task<int> GetContactCountAsync();
     }
 }

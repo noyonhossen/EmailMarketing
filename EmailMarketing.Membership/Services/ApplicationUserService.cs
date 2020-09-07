@@ -134,6 +134,23 @@ namespace EmailMarketing.Membership.Services
 
             return (resultItems, resultTotal, resultTotalFilter);
         }
+        public async Task<int> GetAllMembersAsync()
+        {
+            var resultItems = new List<ApplicationUser>();
+            var resultTotal = 0;
+            var resultTotalFilter = 0;
+
+            var query = _userManager.Users.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).AsQueryable();
+            resultTotal = await query.CountAsync();
+
+            query = query.Where(x => !x.IsDeleted && x.UserRoles.Any(ur => ur.Role.Name == ConstantsValue.UserRoleName.Member) &&
+                x.Status != EnumApplicationUserStatus.SuperAdmin);
+            resultTotalFilter = await query.CountAsync();
+            resultItems = await query.AsNoTracking().ToListAsync();
+
+            return  resultTotalFilter;
+        }
+
 
         public async Task<ApplicationUser> GetByIdAsync(Guid id)
         {

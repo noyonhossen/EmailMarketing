@@ -148,6 +148,10 @@ namespace EmailMarketing.Framework.Services.Campaigns
         {
             return await _campaignUnitOfWork.CampaignRepository.GetCountAsync(x => x.UserId == userId);
         }
+        public async Task<int> GetCampaignCountAsync()
+        {
+            return await _campaignUnitOfWork.CampaignRepository.GetCountAsync();
+        }
 
         public async Task<Campaign> ActivateCampaignAsync(int id)
         {

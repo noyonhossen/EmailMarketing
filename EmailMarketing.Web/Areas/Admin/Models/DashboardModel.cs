@@ -1,6 +1,10 @@
-﻿using EmailMarketing.Framework.Services.Campaigns;
+﻿using EmailMarketing.Framework.Context;
+using EmailMarketing.Framework.Services.Campaigns;
 using EmailMarketing.Framework.Services.Contacts;
 using EmailMarketing.Framework.Services.Groups;
+using EmailMarketing.Membership.Entities;
+using EmailMarketing.Membership.Services;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +13,14 @@ using System.Threading.Tasks;
 
 namespace EmailMarketing.Web.Areas.Admin.Models
 {
-    public class DashboardModel : DashboardBaseModel
+    public class DashboardModel : DashboardBaseModel 
     {
+        public int TotalUser { get; set; }
         public int TotalContacts { get; set; }
         public int TotalGroups { get; set; }
         public int TotalCampaigns { get; set; }
+        public int TotalMailSent { get; set; }
+
         public DashboardModel(ICampaignService campaignService, IContactService contactService,
             IGroupService groupUserService) : base(campaignService, contactService, groupUserService)
         {
@@ -23,12 +30,15 @@ namespace EmailMarketing.Web.Areas.Admin.Models
         {
 
         }
+        
+        
         public async Task LoadDashboardData()
         {
-            var userId = _currentUserService.UserId;
-            TotalContacts = await _contactService.GetContactCountAsync(userId);
-            TotalGroups = await _groupService.GetGroupCountAsync(userId);
-            TotalCampaigns = await _campaignService.GetCampaignCountAsync(userId);
+            TotalUser = await _applicationuserService.GetAllMembersAsync();
+            TotalContacts = await _contactService.GetContactCountAsync();
+            TotalMailSent = TotalContacts;
+            TotalGroups = await _groupService.GetGroupCountAsync();
+            TotalCampaigns = await _campaignService.GetCampaignCountAsync();        
         }
 
     }
