@@ -9,6 +9,13 @@ namespace EmailMarketing.Framework.Services.Campaigns
 {
     public interface ICampaignReportExportService : IDisposable
     {
+        Task<DownloadQueueSubEntity> GetAllDownloadQueueSubEntityById(int id);
+        Task<(IList<DownloadQueue> Items, int Total, int TotalFilter)> GetAllCampaignReportsFromDownloadQueueAsync(
+          Guid? userId,
+          string searchText,
+          string orderBy,
+          int pageIndex,
+          int pageSize);
         Task<IList<CampaignReport>> GetAllCampaignReportAsync(
             Guid? userId);
         Task<IList<object>> GetCampaignsForSelectAsync(Guid? userId);

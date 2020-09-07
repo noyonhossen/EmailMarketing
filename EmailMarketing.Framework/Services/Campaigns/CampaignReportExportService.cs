@@ -1,5 +1,6 @@
 ﻿using ClosedXML.Excel;
 using EmailMarketing.Common.Exceptions;
+using EmailMarketing.Common.Extensions;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.Enums;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,7 +22,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
         private ICampaignReportUnitOfWork _campaignReportUnitOfWork;
         private ICampaignUnitOfWork _campaignUnitOfWork;
         public CampaignReportExportService(
-            ICampaignReportExportUnitOfWork campaignReportExportUnitOfWork, 
+            ICampaignReportExportUnitOfWork campaignReportExportUnitOfWork,
             ICampaignReportUnitOfWork campaignReportUnitOfWork,
             ICampaignUnitOfWork campaignUnitOfWork)
         {
@@ -28,13 +30,50 @@ namespace EmailMarketing.Framework.Services.Campaigns
             _campaignReportUnitOfWork = campaignReportUnitOfWork;
             _campaignUnitOfWork = campaignUnitOfWork;
         }
+
+        public async Task<DownloadQueueSubEntity> GetAllDownloadQueueSubEntityById(int id)
+        {
+            var result = await _campaignReportExportUnitOfWork.DownloadQueueSubEntityRepository.GetFirstOrDefaultAsync<DownloadQueueSubEntity>(
+                x => x,
+                x => x.DownloadQueueId == id,
+                null,
+                true);
+            return result;
+        }
+        public async Task<(IList<DownloadQueue> Items, int Total, int TotalFilter)> GetAllCampaignReportsFromDownloadQueueAsync(
+          Guid? userId,
+          string searchText,
+          string orderBy,
+          int pageIndex,
+          int pageSize)
+        {
+            var columnsMap = new Dictionary<string, Expression<Func<DownloadQueue, object>>>()
+            {
+                ["Created"] = v => v.Created
+            };
+            var result = (await _campaignReportExportUnitOfWork.DownloadQueueRepository.GetAsync(x => x,
+                                                  x => !x.IsDeleted && x.IsActive &&
+                                                  (!userId.HasValue || x.UserId == userId.Value) &&
+                                                  x.FileName.Contains(searchText) &&
+                                                  (x.DownloadQueueFor == DownloadQueueFor.CampaignAllReportExport || x.DownloadQueueFor == DownloadQueueFor.CampaignDetailsReportExport),
+                                                  x => x.ApplyOrdering(columnsMap, orderBy),
+                                                  x => x.Include(y => y.DownloadQueueSubEntities),
+                                                  pageIndex, pageSize,
+                                                  true));
+
+            if (result.Items == null) throw new NotFoundException(nameof(DownloadQueue), userId);
+
+            result.Total = await _campaignReportExportUnitOfWork.DownloadQueueRepository.GetCountAsync(x => x.UserId == userId && (x.DownloadQueueFor == DownloadQueueFor.CampaignAllReportExport || x.DownloadQueueFor == DownloadQueueFor.CampaignDetailsReportExport));
+
+            return (result.Items, result.Total, result.TotalFilter);
+        }
         public async Task<IList<DownloadQueue>> GetDownloadQueue()
         {
             var result = await _campaignReportExportUnitOfWork.DownloadQueueRepository.GetAsync(
                 x => x,
                 x => (x.IsProcessing == true || x.IsSucceed == false) && (x.DownloadQueueFor == DownloadQueueFor.CampaignAllReportExport || x.DownloadQueueFor == DownloadQueueFor.CampaignDetailsReportExport),
                 null,
-                x=> x.Include(y=> y.DownloadQueueSubEntities),
+                x => x.Include(y => y.DownloadQueueSubEntities),
                 true);
             return result;
         }
@@ -63,7 +102,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
                                                    x => !x.IsDeleted && x.IsActive &&
                                                    (!userId.HasValue || x.Campaign.UserId == userId.Value),
                                                    x => x.OrderBy(o => o.Contact.Email),
-                                                   x => x.Include(y=> y.Contact).Include(y=> y.Campaign),
+                                                   x => x.Include(y => y.Contact).Include(y => y.Campaign),
                                                    true));
             if (result == null) throw new NotFoundException(nameof(CampaignReport), userId);
             return result;
@@ -76,7 +115,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
                                                    (!userId.HasValue || x.UserId == userId.Value),
                                                     null, null, true);
         }
-        public async Task<IList<CampaignReport>> GetCampaignWiseReportAsync(Guid? userId,int campaignId)
+        public async Task<IList<CampaignReport>> GetCampaignWiseReportAsync(Guid? userId, int campaignId)
         {
             var result = (await _campaignReportUnitOfWork.CampaingReportRepository.GetAsync(x => x,
                                                    x => !x.IsDeleted && x.IsActive &&
