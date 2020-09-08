@@ -240,6 +240,24 @@ namespace EmailMarketing.Framework.Services.Contacts
             return (result.Items, result.Total, result.TotalFilter);
         }
 
+        //public async Task<(IList<Contact> Items, int Total, int TotalFilter)> GetContactAsync(
+        //   Guid? userId, string searchText, string orderBy, int pageIndex, int pageSize)
+        //{
+        //    var columnsMap = new Dictionary<string, Expression<Func<Contact, object>>>()
+        //    {
+        //        ["Email"] = v => v.Email,
+        //        //["Group"] = v => v.Gr
+        //    };
+
+        //    var result = await _contactUploadUnitOfWork.ContactUploadRepository.GetAsync(x => x,
+        //        x => (!userId.HasValue || x.UserId == userId.Value) && x.FileName.Contains(searchText),
+        //        x => x.ApplyOrdering(columnsMap, orderBy), x => x.Include(i => i.ContactUploadGroups).ThenInclude(i => i.Group),
+        //        pageIndex, pageSize, true);
+
+        //    result.Total = await _contactUploadUnitOfWork.ContactUploadRepository.GetCountAsync(x => x.UserId == userId);
+
+        //    return (result.Items, result.Total, result.TotalFilter);
+        //}
         public async Task<ContactUpload> GetByIdAsync(int id)
         {
            return await _contactUploadUnitOfWork.ContactUploadRepository.GetByIdAsync(id);

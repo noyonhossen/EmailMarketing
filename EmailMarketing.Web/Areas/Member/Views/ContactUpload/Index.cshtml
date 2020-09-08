@@ -93,9 +93,10 @@
     <script>
         $(function () {
             var url = '@Url.Action("GetContactUploads", "ContactUpload", new { Area = "Member" })';
-            loadDatatable(url);
+            var ReportUrl = '@Url.Action("ViewUploadContact", "ContactUpload", new { Area = "Member" })';
+            loadDatatable(url, ReportUrl);
         });
-           
+
         //Activate Custom Field
         $('#modal-activeField').on('show.bs.modal', function (e) {
             var id = $(e.relatedTarget).attr('data-id');
