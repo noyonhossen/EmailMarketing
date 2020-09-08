@@ -10,5 +10,6 @@ namespace EmailMarketing.Framework.Services.Campaigns
     {
         Task AddCampaingReportAsync(IList<CampaignReport> campaignReports);
         Task EmailOpenTracking(int campaignId, int contactId, string email);
+        Task<int> GetDeleveredMailCountAsync();
     }
 }

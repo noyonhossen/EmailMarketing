@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
 using EmailMarketing.Web.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -19,9 +20,10 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var model = new DashboardModel();
+            await model.LoadDashboardData();
             return View(model);
         }
 

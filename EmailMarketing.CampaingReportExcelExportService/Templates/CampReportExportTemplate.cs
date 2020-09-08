@@ -18,8 +18,7 @@ namespace EmailMarketing.CampaingReportExcelExportService.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
-
+    #line 1 "H:\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class CampReportExportTemplate : CampReportExportTemplateBase
     {
@@ -48,7 +47,7 @@ namespace EmailMarketing.CampaingReportExcelExportService.Templates
                         <td>
                             <h1 style=""font-family: system-ui;font-size:25px;"">");
             
-            #line 24 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
+            #line 24 "H:\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyFullName));
             
             #line default
@@ -57,7 +56,7 @@ namespace EmailMarketing.CampaingReportExcelExportService.Templates
                     "               <p style=\"font-family: system-ui;text-align: right;font-size:13px" +
                     ";\"><a href=\"");
             
-            #line 27 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
+            #line 27 "H:\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyUrl));
             
             #line default
@@ -84,7 +83,7 @@ namespace EmailMarketing.CampaingReportExcelExportService.Templates
                             <p style=""padding:0px 100px;font-family:system-ui;text-align:left;font-weight:bold;font-size:15px;"">
                                 Dear ");
             
-            #line 47 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
+            #line 47 "H:\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ReceiverName));
             
             #line default
@@ -104,7 +103,7 @@ namespace EmailMarketing.CampaingReportExcelExportService.Templates
                             <p style=""padding:0px 100px;font-family: system-ui;text-align:left;font-size:13px;"">
                                 All the best,<br /> ");
             
-            #line 60 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
+            #line 60 "H:\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyShortName));
             
             #line default
@@ -138,7 +137,7 @@ namespace EmailMarketing.CampaingReportExcelExportService.Templates
                             <div style=""margin-top: 10px;"">
                                 <span style=""font-size:12px;font-family: system-ui;font-size:11px;"">");
             
-            #line 87 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
+            #line 87 "H:\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyFullName));
             
             #line default
@@ -146,7 +145,7 @@ namespace EmailMarketing.CampaingReportExcelExportService.Templates
             this.Write("</span><br>\r\n                                <span style=\"font-size:12px;font-fam" +
                     "ily: system-ui;font-size:11px;\">Copyright © 2020 ");
             
-            #line 88 "D:\DevSkillFInalProject\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
+            #line 88 "H:\EmailMarketing\EmailMarketing.CampaingReportExcelExportService\Templates\CampReportExportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CompanyShortName));
             
             #line default

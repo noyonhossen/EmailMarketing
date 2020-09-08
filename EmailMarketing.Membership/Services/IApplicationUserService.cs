@@ -22,6 +22,7 @@ namespace EmailMarketing.Membership.Services
             string orderBy,
             int pageIndex,
             int pageSize);
+        Task<int> GetAllMembersAsync();
         Task<ApplicationUser> GetByIdAsync(Guid id);
         Task<ApplicationUser> GetByUserNameAsync(string userName);
         Task<Guid> AddAsync(ApplicationUser entity, Guid userRoleId, string newPassword);
