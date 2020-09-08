@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Services.Contacts;
+using EmailMarketing.Membership.Constants;
 using EmailMarketing.Web.Areas.Member.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -15,7 +16,7 @@ using Microsoft.Extensions.Logging;
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
     [Area("Member")]
-    [Authorize]
+    [Authorize(Roles = ConstantsUserRoleName.Member)]
     public class DashboardController : Controller
     {
         private readonly ILogger<DashboardController> _logger;

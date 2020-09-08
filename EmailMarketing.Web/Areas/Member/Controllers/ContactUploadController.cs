@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
+using EmailMarketing.Membership.Constants;
 using EmailMarketing.Web.Areas.Member.Enums;
 using EmailMarketing.Web.Areas.Member.Models;
 using EmailMarketing.Web.Areas.Member.Models.Contacts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
     [Area("Member")]
+    [Authorize(Roles = ConstantsUserRoleName.Member)]
     public class ContactUploadController : Controller
     {
         private readonly ILogger<ContactUploadController> _logger;

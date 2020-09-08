@@ -16,10 +16,13 @@ using Microsoft.CodeAnalysis.Options;
 using EmailMarketing.Web.Core;
 using Microsoft.Extensions.Options;
 using EmailMarketing.Web.Areas.Member.Models.Contacts;
+using Microsoft.AspNetCore.Authorization;
+using EmailMarketing.Membership.Constants;
 
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
     [Area("Member")]
+    [Authorize(Roles = ConstantsUserRoleName.Member)]
     public class CampaignsController : Controller
     {
 

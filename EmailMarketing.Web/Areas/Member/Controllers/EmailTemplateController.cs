@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmailMarketing.Common.Exceptions;
+using EmailMarketing.Membership.Constants;
 using EmailMarketing.Web.Areas.Member.Models;
 using EmailMarketing.Web.Areas.Member.Models.Campaigns;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
     [Area("Member")]
+    [Authorize(Roles = ConstantsUserRoleName.Member)]
     public class EmailTemplateController : Controller
     {
         private readonly ILogger<EmailTemplateController> _logger;

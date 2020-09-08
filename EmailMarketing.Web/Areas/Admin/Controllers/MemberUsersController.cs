@@ -10,6 +10,7 @@ using EmailMarketing.Membership.Enums;
 using EmailMarketing.Membership.Services;
 using EmailMarketing.Web.Areas.Admin.Enums;
 using EmailMarketing.Web.Areas.Admin.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ using Microsoft.Extensions.Logging;
 namespace EmailMarketing.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = ConstantsUserRoleName.SuperAdminOrAdmin)]
     public class MemberUsersController : Controller
     {
         private readonly ILogger<MemberUsersController> _logger;

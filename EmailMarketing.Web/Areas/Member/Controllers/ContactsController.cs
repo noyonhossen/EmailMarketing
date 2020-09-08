@@ -5,10 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using EmailMarketing.Common.Exceptions;
+using EmailMarketing.Membership.Constants;
 using EmailMarketing.Web.Areas.Member.Enums;
 using EmailMarketing.Web.Areas.Member.Models;
 using EmailMarketing.Web.Areas.Member.Models.Contacts;
 using EmailMarketing.Web.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -16,6 +18,7 @@ using Microsoft.Extensions.Options;
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
     [Area("Member")]
+    [Authorize(Roles = ConstantsUserRoleName.Member)]
     public class ContactsController : Controller
     {
         private readonly ILogger<ContactsController> _logger;

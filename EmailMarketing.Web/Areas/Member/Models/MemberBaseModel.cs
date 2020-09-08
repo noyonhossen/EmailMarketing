@@ -121,7 +121,7 @@ namespace EmailMarketing.Web.Areas.Member.Models
                                     Icon = "icon-stack4", IsActive = false },
                                 new MenuChildItem () { Controller = "EmailTemplate", Action = "AddEmailTemplate", Area="Member", Title = "Create Template",
                                     Icon = "icon-plus-circle2", IsActive = false },
-                                new MenuChildItem () { Controller = "Campaigns", Action = "ViewCampaignReports", Area="Member", Title = "View Camapaign Reports",
+                                new MenuChildItem () { Controller = "Campaigns", Action = "ViewCampaignReports", Area="Member", Title = "View Exported Files",
                                     Icon = "icon-file-download2", IsActive = false }
                             }
                         }

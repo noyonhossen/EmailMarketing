@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmailMarketing.Common.Services;
+using EmailMarketing.Membership.Constants;
 using EmailMarketing.Membership.Entities;
 using EmailMarketing.Membership.Services;
 using EmailMarketing.Web.Areas.Member.Enums;
@@ -17,7 +18,7 @@ using Microsoft.Extensions.Logging;
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
     [Area("Member")]
-    [Authorize]
+    [Authorize(Roles = ConstantsUserRoleName.Member)]
     public class ProfileController : Controller
     {
         private readonly ApplicationUserManager _userManager;

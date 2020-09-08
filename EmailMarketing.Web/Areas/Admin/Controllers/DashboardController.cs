@@ -4,13 +4,16 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
+using EmailMarketing.Membership.Constants;
 using EmailMarketing.Web.Areas.Admin.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace EmailMarketing.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = ConstantsUserRoleName.SuperAdminOrAdmin)]
     public class DashboardController : Controller
     {
         private readonly ILogger<DashboardController> _logger;

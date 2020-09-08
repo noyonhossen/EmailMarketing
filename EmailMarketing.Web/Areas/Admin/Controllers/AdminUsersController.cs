@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using EmailMarketing.Common.Exceptions;
+using EmailMarketing.Membership.Constants;
 using EmailMarketing.Membership.Entities;
 using EmailMarketing.Membership.Services;
 using EmailMarketing.Web.Areas.Admin.Enums;
 using EmailMarketing.Web.Areas.Admin.Models;
 using EmailMarketing.Web.Areas.Admin.Models.AdminUsers;
 using EmailMarketing.Web.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,6 +19,7 @@ using Microsoft.Extensions.Logging;
 namespace EmailMarketing.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = ConstantsUserRoleName.SuperAdminOrAdmin)]
     public class AdminUsersController : Controller
     {
         private readonly ILogger<AdminUsersController> _logger;

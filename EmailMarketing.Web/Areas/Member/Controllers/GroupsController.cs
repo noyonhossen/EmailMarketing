@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
     [Area("Member")]
+    [Authorize(Roles = ConstantsUserRoleName.Member)]
     public class GroupsController : Controller
     {
         private readonly ILogger<GroupsController> _logger;

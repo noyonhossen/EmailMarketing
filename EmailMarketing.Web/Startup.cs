@@ -110,7 +110,7 @@ namespace EmailMarketing.Web
             services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
 
             services.AddSingleton<IMailerService, MailerService>();
-            services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddTransient<ICurrentUserService, CurrentUserService>();
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddScoped<IApplicationUserService, ApplicationUserService>();
             services.AddSingleton<ISmtpTestService, SmtpTestService>();

@@ -4,15 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using EmailMarketing.Common.Exceptions;
+using EmailMarketing.Membership.Constants;
 using EmailMarketing.Web.Areas.Member.Enums;
 using EmailMarketing.Web.Areas.Member.Models;
 using EmailMarketing.Web.Areas.Member.Models.Smtp;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
     [Area("Member")]
+    [Authorize(Roles = ConstantsUserRoleName.Member)]
     public class SMTPController : Controller
     {
         private readonly ILogger<SMTPController> _logger;
