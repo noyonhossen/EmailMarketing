@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="pb-3">
-                    <h4 class="d-inline">UploadContact Details</h4>
+                    <h4 class="d-inline">Upload Contact Details</h4>
                     <a asp-area="Member" asp-controller="ContactUpload" asp-action="Index" class="btn btn-primary float-right"> <i class="icon-list mr-2"></i>Contact Upload List</a>
                 </div>
             </div>
@@ -39,9 +39,10 @@
                         <div class="col-6">
                             <table class="table table-borderless">
                                 <tr>
-                                    <td class="col-3 float-left"><h7>File Url: </h7></td>
-                                    <td class="col-9 float-left"><h7>@Model.FileUrl</h7></td>
+                                    <td class="col-3 float-left"><h7>Created At </h7></td>
+                                    <td class="col-9 float-left"><h7>@Model.Created</h7></td>
                                 </tr>
+
                                 <tr>
                                     <td class="col-3 float-left"><h7>Succed Entry: </h7></td>
                                     <td class="col-9 float-left"><h7>@Model.SucceedEntryCount</h7></td>
@@ -50,20 +51,18 @@
                         </div>
                     </div>
                     <!-- /page header -->
-                    @*<hr />
-                    <input type="hidden" id="userId" value="@Model.UserId" />*@
-                    @*<table class="table" id="campaign-table">
+                    <hr />
+                    <input type="hidden" id="userId" value="@Model.ContactUploadId" />
+                    <table class="table" id="campaign-table">
                         <thead>
                             <tr>
+                                <th>Group Name</th>
                                 <th>Contact Email</th>
-                                <th>Delivered</th>
-                                <th>Seen</th>
-                                <th>Seen Date Time</th>
-                                <th>Send Date Time</th>
+
                             </tr>
                         </thead>
                         <tbody></tbody>
-                    </table>*@
+                    </table>
                 </div>
                 <!-- /basic datatable -->
             </div>
@@ -77,12 +76,12 @@
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
     <partial name="~/Views/Bundle/_DatatableScriptsPartial.cshtml" />
     <script src="~/js/ajax-call.js"></script>
-    <script src="~/js/project/campaignreport.js"></script>
+    <script src="~/js/project/viewcontactupload.js"></script>
     <script>
         $(function () {
-            var campaignId = $('#campaignId').val();
-            @*var url = '@Url.Action("ViewDeleveryReport", "Campaigns", new { Area = "Member", campaignId = Model.CampaignId })';
-            loadDatatable(url);*@
+            //var id = $('#id').val();
+            var url = '@Url.Action("GetAllContact", "ContactUpload", new { Area = "Member", contactUploadId = Model.ContactUploadId })';
+            loadDatatable(url);
         });
     </script>
 }
