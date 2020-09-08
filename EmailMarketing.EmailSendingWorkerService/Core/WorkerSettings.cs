@@ -14,5 +14,6 @@ namespace EmailMarketing.EmailSendingWorkerService.Core
         public string CompanyFullName { get; set; }
         public string CompanyShortName { get; set; }
         public string CompanyWebsiteUrl { get; set; }
+        public string EncryptionDecryptionKey { get; set; }
     }
 }

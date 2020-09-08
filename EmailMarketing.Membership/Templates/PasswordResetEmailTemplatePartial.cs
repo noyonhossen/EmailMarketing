@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace EmailMarketing.Membership.Templates
+{
+    public partial class PasswordResetEmailTemplate
+    {
+        public string ReceiverName { get; private set; }
+        public string CompanyFullName { get; set; }
+        public string CompanyShortName { get; set; }
+        public string CompanyUrl { get; set; }
+        public string Url { get; private set; }
+
+        public PasswordResetEmailTemplate(string name, string url,
+            string companyFullName, string companyShortName, string companyUrl)
+        {
+            this.ReceiverName = name;
+            this.CompanyFullName = companyFullName;
+            this.CompanyShortName = companyShortName;
+            this.CompanyUrl = companyUrl;
+            this.Url = url;
+        }
+    }
+}

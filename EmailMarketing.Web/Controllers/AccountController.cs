@@ -20,6 +20,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using MimeKit;
+using EmailMarketing.Web.Core;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.Extensions.Options;
+using EmailMarketing.Membership.Templates;
 
 namespace EmailMarketing.Web.Controllers
 {
@@ -31,13 +35,15 @@ namespace EmailMarketing.Web.Controllers
         private readonly IEmailSender _emailSender;
         private readonly IMailerService _mailerService;
         private readonly IWebHostEnvironment _env;
+        private readonly AppSettings _appSettings;
 
         public AccountController(ApplicationSignInManager signInManager,
             ILogger<AccountController> logger,
             ApplicationUserManager userManager,
             IEmailSender emailSender,
             IMailerService mailerService,
-            IWebHostEnvironment env)
+            IWebHostEnvironment env,
+            IOptions<AppSettings> appSettings)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -45,6 +51,7 @@ namespace EmailMarketing.Web.Controllers
             _emailSender = emailSender;
             _mailerService = mailerService;
             _env = env;
+            _appSettings = appSettings.Value;
         }
 
         public async Task<IActionResult> Login(string returnUrl = null)
@@ -167,31 +174,15 @@ namespace EmailMarketing.Web.Controllers
                             //Activate Email Link
                             var emailVerificationlink = Url.Action(nameof(VerifyEmail), "Account", new { userId = user.Id, code }, Request.Scheme, Request.Host.ToString());
 
-                            //String Body
-                            var webroot = _env.WebRootPath;
-
-                            var pathToFile = _env.WebRootPath
-                                    + Path.DirectorySeparatorChar.ToString()
-                                    + "Templates"
-                                    + Path.DirectorySeparatorChar.ToString()
-                                    + "EmailTemplate"
-                                    + Path.DirectorySeparatorChar.ToString()
-                                    + "Confirm_Account_Registration.html";
-
                             var subject = "Confirm Account Registration";
 
-                            var builder = new BodyBuilder();
-                            using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
-                            {
-                                builder.HtmlBody = SourceReader.ReadToEnd();
-                            }
+                            //Email Sending
+                            var accountConfirmationTemplate = new AccountConfirmationEmailTemplate(user.FullName,
+                                emailVerificationlink, _appSettings.CompanyFullName, _appSettings.CompanyShortName,
+                                _appSettings.CompanyWebsiteUrl);
+                            var emailBody = accountConfirmationTemplate.TransformText();
 
-                            string messageBody = string.Format(builder.HtmlBody,
-                                    user.FullName,
-                                    emailVerificationlink
-                                    );
-
-                            await _mailerService.SendEmailAsync(user.Email, subject, messageBody);
+                            await _mailerService.SendEmailAsync(user.Email, subject, emailBody);
 
                             scope.Complete();
 
@@ -250,32 +241,14 @@ namespace EmailMarketing.Web.Controllers
                 var passwordResetLink = Url.Action(nameof(ResetPassword), "Account", new { email = model.Email, code }, 
                                                     Request.Scheme, Request.Host.ToString());
 
-                //String Body
-                var webroot = _env.WebRootPath;
-
-                var pathToFile = _env.WebRootPath
-                        + Path.DirectorySeparatorChar.ToString()
-                        + "Templates"
-                        + Path.DirectorySeparatorChar.ToString()
-                        + "EmailTemplate"
-                        + Path.DirectorySeparatorChar.ToString()
-                        + "Reset_Account_Password.html";
-
                 var subject = "Recover Account Password";
 
-                var builder = new BodyBuilder();
-                using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
-                {
-                    builder.HtmlBody = SourceReader.ReadToEnd();
-                }
+                var passwordResetTemplate = new PasswordResetEmailTemplate(user.FullName,
+                                passwordResetLink, _appSettings.CompanyFullName, _appSettings.CompanyShortName,
+                                _appSettings.CompanyWebsiteUrl);
+                var emailBody = passwordResetTemplate.TransformText();
 
-                //Inserting Value to Html body dynamically
-                string messageBody = string.Format(builder.HtmlBody,
-                        user.FullName,
-                        passwordResetLink
-                        );
-
-                await _mailerService.SendEmailAsync(user.Email, subject, messageBody);
+                await _mailerService.SendEmailAsync(user.Email, subject, emailBody);
 
                 return RedirectToAction("ForgotPasswordConfirmation");
             }

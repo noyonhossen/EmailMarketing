@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EmailMarketing.CampaingReportExcelExportService.Entities
+namespace EmailMarketing.CampaingReportExcelExportService.Core
 {
     public class WorkerSmtpSettings
     {

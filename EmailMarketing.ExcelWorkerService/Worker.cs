@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EmailMarketing.Common.Services;
+using EmailMarketing.ExcelWorkerService.Core;
 using EmailMarketing.ExcelWorkerService.Templates;
 using EmailMarketing.Framework.Services.Contacts;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace EmailMarketing.ExcelWorkerService
 {
@@ -16,12 +18,15 @@ namespace EmailMarketing.ExcelWorkerService
         private readonly ILogger<Worker> _logger;
         private readonly IMailerService _mailerService;
         private readonly IContactUploadService _contactUploadService;
+        private readonly WorkerSettings _workerSettings;
 
-        public Worker(ILogger<Worker> logger, IContactUploadService contactUploadService, IMailerService mailerService)
+        public Worker(ILogger<Worker> logger, IContactUploadService contactUploadService, IMailerService mailerService,
+            IOptions<WorkerSettings> workerSettings)
         {
             _logger = logger;
             _mailerService = mailerService;
             _contactUploadService = contactUploadService;
+            _workerSettings = workerSettings.Value;
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
@@ -51,31 +56,34 @@ namespace EmailMarketing.ExcelWorkerService
                             {
                                 if(importResult.SucceedCount > 0)
                                 {
-                                    var fileUploadConfirmationEmailTemplate = new FileUploadConfirmationEmailTemplate("Sir", importResult.SucceedCount, importResult.ExistCount, importResult.InvalidCount);
+                                    var fileUploadConfirmationEmailTemplate = new FileUploadConfirmationEmailTemplate("Sir", importResult.SucceedCount,
+                                        importResult.ExistCount, importResult.InvalidCount, _workerSettings.CompanyFullName, _workerSettings.CompanyShortName,
+                                        _workerSettings.CompanyWebsiteUrl);
                                     var emailBody = fileUploadConfirmationEmailTemplate.TransformText();
 
                                     await _mailerService.SendEmailAsync(item.SendEmailAddress, "File Upload Confirmation", emailBody);
+                                    _logger.LogInformation($"Successfully File Upload Cofirmation Mail Send to User: {item.UserId}");
                                 }
                                 else
                                 {
-                                    var fileUploadFailedEmailTemplate = new FileUploadFailedEmailTemplate("Sir");
+                                    var fileUploadFailedEmailTemplate = new FileUploadFailedEmailTemplate("Sir", _workerSettings.CompanyFullName, 
+                                        _workerSettings.CompanyShortName, _workerSettings.CompanyWebsiteUrl);
                                     var emailBody = fileUploadFailedEmailTemplate.TransformText();
                                     await _mailerService.SendEmailAsync(item.SendEmailAddress, "Upload Failed", emailBody);
+                                    _logger.LogInformation($"File Upload Failed Cofirmation Mail Send to User: {item.UserId}");
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            _logger.LogError($"Failed to Import Contact: Error: {ex.Message}");
-                            //continue;
-                            //throw new Exception($"Failed to Import contact.{item.FileUrl}");
+                            _logger.LogError(ex, $"Failed to Import Contact: Error: {ex.Message}");
                         }
                     }
                     _logger.LogInformation("item values is done showing");
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Error message : {ex.Message}");
+                    _logger.LogError(ex, $"Error message : {ex.Message}");
                 }
 
                 await Task.Delay(120000, stoppingToken);

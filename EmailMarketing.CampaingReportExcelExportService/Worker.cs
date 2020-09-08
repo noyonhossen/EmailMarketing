@@ -5,12 +5,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
+using EmailMarketing.CampaingReportExcelExportService.Core;
 using EmailMarketing.CampaingReportExcelExportService.Templates;
 using EmailMarketing.Common.Services;
 using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.Services.Campaigns;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace EmailMarketing.CampaingReportExcelExportService
 {
@@ -19,12 +21,15 @@ namespace EmailMarketing.CampaingReportExcelExportService
         private readonly ILogger<Worker> _logger;
         private readonly IExportMailerService _exportMailerService;
         private readonly ICampaignReportExportService _campaignReportExportService;
+        private WorkerSettings _workerSettings;
 
-        public Worker(ILogger<Worker> logger, ICampaignReportExportService campaignReportExportService, IExportMailerService exportMailerService)
+        public Worker(ILogger<Worker> logger, ICampaignReportExportService campaignReportExportService,
+            IExportMailerService exportMailerService, IOptions<WorkerSettings> workerSettings)
         {
             _logger = logger;
             _exportMailerService = exportMailerService;
             _campaignReportExportService = campaignReportExportService;
+            _workerSettings = workerSettings.Value;
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
@@ -47,11 +52,7 @@ namespace EmailMarketing.CampaingReportExcelExportService
                     {
                         try
                         {
-                            if (Directory.Exists(item.FileUrl) == false)
-                            {
-                                DirectoryInfo directory = Directory.CreateDirectory(item.FileUrl);
-                            }
-
+                            
                             var importResult = await _campaignReportExportService.GetDownloadQueueByIdAsync(item.Id);
 
                             if (item.DownloadQueueFor == DownloadQueueFor.CampaignAllReportExport)
@@ -68,16 +69,18 @@ namespace EmailMarketing.CampaingReportExcelExportService
                             importResult.LastModifiedBy = item.UserId;
                             await _campaignReportExportService.UpdateDownloadQueueAync(importResult);
 
-                            _logger.LogInformation($"Successfully Exported. FileUrl: {item.FileUrl}+{item.FileName}");
+                            _logger.LogInformation($"Successfully Exported. FileUrl: {item.FileUrl}{item.FileName}");
 
 
                             //Sending Email
                             if (item.IsSendEmailNotify)
                             {
-                                var url = Path.Combine(item.FileUrl, item.FileName);
+                                var url = item.FileUrl;
 
-                                var emailSubject = "Contact Export Confirmation";
-                                var campReportExportTemplate = new CampReportExportTemplate("Sir");
+                                var emailSubject = "Campaign Export Confirmation";
+                                var campReportExportTemplate = new CampReportExportTemplate("Sir", _workerSettings.CompanyFullName,
+                                                                    _workerSettings.CompanyShortName, _workerSettings.CompanyWebsiteUrl);
+
                                 var emailBody = campReportExportTemplate.TransformText();
 
                                 await _exportMailerService.SendEmailAsync(item.SendEmailAddress, emailSubject, emailBody, url);
@@ -85,13 +88,14 @@ namespace EmailMarketing.CampaingReportExcelExportService
                         }
                         catch (Exception ex)
                         {
-                            _logger.LogError($"Campaign export failed : {item.FileUrl} - {item.FileName}");
+                            //_logger.LogError($"Campaign export failed : {item.FileUrl} - {item.FileName}");
+                            _logger.LogError(ex, $"Campaign Export Failed for Url = {item.FileUrl}{item.FileName} and Error Message: " + ex.Message);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Error message : {ex.Message}");
+                    _logger.LogError(ex, $"Error message : {ex.Message}");
                 }
 
                 await Task.Delay(120000, stoppingToken);

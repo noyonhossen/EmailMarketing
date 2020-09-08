@@ -1,0 +1,85 @@
+version: '3.4'
+
+services:
+    
+    web:
+        #image: ems-web
+        #image: ${REGISTRY:-ems}/ems-web:${PLATFORM:-linux}-${TAG:-latest}
+        image: ${DOCKER_REGISTRY-}ems-web
+        build:
+          context: .
+          dockerfile: EmailMarketing.Web/Dockerfile
+          #network: host
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Production
+          - ConnectionStrings__DefaultConnection=Server=${DB_SERVER};Database=${DB_NAME};User Id=${DB_USER_ID};Password=${DB_PASSWORD};MultipleActiveResultSets=true;
+        ports:
+          - "8080:80"
+          - "44380:443"
+          #- "8080-8085:80"
+          #- "44380-44385:443"
+        #extra_hosts:
+          #- "WIN_MSSQL1:192.168.0.1"
+        #depends_on:
+          #- db
+          
+    db:
+        image: "mcr.microsoft.com/mssql/server"
+        environment:
+            SA_PASSWORD: "P@ssword"
+            ACCEPT_EULA: "Y"
+        ports:
+          - "1433:1433"
+    
+    contact-import-worker:
+        #image: ems-contact-import-worker
+        #image: ${REGISTRY:-ems}/ems-contact-import-worker:${PLATFORM:-linux}-${TAG:-latest}
+        image: ${DOCKER_REGISTRY-}ems-contact-import-worker
+        build:
+          context: .
+          dockerfile: EmailMarketing.ExcelWorkerService/Dockerfile
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Production
+          - ConnectionStrings__DefaultConnection=Server=${DB_SERVER};Database=${DB_NAME};User Id=${DB_USER_ID};Password=${DB_PASSWORD};MultipleActiveResultSets=true;
+        #depends_on:
+          #- db
+    
+    email-sender-worker:
+        #image: ems-email-sender-worker
+        #image: ${REGISTRY:-ems}/ems-email-sender-worker:${PLATFORM:-linux}-${TAG:-latest}
+        image: ${DOCKER_REGISTRY-}ems-email-sender-worker
+        build:
+          context: .
+          dockerfile: EmailMarketing.EmailSendingWorkerService/Dockerfile
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Production
+          - ConnectionStrings__DefaultConnection=Server=${DB_SERVER};Database=${DB_NAME};User Id=${DB_USER_ID};Password=${DB_PASSWORD};MultipleActiveResultSets=true;
+        #depends_on:
+          #- db
+    
+    contact-export-worker:
+        #image: ems-contact-export-worker
+        #image: ${REGISTRY:-ems}/ems-contact-export-worker:${PLATFORM:-linux}-${TAG:-latest}
+        image: ${DOCKER_REGISTRY-}ems-contact-export-worker
+        build:
+          context: .
+          dockerfile: EmailMarketing.ExcelExportWorkerService/Dockerfile
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Production
+          - ConnectionStrings__DefaultConnection=Server=${DB_SERVER};Database=${DB_NAME};User Id=${DB_USER_ID};Password=${DB_PASSWORD};MultipleActiveResultSets=true;
+        #depends_on:
+          #- db
+    
+    campaign-export-worker:
+        #image: ems-campaign-export-worker
+        #image: ${REGISTRY:-ems}/ems-campaign-export-worker:${PLATFORM:-linux}-${TAG:-latest}
+        image: ${DOCKER_REGISTRY-}ems-campaign-export-worker
+        build:
+          context: .
+          dockerfile: EmailMarketing.CampaingReportExcelExportService/Dockerfile
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Production
+          - ConnectionStrings__DefaultConnection=Server=${DB_SERVER};Database=${DB_NAME};User Id=${DB_USER_ID};Password=${DB_PASSWORD};MultipleActiveResultSets=true;
+        #depends_on:
+          #- db
+        

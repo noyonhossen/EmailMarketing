@@ -1,8 +1,11 @@
-﻿using EmailMarketing.Common.Constants;
+﻿using Autofac;
+using EmailMarketing.Common.Constants;
 using EmailMarketing.Common.Services;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.Services.Contacts;
+using EmailMarketing.Web.Core;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,15 +23,24 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         public bool IsSendEmailNotifyForAll { get; set; }
         public bool IsSendEmailNotifyForGroupwise { get; set; }
 
+        public AppSettings _appSettings;
+
         public ContactExportModel(IContactExportService contactService,
-           ICurrentUserService currentUserService) : base(contactService, currentUserService)
+           ICurrentUserService currentUserService
+          ) : base(contactService, currentUserService)
         {
 
         }
+        public ContactExportModel(IOptions<AppSettings> appSettings)
+        {
+            //this._appSettings = appSettings.Value;
+        }
+
         public ContactExportModel() : base()
         {
 
         }
+
         public async Task<IList<ContactValueTextModel>> GetAllGroupDetailsAsync()
         {
             return (await _contactExportService.GetAllGroupAsync(_currentUserService.UserId))
@@ -42,9 +54,9 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                 throw new Exception("Please Provide Email");
             }
             //To create directory if not exist
-            if (Directory.Exists(ConstantsValue.AllContactExportFileUrl) == false)
+            if (Directory.Exists(_appSettings.ContactExportFileUrl) == false)
             {
-                DirectoryInfo directory = Directory.CreateDirectory(ConstantsValue.AllContactExportFileUrl);
+                DirectoryInfo directory = Directory.CreateDirectory(_appSettings.ContactExportFileUrl);
             }
             try
             {
@@ -52,7 +64,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                 var distinctiveFileName = Guid.NewGuid().ToString();
                 var downloadQueue = new DownloadQueue();
                 downloadQueue.FileName = "AllContacts_" + DateTime.Now.ToString("dd-MM-yyyy") + ".xlsx";
-                downloadQueue.FileUrl = Path.Combine(ConstantsValue.AllContactExportFileUrl, distinctiveFileName) + Path.GetExtension(downloadQueue.FileName);
+                downloadQueue.FileUrl = Path.Combine(_appSettings.ContactExportFileUrl, distinctiveFileName) + Path.GetExtension(downloadQueue.FileName);
                 downloadQueue.IsProcessing = true;
                 downloadQueue.IsSucceed = false;
                 downloadQueue.Created = DateTime.Now;
@@ -63,7 +75,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                 downloadQueue.SendEmailAddress = SendEmailAddress;
                 await _contactExportService.SaveDownloadQueueAsync(downloadQueue);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("Failed to export. Please try again.");
             }
@@ -82,9 +94,9 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
             else if (!this.GroupSelectList.Any(x => x.IsChecked)) throw new Exception("Please select at least one group.");
 
             //To create directory if not exist
-            if (Directory.Exists(ConstantsValue.GroupwiseContactExportFileUrl) == false)
+            if (Directory.Exists(_appSettings.ContactExportFileUrl) == false)
             {
-                DirectoryInfo directory = Directory.CreateDirectory(ConstantsValue.GroupwiseContactExportFileUrl);
+                DirectoryInfo directory = Directory.CreateDirectory(_appSettings.ContactExportFileUrl);
             }
             try
             {
@@ -92,7 +104,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                 var distinctiveFileName = Guid.NewGuid().ToString();
                 var downloadQueue = new DownloadQueue();
                 downloadQueue.FileName = "GroupwiseContacts_" + DateTime.Now.ToString("dd-MM-yyyy") + ".xlsx";
-                downloadQueue.FileUrl = Path.Combine(ConstantsValue.GroupwiseContactExportFileUrl, distinctiveFileName) + Path.GetExtension(downloadQueue.FileName); ;
+                downloadQueue.FileUrl = Path.Combine(_appSettings.ContactExportFileUrl, distinctiveFileName) + Path.GetExtension(downloadQueue.FileName);
                 downloadQueue.IsProcessing = true;
                 downloadQueue.IsSucceed = false;
                 downloadQueue.Created = DateTime.Now;
@@ -116,10 +128,40 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
                 }
                 await _contactExportService.AddDownloadQueueSubEntitiesAsync(dowloadQueueSubEntityList);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("Failed to export. Please try again.");
             }
+        }
+
+        public async Task<object> GetAllContactExportAsync(DataTablesAjaxRequestModel tableModel)
+        {
+            var result = await _contactExportService.GetAllContactExportFileFromDownloadQueueAsync(
+                _currentUserService.UserId,
+                tableModel.SearchText,
+                tableModel.GetSortText(new string[] { "Created" }),
+                tableModel.PageIndex, tableModel.PageSize);
+
+            return new
+            {
+                recordsTotal = result.Total,
+                recordsFiltered = result.TotalFilter,
+                data = (from item in result.Items
+                        select new string[]
+                        {
+                            item.FileName,
+                            item.Created.ToString(),
+                            item.IsProcessing?"Processing":"Finished",
+                            item.IsSucceed?"Yes":"No",
+                            item.IsSendEmailNotify?"Yes":"No",
+                            item.Id.ToString()
+                        }).ToArray()
+            };
+        }
+
+        public async Task<DownloadQueue> GetDownloadedFileByIdAsync(int id)
+        {
+            return await _contactExportService.GetDownloadQueueByIdAsync(id);
         }
     }
 }

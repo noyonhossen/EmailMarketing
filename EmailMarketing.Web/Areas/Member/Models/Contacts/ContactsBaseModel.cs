@@ -2,6 +2,8 @@
 using EmailMarketing.Common.Services;
 using EmailMarketing.Framework.Services.Contacts;
 using EmailMarketing.Framework.Services.Groups;
+using EmailMarketing.Web.Core;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +18,6 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         protected readonly IFieldMapService _fieldMapService;
         protected readonly ICurrentUserService _currentUserService;
         protected readonly IContactExportService _contactExportService;
-
         public ContactsBaseModel(IContactUploadService contactExcel,
             IContactService contactService,
             ICurrentUserService currentUserService)

@@ -1,4 +1,6 @@
 ﻿using ClosedXML.Excel;
+using EmailMarketing.Common.Exceptions;
+using EmailMarketing.Common.Extensions;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.Contacts;
 using EmailMarketing.Framework.Enums;
@@ -10,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +31,34 @@ namespace EmailMarketing.Framework.Services.Contacts
             _groupUnitOfWork = groupUnitOfWork;
         }
 
+        public async Task<(IList<DownloadQueue> Items, int Total, int TotalFilter)> GetAllContactExportFileFromDownloadQueueAsync(
+          Guid? userId,
+          string searchText,
+          string orderBy,
+          int pageIndex,
+          int pageSize)
+        {
+            var columnsMap = new Dictionary<string, Expression<Func<DownloadQueue, object>>>()
+            {
+                ["Created"] = v => v.Created
+            };
+            var result = (await _contactExportUnitOfWork.DownloadQueueRepository.GetAsync(x => x,
+                                                  x => !x.IsDeleted && x.IsActive &&
+                                                  (!userId.HasValue || x.UserId == userId.Value) &&
+                                                  x.FileName.Contains(searchText) &&
+                                                  (x.DownloadQueueFor == DownloadQueueFor.ContactAllExport || x.DownloadQueueFor == DownloadQueueFor.ContactGroupWiseExport),
+                                                  x => x.ApplyOrdering(columnsMap, orderBy),
+                                                  x => x.Include(y => y.DownloadQueueSubEntities),
+                                                  pageIndex, pageSize,
+                                                  true));
+
+            if (result.Items == null) throw new NotFoundException(nameof(DownloadQueue), userId);
+
+            result.Total = await _contactExportUnitOfWork.DownloadQueueRepository.GetCountAsync(x => x.UserId == userId && (x.DownloadQueueFor == DownloadQueueFor.ContactAllExport || x.DownloadQueueFor == DownloadQueueFor.ContactGroupWiseExport));
+
+            return (result.Items, result.Total, result.TotalFilter);
+
+        }
         public async Task<IList<Contact>> GetAllContactAsync(Guid? userId)
         {
             var contacts = await _contactUnitOfWork.ContactRepository.GetAsync<Contact>(
@@ -37,19 +68,19 @@ namespace EmailMarketing.Framework.Services.Contacts
             return contacts;
         }
 
-        public async Task<IList<ContactGroup>> GetAllContactGroupByUserIdAsync(Guid? userId,int groupId)
+        public async Task<IList<ContactGroup>> GetAllContactGroupByUserIdAsync(Guid? userId, int groupId)
         {
             var contacts = await _contactUnitOfWork.GroupContactRepository.GetAsync<ContactGroup>(
-                x => x, x => ((x.GroupId == groupId) && (x.Contact.UserId == userId)), null, x => x.Include(i => i.Contact).ThenInclude(i => i.ContactValueMaps).ThenInclude(i => i.FieldMap).Include(i=>i.Group), true
+                x => x, x => ((x.GroupId == groupId) && (x.Contact.UserId == userId)), null, x => x.Include(i => i.Contact).ThenInclude(i => i.ContactValueMaps).ThenInclude(i => i.FieldMap).Include(i => i.Group), true
                 );
             return contacts;
         }
-        public async Task<Contact>  GetContactByIdAsync(int contactId)
+        public async Task<Contact> GetContactByIdAsync(int contactId)
         {
             var contact = await _contactUnitOfWork.ContactRepository.GetByIdAsync(contactId);
             return contact;
         }
-        
+
 
         public async Task<IList<(int Value, string Text, int Count)>> GetAllGroupAsync(Guid? userId)
         {
@@ -72,10 +103,10 @@ namespace EmailMarketing.Framework.Services.Contacts
         public async Task<IList<DownloadQueue>> GetDownloadQueueAsync()
         {
             var result = await _contactExportUnitOfWork.DownloadQueueRepository.GetAsync(
-                x => x, 
-                x => (x.IsProcessing == true || x.IsSucceed == false) && (x.DownloadQueueFor == DownloadQueueFor.ContactAllExport || x.DownloadQueueFor == DownloadQueueFor.ContactGroupWiseExport), 
-                null, 
-                x => x.Include(x => x.DownloadQueueSubEntities), 
+                x => x,
+                x => (x.IsProcessing == true || x.IsSucceed == false) && (x.DownloadQueueFor == DownloadQueueFor.ContactAllExport || x.DownloadQueueFor == DownloadQueueFor.ContactGroupWiseExport),
+                null,
+                x => x.Include(x => x.DownloadQueueSubEntities),
                 true);
             return result;
         }
@@ -146,7 +177,7 @@ namespace EmailMarketing.Framework.Services.Contacts
                 worksheet.Columns("1", columnCount.ToString()).AdjustToContents();
 
                 var memory = new MemoryStream();
-                using (var stream = new FileStream(downloadQueue.FileUrl , FileMode.Create))
+                using (var stream = new FileStream(downloadQueue.FileUrl, FileMode.Create))
                 {
                     workbook.SaveAs(stream);
                 }

@@ -1,4 +1,6 @@
-﻿<!-- Footer -->
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+<!-- Footer -->
 <div class="navbar navbar-expand-lg navbar-light">
     <div class="text-center d-lg-none w-100">
         <button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-footer">
@@ -9,7 +11,7 @@
 
     <div class="navbar-collapse collapse" id="navbar-footer">
         <span class="navbar-text">
-            Copyright &copy; 2020 <a href="" target="_blank">MailTo</a>
+            Copyright &copy; 2020 @Configuration.GetSection("AppSettings")["CompanyFullName"]
         </span>
     </div>
 </div>

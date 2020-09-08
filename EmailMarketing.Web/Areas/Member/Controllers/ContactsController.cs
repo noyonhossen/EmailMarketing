@@ -8,8 +8,10 @@ using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Web.Areas.Member.Enums;
 using EmailMarketing.Web.Areas.Member.Models;
 using EmailMarketing.Web.Areas.Member.Models.Contacts;
+using EmailMarketing.Web.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
@@ -17,10 +19,11 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
     public class ContactsController : Controller
     {
         private readonly ILogger<ContactsController> _logger;
-
-        public ContactsController(ILogger<ContactsController> logger)
+        protected readonly IOptions<AppSettings> _appSettings;
+        public ContactsController(ILogger<ContactsController> logger, IOptions<AppSettings> appSettings)
         {
             _logger = logger;
+            _appSettings = appSettings;
         }
 
         public async Task<IActionResult> Index()
@@ -75,7 +78,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                         await model.AddFieldMapAsync();
                         _logger.LogInformation("Added new custom field.");
                     }
-                    
+
                     TempData["SuccessNotify"] = "Field has been successfully saved";
                     return RedirectToAction("CustomFields");
 
@@ -133,7 +136,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                     var existingContact = await model.IsContactExistAsync();
                     if (existingContact == true)
                     {
-                        model.Response = new ResponseModel("Contact already exist. You can update the existing contact.", ResponseType.Failure);                
+                        model.Response = new ResponseModel("Contact already exist. You can update the existing contact.", ResponseType.Failure);
                     }
                     else
                     {
@@ -168,7 +171,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditContact(EditContactsModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
@@ -185,7 +188,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                         return RedirectToAction("Index");
                     }
                 }
-                 catch (DuplicationException ex)
+                catch (DuplicationException ex)
                 {
                     model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
                     _logger.LogError(ex.Message);
@@ -239,7 +242,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             return View(model);
         }
 
-        
+
         [HttpGet]
         public async Task<IActionResult> Export()
         {
@@ -255,6 +258,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             {
                 try
                 {
+                    model._appSettings = _appSettings.Value;
                     if (model.IsExportAll)
                     {
                         await model.ExportAllContact();
@@ -264,10 +268,11 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                         await model.ExportContactsGroupwise();
                     }
                     _logger.LogInformation("Succecssfully Added to DownloadQueue. Waiting to Complete to Export");
-                    model.Response = new ResponseModel("Successfully added to queue. Please wait a while to complete the task.", ResponseType.Success); 
+                    model.Response = new ResponseModel("Successfully added to queue. Please wait a while to complete the task.", ResponseType.Success);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
+                    _logger.LogError(ex, ex.Message);
                     model.Response = new ResponseModel(ex.Message, ResponseType.Failure);
                 }
             }
@@ -276,6 +281,45 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public IActionResult ViewContactExportFiles()
+        {
+            var model = new ContactExportModel();
+            //var model = Startup.AutofacContainer.Resolve<ContactExportModel>();
+            return View(model);
+        }
+
+        public async Task<IActionResult> GetContactExports()
+        {
+            var tableModel = new DataTablesAjaxRequestModel(Request);
+            var model = new ContactExportModel();
+            var data = await model.GetAllContactExportAsync(tableModel);
+            return Json(data);
+        }
+
+        public async Task<IActionResult> GetDownloadFile(int id)
+        {
+            var model = new ContactExportModel();
+            try
+            {
+                var file = await model.GetDownloadedFileByIdAsync(id);
+                var path = file.FileUrl;
+
+                var memory = new MemoryStream();
+                using (var stream = new FileStream(path, FileMode.Open))
+                {
+                    await stream.CopyToAsync(memory);
+                }
+                memory.Position = 0;
+                return File(memory, "application/vnd.ms-excel", file.FileName);
+            }
+            catch (Exception ex)
+            {
+                model.Response = new ResponseModel("Cannot find file", ResponseType.Failure);
+                _logger.LogError("Cannot Find Contact Export File to Download.");
+                return RedirectToAction("ViewContactExportFiles");
+            }
+        }
 
     }
 }

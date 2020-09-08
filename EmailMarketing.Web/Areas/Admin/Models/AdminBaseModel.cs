@@ -71,10 +71,10 @@ namespace EmailMarketing.Web.Areas.Admin.Models
                             Icon = "icon-user-tie",
                             Children = new List<MenuChildItem>
                             {
-                                new MenuChildItem () { Controller = "AdminUsers", Action = "Index", Area="Admin", Title = "View Admin List",
+                                new MenuChildItem () { Controller = "AdminUsers", Action = "Index", Area="Admin", Title = "View Admins",
                                     Icon = "icon-user-tie", IsActive = false },
                                 new MenuChildItem () { Controller = "AdminUsers", Action = "Add", Area="Admin", Title = "Add New Admin",
-                                    Icon = "icon-user-tie", IsActive = false },
+                                    Icon = "icon-user-plus", IsActive = false },
                              
                             }
                         }

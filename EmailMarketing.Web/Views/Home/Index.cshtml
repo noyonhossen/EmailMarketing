@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -37,9 +39,9 @@
             </div>
             <div class="col-md-6">
                 <div class="text-content">
-                    <h3>Building an email shouldn’t take hours—with DevSkill Email Marketing Team A, it takes minutes.</h3>
+                    <h3>Building an email shouldn’t take hours—with @Configuration.GetSection("AppSettings")["CompanyFullName"], it takes minutes.</h3>
                     <p>
-                        You don't worried abut time ,DevSkill Email marketting takes few minutes for send your mail. You just need to import your xl sheet and will send your mail quickly.
+                        You don't worried abut time ,@Configuration.GetSection("AppSettings")["CompanyFullName"] takes few minutes for send your mail. You just need to import your xl sheet and will send your mail quickly.
                     </p>
                     <a asp-controller="Account" asp-action="Register" class="btn btn-primary mt-3 px-5 py-3">Start Here</a>
                 </div>
