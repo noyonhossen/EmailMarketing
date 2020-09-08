@@ -55,11 +55,11 @@ namespace EmailMarketing.EmailSendingWorkerService
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
-                //Fetching campaignList based on isProcessing status
-                var campaignList = await _campaignService.GetAllProcessingCampaign();
-
                 try
                 {
+                    //Fetching campaignList based on isProcessing status
+                    var campaignList = await _campaignService.GetAllProcessingCampaign();
+
                     var campaignReportList = new List<CampaignReport>();
 
                     foreach(var item in campaignList)

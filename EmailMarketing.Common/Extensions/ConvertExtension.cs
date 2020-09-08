@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace EmailMarketing.Common.Extensions
@@ -49,18 +50,11 @@ namespace EmailMarketing.Common.Extensions
 
         public static string FormatStringFromDictionary(this string formatString, IDictionary<string, string> valueDict)
         {
-            int i = 0;
-            StringBuilder newFormatString = new StringBuilder(formatString);
-            IDictionary<string, int> keyToInt = new Dictionary<string, int>();
-
             foreach (var tuple in valueDict)
             {
-                newFormatString = newFormatString.Replace("{" + tuple.Key + "}", "{" + i.ToString() + "}");
-                keyToInt.Add(tuple.Key, i);
-                i++;
+                formatString = Regex.Replace(formatString, "{" + tuple.Key + "}", valueDict[tuple.Key], RegexOptions.IgnoreCase);
             }
-
-            return String.Format(newFormatString.ToString(), valueDict.OrderBy(x => keyToInt[x.Key]).Select(x => x.Value).ToArray());
+            return formatString;
         }
     }
 }
