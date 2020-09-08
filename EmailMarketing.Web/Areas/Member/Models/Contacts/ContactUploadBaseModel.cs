@@ -27,6 +27,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
             _currentUserService = Startup.AutofacContainer.Resolve<ICurrentUserService>();
         }
 
+
         public void Dispose()
         {
             _contactUploadService?.Dispose();

@@ -90,6 +90,33 @@ namespace EmailMarketing.Web.Areas.Member.Models.Campaigns
 
         }
 
+        public async Task<object> GetAllExportedCampaignReportAsync(DataTablesAjaxRequestModel tableModel)
+        {
+
+            var result = await _campaignReportExportService.GetAllCampaignReportsFromDownloadQueueAsync(
+                _currentUserService.UserId,
+                tableModel.SearchText,
+                tableModel.GetSortText(new string[] { "Created" }),
+                tableModel.PageIndex, tableModel.PageSize);
+
+            return new
+            {
+                recordsTotal = result.Total,
+                recordsFiltered = result.TotalFilter,
+                data = (from item in result.Items
+                        select new string[]
+                        {
+                            item.FileName,
+                            item.Created.ToString(),
+                            item.IsProcessing?"Processing":"Finished",
+                            item.IsSucceed?"Yes":"No",
+                            item.IsSendEmailNotify?"Yes":"No",
+                            item.Id.ToString()
+
+                        }).ToArray()
+            };
+        }
+
         public async Task<object> GetCampaignReportByCampaignIdAsync(DataTablesAjaxRequestModel tableModel, int CampaignId)
         {
 

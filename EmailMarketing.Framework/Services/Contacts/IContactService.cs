@@ -19,6 +19,11 @@ namespace EmailMarketing.Framework.Services.Contacts
             string orderBy,
             int pageIndex,
             int pageSize);
+        Task<(IList<Contact> Items, int Total, int TotalFilter)> GetContactByContactUploadIdAsync(Guid? userId, int contactUploadId,
+           string searchText,
+           string orderBy,
+           int pageIndex,
+           int pageSize);
         Task<ContactValueMap> GetContactValueMapByIdAsync(int id);
         Task<Contact> GetContactByIdAsync(int contactId);
         Task<Entities.Contacts.Contact> GetByIdAsync(int id);

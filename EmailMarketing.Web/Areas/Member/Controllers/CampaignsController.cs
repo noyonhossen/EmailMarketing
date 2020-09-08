@@ -15,6 +15,7 @@ using System;
 using Microsoft.CodeAnalysis.Options;
 using EmailMarketing.Web.Core;
 using Microsoft.Extensions.Options;
+using EmailMarketing.Web.Areas.Member.Models.Contacts;
 
 namespace EmailMarketing.Web.Areas.Member.Controllers
 {
@@ -47,7 +48,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddCampaign(CreateCampaignModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
@@ -56,7 +57,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                     model.Response = new Models.ResponseModel("Campaign Added Successfully!!", Enums.ResponseType.Success);
                     return RedirectToAction("Index");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     model.Response = new ResponseModel(ex.Message, Enums.ResponseType.Failure);
                     _logger.LogError(ex.Message);
@@ -78,7 +79,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
 
             var tableModel = new DataTablesAjaxRequestModel(Request);
             var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
-            
+
             var data = await model.GetAllCampaignsAsync(tableModel);
             return Json(data);
         }
@@ -95,11 +96,11 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var campaignId = Convert.ToInt32(Request.Query["campaignId"]);
             var tableModel = new DataTablesAjaxRequestModel(Request);
             var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
-           
-            var data = await model.GetCampaignReportByCampaignIdAsync(tableModel,campaignId);
+
+            var data = await model.GetCampaignReportByCampaignIdAsync(tableModel, campaignId);
             return Json(data);
         }
-       
+
         [HttpPost]
         public async Task<IActionResult> Export(
             CampaignsModel model)
@@ -139,12 +140,52 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                 model.Response = new ResponseModel($"{result.Name} { (result.IsProcessing == true ? "successfully  Finished" : "in Processing") }", ResponseType.Success);
                 _logger.LogInformation($"Campaign - {result.Name} - Processing Status updated");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 model.Response = new ResponseModel("Campaign Processing Status Operation failured.", ResponseType.Failure);
                 _logger.LogError(ex.Message);
             }
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult ViewCampaignReports()
+        {
+            var model = new CampaignsModel();
+            return View(model);
+        }
+
+        public async Task<IActionResult> GetCampaignReports()
+        {
+
+            var tableModel = new DataTablesAjaxRequestModel(Request);
+            var model = Startup.AutofacContainer.Resolve<CampaignsModel>();
+            var data = await model.GetAllExportedCampaignReportAsync(tableModel);
+            return Json(data);
+        }
+
+        public async Task<IActionResult> GetDownloadFile(int id)
+        {
+            var model = new ContactExportModel();
+            try
+            {
+                var file = await model.GetDownloadedFileByIdAsync(id);
+                var path = file.FileUrl;
+
+                var memory = new MemoryStream();
+                using (var stream = new FileStream(path, FileMode.Open))
+                {
+                    await stream.CopyToAsync(memory);
+                }
+                memory.Position = 0;
+                return File(memory, "application/vnd.ms-excel", file.FileName);
+            }
+            catch (Exception ex)
+            {
+                model.Response = new ResponseModel("Cannot find file.", ResponseType.Failure);
+                _logger.LogError("Cannot Find Campaign Export File to Download.");
+                return RedirectToAction("ViewCampaignReports");
+            }
         }
     }
 }

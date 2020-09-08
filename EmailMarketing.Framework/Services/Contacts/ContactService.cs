@@ -53,6 +53,25 @@ namespace EmailMarketing.Framework.Services.Contacts
 
             return (result.Items, result.Total, result.TotalFilter);
         }
+        
+        public async Task<(IList<Contact> Items, int Total, int TotalFilter)> GetContactByContactUploadIdAsync(Guid? userId, int contactUploadId,
+        string searchText,
+        string orderBy,
+        int pageIndex,
+        int pageSize)
+        {
+            var columnsMap = new Dictionary<string, Expression<Func<Entities.Contacts.Contact, object>>>()
+            {
+                ["Group"] = v => v.Email,
+                ["Email"] = v => v.Email
+            };
+            var result = await _contactUnitOfWork.ContactRepository.GetAsync(
+                x => x, x => !x.IsDeleted && x.IsActive &&
+                (!userId.HasValue || x.UserId == userId.Value) && (x.ContactUploadId == contactUploadId),
+                   x => x.ApplyOrdering(columnsMap, orderBy), x => x.Include(i => i.ContactGroups).ThenInclude(i => i.Group),
+                pageIndex, pageSize, true);           
+            return result;
+        }
         public async Task<Contact> GetByIdAsync(int id)
         {
             var result = await _contactUnitOfWork.ContactRepository.GetFirstOrDefaultAsync(
@@ -242,10 +261,12 @@ namespace EmailMarketing.Framework.Services.Contacts
         {
             return await _contactUnitOfWork.ContactRepository.GetCountAsync(x => x.UserId == userId);
         }
+
         public async Task<int> GetContactCountAsync()
         {
             return await _contactUnitOfWork.ContactRepository.GetCountAsync();
         }
+
         public void Dispose()
         {
             _contactUnitOfWork.Dispose();

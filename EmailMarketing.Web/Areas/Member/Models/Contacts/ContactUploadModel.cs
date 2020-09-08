@@ -12,6 +12,16 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
 {
     public class ContactUploadModel : ContactUploadBaseModel
     {
+        //public int UserId { get; set; }
+        //public string FileUrl { get; set; }
+        //public string FileName { get; set; }
+        //public bool IsSucceed { get; set; }
+        //public bool IsUpdateExisting { get; set; }
+        //public bool HasColumnHeader { get; set; }
+        //public bool IsSendEmailNotify { get; set; }
+        //public string SendEmailAddress { get; set; }
+        //public int SucceedEntryCount { get; set; }
+        //public bool IsProcessing { get; set; }
         public ContactUploadModel(IContactUploadService contactUploadService,
             ICurrentUserService currentUserService) : base(contactUploadService, currentUserService)
         {
@@ -22,7 +32,7 @@ namespace EmailMarketing.Web.Areas.Member.Models.Contacts
         {
 
         }
-
+        
         public async Task<object> GetAllAsync(DataTablesAjaxRequestModel tableModel)
         {
             var userId = _currentUserService.UserId;

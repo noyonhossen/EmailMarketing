@@ -32,6 +32,13 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var model = new CreateContactUploadModel();
             return View(model);
         }
+        public async Task<IActionResult> ViewUploadContact(int id)
+        {
+            var model = Startup.AutofacContainer.Resolve<ViewContactUploadModel>();
+            await model.GetContactUploadData(id);
+            await model.SetContactUploadId(id);
+            return View(model);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -95,6 +102,15 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
             var tableModel = new DataTablesAjaxRequestModel(Request);
             var model = Startup.AutofacContainer.Resolve<ContactUploadModel>();
             var data = await model.GetAllAsync(tableModel);
+            return Json(data);
+        }
+
+        public async Task<IActionResult> GetAllContact()
+        {
+            var contactUploadId = Convert.ToInt32(Request.Query["contactUploadId"]);
+            var tableModel = new DataTablesAjaxRequestModel(Request);
+            var model = Startup.AutofacContainer.Resolve<ViewContactUploadModel>();
+            var data = await model.GetContactByContactUploadIdAsync(tableModel, contactUploadId);
             return Json(data);
         }
         #endregion

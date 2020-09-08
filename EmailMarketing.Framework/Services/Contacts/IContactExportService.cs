@@ -8,11 +8,16 @@ namespace EmailMarketing.Framework.Services.Contacts
 {
     public interface IContactExportService : IDisposable
     {
-
+        Task<(IList<DownloadQueue> Items, int Total, int TotalFilter)> GetAllContactExportFileFromDownloadQueueAsync(
+          Guid? userId,
+          string searchText,
+          string orderBy,
+          int pageIndex,
+          int pageSize);
         Task<IList<(int Value, string Text, int Count)>> GetAllGroupAsync(Guid? userId);
         Task<IList<Contact>> GetAllContactAsync(Guid? userId);
         Task<Contact> GetContactByIdAsync(int contactId);
-        Task<IList<ContactGroup>> GetAllContactGroupByUserIdAsync(Guid? userId,int groupId);
+        Task<IList<ContactGroup>> GetAllContactGroupByUserIdAsync(Guid? userId, int groupId);
         Task SaveDownloadQueueAsync(DownloadQueue downloadQueue);
         Task UpdateDownloadQueueAsync(DownloadQueue downloadQueue);
         Task<IList<DownloadQueue>> GetDownloadQueueAsync();
