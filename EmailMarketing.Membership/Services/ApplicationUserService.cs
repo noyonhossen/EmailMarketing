@@ -600,7 +600,7 @@ namespace EmailMarketing.Membership.Services
 
                     return true;
                 }
-                catch (Exception ex)
+                catch (IdentityValidationException ex)
                 {
                     scope.Dispose();
                     throw;
