@@ -79,7 +79,7 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                 {
                     var message = string.Join(" ", ex.Failures.Select(x => x.Value));
                     model.Response = new ResponseModel(message, ResponseType.Failure); ;
-                    _logger.LogInformation("Failed to Change Password.");
+                    _logger.LogError(ex,"Failed to Change Password.");
                 }
             }
             return View(model);
@@ -110,13 +110,13 @@ namespace EmailMarketing.Web.Areas.Admin.Controllers
                 try
                 {
                     await model.UpdateMemberAsync();
-                    _logger.LogInformation("Member Information Updated Successfully");
+                    _logger.LogInformation("Admin Information Updated Successfully");
                     TempData["SuccessNotify"] = "Successfully Updated Information.";
                     return RedirectToAction("Index");
                 }
                 catch
                 {
-                    _logger.LogInformation("Failed to Update Memeber Information");
+                    _logger.LogError("Failed to Update Admin Information");
                     model.Response = new ResponseModel("Failed to Update", ResponseType.Failure);
                 }
             }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EmailMarketing.Common.Services;
 using EmailMarketing.Membership.Constants;
 using EmailMarketing.Membership.Entities;
+using EmailMarketing.Membership.Exceptions;
 using EmailMarketing.Membership.Services;
 using EmailMarketing.Web.Areas.Member.Enums;
 using EmailMarketing.Web.Areas.Member.Models;
@@ -74,10 +75,11 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                         return RedirectToAction("Index","Dashboard");
                     }
                 }
-                catch(Exception ex)
+                catch (IdentityValidationException ex)
                 {
-                    model.Response = new ResponseModel(ex.Message,ResponseType.Failure);
-                    _logger.LogInformation("Failed to Change Password.");
+                    var message = string.Join(" ", ex.Failures.Select(x => x.Value));
+                    model.Response = new ResponseModel(message, ResponseType.Failure); ;
+                    _logger.LogError(ex,"Failed to Change Password.");
                 }
             }
             return View(model);
@@ -121,7 +123,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                 }
                 catch
                 {
-                    _logger.LogInformation("Failed to Update Memeber Information"); 
+                    _logger.LogError("Failed to Update Member Information"); 
                     model.Response = new ResponseModel("Failed to Update", ResponseType.Failure);
                 }
             }
