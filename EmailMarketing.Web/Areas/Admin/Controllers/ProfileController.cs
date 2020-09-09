@@ -7,19 +7,19 @@ using EmailMarketing.Membership.Constants;
 using EmailMarketing.Membership.Entities;
 using EmailMarketing.Membership.Exceptions;
 using EmailMarketing.Membership.Services;
-using EmailMarketing.Web.Areas.Member.Enums;
-using EmailMarketing.Web.Areas.Member.Models;
-using EmailMarketing.Web.Areas.Member.Models.ProfileModels;
+using EmailMarketing.Web.Areas.Admin.Enums;
+using EmailMarketing.Web.Areas.Admin.Models;
+using EmailMarketing.Web.Areas.Admin.Models.Profile;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace EmailMarketing.Web.Areas.Member.Controllers
+namespace EmailMarketing.Web.Areas.Admin.Controllers
 {
-    [Area("Member")]
-    [Authorize(Roles = ConstantsUserRoleName.Member)]
+    [Area("Admin")]
+    [Authorize(Roles = ConstantsUserRoleName.SuperAdminOrAdmin)]
     public class ProfileController : Controller
     {
         private readonly ApplicationUserManager _userManager;
@@ -55,7 +55,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
         [HttpGet]
         public IActionResult ChangePassword()
         {
-            var model = new ChangePasswordModel(); 
+            var model = new ChangePasswordModel();
             return View(model);
         }
 
@@ -72,7 +72,7 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                     {
                         _logger.LogInformation("Successfully Changed Password.");
                         TempData["SuccessNotify"] = "Successfully Changed Password.";
-                        return RedirectToAction("Index","Dashboard");
+                        return RedirectToAction("Index", "Dashboard");
                     }
                 }
                 catch (IdentityValidationException ex)
@@ -82,13 +82,6 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                     _logger.LogError(ex,"Failed to Change Password.");
                 }
             }
-            return View(model);
-        }
-         
-        [HttpGet]
-        public async Task<IActionResult> ChangePasswordConfirmation(ChangePasswordConfirmationModel model)
-        {
-            await _signInManager.SignOutAsync();
             return View(model);
         }
 
@@ -117,35 +110,18 @@ namespace EmailMarketing.Web.Areas.Member.Controllers
                 try
                 {
                     await model.UpdateMemberAsync();
-                    _logger.LogInformation("Member Information Updated Successfully");
+                    _logger.LogInformation("Admin Information Updated Successfully");
                     TempData["SuccessNotify"] = "Successfully Updated Information.";
                     return RedirectToAction("Index");
                 }
                 catch
                 {
-                    _logger.LogError("Failed to Update Member Information"); 
+                    _logger.LogError("Failed to Update Admin Information");
                     model.Response = new ResponseModel("Failed to Update", ResponseType.Failure);
                 }
             }
             return View(model);
         }
 
-        [AllowAnonymous]
-        public async Task<string> GetEmailOpenTrackingImageAsync(int campaignId, int contactId, string email)
-        {
-            var url = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.ToString(), Url.Content("~/images/tracker.gif"));
-            //var url = "data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
-            try
-            {
-                var model = new EmailTrackerModel();
-                await model.EmailOpenTracking(campaignId, contactId, email);
-                _logger.LogInformation("Successful email open tracking - campaginId - {0}, contactId - {1}, email - {2}", campaignId, contactId, email);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Failed email open tracking - campaginId - {0}, contactId - {1}, email - {2} \n Error: {3}", campaignId, contactId, email, ex);
-            }
-            return url;
-        }
     }
 }
