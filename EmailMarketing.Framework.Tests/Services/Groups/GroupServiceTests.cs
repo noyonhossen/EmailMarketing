@@ -363,50 +363,43 @@ namespace EmailMarketing.Framework.Tests.Services.Groups
             _groupRepositoryMock.VerifyAll();
         }
 
-        //[Test]
-        //public void GetAllGroupForSelectAsync_ValidUserId_GetList()
-        //{
-        //    //Arrange
-        //    var userId = Guid.NewGuid();
-        //    int total = 4, totalFilter = 3;
-        //    string searchText = "", orderBy = "Name";
-        //    int pageIndex = 1, pageSize = 10;
+        [Test]
+        public void GetAllGroupForSelectAsync_ValidUserId_GetList()
+        {
+            //Arrange
+            var userId = Guid.NewGuid();
 
-        //    var group = new List<Group>
-        //    {
-        //        new Group { Id = 1, Name = "Friends" },
-        //        new Group {Id = 2, Name = "Colleague"},
-        //        new Group {Id = 3, Name = "Employee"},
-        //        new Group {Id = 4, Name = "Managars"},
-        //    };
+            var groupList = new List<Group>
+            {
+                new Group { Id = 1, Name = "Friends" },
+                new Group {Id = 2, Name = "Colleague"},
+                new Group {Id = 3, Name = "Employee"},
+                new Group {Id = 4, Name = "Managars"},
+            };
 
-        //    var groupToMatch = new List<Group>
-        //    {
-        //        new Group { Id = 1, Name = "Friends" },
-        //        new Group {Id = 2, Name = "Colleague"},
-        //        new Group {Id = 3, Name = "Employee"},
-        //        new Group {Id = 4, Name = "Managars"},
-        //    };
+            var groupToMatch = new Group
+            {
+                Id = 1, 
+                Name = "Friends"
+            };
 
-        //    _groupUnitOfWorkMock.Setup(x => x.GroupRepository).Returns(_groupRepositoryMock.Object);
+            _groupUnitOfWorkMock.Setup(x => x.GroupRepository).Returns(_groupRepositoryMock.Object);
 
-        //    _groupRepositoryMock.Setup(x => x.GetAsync(
-        //        It.Is<Expression<Func<Group, Group>>>(y => y.Compile()(new Group()) is Group),
-        //        It.Is<Expression<Func<Group, bool>>>(y => y.Compile()(new Group() { Name = "Employee" })),
-        //        It.IsAny<Func<IQueryable<Group>, IOrderedQueryable<Group>>>(),
-        //        It.IsAny<Func<IQueryable<Group>, IIncludableQueryable<Group, object>>>(),
-        //        pageIndex, pageSize, true)).ReturnsAsync(()).Verifiable();
+            _groupRepositoryMock.Setup(x => x.GetAsync(
+                It.Is<Expression<Func<Group, Group>>>(y => y.Compile()(new Group()) is Group),
+                It.Is<Expression<Func<Group, bool>>>(y => y.Compile()(groupToMatch)),
+                It.IsAny<Func<IQueryable<Group>, IOrderedQueryable<Group>>>(),
+                It.IsAny<Func<IQueryable<Group>, IIncludableQueryable<Group, object>>>(),
+                 true
+                )).ReturnsAsync(groupList).Verifiable();
 
+            //Act
+            _groupService.GetAllGroupForSelectAsync(userId);
+           
+            //Assert
+            _groupRepositoryMock.VerifyAll();
 
-
-        //    //Act
-        //    _groupService.GetAllAsync(userId, searchText, orderBy, pageIndex, pageSize);
-
-
-        //    //Assert
-        //    _groupRepositoryMock.VerifyAll();
-        //    _groupUnitOfWorkMock.VerifyAll();
-        //}
+        }
 
     }
 }
