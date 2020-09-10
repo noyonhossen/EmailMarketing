@@ -455,6 +455,68 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
             //Act
             _groupRepositoryMock.VerifyAll();
         }
+        [Test]
+        public void GetCampaignCountAsync_UserIdNotNull_CountCampaign()
+        {
+            //Arrange
+            var id = new Guid();
+            var campaign = new Campaign
+            {
+                Id = 1,
+                UserId = id,
+                EmailSubject = "Test Subject"
+            };
+
+            var campaignToMatch = new Campaign
+            {
+                Id = 1,
+                UserId = id,
+                EmailSubject = "Test Subject"
+            };
+
+            int count = 4;
+            _campaignUnitOfWorkMock.Setup(x => x.CampaignRepository).Returns(_campaignRepositoryMock.Object);
+
+            _campaignRepositoryMock.Setup(x => x.GetCountAsync(
+              It.Is<Expression<Func<Campaign, bool>>>(y => y.Compile()(campaignToMatch)))).Returns(Task.FromResult(count)).Verifiable();
+
+            //Act
+            _campaignService.GetCampaignCountAsync(campaign.UserId);
+
+            //Assert
+            _campaignRepositoryMock.VerifyAll();
+        }
+        [Test]
+        public void GetCampaignCountAsync_NullParameter_CountCampaign()
+        {
+            //Arrange
+            var id = new Guid();
+            var campaign = new Campaign
+            {
+                Id = 1,
+                UserId = id,
+                EmailSubject = "Test Subject"
+            };
+
+            var campaignToMatch = new Campaign
+            {
+                Id = 1,
+                UserId = id,
+                EmailSubject = "Test Subject"
+            };
+
+            int count = 4;
+            _campaignUnitOfWorkMock.Setup(x => x.CampaignRepository).Returns(_campaignRepositoryMock.Object);
+
+            _campaignRepositoryMock.Setup(x => x.GetCountAsync(null)).Returns(Task.FromResult(count)).Verifiable();
+
+            //Act
+            _campaignService.GetCampaignCountAsync();
+
+            //Assert
+            _campaignRepositoryMock.VerifyAll();
+        }
+
 
     }
 

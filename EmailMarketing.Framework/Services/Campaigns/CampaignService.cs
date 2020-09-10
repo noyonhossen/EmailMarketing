@@ -152,7 +152,6 @@ namespace EmailMarketing.Framework.Services.Campaigns
         {
             return await _campaignUnitOfWork.CampaignRepository.GetCountAsync();
         }
-
         public async Task<Campaign> ActivateCampaignAsync(int id)
         {
             var existingCampaign = await _campaignUnitOfWork.CampaignRepository.GetByIdAsync(id);
