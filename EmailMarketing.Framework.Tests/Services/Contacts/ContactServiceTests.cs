@@ -920,6 +920,42 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
             _contactValueMapRepositoryMock.VerifyAll();
 
         }
+
+        [Test]
+        public void GetAllContactValueMapsStandard_ForUserIdAndContactId_ReturnsFieldMapList()
+        {
+            var list = new List<ValueTuple<int , string>>
+            {
+                (1,"Email"),
+                (2,"Address"),
+                (4,"Age")
+            };
+
+            var userId = new Guid();
+            var fieldMapTemp = new FieldMap
+            {
+                IsActive = true,
+                IsDeleted = false,
+                IsStandard = false,
+                UserId = userId
+            };
+
+            _contactUnitOfWorkMock.Setup(x => x.FieldMapRepository).Returns(_fieldMapRepositoryMock.Object);
+            _fieldMapRepositoryMock.Setup(x => x.GetAsync(
+                It.IsAny<Expression<Func<FieldMap, ValueTuple<int, string>>>>(),
+                It.Is<Expression<Func<FieldMap, bool>>>(y => y.Compile()(fieldMapTemp)),
+                null,
+                null,
+                true
+               )).ReturnsAsync(list).Verifiable();
+
+            //Act
+            var result = _contactService.GetAllContactValueMapsStandard();
+
+            ////Assert
+            _fieldMapRepositoryMock.VerifyAll();
+
+        }
     }
 }
 
