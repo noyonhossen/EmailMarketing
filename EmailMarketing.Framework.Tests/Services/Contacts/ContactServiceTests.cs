@@ -500,42 +500,7 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
             _contactUnitOfWorkMock.VerifyAll();
         }
 
-        [Test]
-        public void GetAllContactValueMapsCustom_ForUserId_ReturnsFieldMapList()
-        {
-            var userId = Guid.NewGuid();
-            var list = new List<ValueTuple<int, string>>
-            {
-                (1, "Email"),
-                (2, "Address"),
-                (3, "Date of Birth")
-            };
-
-            var fieldMapTemp = new FieldMap
-            {
-                IsActive = true,
-                IsDeleted = false,
-                IsStandard = false,
-                UserId = userId
-            };
-
-            _contactUnitOfWorkMock.Setup(x => x.FieldMapRepository).Returns(_fieldMapRepositoryMock.Object);
-            _fieldMapRepositoryMock.Setup(x => x.GetAsync(
-                It.IsAny<Expression<Func<FieldMap, ValueTuple<int, string>>>>(),
-                It.Is<Expression<Func<FieldMap, bool>>>(y => y.Compile()(fieldMapTemp)),
-                null,
-                null,
-                true
-               )).ReturnsAsync(list).Verifiable();
-
-            //Act
-            var result = _contactService.GetAllContactValueMapsCustom(userId);
-
-            ////Assert
-            _fieldMapRepositoryMock.VerifyAll();
-
-        }
-
+    
 
         [Test]
         public void GetIdByEmail_ValidEmail_ReturnContact()
@@ -922,16 +887,16 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
         }
 
         [Test]
-        public void GetAllContactValueMapsStandard_ForUserIdAndContactId_ReturnsFieldMapList()
+        public void GetAllContactValueMapsCustom_ForUserId_ReturnsFieldMapList()
         {
-            var list = new List<ValueTuple<int , string>>
+            var userId = Guid.NewGuid();
+            var list = new List<ValueTuple<int, string>>
             {
-                (1,"Email"),
-                (2,"Address"),
-                (4,"Age")
+                (1, "Email"),
+                (2, "Address"),
+                (3, "Date of Birth")
             };
 
-            var userId = new Guid();
             var fieldMapTemp = new FieldMap
             {
                 IsActive = true,
@@ -950,12 +915,50 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
                )).ReturnsAsync(list).Verifiable();
 
             //Act
-            var result = _contactService.GetAllContactValueMapsStandard();
+            var result = _contactService.GetAllContactValueMapsCustom(userId);
 
             ////Assert
             _fieldMapRepositoryMock.VerifyAll();
 
         }
+
+
+        //[Test]
+        //public void GetAllContactValueMapsStandard_ForUserIdAndContactId_ReturnsFieldMapList()
+        //{
+        //    var list = new List<ValueTuple<int , string>>
+        //    {
+        //        (1,"Email"),
+        //        (2,"Address"),
+        //        (4,"Age")
+        //    };
+
+        //    var userId = new Guid();
+
+        //    var fieldMapTemp = new FieldMap
+        //    {
+        //        IsActive = true,
+        //        IsDeleted = false,
+        //        IsStandard = false,
+        //        UserId = userId
+        //    };
+
+        //    _contactUnitOfWorkMock.Setup(x => x.FieldMapRepository).Returns(_fieldMapRepositoryMock.Object);
+        //    _fieldMapRepositoryMock.Setup(x => x.GetAsync(
+        //        It.IsAny<Expression<Func<FieldMap, ValueTuple<int, string>>>>(),
+        //        It.Is<Expression<Func<FieldMap, bool>>>(y => y.Compile()(fieldMapTemp)),
+        //        null,
+        //        null,
+        //        true
+        //       )).ReturnsAsync(list).Verifiable();
+
+        //    //Act
+        //    var result = _contactService.GetAllContactValueMapsStandard();
+
+        //    ////Assert
+        //    _fieldMapRepositoryMock.VerifyAll();
+
+        //}
     }
 }
 
