@@ -65,6 +65,7 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
         {
             _campaignUnitOfWorkMock.Reset();
             _campaignRepositoryMock.Reset();
+            _campaignReportRepository.Reset();
             _emailTemplateRepositoryMock.Reset();
             _groupRepositoryMock.Reset();
             _groupUnitOfWorkMock.Reset();
@@ -235,6 +236,7 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
                 true
                 )).ReturnsAsync((campaignList, 1, 1)).Verifiable();
 
+           
             //Act
             var result = _campaignService.GetAllCampaignAsync(userId, searchText, orderBy, pageIndex, pageSize);
 

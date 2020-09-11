@@ -32,7 +32,7 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
         private Mock<IGroupContactRepository> _groupContactRepositoryMock;
         private Mock<IContactRepository> _contactRepositoryMock;
         private Mock<IDownloadQueueRepository> _downloadQueueRepositoryMock;
-
+        private Mock<IDownloadQueueSubEntityRepository> _downloadQueueSubEntitiesRepositoryMock;
         private Mock<IContactExportUnitOfWork> _contactExportUnitOfWorkMock;
         private Mock<IContactUnitOfWork> _contactUnitOfWorkMock;
         private Mock<IGroupUnitOfWork> _groupUnitOfWorkMock;
@@ -58,7 +58,7 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
             _groupContactRepositoryMock = _mock.Mock<IGroupContactRepository>();
             _contactRepositoryMock = _mock.Mock<IContactRepository>();
             _downloadQueueRepositoryMock = _mock.Mock<IDownloadQueueRepository>();
-
+            _downloadQueueSubEntitiesRepositoryMock = _mock.Mock<IDownloadQueueSubEntityRepository>();
             _groupUnitOfWorkMock = _mock.Mock<IGroupUnitOfWork>();
             _contactExportUnitOfWorkMock = _mock.Mock<IContactExportUnitOfWork>();
             _contactUnitOfWorkMock = _mock.Mock<IContactUnitOfWork>();
@@ -73,7 +73,7 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
             _groupContactRepositoryMock.Reset();
             _contactRepositoryMock.Reset();
             _downloadQueueRepositoryMock.Reset();
-
+            _downloadQueueSubEntitiesRepositoryMock.Reset();
             _groupUnitOfWorkMock.Reset();
             _contactExportUnitOfWorkMock.Reset();
             _contactUnitOfWorkMock.Reset();
@@ -156,7 +156,10 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
             var downloadQueueToMatch = new DownloadQueue
             {
                 IsProcessing = true,
-                IsSucceed = true
+                IsSucceed = true,
+                DownloadQueueFor = DownloadQueueFor.ContactAllExport,
+
+
             };
 
             _contactExportUnitOfWorkMock.Setup(x => x.DownloadQueueRepository).Returns(_downloadQueueRepositoryMock.Object);

@@ -110,7 +110,10 @@ namespace EmailMarketing.Framework.Tests.Services.Groups
                 It.IsAny<Func<IQueryable<Group>, IIncludableQueryable<Group, object>>>(),
                 pageIndex, pageSize, true)).ReturnsAsync((group, total, totalFilter)).Verifiable();
 
-
+            //_groupRepositoryMock.Setup(x => x.GetCountAsync(
+            //    It.Is<Expression<Func<Group, Group>>>(y => y.Compile()(new Group()) is Group),
+            //    It.Is<Expression<Func<Group, bool>>>(y => y.Compile()(new Group() is <groupToMatch>)
+            //)) ;
 
             //Act
             _groupService.GetAllAsync(userId,searchText, orderBy, pageIndex, pageSize);

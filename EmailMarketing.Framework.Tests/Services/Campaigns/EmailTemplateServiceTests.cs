@@ -71,9 +71,9 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
             };
 
             _campaignUnitOfWorkMock.Setup(x => x.EmailTemplateRepository).Returns(_emailTemplateRepositoryMock.Object);
-            _emailTemplateRepositoryMock.Setup(x => x.GetCountAsync(
+            _emailTemplateRepositoryMock.Setup(x => x.IsExistsAsync(
                 It.Is<Expression<Func<EmailTemplate, bool>>>(y => y.Compile()(emailTemplate))
-                )).ReturnsAsync(1).Verifiable();
+                )).ReturnsAsync(true).Verifiable();
 
             //Act
             Should.Throw<DuplicationException>(() =>
@@ -103,9 +103,9 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
             };
 
             _campaignUnitOfWorkMock.Setup(x => x.EmailTemplateRepository).Returns(_emailTemplateRepositoryMock.Object);
-            _emailTemplateRepositoryMock.Setup(x => x.GetCountAsync(
+            _emailTemplateRepositoryMock.Setup(x => x.IsExistsAsync(
                 It.Is<Expression<Func<EmailTemplate, bool>>>(y => y.Compile()(emailTemplate))
-                )).ReturnsAsync(0).Verifiable();
+                )).ReturnsAsync(false).Verifiable();
 
             _emailTemplateRepositoryMock.Setup(x => x.AddAsync(It.Is<EmailTemplate>(y => y.Id == emailTemplate.Id))).Returns(Task.CompletedTask).Verifiable();
             _campaignUnitOfWorkMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask).Verifiable();

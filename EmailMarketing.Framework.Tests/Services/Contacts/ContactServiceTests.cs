@@ -441,9 +441,9 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
                 )).ReturnsAsync(contact).Verifiable();
 
             //Act
-           // var result = _contactService.GetIdByEmail(email);
-            //result.Result.ShouldBe(contact);
-  
+            var result = _contactService.GetI(email);
+            result.Result.ShouldBe(contact);
+
             //Assert
             _contactRepositoryMock.VerifyAll();
         }
@@ -497,7 +497,7 @@ namespace EmailMarketing.Framework.Tests.Services.Contacts
                 pageSize,
                 true
             )).ReturnsAsync((contactListToReturn,4,3)).Verifiable();
-
+            
             //Act
             var result = _contactService.GetAllContactAsync(userId, searchText, orderBy, pageIndex, pageSize);
             result.Result.ShouldBe((contactListToReturn, 4,3));
