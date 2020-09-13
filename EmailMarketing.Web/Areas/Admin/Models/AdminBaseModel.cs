@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using EmailMarketing.Common.Services;
-using EmailMarketing.Framework.Extensions;
+using EmailMarketing.Web.Extensions;
 using EmailMarketing.Framework.Menus;
 using EmailMarketing.Membership.Services;
 using Microsoft.AspNetCore.Http;

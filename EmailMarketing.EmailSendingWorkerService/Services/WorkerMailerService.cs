@@ -1,6 +1,5 @@
 ﻿using EmailMarketing.Common.Services;
 using MailKit.Net.Smtp;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using MimeKit;

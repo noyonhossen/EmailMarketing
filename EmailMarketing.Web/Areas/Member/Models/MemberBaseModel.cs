@@ -1,16 +1,12 @@
 ﻿using Autofac;
-using EmailMarketing.Framework.Extensions;
+using EmailMarketing.Web.Extensions;
 using EmailMarketing.Framework.Menus;
 using EmailMarketing.Common.Services;
-using EmailMarketing.Framework.Extensions;
-using EmailMarketing.Framework.Menus;
 using EmailMarketing.Membership.Services;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmailMarketing.Web.Areas.Member.Models
 {

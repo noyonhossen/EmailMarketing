@@ -6,7 +6,6 @@ using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.Contacts;
 using EmailMarketing.Framework.UnitOfWorks.Contacts;
 using ExcelDataReader;
-using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;

@@ -59,7 +59,8 @@ namespace EmailMarketing.ExcelWorkerService
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .UseWindowsService()
+                //.UseWindowsService()
+                // .UseSystemd()
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .UseSerilog()
                 .ConfigureContainer<ContainerBuilder>(builder => {
@@ -74,7 +75,7 @@ namespace EmailMarketing.ExcelWorkerService
                     services.AddSingleton<IMailerService, WorkerMailerService>();
                     services.AddSingleton<ICurrentUserService, WorkerCurrentUserService>();
                     services.AddSingleton<IDateTime, WorkerDateTimeService>();
-                    services.AddHttpContextAccessor();
+                    //services.AddHttpContextAccessor();
                 });
     }
 }

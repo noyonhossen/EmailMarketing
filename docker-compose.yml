@@ -4,7 +4,7 @@ services:
     
     web:
         #image: ems-web
-        image: ${REGISTRY:-mahmudkoli}/ems-web:${PLATFORM:-linux}-${TAG:-latest}
+        image: ${DOCKER_REGISTRY:-mahmudkoli}/ems-web:${PLATFORM:-linux}-${TAG:-latest}
         #image: ${DOCKER_REGISTRY-}ems-web
         build:
           context: .
@@ -26,6 +26,9 @@ services:
           #- "WIN_MSSQL1:192.168.0.1"
         #depends_on:
           #- db
+        volumes:
+          - data-volume:${VOLUME_CONTAINER_DIRECTORY}
+          # - C:\\EmailToEMS\Data\Web\wwwroot:/app/wwwroot
           
     #db:
         #image: "mcr.microsoft.com/mssql/server"
@@ -37,7 +40,7 @@ services:
     
     contact-import-worker:
         #image: ems-contact-import-worker
-        image: ${REGISTRY:-mahmudkoli}/ems-contact-import-worker:${PLATFORM:-linux}-${TAG:-latest}
+        image: ${DOCKER_REGISTRY:-mahmudkoli}/ems-contact-import-worker:${PLATFORM:-linux}-${TAG:-latest}
         #image: ${DOCKER_REGISTRY-}ems-contact-import-worker
         build:
           context: .
@@ -49,10 +52,13 @@ services:
           - WorkerSettings__ContactImportLogUrl=${ROOT_URL}/${CONTACT_IMPORT_LOG_URL}
         #depends_on:
           #- db
+        volumes:
+          - data-volume:${VOLUME_CONTAINER_DIRECTORY}
+          # - C:\\EmailToEMS\Data\ContactImport:/app
     
     email-sender-worker:
         #image: ems-email-sender-worker
-        image: ${REGISTRY:-mahmudkoli}/ems-email-sender-worker:${PLATFORM:-linux}-${TAG:-latest}
+        image: ${DOCKER_REGISTRY:-mahmudkoli}/ems-email-sender-worker:${PLATFORM:-linux}-${TAG:-latest}
         #image: ${DOCKER_REGISTRY-}ems-email-sender-worker
         build:
           context: .
@@ -64,10 +70,13 @@ services:
           - WorkerSettings__EmailSenderLogUrl=${ROOT_URL}/${EMAIL_SENDER_LOG_URL}
         #depends_on:
           #- db
+        # volumes:
+        #   # - data-volume:${VOLUME_CONTAINER_DIRECTORY}
+        #   - C:\\EmailToEMS\Data\EmailSender:/app
     
     contact-export-worker:
         #image: ems-contact-export-worker
-        image: ${REGISTRY:-mahmudkoli}/ems-contact-export-worker:${PLATFORM:-linux}-${TAG:-latest}
+        image: ${DOCKER_REGISTRY:-mahmudkoli}/ems-contact-export-worker:${PLATFORM:-linux}-${TAG:-latest}
         #image: ${DOCKER_REGISTRY-}ems-contact-export-worker
         build:
           context: .
@@ -79,10 +88,13 @@ services:
           - WorkerSettings__ContactExportLogUrl=${ROOT_URL}/${CONTACT_EXPORT_LOG_URL}
         #depends_on:
           #- db
+        volumes:
+          - data-volume:${VOLUME_CONTAINER_DIRECTORY}
+          # - C:\\EmailToEMS\Data\ContactExport:/app
     
     campaign-export-worker:
         #image: ems-campaign-export-worker
-        image: ${REGISTRY:-mahmudkoli}/ems-campaign-export-worker:${PLATFORM:-linux}-${TAG:-latest}
+        image: ${DOCKER_REGISTRY:-mahmudkoli}/ems-campaign-export-worker:${PLATFORM:-linux}-${TAG:-latest}
         #image: ${DOCKER_REGISTRY-}ems-campaign-export-worker
         build:
           context: .
@@ -94,4 +106,16 @@ services:
           - WorkerSettings__CampaignExportLogUrl=${ROOT_URL}/${CAMPAIGN_EXPORT_LOG_URL}
         #depends_on:
           #- db
-        
+        volumes:
+          - data-volume:${VOLUME_CONTAINER_DIRECTORY}
+          # - C:\\EmailToEMS\Data\CampaignExport:/app
+    
+volumes:
+    data-volume: 
+        external: true
+        name: ${VOLUME_NAME}
+        driver: local
+        driver_opts:
+            o: bind
+            type: none
+            device: ${VOLUME_HOST_DIRECTORY}

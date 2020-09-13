@@ -58,7 +58,8 @@ namespace EmailMarketing.CampaingReportExcelExportService
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .UseWindowsService()
+                //.UseWindowsService()
+                // .UseSystemd()
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .UseSerilog()
                 .ConfigureContainer<ContainerBuilder>(builder => {
@@ -73,7 +74,7 @@ namespace EmailMarketing.CampaingReportExcelExportService
                     services.AddSingleton<IExportMailerService, WorkerMailerService>();
                     services.AddSingleton<ICurrentUserService, WorkerCurrentUserService>();
                     services.AddSingleton<IDateTime, WorkerDateTimeService>();
-                    services.AddHttpContextAccessor();
+                    //services.AddHttpContextAccessor();
                 });
     }
 }

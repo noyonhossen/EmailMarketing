@@ -6,7 +6,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["EmailMarketing.ExcelWorkerService/EmailMarketing.ExcelWorkerService.csproj", "EmailMarketing.ExcelWorkerService/"]
 COPY ["EmailMarketing.Framework/EmailMarketing.Framework.csproj", "EmailMarketing.Framework/"]
-COPY ["EmailMarketing.Membership/EmailMarketing.Membership.csproj", "EmailMarketing.Membership/"]
+# COPY ["EmailMarketing.Membership/EmailMarketing.Membership.csproj", "EmailMarketing.Membership/"]
 COPY ["EmailMarketing.Common/EmailMarketing.Common.csproj", "EmailMarketing.Common/"]
 COPY ["EmailMarketing.Data/EmailMarketing.Data.csproj", "EmailMarketing.Data/"]
 RUN dotnet restore "EmailMarketing.ExcelWorkerService/EmailMarketing.ExcelWorkerService.csproj"

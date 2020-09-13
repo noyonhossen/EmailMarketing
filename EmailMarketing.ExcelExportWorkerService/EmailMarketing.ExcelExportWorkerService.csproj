@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Worker">
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -6,10 +6,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="wwwroot\Files\ContactExportFiles\sample.txt" />
+    <None Remove="wwwroot\Logs\ContactExportLogs\sample.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\Files\ContactExportFiles\sample.txt">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\Logs\ContactExportLogs\sample.txt">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="MailKit" Version="2.8.0" />
     <PackageReference Include="ClosedXML" Version="0.95.3" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="3.1.6" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="3.1.6" />
     <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
     <PackageReference Include="Serilog" Version="2.9.0" />
@@ -18,6 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EmailMarketing.Common\EmailMarketing.Common.csproj" />
     <ProjectReference Include="..\EmailMarketing.Framework\EmailMarketing.Framework.csproj" />
   </ItemGroup>
 

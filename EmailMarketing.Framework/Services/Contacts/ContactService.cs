@@ -11,7 +11,6 @@ using EmailMarketing.Framework.Services.Groups;
 using EmailMarketing.Framework.UnitOfWorks;
 using EmailMarketing.Framework.UnitOfWorks.Contacts;
 using EmailMarketing.Framework.UnitOfWorks.Groups;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
