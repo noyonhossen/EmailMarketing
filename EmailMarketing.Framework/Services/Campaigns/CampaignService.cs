@@ -31,7 +31,7 @@ namespace EmailMarketing.Framework.Services.Campaigns
                                                    x => !x.IsDeleted && x.IsActive &&
                                                    (!userId.HasValue || x.UserId == userId.Value), x => x.OrderBy(o => o.Name), null, true));
         }
-        public async Task<(IList<Campaign> Items, int Total, int TotalFilter)> GetAllCampaignAsync(
+        public async Task<(IList<Campaign> Items, int Total, int TotalFilter)> GetAllCampaignAsync( 
           Guid? userId,
           string searchText,
           string orderBy,

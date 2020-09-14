@@ -26,7 +26,7 @@ namespace EmailMarketing.Framework.Services.Groups
             _currentUserService = currentUserService;
 
         }
-        public async Task<(IList<Group> Items, int Total, int TotalFilter)> GetAllAsync(
+        public async Task<(IList<Group> Items, int Total, int TotalFilter)> GetAllAsync( 
             Guid? userId,string searchText, string orderBy, int pageIndex, int pageSize)
         {
             var columnsMap = new Dictionary<string, Expression<Func<Group, object>>>()

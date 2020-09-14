@@ -3,6 +3,7 @@ using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.Entities.Contacts;
+using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.Repositories.Campaigns;
 using EmailMarketing.Framework.Repositories.Contacts;
 using EmailMarketing.Framework.Services.Campaigns;
@@ -117,14 +118,6 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
         public void GetDownloadQueue_DownloadQueueExists_ReturnDownloadQueueList()
         {
             //Arrange
-            var downloadQueuesToMatch = new DownloadQueue
-            {
-                Id = 1,
-                FileName = "AllContact",
-                IsProcessing = true,
-                IsSucceed = false
-            };
-
             var downloadQueues = new List<DownloadQueue>
             {
                 new DownloadQueue{Id = 1 , FileName = "AllContact",IsProcessing = true,IsSucceed = false},
@@ -132,6 +125,17 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
                 new DownloadQueue{Id = 3 , FileName = "AllContact",IsProcessing = true,IsSucceed = false},
 
             };
+
+            var downloadQueuesToMatch = new DownloadQueue
+            {
+                Id = 1,
+                FileName = "AllContact",
+                IsProcessing = true,
+                IsSucceed = false,
+                DownloadQueueFor= DownloadQueueFor.CampaignAllReportExport
+            };
+
+            
 
             _campaignReportExportUnitOfWorkMock.Setup(x => x.DownloadQueueRepository)
                 .Returns(_downloadQueueRepositoryMock.Object);

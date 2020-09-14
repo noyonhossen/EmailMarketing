@@ -329,7 +329,7 @@ namespace EmailMarketing.Framework.Tests.Services.SMTP
                 SenderEmail = "sam@gmail.com",
                 UserName = "Abc",
                 Password = "12345",
-                EnableSSL = true
+                EnableSSL = true 
             };
 
             _smtpUnitOfWorkMock.Setup(x => x.SMTPRepository).Returns(_smtpRepositoryMock.Object);
