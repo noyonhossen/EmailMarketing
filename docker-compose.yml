@@ -23,12 +23,12 @@ services:
           #- "8080-8085:80"
           #- "44380-44385:443"
         #extra_hosts:
-          #- "WIN_MSSQL1:192.168.0.1"
+          #- "WIN_MSSQL:192.168.0.1"
         #depends_on:
           #- db
         volumes:
           - data-volume:${VOLUME_CONTAINER_DIRECTORY}
-          # - C:\\EmailToEMS\Data\Web\wwwroot:/app/wwwroot
+          # - C:\\MailToEMS\Web:/app/wwwroot
           
     #db:
         #image: "mcr.microsoft.com/mssql/server"
@@ -54,12 +54,11 @@ services:
           #- db
         volumes:
           - data-volume:${VOLUME_CONTAINER_DIRECTORY}
-          # - C:\\EmailToEMS\Data\ContactImport:/app
+          # - C:\\MailToEMS\ContactImport:/app/wwwroot
     
     email-sender-worker:
         #image: ems-email-sender-worker
         image: ${DOCKER_REGISTRY:-mahmudkoli}/ems-email-sender-worker:${PLATFORM:-linux}-${TAG:-latest}
-        #image: ${DOCKER_REGISTRY-}ems-email-sender-worker
         build:
           context: .
           dockerfile: EmailMarketing.EmailSendingWorkerService/Dockerfile
@@ -70,14 +69,12 @@ services:
           - WorkerSettings__EmailSenderLogUrl=${ROOT_URL}/${EMAIL_SENDER_LOG_URL}
         #depends_on:
           #- db
-        # volumes:
-        #   # - data-volume:${VOLUME_CONTAINER_DIRECTORY}
-        #   - C:\\EmailToEMS\Data\EmailSender:/app
+        volumes:
+          - data-volume:${VOLUME_CONTAINER_DIRECTORY}
     
     contact-export-worker:
         #image: ems-contact-export-worker
         image: ${DOCKER_REGISTRY:-mahmudkoli}/ems-contact-export-worker:${PLATFORM:-linux}-${TAG:-latest}
-        #image: ${DOCKER_REGISTRY-}ems-contact-export-worker
         build:
           context: .
           dockerfile: EmailMarketing.ExcelExportWorkerService/Dockerfile
@@ -90,12 +87,10 @@ services:
           #- db
         volumes:
           - data-volume:${VOLUME_CONTAINER_DIRECTORY}
-          # - C:\\EmailToEMS\Data\ContactExport:/app
     
     campaign-export-worker:
         #image: ems-campaign-export-worker
         image: ${DOCKER_REGISTRY:-mahmudkoli}/ems-campaign-export-worker:${PLATFORM:-linux}-${TAG:-latest}
-        #image: ${DOCKER_REGISTRY-}ems-campaign-export-worker
         build:
           context: .
           dockerfile: EmailMarketing.CampaingReportExcelExportService/Dockerfile
@@ -108,7 +103,6 @@ services:
           #- db
         volumes:
           - data-volume:${VOLUME_CONTAINER_DIRECTORY}
-          # - C:\\EmailToEMS\Data\CampaignExport:/app
     
 volumes:
     data-volume: 
