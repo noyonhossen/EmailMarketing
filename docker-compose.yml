@@ -106,7 +106,7 @@ services:
     
 volumes:
     data-volume: 
-        external: true
+        external: false
         name: ${VOLUME_NAME}
         driver: local
         driver_opts:
