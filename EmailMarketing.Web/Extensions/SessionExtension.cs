@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace EmailMarketing.Framework.Extensions
+namespace EmailMarketing.Web.Extensions
 {
     public static class SessionExtension
     {

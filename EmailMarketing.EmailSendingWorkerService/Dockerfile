@@ -7,7 +7,7 @@ WORKDIR /src
 COPY ["EmailMarketing.EmailSendingWorkerService/EmailMarketing.EmailSendingWorkerService.csproj", "EmailMarketing.EmailSendingWorkerService/"]
 COPY ["EmailMarketing.Common/EmailMarketing.Common.csproj", "EmailMarketing.Common/"]
 COPY ["EmailMarketing.Framework/EmailMarketing.Framework.csproj", "EmailMarketing.Framework/"]
-COPY ["EmailMarketing.Membership/EmailMarketing.Membership.csproj", "EmailMarketing.Membership/"]
+# COPY ["EmailMarketing.Membership/EmailMarketing.Membership.csproj", "EmailMarketing.Membership/"]
 COPY ["EmailMarketing.Data/EmailMarketing.Data.csproj", "EmailMarketing.Data/"]
 RUN dotnet restore "EmailMarketing.EmailSendingWorkerService/EmailMarketing.EmailSendingWorkerService.csproj"
 COPY . .

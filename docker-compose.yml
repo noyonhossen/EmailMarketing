@@ -4,8 +4,8 @@ services:
     
     web:
         #image: ems-web
-        #image: ${REGISTRY:-ems}/ems-web:${PLATFORM:-linux}-${TAG:-latest}
-        image: ${DOCKER_REGISTRY-}ems-web
+        image: ${DOCKER_REGISTRY:-mahmudkoli}/ems-web:${PLATFORM:-linux}-${TAG:-latest}
+        #image: ${DOCKER_REGISTRY-}ems-web
         build:
           context: .
           dockerfile: EmailMarketing.Web/Dockerfile
@@ -13,73 +13,103 @@ services:
         environment:
           - ASPNETCORE_ENVIRONMENT=Production
           - ConnectionStrings__DefaultConnection=Server=${DB_SERVER};Database=${DB_NAME};User Id=${DB_USER_ID};Password=${DB_PASSWORD};MultipleActiveResultSets=true;
+          - AppSettings__ContactImportFileUrl=${ROOT_URL}/${CONTACT_IMPORT_FILE_URL}
+          - AppSettings__ContactExportFileUrl=${ROOT_URL}/${CONTACT_EXPORT_FILE_URL}
+          - AppSettings__EmailSenderFileUrl=${ROOT_URL}/${EMAIL_SENDER_FILE_URL}
+          - AppSettings__CampaignExportFileUrl=${ROOT_URL}/${CAMPAIGN_EXPORT_FILE_URL}
         ports:
           - "8080:80"
           - "44380:443"
           #- "8080-8085:80"
           #- "44380-44385:443"
         #extra_hosts:
-          #- "WIN_MSSQL1:192.168.0.1"
+          #- "WIN_MSSQL:192.168.0.1"
         #depends_on:
           #- db
+        volumes:
+          - data-volume:${VOLUME_CONTAINER_DIRECTORY}
+          # - C:\\MailToEMS\Web:/app/wwwroot
           
-    db:
-        image: "mcr.microsoft.com/mssql/server"
-        environment:
-            SA_PASSWORD: "P@ssword"
-            ACCEPT_EULA: "Y"
-        ports:
-          - "1433:1433"
+    #db:
+        #image: "mcr.microsoft.com/mssql/server"
+        #environment:
+            #SA_PASSWORD: "P@ssword"
+            #ACCEPT_EULA: "Y"
+        #ports:
+          #- "1433:1433"
     
     contact-import-worker:
         #image: ems-contact-import-worker
-        #image: ${REGISTRY:-ems}/ems-contact-import-worker:${PLATFORM:-linux}-${TAG:-latest}
-        image: ${DOCKER_REGISTRY-}ems-contact-import-worker
+        image: ${DOCKER_REGISTRY:-mahmudkoli}/ems-contact-import-worker:${PLATFORM:-linux}-${TAG:-latest}
+        #image: ${DOCKER_REGISTRY-}ems-contact-import-worker
         build:
           context: .
           dockerfile: EmailMarketing.ExcelWorkerService/Dockerfile
         environment:
           - ASPNETCORE_ENVIRONMENT=Production
           - ConnectionStrings__DefaultConnection=Server=${DB_SERVER};Database=${DB_NAME};User Id=${DB_USER_ID};Password=${DB_PASSWORD};MultipleActiveResultSets=true;
+          - WorkerSettings__ContactImportFileUrl=${ROOT_URL}/${CONTACT_IMPORT_FILE_URL}
+          - WorkerSettings__ContactImportLogUrl=${ROOT_URL}/${CONTACT_IMPORT_LOG_URL}
         #depends_on:
           #- db
+        volumes:
+          - data-volume:${VOLUME_CONTAINER_DIRECTORY}
+          # - C:\\MailToEMS\ContactImport:/app/wwwroot
     
     email-sender-worker:
         #image: ems-email-sender-worker
-        #image: ${REGISTRY:-ems}/ems-email-sender-worker:${PLATFORM:-linux}-${TAG:-latest}
-        image: ${DOCKER_REGISTRY-}ems-email-sender-worker
+        image: ${DOCKER_REGISTRY:-mahmudkoli}/ems-email-sender-worker:${PLATFORM:-linux}-${TAG:-latest}
         build:
           context: .
           dockerfile: EmailMarketing.EmailSendingWorkerService/Dockerfile
         environment:
           - ASPNETCORE_ENVIRONMENT=Production
           - ConnectionStrings__DefaultConnection=Server=${DB_SERVER};Database=${DB_NAME};User Id=${DB_USER_ID};Password=${DB_PASSWORD};MultipleActiveResultSets=true;
+          - WorkerSettings__EmailSenderFileUrl=${ROOT_URL}/${EMAIL_SENDER_FILE_URL}
+          - WorkerSettings__EmailSenderLogUrl=${ROOT_URL}/${EMAIL_SENDER_LOG_URL}
         #depends_on:
           #- db
+        volumes:
+          - data-volume:${VOLUME_CONTAINER_DIRECTORY}
     
     contact-export-worker:
         #image: ems-contact-export-worker
-        #image: ${REGISTRY:-ems}/ems-contact-export-worker:${PLATFORM:-linux}-${TAG:-latest}
-        image: ${DOCKER_REGISTRY-}ems-contact-export-worker
+        image: ${DOCKER_REGISTRY:-mahmudkoli}/ems-contact-export-worker:${PLATFORM:-linux}-${TAG:-latest}
         build:
           context: .
           dockerfile: EmailMarketing.ExcelExportWorkerService/Dockerfile
         environment:
           - ASPNETCORE_ENVIRONMENT=Production
           - ConnectionStrings__DefaultConnection=Server=${DB_SERVER};Database=${DB_NAME};User Id=${DB_USER_ID};Password=${DB_PASSWORD};MultipleActiveResultSets=true;
+          - WorkerSettings__ContactExportFileUrl=${ROOT_URL}/${CONTACT_EXPORT_FILE_URL}
+          - WorkerSettings__ContactExportLogUrl=${ROOT_URL}/${CONTACT_EXPORT_LOG_URL}
         #depends_on:
           #- db
+        volumes:
+          - data-volume:${VOLUME_CONTAINER_DIRECTORY}
     
     campaign-export-worker:
         #image: ems-campaign-export-worker
-        #image: ${REGISTRY:-ems}/ems-campaign-export-worker:${PLATFORM:-linux}-${TAG:-latest}
-        image: ${DOCKER_REGISTRY-}ems-campaign-export-worker
+        image: ${DOCKER_REGISTRY:-mahmudkoli}/ems-campaign-export-worker:${PLATFORM:-linux}-${TAG:-latest}
         build:
           context: .
           dockerfile: EmailMarketing.CampaingReportExcelExportService/Dockerfile
         environment:
           - ASPNETCORE_ENVIRONMENT=Production
           - ConnectionStrings__DefaultConnection=Server=${DB_SERVER};Database=${DB_NAME};User Id=${DB_USER_ID};Password=${DB_PASSWORD};MultipleActiveResultSets=true;
+          - WorkerSettings__CampaignExportFileUrl=${ROOT_URL}/${CAMPAIGN_EXPORT_FILE_URL}
+          - WorkerSettings__CampaignExportLogUrl=${ROOT_URL}/${CAMPAIGN_EXPORT_LOG_URL}
         #depends_on:
           #- db
-        
+        volumes:
+          - data-volume:${VOLUME_CONTAINER_DIRECTORY}
+    
+volumes:
+    data-volume: 
+        external: false
+        name: ${VOLUME_NAME}
+        driver: local
+        driver_opts:
+            o: bind
+            type: none
+            device: ${VOLUME_HOST_DIRECTORY}

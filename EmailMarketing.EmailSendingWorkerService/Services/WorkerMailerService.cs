@@ -1,6 +1,5 @@
 ﻿using EmailMarketing.Common.Services;
 using MailKit.Net.Smtp;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using MimeKit;
@@ -12,6 +11,7 @@ using EmailMarketing.EmailSendingWorkerService.Core;
 using EmailMarketing.Framework.Entities.SMTP;
 using EmailMarketing.Common.Extensions;
 using EmailMarketing.Common.Constants;
+using Microsoft.Extensions.Logging;
 
 namespace EmailMarketing.EmailSendingWorkerService.Services
 {
@@ -19,11 +19,13 @@ namespace EmailMarketing.EmailSendingWorkerService.Services
     {
         private readonly WorkerSmtpSettings _workerSmtpSettings;
         private readonly WorkerSettings _workerSettings;
+        private readonly ILogger<WorkerMailerService> _logger;
 
-        public WorkerMailerService(IOptions<WorkerSmtpSettings> smtpSettings, IOptions<WorkerSettings> workerSettings)
+        public WorkerMailerService(IOptions<WorkerSmtpSettings> smtpSettings, IOptions<WorkerSettings> workerSettings, ILogger<WorkerMailerService> logger)
         {
             _workerSmtpSettings = smtpSettings.Value;
             _workerSettings = workerSettings.Value;
+            _logger = logger;
         }
 
         public async Task<bool> SendBulkEmailAsync(string email, string subject, string body, SMTPConfig sMTPConfig)
@@ -53,6 +55,7 @@ namespace EmailMarketing.EmailSendingWorkerService.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"Failed to send email for : {email} and Error Message: " + ex.Message);
                 return false;
             }
         }

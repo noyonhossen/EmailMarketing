@@ -464,8 +464,177 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
             //Act
             _groupRepositoryMock.VerifyAll();
         }
+        [Test]
+        public void GetCampaignCountAsync_UserIdNotNull_CountCampaign()
+        {
+            //Arrange
+            var id = new Guid();
+            var campaign = new Campaign
+            {
+                Id = 1,
+                UserId = id,
+                EmailSubject = "Test Subject"
+            };
+
+            var campaignToMatch = new Campaign
+            {
+                Id = 1,
+                UserId = id,
+                EmailSubject = "Test Subject"
+            };
+
+            int count = 4;
+            _campaignUnitOfWorkMock.Setup(x => x.CampaignRepository).Returns(_campaignRepositoryMock.Object);
+
+            _campaignRepositoryMock.Setup(x => x.GetCountAsync(
+              It.Is<Expression<Func<Campaign, bool>>>(y => y.Compile()(campaignToMatch)))).Returns(Task.FromResult(count)).Verifiable();
+
+            //Act
+            _campaignService.GetCampaignCountAsync(campaign.UserId);
+
+            //Assert
+            _campaignRepositoryMock.VerifyAll();
+        }
+        [Test]
+        public void GetCampaignCountAsync_NullParameter_CountCampaign()
+        {
+            //Arrange
+            var id = new Guid();
+            var campaign = new Campaign
+            {
+                Id = 1,
+                UserId = id,
+                EmailSubject = "Test Subject"
+            };
+
+            var campaignToMatch = new Campaign
+            {
+                Id = 1,
+                UserId = id,
+                EmailSubject = "Test Subject"
+            };
+
+            int count = 4;
+            _campaignUnitOfWorkMock.Setup(x => x.CampaignRepository).Returns(_campaignRepositoryMock.Object);
+
+            _campaignRepositoryMock.Setup(x => x.GetCountAsync(null)).Returns(Task.FromResult(count)).Verifiable();
+
+            //Act
+            _campaignService.GetCampaignCountAsync();
+
+            //Assert
+            _campaignRepositoryMock.VerifyAll();
+        }
+        [Test]
+        public void ActivateUpdateAsync_ValidCampaignId_ActivateUpdate()
+        {
+            //Arrange
+            var id = new Guid();
+            var campaign = new Campaign
+            {
+                Id = 1,
+                UserId = id,
+                EmailSubject = "Test Subject"
+            };
+
+            var campaignToMatch = new Campaign
+            {
+                Id = 1,
+                UserId = id,
+                EmailSubject = "Test Subject"
+            };
+
+            _campaignUnitOfWorkMock.Setup(x => x.CampaignRepository).Returns(_campaignRepositoryMock.Object);
+
+            _campaignRepositoryMock.Setup(x => x.GetByIdAsync(campaignToMatch.Id)).ReturnsAsync(campaign).Verifiable();
+
+            _campaignRepositoryMock.Setup(x => x.UpdateAsync(It.Is<Campaign>(y => y.Id == campaign.Id))).Returns(Task.CompletedTask).Verifiable();
+            _campaignUnitOfWorkMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask).Verifiable();
+
+            //Act
+            _campaignService.ActivateCampaignAsync(campaign.Id);
+
+            //Assert
+            _campaignRepositoryMock.VerifyAll();
+            _campaignUnitOfWorkMock.VerifyAll();
+        }
+
+        [Test]
+        public void GetCampaignByIdAsync_InValidId_ThrowException()
+        {
+            //Arrange
+            var id = new Guid();
+            var campaign = new Campaign
+            {
+                Id = 1,
+                UserId = id,
+                EmailSubject = "Test Subject"
+            };
+
+            var campaignToMatch = new Campaign
+            {
+                Id = 1,
+                UserId = id,
+                EmailSubject = "Test Subject"
+            };
+            Campaign nullCampaing = new Campaign();
+            nullCampaing = null;
+            _campaignUnitOfWorkMock.Setup(x => x.CampaignRepository).Returns(_campaignRepositoryMock.Object);
+
+            _campaignRepositoryMock.Setup(x => x.GetFirstOrDefaultAsync(
+                It.Is<Expression<Func<Campaign, Campaign>>>(y => y.Compile()(new Campaign()) is Campaign),
+                It.Is<Expression<Func<Campaign, bool>>>(y => y.Compile()(campaignToMatch)),
+                It.IsAny<Func<IQueryable<Campaign>, IIncludableQueryable<Campaign, object>>>(),
+                true
+                )).ReturnsAsync(nullCampaing).Verifiable();
+
+            //Act
+            Should.Throw<NotFoundException>(() =>
+                _campaignService.GetCampaignByIdAsync(campaign.UserId,campaign.Id)
+            ) ;
+
+            //Assert
+            _campaignRepositoryMock.VerifyAll();
+        }
+
+        [Test]
+        public void GetCampaignByIdAsync_ValidId_SaveCampaign()
+        {
+            //Arrange
+            var id = new Guid();
+            var campaign = new Campaign
+            {
+                Id = 1,
+                UserId = id,
+                EmailSubject = "Test Subject"
+            };
+
+            var campaignToMatch = new Campaign
+            {
+                Id = 1,
+                UserId = id,
+                EmailSubject = "Test Subject"
+            };
+            Campaign nullCampaing = new Campaign();
+            nullCampaing = null;
+            _campaignUnitOfWorkMock.Setup(x => x.CampaignRepository).Returns(_campaignRepositoryMock.Object);
+
+            _campaignRepositoryMock.Setup(x => x.GetFirstOrDefaultAsync(
+                It.Is<Expression<Func<Campaign, Campaign>>>(y => y.Compile()(new Campaign()) is Campaign),
+                It.Is<Expression<Func<Campaign, bool>>>(y => y.Compile()(campaignToMatch)),
+                It.IsAny<Func<IQueryable<Campaign>, IIncludableQueryable<Campaign, object>>>(),
+                true
+                )).ReturnsAsync(campaign).Verifiable();
+
+            //Act
+            _campaignService.GetCampaignByIdAsync(campaign.UserId, campaign.Id);
+
+            //Assert
+            _campaignRepositoryMock.VerifyAll();
+            _campaignUnitOfWorkMock.VerifyAll();
+        }
 
     }
 
-    
+
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
@@ -26,7 +27,9 @@ namespace EmailMarketing.ExcelWorkerService
         public static void Main(string[] args)
         {
             var _configuration = new ConfigurationBuilder()
-                                .AddJsonFile("appsettings.json", false)
+                                .SetBasePath(Directory.GetCurrentDirectory())
+                                .AddJsonFile("appsettings.json", false, true)
+                                .AddEnvironmentVariables()
                                 .Build();
 
             var workerSettings = _configuration.GetSection("WorkerSettings").Get<WorkerSettings>();
@@ -59,7 +62,8 @@ namespace EmailMarketing.ExcelWorkerService
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .UseWindowsService()
+                //.UseWindowsService()
+                // .UseSystemd()
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .UseSerilog()
                 .ConfigureContainer<ContainerBuilder>(builder => {
@@ -74,7 +78,7 @@ namespace EmailMarketing.ExcelWorkerService
                     services.AddSingleton<IMailerService, WorkerMailerService>();
                     services.AddSingleton<ICurrentUserService, WorkerCurrentUserService>();
                     services.AddSingleton<IDateTime, WorkerDateTimeService>();
-                    services.AddHttpContextAccessor();
+                    //services.AddHttpContextAccessor();
                 });
     }
 }
