@@ -65,6 +65,7 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
         {
             _campaignUnitOfWorkMock.Reset();
             _campaignRepositoryMock.Reset();
+            _campaignReportRepository.Reset();
             _emailTemplateRepositoryMock.Reset();
             _groupRepositoryMock.Reset();
             _groupUnitOfWorkMock.Reset();
@@ -200,7 +201,12 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
         [Test]
         public void GetAllCampaignAsync_CampaignExists_ReturnCampaginListTotalToalFilter()
         {
-            //Arrange
+            //Arrange 
+            var columnsMap = new Dictionary<string, Expression<Func<Campaign, object>>>()
+            {
+                ["Name"] = v => v.Name
+            };
+
             var campaignList = new List<Campaign>
             {
                 new Campaign {Id = 1, Name = "Demoname", EmailSubject = "Demo", SendDateTime = DateTime.Now, IsProcessing = true},
@@ -222,7 +228,7 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
                 IsDeleted = false,
                 IsActive = true,
                 UserId = userId,
-                Name = "DemoCampaign"
+                Name = "Demo"
             };
 
             _campaignUnitOfWorkMock.Setup(x => x.CampaignRepository).Returns(_campaignRepositoryMock.Object);
@@ -233,13 +239,16 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
                 It.IsAny<Func<IQueryable<Campaign>, IIncludableQueryable<Campaign, object>>>(),
                 pageIndex, pageSize,
                 true
-                )).ReturnsAsync((campaignList, 1, 1)).Verifiable();
+                )).ReturnsAsync((campaignList, 2, 2)).Verifiable();
 
+            _campaignRepositoryMock.Setup(x => x.GetCountAsync(
+                It.Is<Expression<Func<Campaign, bool>>>(y => y.Compile()(campaign))
+                )).ReturnsAsync((2)).Verifiable(); 
             //Act
             var result = _campaignService.GetAllCampaignAsync(userId, searchText, orderBy, pageIndex, pageSize);
 
             //Assert
-            result.Result.ShouldBe((campaignList, 1, 1));
+            result.Result.ShouldBe((campaignList, 2, 2));
             _campaignRepositoryMock.VerifyAll();
         }
 

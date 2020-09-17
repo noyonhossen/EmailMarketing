@@ -329,7 +329,7 @@ namespace EmailMarketing.Framework.Tests.Services.SMTP
                 SenderEmail = "sam@gmail.com",
                 UserName = "Abc",
                 Password = "12345",
-                EnableSSL = true
+                EnableSSL = true 
             };
 
             _smtpUnitOfWorkMock.Setup(x => x.SMTPRepository).Returns(_smtpRepositoryMock.Object);
@@ -340,7 +340,7 @@ namespace EmailMarketing.Framework.Tests.Services.SMTP
             _smtpUnitOfWorkMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask).Verifiable();
 
             //Act
-            //_smtpService.DeleteAsync(id);
+           // _smtpService.DeleteAsync(id);
 
 
             //Assert

@@ -79,38 +79,39 @@ namespace EmailMarketing.Framework.Tests.Services.Groups
         [Test]
         public void GetAllAsync_GroupLists_GetAllGroup()
         {
-            //Arrange
+            //Arrange 
             var userId = Guid.NewGuid();
             int total = 4, totalFilter = 3;
             string searchText = "", orderBy = "Name";
             int pageIndex = 1, pageSize = 10;
 
-            var group = new List<Group>
+            var groupList = new List<Group>
             {
                 new Group { Id = 1, Name = "Friends" },
                 new Group {Id = 2, Name = "Colleague"},
-                new Group {Id = 3, Name = "Employee"},
-                new Group {Id = 4, Name = "Managars"},
+                
             };
 
-            var groupToMatch = new List<Group>
+            var group = new Group
             {
-                new Group { Id = 1, Name = "Friends" },
-                new Group {Id = 2, Name = "Colleague"},
-                new Group {Id = 3, Name = "Employee"},
-                new Group {Id = 4, Name = "Managars"},
+                Id = 1, 
+                Name = "Friends" 
+                
             };
 
             _groupUnitOfWorkMock.Setup(x => x.GroupRepository).Returns(_groupRepositoryMock.Object);
 
             _groupRepositoryMock.Setup(x => x.GetAsync(
                 It.Is<Expression<Func<Group, Group>>>(y => y.Compile()(new Group()) is Group),
-                It.Is<Expression<Func<Group, bool>>>(y => y.Compile()(new Group() { Name = "Employee" })),
+                It.Is<Expression<Func<Group, bool>>>(y => y.Compile()(group)),
                 It.IsAny<Func<IQueryable<Group>, IOrderedQueryable<Group>>>(),
-                It.IsAny<Func<IQueryable<Group>, IIncludableQueryable<Group, object>>>(),
-                pageIndex, pageSize, true)).ReturnsAsync((group, total, totalFilter)).Verifiable();
+                //It.IsAny<Func<IQueryable<Group>, IIncludableQueryable<Group, object>>>(),
+                null,pageIndex, pageSize, true)).ReturnsAsync((groupList, 2, 2)).Verifiable();
 
+            _groupRepositoryMock.Setup(x => x.GetCountAsync(
 
+                It.Is<Expression<Func<Group, bool>>>(y => y.Compile()(group))
+            )).ReturnsAsync((2)).Verifiable() ;
 
             //Act
             _groupService.GetAllAsync(userId,searchText, orderBy, pageIndex, pageSize);

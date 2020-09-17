@@ -3,6 +3,7 @@ using EmailMarketing.Common.Exceptions;
 using EmailMarketing.Framework.Entities;
 using EmailMarketing.Framework.Entities.Campaigns;
 using EmailMarketing.Framework.Entities.Contacts;
+using EmailMarketing.Framework.Enums;
 using EmailMarketing.Framework.Repositories.Campaigns;
 using EmailMarketing.Framework.Repositories.Contacts;
 using EmailMarketing.Framework.Services.Campaigns;
@@ -17,6 +18,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EmailMarketing.Framework.Tests.Services.Campaigns
 {
@@ -25,6 +27,7 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
     {
         private AutoMock _mock;
         private Mock<IDownloadQueueRepository> _downloadQueueRepositoryMock;
+        private Mock<IDownloadQueueSubEntityRepository> _downloadQueueSubEntityRepositoryMock;
         private Mock<ICampaignReportRepository> _campaignReportRepositoryMock;
         private Mock<ICampaignReportExportUnitOfWork> _campaignReportExportUnitOfWorkMock;
         private Mock<ICampaignReportUnitOfWork> _campaignReportUnitOfWorkMock;
@@ -44,6 +47,7 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
         public void Setup()
         {
             _downloadQueueRepositoryMock = _mock.Mock<IDownloadQueueRepository>();
+            _downloadQueueSubEntityRepositoryMock = _mock.Mock<IDownloadQueueSubEntityRepository>();
             _campaignReportRepositoryMock = _mock.Mock<ICampaignReportRepository>();
             _campaignReportExportUnitOfWorkMock = _mock.Mock<ICampaignReportExportUnitOfWork>();
             _campaignReportUnitOfWorkMock = _mock.Mock<ICampaignReportUnitOfWork>();
@@ -54,15 +58,41 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
         public void Clean()
         {
             _downloadQueueRepositoryMock.Reset();
+            _downloadQueueSubEntityRepositoryMock.Reset();
             _campaignReportRepositoryMock.Reset();
             _campaignReportExportUnitOfWorkMock.Reset();
             _campaignReportUnitOfWorkMock.Reset();
         }
         [Test]
-        public void GetDownloadQueue_DownloadQueueExists_ReturnDownloadQueueList()
+        public async Task AddDownloadQueueSubEntities_Save()
         {
             //Arrange
-            var downloadQueuesToMatch = new DownloadQueue
+            var downloadQueuesubEntry = new DownloadQueueSubEntity
+            {
+                Id = 1,
+                DownloadQueueSubEntityId = 1,
+            };
+
+            _campaignReportExportUnitOfWorkMock.Setup(x => x.DownloadQueueSubEntityRepository).Returns(_downloadQueueSubEntityRepositoryMock.Object);
+            _downloadQueueSubEntityRepositoryMock.Setup(x => x.AddAsync(downloadQueuesubEntry)).Returns(Task.CompletedTask).Verifiable();
+
+            _campaignReportExportUnitOfWorkMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask).Verifiable();
+            //Act
+
+            await _campaignReportExportService.AddDownloadQueueSubEntities(downloadQueuesubEntry);
+
+
+            //Assert
+            _downloadQueueSubEntityRepositoryMock.VerifyAll();
+            _campaignReportExportUnitOfWorkMock.VerifyAll();
+
+        }
+        [Test]
+
+        public void SaveDownloadQueueAsync_SaveChenge()
+        {
+            //Arrange
+            var downloadQueue = new DownloadQueue
             {
                 Id = 1,
                 FileName = "AllContact",
@@ -70,6 +100,24 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
                 IsSucceed = false
             };
 
+            _campaignReportExportUnitOfWorkMock.Setup(x => x.DownloadQueueRepository).Returns(_downloadQueueRepositoryMock.Object);
+            _downloadQueueRepositoryMock.Setup(x => x.AddAsync(downloadQueue)).Returns(Task.CompletedTask).Verifiable();
+
+            _campaignReportExportUnitOfWorkMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask).Verifiable();
+            //Act
+
+            _campaignReportExportService.SaveDownloadQueueAsync(downloadQueue);
+
+
+            //Assert
+            _downloadQueueRepositoryMock.VerifyAll();
+            _campaignReportExportUnitOfWorkMock.VerifyAll();
+
+        }
+        [Test]
+        public void GetDownloadQueue_DownloadQueueExists_ReturnDownloadQueueList()
+        {
+            //Arrange
             var downloadQueues = new List<DownloadQueue>
             {
                 new DownloadQueue{Id = 1 , FileName = "AllContact",IsProcessing = true,IsSucceed = false},
@@ -77,6 +125,17 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
                 new DownloadQueue{Id = 3 , FileName = "AllContact",IsProcessing = true,IsSucceed = false},
 
             };
+
+            var downloadQueuesToMatch = new DownloadQueue
+            {
+                Id = 1,
+                FileName = "AllContact",
+                IsProcessing = true,
+                IsSucceed = false,
+                DownloadQueueFor= DownloadQueueFor.CampaignAllReportExport
+            };
+
+            
 
             _campaignReportExportUnitOfWorkMock.Setup(x => x.DownloadQueueRepository)
                 .Returns(_downloadQueueRepositoryMock.Object);
@@ -92,6 +151,7 @@ namespace EmailMarketing.Framework.Tests.Services.Campaigns
             //Act
             var result = _campaignReportExportService.GetDownloadQueue();
             result.Result.ShouldBe(downloadQueues);
+           
 
             //Assert
             _downloadQueueRepositoryMock.VerifyAll();
