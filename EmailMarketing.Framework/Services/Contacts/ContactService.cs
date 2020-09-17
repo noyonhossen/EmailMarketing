@@ -120,17 +120,17 @@ namespace EmailMarketing.Framework.Services.Contacts
             //    throw new DuplicationException(nameof(contact.Email));
 
             var updateEntity = await _contactUnitOfWork.ContactRepository.GetFirstOrDefaultAsync(x => x, x => x.Id == contact.Id,
-                null, true);
+                null, false);
 
 
             var existingContactGroups = await _contactUnitOfWork.GroupContactRepository.GetAsync(x => x,
-                                                                            x => x.ContactId == updateEntity.Id, null, null, true);
+                                                                            x => x.ContactId == updateEntity.Id, null, null, false);
             if (existingContactGroups.Any())
                 await _contactUnitOfWork.GroupContactRepository.DeleteRangeAsync(existingContactGroups);
 
             
             var existingContactValueMaps = await _contactUnitOfWork.ContactValueMapRepository.GetAsync(x => x,
-            x => x.ContactId == updateEntity.Id, null, null, true);
+            x => x.ContactId == updateEntity.Id, null, null, false);
             if (existingContactValueMaps.Any())
                 await _contactUnitOfWork.ContactValueMapRepository.DeleteRangeAsync(existingContactValueMaps);
 
