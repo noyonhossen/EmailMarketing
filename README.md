@@ -1,3 +1,3 @@
 
-This my is team project
+This is my team project
 
